@@ -1,0 +1,155 @@
+<!-- CONTENT WRAPPER -->
+<div class="content-wrapper" flex>
+
+  <md-content style="width:100%;height: 100%;padding:24px 24px 90px 24px;background-color: #fbfdfd" ms-scroll>
+
+    <!--<md-divider></md-divider>-->
+
+    <div layout="row">
+
+      <div flex>
+        <div layout="row">
+          <md-input-container class="md-block" flex>
+            Unit of Measures
+          </md-input-container>
+        </div>
+
+        <div class="wrapper-border-box">
+          <div layout="row">
+            <md-input-container class="md-block" flex="80">
+              <label>Tax</label>
+              <input disabled type="" ng-model="row.taxDisplay">
+            </md-input-container>
+
+            <md-input-container flex="10">
+              <md-button class="md-icon-button" aria-label="Delete" hide show-gt-sm>
+                <md-icon md-font-icon="icon-delete"></md-icon>
+                <md-tooltip><span>Delete</span></md-tooltip>
+              </md-button>
+            </md-input-container>
+
+            <md-input-container flex="10">
+              <md-button class="md-icon-button" aria-label="Delete" hide show-gt-sm>
+                <md-icon md-font-icon="icon-delete"></md-icon>
+                <md-tooltip><span>Delete</span></md-tooltip>
+              </md-button>
+            </md-input-container>
+
+          </div>
+        </div>
+
+        <div layout="row" layout-align="start center" class="layout-align-start-center layout-row">
+          <button class="send-button md-accent md-raised md-button md-ink-ripple" type="button" ng-transclude="" ng-click="saveProduct(content)" ng-disabled="submitted" aria-label="Create Product">
+            <span class="ng-scope">Add</span>
+          </button>
+        </div>
+
+      </div>
+
+
+      <div flex="5" hide-xs="" hide-sm="" class="hide-sm hide-xs flex-5">
+        <!-- Spacer //-->
+      </div>
+
+      <div flex>
+
+        <div layout="row">
+          <md-input-container class="md-block" flex>
+            Categories
+          </md-input-container>
+        </div>
+
+        <div class="wrapper-border-box">
+          <div layout="row">
+            <md-input-container class="md-block" flex="80">
+              <label>Tax</label>
+              <input disabled type="" ng-model="row.taxDisplay">
+            </md-input-container>
+
+            <md-input-container flex="10">
+              <md-button class="md-icon-button" aria-label="Delete" hide show-gt-sm>
+                <md-icon md-font-icon="icon-delete"></md-icon>
+                <md-tooltip><span>Delete</span></md-tooltip>
+              </md-button>
+            </md-input-container>
+
+            <md-input-container flex="10">
+              <md-button class="md-icon-button" aria-label="Delete" hide show-gt-sm>
+                <md-icon md-font-icon="icon-delete"></md-icon>
+                <md-tooltip><span>Delete</span></md-tooltip>
+              </md-button>
+            </md-input-container>
+
+          </div>
+        </div>
+
+        <div layout="row" layout-align="start center" class="layout-align-start-center layout-row">
+          <button class="send-button md-accent md-raised md-button md-ink-ripple" type="button" ng-transclude="" ng-click="saveProduct(content)" ng-disabled="submitted" aria-label="Create Product">
+            <span class="ng-scope">Add</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <md-divider class="settings-divider"></md-divider>
+
+    <div layout="row">
+
+      <div flex>
+
+        <div layout="row">
+          <md-input-container class="md-block" flex>
+            Brands
+          </md-input-container>
+        </div>
+
+        <div class="wrapper-border-box">
+          <div layout="row">
+            <md-input-container class="md-block" flex="90">
+              <label>Tax</label>
+              <input disabled type="" ng-model="row.taxDisplay">
+            </md-input-container>
+
+            <md-input-container flex="5">
+              <md-button class="md-icon-button" aria-label="Delete" hide show-gt-sm>
+                <md-icon md-font-icon="icon-delete"></md-icon>
+                <md-tooltip><span>Delete</span></md-tooltip>
+              </md-button>
+            </md-input-container>
+
+            <md-input-container flex="5">
+              <md-button class="md-icon-button" aria-label="Delete" hide show-gt-sm>
+                <md-icon md-font-icon="icon-delete"></md-icon>
+                <md-tooltip><span>Delete</span></md-tooltip>
+              </md-button>
+            </md-input-container>
+
+          </div>
+        </div>
+
+        <div layout="row" layout-align="start center" class="layout-align-start-center layout-row">
+          <button class="send-button md-accent md-raised md-button md-ink-ripple" type="button" ng-transclude="" ng-click="saveProduct(content)" ng-disabled="submitted" aria-label="Create Product">
+            <span class="ng-scope">Add</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </md-content>
+
+  <div layout="row" layout-align="space-between center" class="bottom-fixed-bar layout-align-space-between-center layout-row md-whiteframe-8dp">
+    <div layout="row"></div>
+
+    <div layout="row" class="layout-row">
+      <md-button>Clear</md-button>
+      <md-button class="md-raised md-warn">Submit</md-button>
+    </div>
+  </div>
+
+</div>
+<!-- / CONTENT WRAPPER -->

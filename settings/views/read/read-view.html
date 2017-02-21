@@ -1,0 +1,84 @@
+<!-- MAIL CONTENT -->
+<div class="product-header" flex layout="row" layout-align="start start">
+    <div class="summary" layout="column" layout-align="center start" flex>
+        <span class="name">{{vm.selectedProduct.name}}</span>
+        <span class="code">Code : {{vm.selectedProduct.code}}</span>
+    </div>
+    <div class="cost" layout="column" layout-align="center end">
+        <span class="value">{{vm.selectedProduct.price | currency}}</span>
+        <span class="note">(Excluding Tax)</span>
+    </div>
+    <div class="actions">
+        <md-menu>
+            <md-button aria-label="More" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                <md-tooltip>Product Action</md-tooltip>
+            </md-button>
+
+            <md-menu-content width="3">
+                <md-menu-item>
+                    <md-button aria-label="Request Products">
+                        <md-icon md-font-icon="icon-reply"></md-icon>
+                        <span>Request Products</span>
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button aria-label="Add label">
+                        <md-icon md-font-icon="icon-label"></md-icon>
+                        <span>Add label</span>
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button aria-label="Delete">
+                        <md-icon md-font-icon="icon-delete"></md-icon>
+                        <span>Delete</span>
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+    </div>
+</div>
+
+<div class="product-content" layout="column" layout-align="start start">
+    <div class="image" layout="column" layout-align="center center">
+        <img ng-src="{{vm.selectedProduct.attachedfile}}">
+    </div>
+    <div class="info" layout="column" layout-align="start start">
+        <div class="summary" layout="column" layout-align="start start">
+            <span class="info_sup">Summary</span>
+            <div class="summary_list" layout="row" layout-align="start start">
+                <div class="sum_column" flex layout="column" layout-align="start start">
+                    <div class="column_cell" layout="row" layout-align="start start">
+                        <span flex>Category</span><span flex>{{vm.selectedProduct.category}}</span>
+                    </div>
+                    <div class="column_cell" layout="row" layout-align="start start">
+                        <span flex>Quantity</span><span flex>{{vm.selectedProduct.quantity}}</span>
+                    </div>
+                    <div class="column_cell" layout="row" layout-align="start start">
+                        <span flex>Brand</span><span flex>{{vm.selectedProduct.brand}}</span>
+                    </div>
+                </div>
+                <div class="sum_column" flex layout="column" layout-align="start start">
+                    <div class="column_cell" layout="row" layout-align="start start">
+                        <span flex>Unit of Messure</span><span flex>{{vm.selectedProduct.uom}}</span>
+                    </div>
+                    <div class="column_cell" layout="row" layout-align="start start">
+                        <span flex>Status</span><span flex>{{vm.selectedProduct.status}}</span>
+                    </div>
+                    <div class="column_cell" layout="row" layout-align="start start">
+                        <span flex>Minimum Stock Level</span><span flex>{{vm.selectedProduct.minstocklevel}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="description" layout="column" layout-align="start start">
+            <span class="info_sup">Description</span>
+            <span>{{vm.selectedProduct.description}}</span>
+        </div>
+    </div>
+
+</div>
+
+<!-- / MAIL CONTENT -->

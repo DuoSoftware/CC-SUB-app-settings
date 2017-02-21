@@ -1,0 +1,107 @@
+#mail {
+
+    .product-display-pane {
+        background: #FFFFFF;
+
+        .product-header {
+            padding:10px 16px 10px 16px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+            .summary {
+
+                .name{
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                .code{
+                    font-size: 13px;
+                    font-weight:400;
+                }
+            }
+
+            .cost{
+                .value{
+                    font-size:28px;
+                    font-weight:300;
+                    color:rgb(3,155,229);
+                }
+
+                .note{
+                    font-size: 13px;
+                    font-weight:400;
+                }
+            }
+        }
+
+        .product-content {
+            padding: 24px 0;
+
+            .image{
+                width:100%;
+                img{
+                    max-width:100%;
+                    height:auto;
+                }
+            }
+            
+            .info {
+                padding-top:24px;
+                width:100%;
+
+                .summary{
+                    width:100%;
+                    padding-left:24px;
+                    padding-right:24px;
+                    border-top:1px solid rgba(0, 0, 0, 0.12);
+
+                    .info_sup{
+                        font-weight:700;
+                        color:rgba(0,0,0,0.54);
+                        padding:24px 0px 24px 0px;
+                    }
+
+                    .summary_list{
+                        width:100%;
+
+                        .sum_column{
+
+                            .column_cell{
+                                width:100%;
+                                padding-bottom:24px;
+
+                                span:first-child{
+                                    font-weight:700;
+                                }
+
+                                span:last-child{
+                                    font-weight:500;
+                                    color:rgba(0,0,0,0.75);
+                                }
+                            }
+
+                            .column_cell:last-child{
+                                padding-bottom:none;
+                            }
+                        }
+                    }
+                }
+
+                .description{
+                    width:100%;
+                    padding-left:24px;
+                    padding-right:24px;
+                    border-top:1px solid rgba(0, 0, 0, 0.12);
+
+                    .info_sup{
+                        font-weight:700;
+                        color:rgba(0,0,0,0.54);
+                        padding:24px 0px 24px 0px;
+                    }
+                }
+
+            }
+        }
+
+    }
+}

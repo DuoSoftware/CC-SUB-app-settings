@@ -1,0 +1,53 @@
+<md-dialog class="compose-dialog" aria-label="New Message" style="width: 30%;">
+  <form name="vm.reminderForm" class="md-inline-form" ng-submit="submitReminder()">
+    <md-toolbar class="md-accent md-hue-2">
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <span class="title">Set Reminder</span>
+        <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+          <md-icon md-font-icon="icon-close"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content ms-scroll>
+      <div layout="row">
+
+        <md-input-container class="md-block" flex="25">
+          <label>Day(s)</label>
+          <input ng-disabled="invoiceReminder.chkDisabled" name="ReminderDays" ng-model="invoiceReminder.ReminderDays" ng-pattern="/^-?[0-9][^\.]*$/" type="number" min="0" ng-required="true">
+          <div ng-messages="vm.reminderForm.ReminderDays.$error">
+            <div ng-message="pattern">Invalid Day(s)</div>
+            <div ng-message="required">Day(s) required.</div>
+          </div>
+        </md-input-container>
+
+        <div flex="5"></div>
+
+        <div flex layout="row">
+          <md-input-container class="md-block" flex="40">
+            <md-select ng-change="checkReminderType(invoiceReminder.ReminderType)" name="Remindertype" ng-model="invoiceReminder.ReminderType" ng-required="true">
+              <md-option value="Before">Before</md-option>
+              <md-option value="After">After</md-option>
+              <md-option value="OnDueDate">On</md-option>
+            </md-select>
+            <div ng-messages="vm.reminderForm.Remindertype.$error">
+              <div ng-message="required">Reminder type is required.</div>
+            </div>
+          </md-input-container>
+          <md-input-container layout="row" layout-align="start center" style="margin-top: 0;margin-left: 10px;" flex> the Due Date</md-input-container>
+
+        </div>
+      </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" layout-align="space-between center">
+      <div layout="row" layout-align="end center" flex>
+        <md-button class="md-primary" ng-click="clearFields()">Clear</md-button>
+        <md-button type="submit" class="send-button md-accent md-raised" aria-label="">
+          SET
+        </md-button>
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

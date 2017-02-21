@@ -1,0 +1,26 @@
+<md-dialog class="compose-dialog" aria-label="New Message" style="width: 30%;">
+    <md-toolbar class="md-accent md-hue-2">
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <span class="title">Reminder Info</span>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div layout="row" layout-align="center center">
+        <span ng-hide="invoiceReminder.ReminderType == 'OnDueDate'">
+          <span class="md-accent">{{invoiceReminder.ReminderDays}}</span>&nbsp;day<span ng-if="invoiceReminder.ReminderDays>1">s</span>&nbsp;
+        </span>
+        <span ng-if="invoiceReminder.ReminderType == 'Before'"> <b>before</b> the due date.</span>
+        <span ng-if="invoiceReminder.ReminderType == 'OnDueDate'"> <b ng-class="{'caps':invoiceReminder.ReminderType == 'OnDueDate'}">on</b> the due date.</span>
+        <span ng-if="invoiceReminder.ReminderType == 'After'"> <b>after</b> the due date.</span>
+      </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" layout-align="space-between center">
+      <div layout="row" layout-align="end center" flex>
+        <md-button class="md-primary" ng-click="closeDialog()">Ok</md-button>
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
