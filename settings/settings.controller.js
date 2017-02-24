@@ -1448,45 +1448,64 @@
       //})
 
       $scope.loadProductAttributes= function () {
-        $charge.settingsapp().getDuobaseValuesByTableName("CTS_CommonAttributes").success(function(data) {
-          $scope.categories=[];
-          $rootScope.isCategoryLoaded=true;
-          for(var i=0;i<data.length;i++)
-          {
-            $scope.categories.push(data[i]);
-          }
+        //$charge.settingsapp().getDuobaseValuesByTableName("CTS_CommonAttributes").success(function(data) {
+        //  $scope.categories=[];
+        //  $rootScope.isCategoryLoaded=true;
+        //  for(var i=0;i<data.length;i++)
+        //  {
+        //    $scope.categories.push(data[i]);
+        //  }
+        //
+        //  $scope.brands=[];
+        //  $rootScope.isBrandLoaded=true;
+        //  //console.log(data);
+        //  for(var i=0;i<data.length;i++)
+        //  {
+        //    //debugger;
+        //    $scope.brands.push(data[i]);
+        //  }
+        //
+        //}).error(function(data) {
+        //  $rootScope.isCategoryLoaded=false;
+        //  $rootScope.isBrandLoaded=false;
+        //})
+        //
+        //$charge.uom().getAllUOM('Product_123').success(function(data) {
+        //  $scope.UOMs=[];
+        //  //debugger;
+        //  console.log(data);
+        //  for(var i=0;i<data.length;i++)
+        //  {
+        //    //debugger;
+        //    $scope.UOMs.push(data[i][0]);
+        //    //debugger;
+        //  }
+        //}).error(function(data) {
+        //  console.log(data);
+        //})
 
-          $scope.brands=[];
-          $rootScope.isBrandLoaded=true;
-          //console.log(data);
-          for(var i=0;i<data.length;i++)
-          {
-            //debugger;
-            $scope.brands.push(data[i]);
-          }
+        $charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
+          var length = data.length;
+          // debugger;
+          $scope.planTypeList=[];
+          $rootScope.isPlanTypeLoaded=true;
+          for (var i = 0; i < length; i++) {
+            for (var j = 0; j < data[i].length; j++) {
+              var obj = data[i][j];
+              if (obj.ColumnIndex == "0") {
+                $scope.planTypeList.push(obj);
 
-        }).error(function(data) {
-          $rootScope.isCategoryLoaded=false;
-          $rootScope.isBrandLoaded=false;
-        })
-
-        $charge.uom().getAllUOM('Product_123').success(function(data) {
-          $scope.UOMs=[];
-          //debugger;
-          console.log(data);
-          for(var i=0;i<data.length;i++)
-          {
-            //debugger;
-            $scope.UOMs.push(data[i][0]);
-            //debugger;
+              }
+            }
           }
-        }).error(function(data) {
-          console.log(data);
+        }).error(function (data) {
+          $rootScope.isPlanTypeLoaded=false;
         })
       }
 
 
       $rootScope.isStoreLoaded=false;
+      $rootScope.isPlanTypeLoaded=false;
       //$scope.inventory={};
       //$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes","Store").success(function(data) {
       //  $scope.stores=[];
@@ -2208,6 +2227,253 @@
           $scope.addUomDisabled = false;
         }
 
+      }
+
+      $scope.submitPlan= function () {
+        if (vm.planType.$valid == true) {
+          //debugger;
+          if (!$scope.updateUomEnable) {
+            $scope.addPlan();
+          }
+          else {
+            $scope.updatePlan();
+          }
+        }
+      }
+
+      $scope.addUomDisabled = false;
+      $scope.addPlan = function()
+      {
+        $scope.addUomDisabled = true;
+
+        var ev=$scope.plan.plantype;
+        if(ev!=null && ev!="") {
+          var isDuplicatePlanType=false;
+          if($scope.planTypeList.length!=0) {
+            for (var i = 0; i < $scope.planTypeList.length; i++) {
+              if ($scope.planTypeList[i].RecordFieldData == ev) {
+                isDuplicatePlanType=true;
+                notifications.toast("Type is already exist.", "error");
+                $scope.plan.plantype="";
+                $scope.addUomDisabled = false;
+                break;
+              }
+            }
+          }
+          if(!isDuplicatePlanType) {
+            if ($rootScope.isPlanTypeLoaded) {
+              var req = {
+                "RecordName": "CTS_PlanAttributes",
+                "FieldName": "PlanType",
+                "RecordFieldData": ev
+              }
+              debugger;
+              $charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
+                //console.log(data);
+                notifications.toast("Type has been added.", "success");
+                //$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
+                //  $scope.stores = [];
+                //  for (var i = 0; i < data.length; i++) {
+                //    $scope.stores.push(data[i]);
+                //  }
+                //  $scope.inventory.store = "";
+                //  $scope.addInventoryDisabled = false;
+                //  //$mdDialog.hide($scope.stores);
+                //}).error(function (data) {
+                //  console.log(data);
+                //  $scope.addInventoryDisabled = false;
+                //})
+
+                if (data.IsSuccess) {
+                  console.log(data);
+                  $scope.addUomDisabled = false;
+                  //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
+                }
+              }).error(function (data) {
+                console.log(data);
+                $scope.addUomDisabled = false;
+              })
+            }
+            else {
+              var req = {
+                "GURecID": "123",
+                "RecordType": "CTS_PlanAttributes",
+                "OperationalStatus": "Active",
+                "RecordStatus": "Active",
+                "Cache": "CTS_PlanAttributes",
+                "Separate": "Test",
+                "RecordName": "CTS_PlanAttributes",
+                "GuTranID": "12345",
+                "RecordCultureName": "CTS_PlanAttributes",
+                "RecordCode": "CTS_PlanAttributes",
+                "commonDatafieldDetails": [
+                  {
+                    "FieldCultureName": "PlanType",
+                    "FieldID": "124",
+                    "FieldName": "PlanType",
+                    "FieldType": "PlanType_Type",
+                    "ColumnIndex": "0"
+                  }],
+                "commonDataValueDetails": [
+                  {
+                    "RowID": "1452",
+                    "RecordFieldData": ev,
+                    "ColumnIndex": "0"
+                  }]
+              }
+              //debugger;
+              $charge.settingsapp().store(req).success(function (data) {
+                $rootScope.isPlanTypeLoaded = true;
+                notifications.toast("Type has been added.", "success");
+//                $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
+//                  $scope.stores = [];
+//                  for (var i = 0; i < data.length; i++) {
+//                    $scope.stores.push(data[i]);
+//                  }
+//                  $scope.inventory.store = "";
+////$mdDialog.hide($scope.stores);
+//                }).error(function (data) {
+//                  console.log(data);
+//                })
+
+                $charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
+                  var length = data.length;
+                  // debugger;
+                  $scope.planTypeList=[];
+                  $rootScope.isPlanTypeLoaded=true;
+                  for (var i = 0; i < length; i++) {
+                    for (var j = 0; j < data[i].length; j++) {
+                      var obj = data[i][j];
+                      if (obj.ColumnIndex == "0") {
+                        $scope.planTypeList.push(obj);
+
+                      }
+                    }
+                  }
+                  $scope.plan.plantype = "";
+                }).error(function (data) {
+                })
+
+                if (data.IsSuccess) {
+                  console.log(data);
+                  //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
+                }
+              }).error(function (data) {
+                console.log(data);
+              })
+            }
+          }
+        }
+        else{
+          $scope.addUomDisabled = false;
+          notifications.toast("Type cannot be empty" , "error");
+        }
+
+      }
+
+      $scope.editUom=false;
+      $scope.editUnit = '';
+      $scope.updateUomEnable = false;
+
+      $scope.editPlan= function (plan) {
+        //$scope.editInventory=true;
+        //$scope.displayStoreCode=plan.RecordFieldData;
+        //$scope.updateInven = angular.copy(plan);
+
+        $scope.editUom=true;
+        $scope.displayUOMCode=plan.RecordFieldData;
+        $scope.editUnit = angular.copy(plan);
+        $scope.updateUomEnable = true;
+      }
+
+      $scope.updateUomDisabled = false;
+      $scope.updatePlan=function (commondata) {
+        var commondata=$scope.editUnit;
+        $scope.updateUomDisabled = true;
+        var req= {
+          "GURecID":commondata.GuRecID,
+          "RowID":commondata.RowID,
+          "RecordFieldData":commondata.RecordFieldData,
+          "FieldID":commondata.FieldID,
+          "ColumnIndex":commondata.ColumnIndex,
+          "FieldName":commondata.FieldName
+        }
+        var countPlan=0;
+        for (var i = 0; i < $scope.planTypeList.length; i++) {
+          if ($scope.planTypeList[i].RecordFieldData == commondata.RecordFieldData) {
+            if($scope.displayUOMCode!=commondata.RecordFieldData)
+            {
+              countPlan++;
+            }
+          }
+        }
+        if(countPlan==0) {
+          $charge.settingsapp().update(req).success(function (data) {
+            debugger;
+            if (data.count > 0) {
+              notifications.toast("Type has been updated.", "success");
+//              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
+//                $scope.stores = [];
+//                for (var i = 0; i < data.length; i++) {
+//                  $scope.stores.push(data[i]);
+//                }
+//                $scope.editInventory = !$scope.editInventory;
+//                $scope.updateInven = "";
+//                $scope.updateInventoryDisabled = false;
+////$mdDialog.hide($scope.stores);
+//              }).error(function (data) {
+//                console.log(data);
+//                $scope.updateInventoryDisabled = false;
+//              })
+
+              $charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
+                var length = data.length;
+                // debugger;
+                $scope.planTypeList=[];
+                $rootScope.isPlanTypeLoaded=true;
+                for (var i = 0; i < length; i++) {
+                  for (var j = 0; j < data[i].length; j++) {
+                    var obj = data[i][j];
+                    if (obj.ColumnIndex == "0") {
+                      $scope.planTypeList.push(obj);
+
+                    }
+                  }
+                }
+
+                $scope.editUom = !$scope.editUom;
+                $scope.editUnit = "";
+                $scope.updateUomDisabled = false;
+              }).error(function (data) {
+                $scope.updateUomDisabled = false;
+              })
+            }
+            else {
+              $scope.editUom = !$scope.editUom;
+              $scope.editUnit = "";
+              $scope.updateUomDisabled = false;
+            }
+          }).error(function (data) {
+            console.log(data);
+            $scope.updateUomDisabled = false;
+          })
+        }
+        else
+        {
+          notifications.toast("Type is already exist" , "error");
+          $scope.updateUomDisabled = false;
+          $scope.editUnit.RecordFieldData = $scope.displayUOMCode;
+        }
+      }
+
+      $scope.deletePlan= function (ev,index) {
+        debugger;
+        $charge.settingsapp().delete(ev).success(function(data) {
+          //debugger;
+          $scope.planTypeList.splice(index,1);
+        }).error(function(data) {
+          console.log(data);
+        })
       }
 
       $scope.addCategoryDisabled = false;

@@ -1,9 +1,9 @@
 //////////////////////////////////////
 // App : Settings                   //
 // Owner : Suvethan                 //
-// Last changed date : 2017/01/05   //
-// Version : 6.0.0.47               //
-// Updated By : Suvethan            //
+// Last changed date : 2017/02/24   //
+// Version : 6.1.0.1                //
+// Updated By : GihanHerath         //
 //////////////////////////////////////
 
 (function ()

@@ -526,10 +526,10 @@
 
           <div class="content-block-wrapper">
             <div layout="row">
-              <form name="vm.unitOfMeasure" ng-submit="submitUOM()" flex>
+              <form name="vm.planType" ng-submit="submitPlan()" flex>
                 <div id="unit_measuers" class="content-block" flex>
                   <div class="heading-lev2 top bottom rel" layout="row">
-                    Unit of Measures
+                    Plan Type
                     <div layout="row" layout-align="center center" class="preloader-dot-auto" ng-show="addUomDisabled || updateUomDisabled" >
                       <img src="assets/images/142.gif" alt=""/>
                     </div>
@@ -541,16 +541,16 @@
                       <div layout="row" flex class="new-row">
                         <md-input-container class="md-block rel" flex ng-hide="updateUomEnable">
                           <label></label>
-                          <input name="uomCode" type="text" ng-model="product.uom" ng-maxlength="10">
-                          <div ng-messages="vm.unitOfMeasure.uomCode.$error">
-                            <div ng-message="maxlength">UOM has to be less than 10 characters long</div>
+                          <input name="plantype" type="text" ng-model="plan.plantype" ng-maxlength="30">
+                          <div ng-messages="vm.planType.plantype.$error">
+                            <div ng-message="maxlength">Plan type has to be less than 30 characters long</div>
                           </div>
                         </md-input-container>
                         <md-input-container class="md-block rel" flex ng-show="updateUomEnable">
                           <label></label>
-                          <input name="editUOMCode" type="text" ng-model="editUnit.UOMCode" ng-maxlength="10">
-                          <div ng-messages="vm.unitOfMeasure.editUOMCode.$error">
-                            <div ng-message="maxlength">UOM has to be less than 10 characters long</div>
+                          <input name="editPlantype" type="text" ng-model="editUnit.RecordFieldData" ng-maxlength="30">
+                          <div ng-messages="vm.planType.editPlantype.$error">
+                            <div ng-message="maxlength">Plan type has to be less than 30 characters long</div>
                           </div>
                         </md-input-container>
 
@@ -563,21 +563,21 @@
 
                     <md-divider></md-divider>
                     <div class="list-header" layout="row" flex>
-                      <span flex>Unit of Measure</span>
+                      <span flex>Type</span>
                       <span flex="25" align="center">Action</span>
                     </div>
 
                     <md-content ms-scroll flex>
                       <div class="carded-list-group" style="padding: 0;">
                         <md-list flex class="carded-dashboard-list">
-                          <md-list-item layout="row" ng-repeat="uom in UOMs" ng-click="null">
-                            <span flex>{{uom.UOMCode}}</span>
+                          <md-list-item layout="row" ng-repeat="type in planTypeList" ng-click="null">
+                            <span flex>{{type.RecordFieldData}}</span>
                         <span flex="25" style="width: 100px;max-width: 110px;min-width: 110px;">
-                              <md-button class="md-icon-button" aria-label="Edit" ng-click="displayUom(uom)">
+                              <md-button class="md-icon-button" aria-label="Edit" ng-click="editPlan(type)">
                                 <md-icon md-font-icon="icon-pencil"></md-icon>
                                 <md-tooltip>Edit</md-tooltip>
                               </md-button>
-                                <md-button class="md-icon-button" aria-label="Delete" ng-click="deleteUOM(uom,$index)" show-gt-sm>
+                                <md-button class="md-icon-button" aria-label="Delete" ng-click="deletePlan(type,$index)" show-gt-sm>
                                   <md-icon md-font-icon="icon-delete"></md-icon>
                                   <md-tooltip>Delete</md-tooltip>
                                 </md-button>
@@ -625,140 +625,140 @@
                   <!--</div>-->
                 </div>
               </form>
-              <form name="vm.categories" ng-submit="submitCategories()" flex>
-                <div class="content-block" flex>
-                  <div class="heading-lev2 top bottom rel" layout="row">
-                    Categories
-                    <div layout="row" layout-align="center center" class="preloader-dot-auto" ng-show="addCategoryDisabled || updateCategoryDisabled" >
-                      <img src="assets/images/142.gif" alt=""/>
-                    </div>
-                  </div>
+              <!--<form name="vm.categories" ng-submit="submitCategories()" flex>-->
+                <!--<div class="content-block" flex>-->
+                  <!--<div class="heading-lev2 top bottom rel" layout="row">-->
+                    <!--Categories-->
+                    <!--<div layout="row" layout-align="center center" class="preloader-dot-auto" ng-show="addCategoryDisabled || updateCategoryDisabled" >-->
+                      <!--<img src="assets/images/142.gif" alt=""/>-->
+                    <!--</div>-->
+                  <!--</div>-->
 
-                  <md-card flex>
-                    <md-card-actions layout="row" layout-align="end center" class="card-actions-top">
-                      <div layout="row" class="new-row" flex>
-                        <md-input-container class="md-block rel" flex ng-hide="updateCatEnable">
-                          <label></label>
-                          <input name="categoryName" type="text" ng-model="product.category" ng-maxlength="10">
-                          <div ng-messages="vm.categories.categoryName.$error">
-                            <div ng-message="maxlength">Category has to be less than 10 characters long</div>
-                          </div>
-                        </md-input-container>
-                        <md-input-container class="md-block rel" flex ng-show="updateCatEnable">
-                          <label></label>
-                          <input name="editCatName" type="text" ng-model="editCategory.RecordFieldData" ng-maxlength="10">
-                          <div ng-messages="vm.categories.editCatName.$error">
-                            <div ng-message="maxlength">Category has to be less than 10 characters long</div>
-                          </div>
-                        </md-input-container>
+                  <!--<md-card flex>-->
+                    <!--<md-card-actions layout="row" layout-align="end center" class="card-actions-top">-->
+                      <!--<div layout="row" class="new-row" flex>-->
+                        <!--<md-input-container class="md-block rel" flex ng-hide="updateCatEnable">-->
+                          <!--<label></label>-->
+                          <!--<input name="categoryName" type="text" ng-model="product.category" ng-maxlength="10">-->
+                          <!--<div ng-messages="vm.categories.categoryName.$error">-->
+                            <!--<div ng-message="maxlength">Category has to be less than 10 characters long</div>-->
+                          <!--</div>-->
+                        <!--</md-input-container>-->
+                        <!--<md-input-container class="md-block rel" flex ng-show="updateCatEnable">-->
+                          <!--<label></label>-->
+                          <!--<input name="editCatName" type="text" ng-model="editCategory.RecordFieldData" ng-maxlength="10">-->
+                          <!--<div ng-messages="vm.categories.editCatName.$error">-->
+                            <!--<div ng-message="maxlength">Category has to be less than 10 characters long</div>-->
+                          <!--</div>-->
+                        <!--</md-input-container>-->
 
-                        <md-input-container class="md-block top block-add-btn" flex="12">
-                          <md-button type="submit" ng-disabled="addCategoryDisabled" md-no-ink class="md-accent" ng-hide="updateCatEnable">Add</md-button>
-                          <md-button type="submit" ng-disabled="updateCategoryDisabled" md-no-ink class="md-accent" ng-show="updateCatEnable">Update</md-button>
-                        </md-input-container>
-                      </div>
-                    </md-card-actions>
-                    <md-divider></md-divider>
-                    <div class="list-header" layout="row" flex>
-                      <span flex>Categories</span>
-                      <span flex="25" align="center">Action</span>
-                    </div>
+                        <!--<md-input-container class="md-block top block-add-btn" flex="12">-->
+                          <!--<md-button type="submit" ng-disabled="addCategoryDisabled" md-no-ink class="md-accent" ng-hide="updateCatEnable">Add</md-button>-->
+                          <!--<md-button type="submit" ng-disabled="updateCategoryDisabled" md-no-ink class="md-accent" ng-show="updateCatEnable">Update</md-button>-->
+                        <!--</md-input-container>-->
+                      <!--</div>-->
+                    <!--</md-card-actions>-->
+                    <!--<md-divider></md-divider>-->
+                    <!--<div class="list-header" layout="row" flex>-->
+                      <!--<span flex>Categories</span>-->
+                      <!--<span flex="25" align="center">Action</span>-->
+                    <!--</div>-->
 
-                    <md-content ms-scroll flex>
-                      <div class="carded-list-group" style="padding: 0;">
-                        <md-list flex class="carded-dashboard-list">
-                          <md-list-item layout="row" ng-repeat="category in categories" ng-click="null">
-                            <span flex>{{category.RecordFieldData}}</span>
-                        <span flex="25" style="width: 100px;max-width: 110px;min-width: 110px;">
-                              <md-button class="md-icon-button" aria-label="Edit" ng-click="displayCat(category)">
-                                <md-icon md-font-icon="icon-pencil"></md-icon>
-                                <md-tooltip>Edit</md-tooltip>
-                              </md-button>
-                                <md-button class="md-icon-button" aria-label="Delete" ng-click="deleteCommonData(category,$index)">
-                                  <md-icon md-font-icon="icon-delete"></md-icon>
-                                  <md-tooltip>Delete</md-tooltip>
-                                </md-button>
-                        </span>
-                          </md-list-item>
-                        </md-list>
-                      </div>
-                    </md-content>
-                  </md-card>
+                    <!--<md-content ms-scroll flex>-->
+                      <!--<div class="carded-list-group" style="padding: 0;">-->
+                        <!--<md-list flex class="carded-dashboard-list">-->
+                          <!--<md-list-item layout="row" ng-repeat="category in categories" ng-click="null">-->
+                            <!--<span flex>{{category.RecordFieldData}}</span>-->
+                        <!--<span flex="25" style="width: 100px;max-width: 110px;min-width: 110px;">-->
+                              <!--<md-button class="md-icon-button" aria-label="Edit" ng-click="displayCat(category)">-->
+                                <!--<md-icon md-font-icon="icon-pencil"></md-icon>-->
+                                <!--<md-tooltip>Edit</md-tooltip>-->
+                              <!--</md-button>-->
+                                <!--<md-button class="md-icon-button" aria-label="Delete" ng-click="deleteCommonData(category,$index)">-->
+                                  <!--<md-icon md-font-icon="icon-delete"></md-icon>-->
+                                  <!--<md-tooltip>Delete</md-tooltip>-->
+                                <!--</md-button>-->
+                        <!--</span>-->
+                          <!--</md-list-item>-->
+                        <!--</md-list>-->
+                      <!--</div>-->
+                    <!--</md-content>-->
+                  <!--</md-card>-->
 
-                </div>
-              </form>
+                <!--</div>-->
+              <!--</form>-->
             </div>
           </div>
 
-          <div class="content-block-wrapper">
-            <div layout="row">
-              <form name="vm.brands" ng-submit="submitBrands()" flex>
-                <div class="content-block" flex>
-                  <div class="heading-lev2 top bottom rel" layout="row">
-                    Brands
-                    <div layout="row" layout-align="center center" class="preloader-dot-auto" ng-show="addBrandDisabled || updateBrandDisabled" >
-                      <img src="assets/images/142.gif" alt=""/>
-                    </div>
-                  </div>
+          <!--<div class="content-block-wrapper">-->
+            <!--<div layout="row">-->
+              <!--<form name="vm.brands" ng-submit="submitBrands()" flex>-->
+                <!--<div class="content-block" flex>-->
+                  <!--<div class="heading-lev2 top bottom rel" layout="row">-->
+                    <!--Brands-->
+                    <!--<div layout="row" layout-align="center center" class="preloader-dot-auto" ng-show="addBrandDisabled || updateBrandDisabled" >-->
+                      <!--<img src="assets/images/142.gif" alt=""/>-->
+                    <!--</div>-->
+                  <!--</div>-->
 
-                  <md-card flex>
-                    <md-card-actions layout="row" layout-align="end center" class="card-actions-top">
-                      <div layout="row" class="new-row" flex>
-                        <md-input-container class="md-block rel" flex ng-hide="updateBraEnable">
-                          <label></label>
-                          <input name="brandCode" type="text" ng-model="product.brand" ng-maxlength="10">
-                          <div ng-messages="vm.brands.brandCode.$error">
-                            <div ng-message="maxlength">Brand has to be less than 10 characters long</div>
-                          </div>
-                        </md-input-container>
-                        <md-input-container class="md-block rel" flex ng-show="updateBraEnable">
-                          <label></label>
-                          <input name="editBrandCode" type="text" ng-model="editBrand.RecordFieldData" ng-maxlength="10">
-                          <div ng-messages="vm.brands.editBrandCode.$error">
-                            <div ng-message="maxlength">Brand has to be less than 10 characters long</div>
-                          </div>
-                        </md-input-container>
+                  <!--<md-card flex>-->
+                    <!--<md-card-actions layout="row" layout-align="end center" class="card-actions-top">-->
+                      <!--<div layout="row" class="new-row" flex>-->
+                        <!--<md-input-container class="md-block rel" flex ng-hide="updateBraEnable">-->
+                          <!--<label></label>-->
+                          <!--<input name="brandCode" type="text" ng-model="product.brand" ng-maxlength="10">-->
+                          <!--<div ng-messages="vm.brands.brandCode.$error">-->
+                            <!--<div ng-message="maxlength">Brand has to be less than 10 characters long</div>-->
+                          <!--</div>-->
+                        <!--</md-input-container>-->
+                        <!--<md-input-container class="md-block rel" flex ng-show="updateBraEnable">-->
+                          <!--<label></label>-->
+                          <!--<input name="editBrandCode" type="text" ng-model="editBrand.RecordFieldData" ng-maxlength="10">-->
+                          <!--<div ng-messages="vm.brands.editBrandCode.$error">-->
+                            <!--<div ng-message="maxlength">Brand has to be less than 10 characters long</div>-->
+                          <!--</div>-->
+                        <!--</md-input-container>-->
 
-                        <md-input-container class="md-block top block-add-btn" flex="12">
-                          <md-button type="submit" ng-disabled="addBrandDisabled" md-no-ink class="md-accent" ng-hide="updateBraEnable">Add</md-button>
-                          <md-button type="submit" ng-disabled="updateBrandDisabled" md-no-ink class="md-accent" ng-show="updateBraEnable">Update</md-button>
-                        </md-input-container>
-                      </div>
-                    </md-card-actions>
-                    <md-divider></md-divider>
-                    <div class="list-header" layout="row" flex>
-                      <span flex>Brand</span>
-                      <span flex="25" align="center">Action</span>
-                    </div>
+                        <!--<md-input-container class="md-block top block-add-btn" flex="12">-->
+                          <!--<md-button type="submit" ng-disabled="addBrandDisabled" md-no-ink class="md-accent" ng-hide="updateBraEnable">Add</md-button>-->
+                          <!--<md-button type="submit" ng-disabled="updateBrandDisabled" md-no-ink class="md-accent" ng-show="updateBraEnable">Update</md-button>-->
+                        <!--</md-input-container>-->
+                      <!--</div>-->
+                    <!--</md-card-actions>-->
+                    <!--<md-divider></md-divider>-->
+                    <!--<div class="list-header" layout="row" flex>-->
+                      <!--<span flex>Brand</span>-->
+                      <!--<span flex="25" align="center">Action</span>-->
+                    <!--</div>-->
 
-                    <md-content ms-scroll flex>
-                      <div class="carded-list-group" style="padding: 0;">
-                        <md-list flex class="carded-dashboard-list">
-                          <md-list-item layout="row" ng-repeat="brand in brands" ng-click="null">
-                            <span flex>{{brand.RecordFieldData}}</span>
-                        <span flex="25" style="width: 100px;max-width: 110px;min-width: 110px;">
-                              <md-button class="md-icon-button" aria-label="Edit" ng-click="displayBrand(brand)">
-                                <md-icon md-font-icon="icon-pencil"></md-icon>
-                                <md-tooltip>Edit</md-tooltip>
-                              </md-button>
-                                <md-button class="md-icon-button" aria-label="Delete" ng-click="deleteCommonData(brand,$index)">
-                                  <md-icon md-font-icon="icon-delete"></md-icon>
-                                  <md-tooltip>Delete</md-tooltip>
-                                </md-button>
-                        </span>
-                          </md-list-item>
-                        </md-list>
-                      </div>
-                    </md-content>
-                  </md-card>
+                    <!--<md-content ms-scroll flex>-->
+                      <!--<div class="carded-list-group" style="padding: 0;">-->
+                        <!--<md-list flex class="carded-dashboard-list">-->
+                          <!--<md-list-item layout="row" ng-repeat="brand in brands" ng-click="null">-->
+                            <!--<span flex>{{brand.RecordFieldData}}</span>-->
+                        <!--<span flex="25" style="width: 100px;max-width: 110px;min-width: 110px;">-->
+                              <!--<md-button class="md-icon-button" aria-label="Edit" ng-click="displayBrand(brand)">-->
+                                <!--<md-icon md-font-icon="icon-pencil"></md-icon>-->
+                                <!--<md-tooltip>Edit</md-tooltip>-->
+                              <!--</md-button>-->
+                                <!--<md-button class="md-icon-button" aria-label="Delete" ng-click="deleteCommonData(brand,$index)">-->
+                                  <!--<md-icon md-font-icon="icon-delete"></md-icon>-->
+                                  <!--<md-tooltip>Delete</md-tooltip>-->
+                                <!--</md-button>-->
+                        <!--</span>-->
+                          <!--</md-list-item>-->
+                        <!--</md-list>-->
+                      <!--</div>-->
+                    <!--</md-content>-->
+                  <!--</md-card>-->
 
-                </div>
-              </form>
+                <!--</div>-->
+              <!--</form>-->
 
-              <div flex></div>
+              <!--<div flex></div>-->
 
-            </div>
-          </div>
+            <!--</div>-->
+          <!--</div>-->
 
           <!--<div ng-init="submitted=false" layout="row" layout-align="space-between center" class="md-whiteframe-8dp bottom-fixed-bar">-->
           <!--<div layout="row"></div>-->
