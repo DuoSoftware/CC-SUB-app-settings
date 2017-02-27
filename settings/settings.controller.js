@@ -1384,6 +1384,7 @@
       $scope.content={};
       $scope.product={};
       $scope.inventory={};
+      $scope.plan={};
       $scope.content.enableDiscounts=false;
       $scope.toggleDiscNo = true;
       $scope.content.sendInvoice=false;
