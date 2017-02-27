@@ -1401,6 +1401,7 @@
       $scope.taxes = ['10', '20', '30', '40'];
       $scope.brands = [];
       $scope.stores=[];
+      $scope.planTypeList=[];
       $scope.UOMs=[];
       $scope.editCategory="";
       $scope.updateEnable = false;
