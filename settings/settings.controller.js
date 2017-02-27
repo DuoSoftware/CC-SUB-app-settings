@@ -2285,8 +2285,25 @@
                 //  console.log(data);
                 //  $scope.addInventoryDisabled = false;
                 //})
+                $charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
+                  var length = data.length;
+                  // debugger;
+                  $scope.planTypeList=[];
+                  $rootScope.isPlanTypeLoaded=true;
+                  for (var i = 0; i < length; i++) {
+                    for (var j = 0; j < data[i].length; j++) {
+                      var obj = data[i][j];
+                      if (obj.ColumnIndex == "0") {
+                        $scope.planTypeList.push(obj);
 
-                if (data.IsSuccess) {
+                      }
+                    }
+                  }
+                  $scope.plan.plantype = "";
+                }).error(function (data) {
+                })
+
+                if (data.error=="00000") {
                   console.log(data);
                   $scope.addUomDisabled = false;
                   //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
@@ -2356,12 +2373,14 @@
                 }).error(function (data) {
                 })
 
-                if (data.IsSuccess) {
+                if (data.error=="00000") {
                   console.log(data);
+                  $scope.addUomDisabled = false;
                   //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
                 }
               }).error(function (data) {
                 console.log(data);
+                $scope.addUomDisabled = false;
               })
             }
           }
@@ -2449,21 +2468,25 @@
               }).error(function (data) {
                 $scope.updateUomDisabled = false;
               })
+              $scope.updateUomEnable = false;
             }
             else {
               $scope.editUom = !$scope.editUom;
               $scope.editUnit = "";
               $scope.updateUomDisabled = false;
+              $scope.updateUomEnable = false;
             }
           }).error(function (data) {
             console.log(data);
             $scope.updateUomDisabled = false;
+            $scope.updateUomEnable = false;
           })
         }
         else
         {
           notifications.toast("Type is already exist" , "error");
           $scope.updateUomDisabled = false;
+          $scope.updateUomEnable = false;
           $scope.editUnit.RecordFieldData = $scope.displayUOMCode;
         }
       }
