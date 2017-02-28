@@ -2373,7 +2373,7 @@
                 }).error(function (data) {
                 })
 
-                if (data.error=="00000") {
+                if (data[0].error=="00000") {
                   console.log(data);
                   $scope.addUomDisabled = false;
                   //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
