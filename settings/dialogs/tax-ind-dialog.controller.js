@@ -365,7 +365,7 @@
                 debugger;
                 $scope.individualSubmit=false;
                 var taxHd = req;
-                taxHd.taxid = data.id;
+                taxHd.taxid = data.data.taxId;
                 taxHd.createddate = new Date();
                 taxHd.createuser = "admin";
                 if (taxHd.taxtype == "1" || taxHd.taxtype == 1)

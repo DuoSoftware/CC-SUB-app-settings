@@ -202,7 +202,7 @@
                 vm.taxGrpSubmit = false;
                 notifications.toast("Tax Group has been added.", "success");
                 var taxgroup = req;
-                taxgroup.taxgroupid = data.id;
+                taxgroup.taxgroupid = data.data.taxId;
                 taxgroup.createdate = new Date();
                 taxgroup.createuser = "admin";
                 $scope.taxGroupList.push(taxgroup);
