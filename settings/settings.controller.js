@@ -610,12 +610,12 @@
       //})
 
       $scope.allGenLoadedCount=0;
-      $scope.$watch(function () {
-        if($scope.isAllGenLoaded==true && $rootScope.firstLoginDitected==false){
-          $scope.allGenLoaded = true;
-        }
-      })
-
+      //$scope.$watch(function () {
+      //  if($scope.isAllGenLoaded==true && $rootScope.firstLoginDitected==false){
+      //    $scope.allGenLoaded = true;
+      //  }
+      //})
+      $scope.allGenLoaded = true;
       //if($scope.allGenLoaded )
       //{
       //  if($rootScope.firstLoginDitected === true){
