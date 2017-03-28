@@ -637,14 +637,15 @@
         debugger;
         if($scope.template.croppedLogo!=""){
           vm.isEditable=true;
-            $http({
-              method: 'GET',
-              url: $scope.template.croppedLogo
-            }).then(function successCallback(response) {
-              $scope.cropper.croppedImage = response.data;
-            }, function errorCallback(response) {
-
-            });
+            //$http({
+            //  method: 'GET',
+            //  url: $scope.template.croppedLogo
+            //}).then(function successCallback(response) {
+            //  $scope.cropper.croppedImage = response.data;
+            //}, function errorCallback(response) {
+            //
+            //});
+            $scope.cropper.croppedImage=$scope.template.croppedLogo;
         }
         else
           vm.isEditable=false;
@@ -856,7 +857,10 @@
           files = this.files;
 
           if(files.length > 0) {
-            $scope.productImgFileName = files[0].name;
+            var splitIndex=files[0].name.lastIndexOf('.');
+            $scope.productImgFileName = files[0].name.substr(0,splitIndex);
+            $scope.productImgFileType = files[0].type.split("/")[1];
+            if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
           }
         });
       }
@@ -989,61 +993,124 @@
               localStorage.setItem("firstLogin", $scope.general.baseCurrency);
               if ($scope.cropper.croppedImage != "") {
                 //angular.forEach($scope.template.companyLogo, function (obj) {
-                  $uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
+                var uploadImageObj = {
+                  "base64Image": $scope.cropper.croppedImage,
+                  "fileName": $scope.productImgFileName,
+                  "format": $scope.productImgFileType,
+                  "app": "Company",
+                  "fileType": "image"
+                }
+                $charge.storage().storeImage(uploadImageObj).success(function (data) {
+                  $scope.template.companyLogo=data.fileUrl;
+
+                  $scope.saveCompanyProfile();
+                  var req = {
+                    "GURecID": "",
+                    "RecordType": "CTS_CompanyAttributes",
+                    "OperationalStatus": "Active",
+                    "RecordStatus": "Active",
+                    "Cache": "CTS_CompanyAttributes",
+                    "Separate": "Test",
+                    "RecordName": "CTS_CompanyAttributes",
+                    "GuTranID": "12345",
+                    "RecordCultureName": "CTS_CompanyAttributes",
+                    "RecordCode": "CTS_CompanyAttributes",
+                    "commonDatafieldDetails": $scope.companyFields,
+                    "commonDataValueDetails": $scope.companyFieldValues
+                  }
+                  debugger;
+                  $charge.settingsapp().storeCompanyDetails(req).success(function (data) {
+                    $scope.saveFooter();
+                    var req = {
+                      "GURecID": "",
+                      "RecordType": "CTS_FooterAttributes",
+                      "OperationalStatus": "Active",
+                      "RecordStatus": "Active",
+                      "Cache": "CTS_FooterAttributes",
+                      "Separate": "Test",
+                      "RecordName": "CTS_FooterAttributes",
+                      "GuTranID": "12345",
+                      "RecordCultureName": "CTS_FooterAttributes",
+                      "RecordCode": "CTS_FooterAttributes",
+                      "commonDatafieldDetails": $scope.footerFields,
+                      "commonDataValueDetails": $scope.footerFieldValues
+                    }
+                    debugger;
+                    $charge.settingsapp().store(req).success(function (data) {
+                      notifications.toast("General records has been saved.", "success");
+                      $scope.generalSubmit = false;
+                      $state.go($state.current, {}, {reload: true});
+                      $rootScope.firstLoginDitected = false;
+                    }).error(function (data) {
+                      notifications.toast("Error occured while saving company profile.", "error");
+                      $scope.generalSubmit = false;
+                    });
+                  }).error(function (data) {
+                    notifications.toast("Error occured while saving company profile.", "error");
+                    $scope.generalSubmit = false;
+                  });
+                }).error(function (data) {
+                  console.log(data);
+                  $scope.generalSubmit = false;
+                })
+
+                  //$uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
 
                   //$scope.imgWidth = obj.element[0].childNodes[1].naturalWidth;
                   //$scope.imgHeight = obj.element[0].childNodes[1].naturalHeight;
 
                   //if($scope.imgWidth <= 180 && $scope.imgHeight <= 180) {
-                    $uploader.onSuccess(function (e, data) {
-                      $scope.template.companyLogo = $storage.getMediaUrl("CCCompanyImage", $scope.productImgFileName);
-                      $scope.saveCompanyProfile();
-                      var req = {
-                        "GURecID": "",
-                        "RecordType": "CTS_CompanyAttributes",
-                        "OperationalStatus": "Active",
-                        "RecordStatus": "Active",
-                        "Cache": "CTS_CompanyAttributes",
-                        "Separate": "Test",
-                        "RecordName": "CTS_CompanyAttributes",
-                        "GuTranID": "12345",
-                        "RecordCultureName": "CTS_CompanyAttributes",
-                        "RecordCode": "CTS_CompanyAttributes",
-                        "commonDatafieldDetails": $scope.companyFields,
-                        "commonDataValueDetails": $scope.companyFieldValues
-                      }
-                      debugger;
-                      $charge.settingsapp().storeCompanyDetails(req).success(function (data) {
-                        $scope.saveFooter();
-                        var req = {
-                          "GURecID": "",
-                          "RecordType": "CTS_FooterAttributes",
-                          "OperationalStatus": "Active",
-                          "RecordStatus": "Active",
-                          "Cache": "CTS_FooterAttributes",
-                          "Separate": "Test",
-                          "RecordName": "CTS_FooterAttributes",
-                          "GuTranID": "12345",
-                          "RecordCultureName": "CTS_FooterAttributes",
-                          "RecordCode": "CTS_FooterAttributes",
-                          "commonDatafieldDetails": $scope.footerFields,
-                          "commonDataValueDetails": $scope.footerFieldValues
-                        }
-                        debugger;
-                        $charge.settingsapp().store(req).success(function (data) {
-                          notifications.toast("General records has been saved.", "success");
-                          $scope.generalSubmit = false;
-                          $state.go($state.current, {}, {reload: true});
-                          $rootScope.firstLoginDitected = false;
-                        }).error(function (data) {
-                          notifications.toast("Error occured while saving company profile.", "error");
-                          $scope.generalSubmit = false;
-                        });
-                      }).error(function (data) {
-                        notifications.toast("Error occured while saving company profile.", "error");
-                        $scope.generalSubmit = false;
-                      });
-                    });
+
+                  //  $uploader.onSuccess(function (e, data) {
+                  //    $scope.template.companyLogo = $storage.getMediaUrl("CCCompanyImage", $scope.productImgFileName);
+                  //    $scope.saveCompanyProfile();
+                  //    var req = {
+                  //      "GURecID": "",
+                  //      "RecordType": "CTS_CompanyAttributes",
+                  //      "OperationalStatus": "Active",
+                  //      "RecordStatus": "Active",
+                  //      "Cache": "CTS_CompanyAttributes",
+                  //      "Separate": "Test",
+                  //      "RecordName": "CTS_CompanyAttributes",
+                  //      "GuTranID": "12345",
+                  //      "RecordCultureName": "CTS_CompanyAttributes",
+                  //      "RecordCode": "CTS_CompanyAttributes",
+                  //      "commonDatafieldDetails": $scope.companyFields,
+                  //      "commonDataValueDetails": $scope.companyFieldValues
+                  //    }
+                  //    debugger;
+                  //    $charge.settingsapp().storeCompanyDetails(req).success(function (data) {
+                  //      $scope.saveFooter();
+                  //      var req = {
+                  //        "GURecID": "",
+                  //        "RecordType": "CTS_FooterAttributes",
+                  //        "OperationalStatus": "Active",
+                  //        "RecordStatus": "Active",
+                  //        "Cache": "CTS_FooterAttributes",
+                  //        "Separate": "Test",
+                  //        "RecordName": "CTS_FooterAttributes",
+                  //        "GuTranID": "12345",
+                  //        "RecordCultureName": "CTS_FooterAttributes",
+                  //        "RecordCode": "CTS_FooterAttributes",
+                  //        "commonDatafieldDetails": $scope.footerFields,
+                  //        "commonDataValueDetails": $scope.footerFieldValues
+                  //      }
+                  //      debugger;
+                  //      $charge.settingsapp().store(req).success(function (data) {
+                  //        notifications.toast("General records has been saved.", "success");
+                  //        $scope.generalSubmit = false;
+                  //        $state.go($state.current, {}, {reload: true});
+                  //        $rootScope.firstLoginDitected = false;
+                  //      }).error(function (data) {
+                  //        notifications.toast("Error occured while saving company profile.", "error");
+                  //        $scope.generalSubmit = false;
+                  //      });
+                  //    }).error(function (data) {
+                  //      notifications.toast("Error occured while saving company profile.", "error");
+                  //      $scope.generalSubmit = false;
+                  //    });
+                  //  });
+
                   //}else{
                   //  notifications.toast("Company logo is too large to upload (Maxumum size : 180px x 180px)", "error");
                   //  $scope.generalSubmit = false;
@@ -1204,25 +1271,43 @@
         $charge.settingsapp().deleteCommmon($scope.template.GURecID).success(function (data) {
           if($scope.cropper.croppedImage!=null) {
             //angular.forEach($scope.template.companyLogo, function (obj) {
-              $uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
+            var uploadImageObj = {
+              "base64Image": $scope.cropper.croppedImage,
+              "fileName": $scope.productImgFileName,
+              "format": $scope.productImgFileType,
+              "app": "Company",
+              "fileType": "image"
+            }
+            $charge.storage().storeImage(uploadImageObj).success(function (data) {
+              $scope.template.croppedLogo=data.fileUrl;
+              $scope.insertCompanyIndividual();
+
+            }).error(function (data) {
+              console.log(data);
+              $scope.generalSubmit = false;
+            })
+
+              //$uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
 
               //$scope.imgWidth = obj.element[0].childNodes[1].naturalWidth;
               //$scope.imgHeight = obj.element[0].childNodes[1].naturalHeight;
 
               //if($scope.imgWidth <= 180 && $scope.imgHeight <= 180) {
-                $uploader.onSuccess(function (e, data) {
-                  $scope.template.croppedLogo = $storage.getMediaUrl("CCCompanyImage", $scope.productImgFileName);
 
-                  $http({
-                    method: 'GET',
-                    url: $scope.template.croppedLogo
-                  }).then(function successCallback(response) {
-                    $scope.cropper.croppedImage = response.data;
-                    $scope.insertCompanyIndividual();
-                  }, function errorCallback(response) {
+                //$uploader.onSuccess(function (e, data) {
+                //  $scope.template.croppedLogo = $storage.getMediaUrl("CCCompanyImage", $scope.productImgFileName);
+                //
+                //  $http({
+                //    method: 'GET',
+                //    url: $scope.template.croppedLogo
+                //  }).then(function successCallback(response) {
+                //    $scope.cropper.croppedImage = response.data;
+                //    $scope.insertCompanyIndividual();
+                //  }, function errorCallback(response) {
+                //
+                //  });
+                //});
 
-                  });
-                });
               //}else{
               //  notifications.toast("Company logo is too large to upload (Maxumum size : 180px x 180px)", "error");
               //  $scope.generalSubmit = false;
