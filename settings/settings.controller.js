@@ -203,6 +203,9 @@
             case 'products':
                   $scope.loadProductAttributes();
                   break;
+            case 'webhooks':
+                  $scope.loadProductAttributes();
+                  break;
             case 'invoice':
                   $scope.loadInvoiceAttributes();
                   break;
@@ -991,7 +994,7 @@
               $scope.generalSubmit = false;
               localStorage.removeItem('firstLogin');
               localStorage.setItem("firstLogin", $scope.general.baseCurrency);
-              if ($scope.cropper.croppedImage != "") {
+              if ($scope.cropper.croppedImage != "" && $scope.cropper.croppedImage != null) {
                 //angular.forEach($scope.template.companyLogo, function (obj) {
                 var uploadImageObj = {
                   "base64Image": $scope.cropper.croppedImage,
@@ -1269,7 +1272,7 @@
 
       $scope.deleteCompanyProfile= function () {
         $charge.settingsapp().deleteCommmon($scope.template.GURecID).success(function (data) {
-          if($scope.cropper.croppedImage!=null) {
+          if($scope.cropper.croppedImage!=null && $scope.cropper.croppedImage!="") {
             //angular.forEach($scope.template.companyLogo, function (obj) {
             var uploadImageObj = {
               "base64Image": $scope.cropper.croppedImage,
