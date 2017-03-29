@@ -1022,7 +1022,7 @@
                     "commonDataValueDetails": $scope.companyFieldValues
                   }
                   debugger;
-                  $charge.settingsapp().storeCompanyDetails(req).success(function (data) {
+                  $charge.settingsapp().store(req).success(function (data) {
                     $scope.saveFooter();
                     var req = {
                       "GURecID": "",
@@ -1137,7 +1137,7 @@
                   "commonDataValueDetails": $scope.companyFieldValues
                 }
                 debugger;
-                $charge.settingsapp().storeCompanyDetails(req).success(function (data) {
+                $charge.settingsapp().store(req).success(function (data) {
                   $scope.saveFooter();
                   var req = {
                     "GURecID": "",
@@ -3645,7 +3645,7 @@
                 }]
             }
 
-            $charge.settingsapp().storeInvoiceDetails(req).success(function(data) {
+            $charge.settingsapp().store(req).success(function(data) {
               console.log(data);
               vm.invoiceSubmit=false;
               notifications.toast("Invoice settings has been applied.", "success");

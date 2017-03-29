@@ -775,6 +775,96 @@
       </div>
       <!-- / CONTENT WRAPPER -->
 
+      <!-- CONTENT WRAPPER - WEBHOOKS -->
+      <div ng-switch-when="webhooks" class="content-wrapper" layout="column" layout-fill>
+
+        <md-content style="width:100%;height: 100%;background-color: #fbfdfd" ms-scroll>
+
+          <div class="content-block-wrapper">
+            <div layout="row">
+              <form name="vm.webHooks" ng-submit="submitPlan()" flex>
+                <div id="unit_measuers2" class="content-block" flex>
+                  <!--<div class="heading-lev2 top bottom rel" layout="row">-->
+                    <!--Plan Type-->
+                    <!--<div layout="row" layout-align="center center" class="preloader-dot-auto" ng-show="addUomDisabled || updateUomDisabled" >-->
+                      <!--<img src="assets/images/142.gif" alt=""/>-->
+                    <!--</div>-->
+                  <!--</div>-->
+
+                  <md-card flex>
+                    <md-card-actions layout="row" layout-align="end center" class="card-actions-top">
+                      <!--Added new row with "ADD" button-->
+                      <div layout="row" flex class="new-row">
+                        <md-input-container class="md-block rel" flex>
+                          <label>URL</label>
+                          <input name="url" type="text" ng-model="webhook.url" ng-maxlength="100">
+                          <div ng-messages="vm.webHooks.url.$error">
+                            <div ng-message="maxlength">Webhook URL has to be less than 100 characters long</div>
+                          </div>
+                        </md-input-container>
+                        <!--<md-input-container class="md-block rel" flex ng-show="updateUomEnable">-->
+                          <!--<label>URL</label>-->
+                          <!--<input name="editUrl" type="text" ng-model="editWH.url" ng-maxlength="100">-->
+                          <!--<div ng-messages="vm.webHooks.editUrl.$error">-->
+                            <!--<div ng-message="maxlength">Webhook URL has to be less than 100 characters long</div>-->
+                          <!--</div>-->
+                        <!--</md-input-container>-->
+
+                        <!--<md-input-container class="md-block top block-add-btn" flex="12">-->
+                          <!--<md-button type="submit" md-no-ink class="md-accent" ng-disabled="addUomDisabled"  ng-hide="updateUomEnable">Add</md-button>-->
+                          <!--<md-button type="submit" ng-disabled="updateUomDisabled" md-no-ink class="md-accent"  ng-show="updateUomEnable">Update</md-button>-->
+                        <!--</md-input-container>-->
+                      </div>
+                      <div layout="row" flex class="new-row">
+                        <md-input-container class="md-block rel" flex>
+                          <label>Mode</label>
+                          <md-select ng-required="true" flex ng-model="webhook.url">
+                            <md-option value="Live">Live</md-option>
+                            <md-option value="Test">Test</md-option>
+                          </md-select>
+                        </md-input-container>
+                      </div>
+                    </md-card-actions>
+
+                    <md-divider></md-divider>
+                    <div class="list-header" layout="row" flex>
+                      <!--<span flex>Type</span>-->
+                      <span flex="25" align="center">Choose Events</span>
+                    </div>
+
+                    <md-content ms-scroll flex>
+                      <div class="carded-list-group" style="padding: 0;">
+                        <md-list flex class="carded-dashboard-list">
+                          <md-list-item layout="row" ng-repeat="type in planTypeList" ng-click="null">
+                            <span flex>{{type.RecordFieldData}}</span>
+                        <span flex="25" style="width: 100px;max-width: 110px;min-width: 110px;">
+                              <md-button class="md-icon-button" aria-label="Edit" ng-click="editPlan(type)">
+                                <md-icon md-font-icon="icon-pencil"></md-icon>
+                                <md-tooltip>Edit</md-tooltip>
+                              </md-button>
+                                <md-button class="md-icon-button" aria-label="Delete" ng-click="deletePlan(type,$index)" show-gt-sm>
+                                  <md-icon md-font-icon="icon-delete"></md-icon>
+                                  <md-tooltip>Delete</md-tooltip>
+                                </md-button>
+                        </span>
+                          </md-list-item>
+                        </md-list>
+                      </div>
+                    </md-content>
+                  </md-card>
+
+                </div>
+              </form>
+
+            </div>
+          </div>
+
+
+        </md-content>
+
+      </div>
+      <!-- / CONTENT WRAPPER -->
+
       <!-- CONTENT WRAPPER - INVOICE -->
       <div id="settings-invoice" ng-switch-when="invoice" class="content-wrapper" layout="column" flex>
 
