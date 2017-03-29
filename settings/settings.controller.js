@@ -1265,7 +1265,7 @@
         //{}
         $scope.companyFieldValues.push({
           "RowID": "",
-          "RecordFieldData": $scope.template.croppedLogo,
+          "RecordFieldData": $scope.template.companyLogo,
           "ColumnIndex": "4"
         });
       }
