@@ -782,7 +782,7 @@
 
           <div class="content-block-wrapper">
             <div layout="row">
-              <form name="vm.webHooks" ng-submit="submitPlan()" flex>
+              <form name="vm.webHooks" id="webhooksForm" ng-submit="submitWebhook(enabledEditWH)" flex>
                 <div id="unit_measuers2" class="content-block" flex>
                   <!--<div class="heading-lev2 top bottom rel" layout="row">-->
                     <!--Plan Type-->
@@ -792,12 +792,12 @@
                   <!--</div>-->
 
                   <md-card flex>
-                    <md-card-actions layout="row" layout-align="end center" class="card-actions-top">
+                    <md-card-actions layout-align="end center" class="card-actions-top">
                       <!--Added new row with "ADD" button-->
                       <div layout="row" flex class="new-row">
                         <md-input-container class="md-block rel" flex>
                           <label>URL</label>
-                          <input name="url" type="text" ng-model="webhook.url" ng-maxlength="100">
+                          <input name="url" ng-required="true" type="text" ng-model="webhook.endPoint" ng-maxlength="100">
                           <div ng-messages="vm.webHooks.url.$error">
                             <div ng-message="maxlength">Webhook URL has to be less than 100 characters long</div>
                           </div>
@@ -818,11 +818,17 @@
                       <div layout="row" flex class="new-row">
                         <md-input-container class="md-block rel" flex>
                           <label>Mode</label>
-                          <md-select ng-required="true" flex ng-model="webhook.url">
-                            <md-option value="Live">Live</md-option>
+                          <md-select ng-required="true" flex ng-model="webhook.mode">
+                            <md-option value="Live" selected>Live</md-option>
                             <md-option value="Test">Test</md-option>
                           </md-select>
                         </md-input-container>
+                      </div>
+                      <div layout="row" flex class="new-row">
+                        <md-radio-group ng-model="webhook.type" ng-init="webhook.type='custom'">
+                          <md-radio-button value="custom" ng-click="webhookTypeChange('custom')" class="md-primary">Custom</md-radio-button>
+                          <md-radio-button value="all" ng-click="webhookTypeChange('all')" class="md-primary" selected>Select All</md-radio-button>
+                        </md-radio-group>
                       </div>
                     </md-card-actions>
 
@@ -835,19 +841,76 @@
                     <md-content ms-scroll flex>
                       <div class="carded-list-group" style="padding: 0;">
                         <md-list flex class="carded-dashboard-list">
-                          <md-list-item layout="row" ng-repeat="type in planTypeList" ng-click="null">
-                            <span flex>{{type.RecordFieldData}}</span>
+                          <md-list-item layout="row" ng-repeat="event in vm.webhookEventList" ng-click="null">
+                            <span flex>
+                              <md-checkbox ng-model="event.isSelected" aria-label="Event" ng-disabled="event.isDisabled || event.isAlreadyUsed" class="md-primary">{{event.eventType}}</md-checkbox>
+                            </span>
+                            <!--<span flex>{{type.RecordFieldData}}</span>-->
+                        <!--<span flex="25" style="width: 100px;max-width: 110px;min-width: 110px;">-->
+                              <!--<md-button class="md-icon-button" aria-label="Edit" ng-click="editPlan(type)">-->
+                                <!--<md-icon md-font-icon="icon-pencil"></md-icon>-->
+                                <!--<md-tooltip>Edit</md-tooltip>-->
+                              <!--</md-button>-->
+                                <!--<md-button class="md-icon-button" aria-label="Delete" ng-click="deletePlan(type,$index)" show-gt-sm>-->
+                                  <!--<md-icon md-font-icon="icon-delete"></md-icon>-->
+                                  <!--<md-tooltip>Delete</md-tooltip>-->
+                                <!--</md-button>-->
+                        <!--</span>-->
+                          </md-list-item>
+                        </md-list>
+                      </div>
+                    </md-content>
+                  </md-card>
+
+                </div>
+                <div layout="row" class="layout-row" ng-if="!enabledEditWH">
+                  <md-button ng-disabled="vm.webhookSubmitted" type="submit" class="md-raised md-warn" form="webhooksForm">Save</md-button>
+                </div>
+                <div layout="row" class="layout-row" ng-if="enabledEditWH">
+                  <md-button ng-click="resetWebhook();">Reset</md-button>
+                  <md-button ng-disabled="vm.webhookSubmitted" type="submit" class="md-raised md-warn" form="webhooksForm">Update</md-button>
+                </div>
+              </form>
+
+              <form name="vm.webHookListView" id="webhooksListForm" ng-submit="" flex>
+                <div id="unit_measuers4" class="content-block" flex>
+                  <div class="heading-lev2 top bottom rel" layout="row">
+                    Webhooks List
+                  </div>
+
+                  <md-card flex style="height: 570px">
+                    <!--<md-card-actions layout="row" layout-align="end center" class="card-actions-top">-->
+                      <!--&lt;!&ndash;Added new row with "ADD" button&ndash;&gt;-->
+                      <!--<div layout="row" flex class="new-row">-->
+                        <!---->
+                      <!--</div>-->
+                    <!--</md-card-actions>-->
+
+                    <!--<md-divider></md-divider>-->
+                    <div class="list-header" layout="row" flex>
+                      <span flex>URL</span>
+                      <span flex="25" align="center">Action</span>
+                    </div>
+
+                    <md-content ms-scroll flex>
+                      <div class="carded-list-group" style="padding: 0;">
+                        <md-list flex class="carded-dashboard-list">
+                          <md-list-item layout="row" ng-repeat="webhook in vm.webhookList" ng-click="webhookItemViewToggle(webhook)">
+                            <span flex>{{webhook.endPoint}}</span>
                         <span flex="25" style="width: 100px;max-width: 110px;min-width: 110px;">
-                              <md-button class="md-icon-button" aria-label="Edit" ng-click="editPlan(type)">
+                              <md-button class="md-icon-button" aria-label="Edit" ng-click="editWebhook(webhook)">
                                 <md-icon md-font-icon="icon-pencil"></md-icon>
                                 <md-tooltip>Edit</md-tooltip>
                               </md-button>
-                                <md-button class="md-icon-button" aria-label="Delete" ng-click="deletePlan(type,$index)" show-gt-sm>
+                                <md-button class="md-icon-button" aria-label="Delete" ng-click="showDeleteWebhookConfirm($event,webhook)" show-gt-sm>
                                   <md-icon md-font-icon="icon-delete"></md-icon>
                                   <md-tooltip>Delete</md-tooltip>
                                 </md-button>
                         </span>
                           </md-list-item>
+                          <!--<md-list-item layout="row" ng-show="webhook.showEvents">-->
+                            <!--<span flex>{{webhook.eventCodes}}</span>-->
+                          <!--</md-list-item>-->
                         </md-list>
                       </div>
                     </md-content>
