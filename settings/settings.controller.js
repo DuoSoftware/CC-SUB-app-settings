@@ -206,6 +206,9 @@
             case 'webhooks':
                   $scope.loadWebhooksAttributes();
                   break;
+            case 'emailtemplate':
+                  $scope.loadEmailTemplateAttributes();
+                  break;
             case 'invoice':
                   $scope.loadInvoiceAttributes();
                   break;
@@ -1734,6 +1737,54 @@
         }
       }
 
+      vm.emailTemplateList=[];
+      var skipAllEmailTemplates=0;
+      var takeAllEmailTemplates=100;
+      $scope.loadingEmailTemplates = true;
+
+      $scope.loadEmailTemplateAttributes= function () {
+        vm.emailTemplateList=[];
+        skipAllEmailTemplates=0;
+        $scope.loadingEmailTemplates = true;
+
+        $charge.storage().allTemplates().success(function (data) {
+          console.log(data);
+          // debugger;
+          if($scope.loadingEmailTemplates)
+          {
+            for (var i = 0; i < data.result.length; i++) {
+              vm.emailTemplateList.push({
+                url:data.result[i],
+                isSelected:false
+              });
+            }
+            $scope.loadingEmailTemplates = false;
+
+            $scope.getDefaultEmailTemplate();
+
+          }
+        }).error(function (data) {
+          console.log(data);
+          vm.emailTemplateList=[];
+          $scope.loadingEmailTemplates = false;
+        })
+      }
+
+      $scope.defaultEmailTemplate = "";
+      $scope.defaultEmailTemplateID="";
+
+      $scope.getDefaultEmailTemplate= function () {
+        $charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_EmailTemplates", "TemplateUrl").success(function (data) {
+          // debugger;
+          $scope.defaultEmailTemplate=data[0][0].RecordFieldData;
+          $scope.defaultEmailTemplateID=data[0][0].GuRecID;
+          $scope.selectChangeTemplate($scope.defaultEmailTemplate);
+
+        }).error(function (data) {
+          $scope.defaultEmailTemplate = "";
+        })
+      }
+
 
       $rootScope.isStoreLoaded=false;
       $rootScope.isPlanTypeLoaded=false;
@@ -2763,10 +2814,11 @@
         else
         {
           event.showEvents=!event.showEvents;
-      }        }
+        }
+      }
 
 
-  $scope.webhook={};
+      $scope.webhook={};
       vm.webhookSubmitted = false;
       $scope.submitWebhook= function (editing) {
         if(!editing)
@@ -2949,6 +3001,114 @@
         $scope.loadWebhookListPaging();
 
         $scope.enabledEditWH=false;
+      }
+
+      $scope.selectChangeTemplate= function (template) {
+        for (var i = 0; i < vm.emailTemplateList.length; i++) {
+          if(vm.emailTemplateList[i].url!=template)
+          {
+            vm.emailTemplateList[i].isSelected=false;
+          }
+          else
+          {
+            vm.emailTemplateList[i].isSelected=true;
+          }
+        }
+      }
+
+      vm.emailTemplateSubmitted=false;
+
+      $scope.submitEmailTemplate= function () {
+        vm.emailTemplateSubmitted=true;
+        var tempEmailTemplateSelected=false;
+        var tempEmailTemplate="";
+        for (var i = 0; i < vm.emailTemplateList.length; i++) {
+          if(vm.emailTemplateList[i].isSelected)
+          {
+            tempEmailTemplate=vm.emailTemplateList[i].url;
+            tempEmailTemplateSelected=true;
+            break;
+          }
+        }
+
+        if(tempEmailTemplateSelected)
+        {
+          if($scope.defaultEmailTemplate!="")
+          {
+            $charge.settingsapp().deleteCommmon($scope.defaultEmailTemplateID).success(function (data) {
+              var req = {
+                "RecordName": "CTS_EmailTemplates",
+                "FieldName": "TemplateUrl",
+                "RecordFieldData": tempEmailTemplate
+              }
+
+              $charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
+                notifications.toast("Template has been Set", "success");
+                $scope.defaultEmailTemplate=angular.copy(tempEmailTemplate);
+                vm.emailTemplateSubmitted=false;
+              }).error(function (data) {
+                console.log(data);
+                notifications.toast("Template Saving Error", "error");
+                vm.emailTemplateSubmitted=false;
+              })
+            }).error(function (data) {
+              console.log(data);
+              notifications.toast("Template Saving Error", "error");
+              vm.emailTemplateSubmitted=false;
+            })
+
+          }
+          else
+          {
+            var req={
+              "GURecID":"123",
+              "RecordType":"CTS_EmailTemplates",
+              "OperationalStatus":"Active",
+              "RecordStatus":"Active",
+              "Cache":"CTS_EmailTemplates",
+              "Separate":"Test",
+              "RecordName":"CTS_EmailTemplates",
+              "GuTranID":"12345",
+              "RecordCultureName":"CTS_EmailTemplates",
+              "RecordCode":"CTS_EmailTemplates",
+              "commonDatafieldDetails":[
+                {
+                  "FieldCultureName":"TemplateUrl",
+                  "FieldID":"124",
+                  "FieldName":"TemplateUrl",
+                  "FieldType":"TemplateUrlType",
+                  "ColumnIndex":"0"
+                }
+              ],
+              "commonDataValueDetails":[
+                {
+                  "RowID":"1452",
+                  "RecordFieldData":tempEmailTemplate,
+                  "ColumnIndex":"0"
+                }
+              ]
+
+            }
+
+            $charge.settingsapp().store(req).success(function (data) {
+              notifications.toast("Template has Set", "success");
+              $scope.defaultEmailTemplate=angular.copy(tempEmailTemplate);
+              vm.emailTemplateSubmitted=false;
+
+            }).error(function (data) {
+              console.log(data);
+              notifications.toast("Template Saving Error", "error");
+              vm.emailTemplateSubmitted=false;
+            })
+          }
+
+
+        }
+        else
+        {
+          notifications.toast("Please select a Template", "error");
+          vm.emailTemplateSubmitted=false;
+        }
       }
 
       $scope.addCategoryDisabled = false;
