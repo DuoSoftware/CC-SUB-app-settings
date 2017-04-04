@@ -797,9 +797,10 @@
                       <div layout="row" flex class="new-row">
                         <md-input-container class="md-block rel" flex>
                           <label>URL</label>
-                          <input name="url" ng-required="true" type="text" ng-model="webhook.endPoint" ng-maxlength="100">
+                          <input name="url" ng-required="true" type="url" ng-model="webhook.endPoint" ng-maxlength="100">
                           <div ng-messages="vm.webHooks.url.$error">
                             <div ng-message="maxlength">Webhook URL has to be less than 100 characters long</div>
+                            <div ng-message="url">Invalid URL</div>
                           </div>
                         </md-input-container>
                         <!--<md-input-container class="md-block rel" flex ng-show="updateUomEnable">-->
