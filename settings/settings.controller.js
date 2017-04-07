@@ -994,7 +994,7 @@
             }
             debugger;
             $charge.settingsapp().store(req).success(function (data) {
-              $scope.generalSubmit = false;
+              //$scope.generalSubmit = false;
               localStorage.removeItem('firstLogin');
               localStorage.setItem("firstLogin", $scope.general.baseCurrency);
               if ($scope.cropper.croppedImage != "" && $scope.cropper.croppedImage != null) {
@@ -1050,14 +1050,35 @@
                     }).error(function (data) {
                       notifications.toast("Error occured while saving company profile.", "error");
                       $scope.generalSubmit = false;
+
+                      $charge.settingsapp().deleteGeneralData().success(function (data) {
+                        console.log("Settings Rollback..");
+                      }).error(function (data) {
+                        console.log("Settings Rollback failed");
+                      });
+
                     });
                   }).error(function (data) {
                     notifications.toast("Error occured while saving company profile.", "error");
                     $scope.generalSubmit = false;
+
+                    $charge.settingsapp().deleteGeneralData().success(function (data) {
+                      console.log("Settings Rollback..");
+                    }).error(function (data) {
+                      console.log("Settings Rollback failed");
+                    });
+
                   });
                 }).error(function (data) {
                   console.log(data);
                   $scope.generalSubmit = false;
+
+                  $charge.settingsapp().deleteGeneralData().success(function (data) {
+                    console.log("Settings Rollback..");
+                  }).error(function (data) {
+                    console.log("Settings Rollback failed");
+                  });
+
                 })
 
                   //$uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
@@ -1162,13 +1183,33 @@
                     $scope.generalSubmit = false;
                     $state.go($state.current, {}, {reload: true});
                     $rootScope.firstLoginDitected = false;
+
+                    $charge.settingsapp().deleteGeneralData().success(function (data) {
+                      console.log("Settings Rollback..");
+                    }).error(function (data) {
+                      console.log("Settings Rollback failed");
+                    });
                   }).error(function (data) {
                     notifications.toast("Error occured while saving company profile.", "error");
                     $scope.generalSubmit = false;
+
+                    $charge.settingsapp().deleteGeneralData().success(function (data) {
+                      console.log("Settings Rollback..");
+                    }).error(function (data) {
+                      console.log("Settings Rollback failed");
+                    });
+
                   });
                 }).error(function (data) {
                   notifications.toast("Error occured while saving company profile.", "error");
                   $scope.generalSubmit = false;
+
+                  $charge.settingsapp().deleteGeneralData().success(function (data) {
+                    console.log("Settings Rollback..");
+                  }).error(function (data) {
+                    console.log("Settings Rollback failed");
+                  });
+
                 });
               }
 
@@ -1177,6 +1218,13 @@
             }).error(function (data) {
               notifications.toast("Error occured while saving general records.", "error");
               $scope.generalSubmit = false;
+
+              $charge.settingsapp().deleteGeneralData().success(function (data) {
+                console.log("Settings Rollback..");
+              }).error(function (data) {
+                console.log("Settings Rollback failed");
+              });
+
             })
           }
           else {
@@ -1364,7 +1412,7 @@
           //$state.go($state.current, {}, {reload: true});
           $scope.template.companyLogo=[];
           $scope.deleteFooter();
-          $scope.generalSubmit=false;
+          //$scope.generalSubmit=false;
         }).error(function () {
           notifications.toast("Error occured while updating Company Record.", "error");
           $scope.generalSubmit=false;
