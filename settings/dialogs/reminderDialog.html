@@ -1,8 +1,10 @@
-<md-dialog class="compose-dialog" aria-label="New Message" style="width: 30%;">
+<md-dialog class="prompt-dialog" style="width: 30%;">
   <form name="vm.reminderForm" class="md-inline-form" ng-submit="submitReminder()">
-    <md-toolbar class="md-accent md-hue-2">
+    <md-toolbar>
       <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-        <span class="title">Set Reminder</span>
+        <div layout="row" layout-align="start center">
+          <md-icon md-font-icon="icon-alarm"></md-icon> <h3>Set reminder</h3>
+        </div>
         <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
           <md-icon md-font-icon="icon-close"></md-icon>
         </md-button>

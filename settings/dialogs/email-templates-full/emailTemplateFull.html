@@ -1,0 +1,258 @@
+<md-dialog class="prompt-dialog full-view-dialog">
+    <!--<md-toolbar>-->
+      <!--<div class="md-toolbar-tools" layout="row" layout-align="space-between center">-->
+        <!--<div layout="row" layout-align="start center">-->
+          <!--<md-icon md-font-icon="icon-document"></md-icon> <h3>Email template</h3>-->
+        <!--</div>-->
+        <!--<md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">-->
+          <!--<md-icon md-font-icon="icon-close"></md-icon>-->
+        <!--</md-button>-->
+      <!--</div>-->
+    <!--</md-toolbar>-->
+
+    <md-content ms-scroll class="h-600">
+      <div class="email-template" style="width: 595px;min-height: 842px;position:relative">
+        <div ng-if="selectedTemplateView == 'emailTemplate1'">
+          <div class="template-header" style="height: 100px;background: #05a3ec;background:linear-gradient(45deg, #05a3ec,#006696);color: #fff;padding: 10px;">
+            <div class="left-content" style="width: 30%;height: 100%;float: left;">
+              <div style="font-size: 30px;margin: 20px 0;">INVOICE</div>
+            </div>
+            <div class="right-content" style="width: 70%;height: 100%;float: right;">
+              <div class="inner-left" style="width: 35%;height: 100%;float: left;">
+              </div>
+              <div class="inner-right" style="width: 65%;height: 100%;float: right">
+                <div><h3 style="margin: 0;">{{template.companyName}}</h3></div>
+                <div>{{template.companyAddress}}</div>
+                <div>{{template.companyPhone}}</div>
+                <div>{{template.companyEmail}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="sub-header" style="padding: 10px;padding-top: 30px;overflow: hidden;">
+            <div class="left-content" style="width: 55%;height: 100%;float: left;">
+              <div style="color: #aaa;margin-bottom: 5px">Billed to</div>
+              <div style="margin-bottom: 5px"><b>Client name</b></div>
+              <div style="margin-bottom: 5px"><b>Client address</b></div>
+              <div style="margin-bottom: 5px"><b>Client phone</b></div>
+              <div><b>%email_addr%</b></div>
+            </div>
+            <div class="right-content" style="width: 45%;height: 100%;float: right;">
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div style="color: #aaa;margin-bottom: 2px">Invoice no</div>
+                <div><b>INV XXXX</b></div>
+              </div>
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div style="color: #aaa;margin-bottom: 2px">Created date</div>
+                <div><b>YYYY/MM/DD</b></div>
+              </div>
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div style="color: #aaa;margin-bottom: 2px">Due date</div>
+                <div><b>YYYY/MM/DD</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-if="selectedTemplateView == 'emailTemplate2'">
+          <div class="template-header" style="height: 100px;background: url('../../../../assets/images/backgrounds/email_template_1.jpg') -30px;background-size:cover;color: #fff;padding: 10px;">
+            <div class="left-content" style="width: 55%;height: 100%;float: left;">
+              <div style="font-size: 30px;margin: 20px 0;"><b>INVOICE</b></div>
+            </div>
+            <div class="right-content" style="width: 45%;height: 100%;float: right;">
+              <div class="inner-right" style="height: 100%;float: left;color: #000;">
+                <div><h3 style="margin: 0;">{{template.companyName}}</h3></div>
+                <div>{{template.companyAddress}}</div>
+                <div>{{template.companyPhone}}</div>
+                <div>{{template.companyEmail}}</div>
+              </div>
+            </div>
+          </div>
+          <div style="overflow: hidden;border-bottom: solid 1px #eee;color: #aaa">
+            <div style="margin: 5px 0;width: 100%;text-align: center">{{template.companyAddress}}</div>
+          </div>
+          <div class="sub-header" style="padding: 10px;padding-top: 30px;overflow: hidden;">
+            <div class="left-content" style="width: 55%;height: 100%;float: left;">
+              <div style="color: #aaa;margin-bottom: 5px">Billed to</div>
+              <div style="margin-bottom: 5px"><b>Client name</b></div>
+              <div style="margin-bottom: 5px"><b>Client address</b></div>
+              <div style="margin-bottom: 5px"><b>Client phone</b></div>
+              <div><b>Client email</b></div>
+            </div>
+            <div class="right-content" style="width: 45%;height: 100%;float: right;">
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div style="color: #aaa;margin-bottom: 2px">Invoice no</div>
+                <div><b>INV XXXX</b></div>
+              </div>
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div style="color: #aaa;margin-bottom: 2px">Created date</div>
+                <div><b>YYYY/MM/DD</b></div>
+              </div>
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div style="color: #aaa;margin-bottom: 2px">Due date</div>
+                <div><b>YYYY/MM/DD</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-if="selectedTemplateView == 'emailTemplate3'">
+          <div class="template-header" style="height: 150px;padding: 10px;text-align: center;position: relative;">
+            <img src="{{cropper.croppedImage}}" alt="" style="height: 100px;position: absolute;left: 0;right: 0;top: 0;bottom: 0;margin: auto;">
+          </div>
+          <div style="text-align: center">
+            <div style="margin: 5px 0;color: #aaaaaa;">{{template.companyName}}</div>
+            <div style="margin-left: 25%;margin-right:25%;height: 1px;border-top: solid 1px #eee"></div>
+            <div style="margin: 5px 0;color: #aaaaaa;">{{template.companyPhone}}</div>
+            <div style="margin: 5px 0;color: #aaaaaa;">{{template.companyEmail}}</div>
+          </div>
+          <div style="overflow: hidden;background: #f7f7f7;color: #aaa;">
+            <div style="margin: 5px 0;text-align: center">{{template.companyAddress}}</div>
+          </div>
+          <div style="height: 40px;text-align: center;background: #05a3ec;color: #fff;margin-bottom: 10px">
+            <div style="font-size: 20px;padding: 5px 0;">INVOICE</div>
+          </div>
+          <div class="sub-header" style="padding: 10px;overflow: hidden;">
+            <div class="left-content" style="width: 67%;height: 100%;float: left;">
+              <div style="margin-bottom: 5px">Client name</div>
+              <div style="margin-bottom: 5px">Client address</div>
+              <div style="margin-bottom: 5px">Client phone</div>
+              <div>Client address</div>
+            </div>
+            <div class="right-content" style="width: 33%;height: 100%;float: right;">
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div><span style="color: #aaa;">Invoice no: </span> <b> INV XXXX</b></div>
+              </div>
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div><span style="color: #aaa;">Created date: </span> <b> YYYY/MM/DD</b></div>
+              </div>
+              <div class="inner-left" style="margin-bottom: 10px">
+                <div><span style="color: #aaa;">Due date: </span> <b> YYYY/MM/DD</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-if="selectedTemplateView == 'emailTemplate4'">
+          <div style="height: 40px;text-align: center;background: #05a3ec;color: #fff;margin-bottom: 30px">
+            <div style="font-size: 20px;padding: 5px 0;">INVOICE</div>
+          </div>
+          <div class="sub-header" style="padding: 10px;overflow: hidden;">
+            <div class="left-content" style="width: 50%;height: 100%;float: left;">
+              <div style="margin-bottom: 20px">
+                <div style="margin-bottom: 5px"><span style="color: #aaa;">Invoice no: </span> <b> INV XXXX</b></div>
+                <div style="margin-bottom: 5px"><span style="color: #aaa;">Created date: </span> <b> YYYY/MM/DD</b></div>
+                <div style="margin-bottom: 5px"><span style="color: #aaa;">Due date: </span> <b> YYYY/MM/DD</b></div>
+              </div>
+              <div>Client name</div>
+              <div>Client address</div>
+              <div>Client phone</div>
+              <div>Client email</div>
+            </div>
+            <div class="right-content" style="width: 50%;height: 100%;float: right;">
+              <div class="logo" style="position:relative;float: left;width:100px;height: 150px;border-right:solid 1px #eee;">
+                <img src="{{cropper.croppedImage}}" alt="" style="position:absolute;padding-right:10px;height: 90px;left: 0;right: 0;top: 0;bottom: 0;margin: auto;">
+              </div>
+              <div style="float: left;margin-left: 10px;max-width: 177px;">
+                <div><h3>{{template.companyName}}</h3></div>
+                <div>{{template.companyAddress}}</div>
+                <div style="clear: both;color: #aaa;padding-top: 10px;margin-top: 10px;font-size: 12px;">
+                  <div style="margin-bottom: 5px">{{template.companyPhone}}</div>
+                  <div>{{template.companyEmail}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list" style="margin: 10px;">
+          <div class="list-header" style="padding: 10px;height: 40px;background: #eee;">
+            <div style="color: #aaa;width: 20%;float: left;">
+              Item
+            </div>
+            <div style="color: #aaa;width: 20%;float: left;text-align: right">
+              Unit price
+            </div>
+            <div style="width: 2%;float: left;height: 10px;"></div>
+            <div style="color: #aaa;width: 18%;float: left">
+              Quantity
+            </div>
+            <div style="color: #aaa;width: 20%;float: left">
+              Promotion
+            </div>
+            <div style="color: #aaa;width: 20%;float: left;text-align: right">
+              Total
+            </div>
+          </div>
+          <div class="list-item" style="border-bottom: solid 1px #eee;padding: 10px;overflow: hidden;">
+            <div style="float: left;color: #aaa;width: 20%">%product_name%</div>
+            <div style="float: left;color: #aaa;width: 20%;text-align: right">
+              XXXX
+            </div>
+            <div style="width: 2%;float: left;height: 10px;"></div>
+            <div style="float: left;color: #aaa;width: 18%">
+              XXXX
+            </div>
+            <div style="float: left;color: #aaa;width: 20%">
+              XXXX
+            </div>
+            <div style="float: left;color: #aaa;width: 20%;text-align: right">
+              XXXX
+            </div>
+          </div>
+          <div style="overflow: hidden;margin-bottom: 10px;margin-top: 10px;padding-right: 10px">
+            <div style="width: 50%;height: 10px;float: left;"></div>
+            <div style="width: 50%;float: left;">
+              <div style="float: left;color: #aaa;width: 50%">SUBTOTAL</div>
+              <div style="float: left;color: #aaa;width: 50%;text-align: right">XXXX</div>
+            </div>
+          </div>
+          <div style="overflow: hidden;margin-bottom: 10px;padding-right: 10px">
+            <div style="width: 50%;height: 10px;float: left;"></div>
+            <div style="width: 50%;float: left;">
+              <div style="float: left;color: #aaa;width: 50%">MISCELLANEOUS CHARGES</div>
+              <div style="float: left;color: #aaa;width: 50%;text-align: right">XXXX</div>
+            </div>
+          </div>
+          <div style="overflow: hidden;margin-bottom: 10px;padding-right: 10px">
+            <div style="width: 50%;height: 10px;float: left;"></div>
+            <div style="width: 50%;float: left;">
+              <div style="float: left;color: #aaa;width: 50%">DISCOUNT</div>
+              <div style="float: left;color: #aaa;width: 50%;text-align: right">(XXXX)</div>
+            </div>
+          </div>
+          <div style="overflow: hidden;margin-bottom: 10px;padding-right: 10px">
+            <div style="width: 50%;height: 10px;float: left;"></div>
+            <div style="width: 50%;float: left;">
+              <div style="float: left;color: #aaa;width: 50%">TAX</div>
+              <div style="float: left;color: #aaa;width: 50%;text-align: right">XXXX</div>
+            </div>
+          </div>
+          <div style="overflow: hidden;margin-bottom: 10px;padding-right: 10px">
+            <div style="width: 50%;height: 10px;float: left;"></div>
+            <div style="width: 50%;float: left;">
+              <div style="float: left;color: #aaa;width: 50%">PROMOTION</div>
+              <div style="float: left;color: #aaa;width: 50%;text-align: right">(XXXX)</div>
+            </div>
+          </div>
+          <div class="list-footer" style="overflow: hidden;height: 40px;margin-top: 30px;padding-right: 10px">
+            <div style="width: 50%;height: 10px;float: left;"></div>
+            <div style="width: 50%;float: left;">
+              <div style="color: #aaaaaa;font-size: 16px;width: 50%;float: left;"><b>TOTAL</b></div>
+              <div style="color: #aaaaaa;text-align: right;width: 50%;float: left;"><b>XXXX</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="template-footer" style="width: 100%;margin-top: 30px;padding: 10px;position:absolute;bottom: 0;">
+          <div id="note" style="margin-top: 10px;margin-bottom: 20px">
+            <div style="color: #aaaaaa">
+              Note
+            </div>
+            <div>XXXX</div>
+          </div>
+          <div style="margin: 5px 0;font-size: 12px"><b>{{footerDet.greeting}}</b></div>
+          <div style="font-size: 12px;color: #aaa;padding-top: 5px;border-top: solid 1px #eee">
+            {{footerDet.disclaimer}}
+          </div>
+        </div>
+      </div>
+    </md-content>
+  <div class="minimize-template animate-slide-down text-right">
+    <md-button class="md-icon-button" ng-click="closeDialog()"><md-icon md-font-icon="icon-magnify-minus" class="text-center color-accent"></md-icon></md-button>
+  </div>
+</md-dialog>

@@ -1,0 +1,41 @@
+<md-dialog class="prompt-dialog" style="width: 400px;">
+    <md-toolbar>
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <div layout="row" layout-align="start center">
+          <md-icon md-font-icon="icon-star"></md-icon> <h3>New plan</h3>
+        </div>
+        <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+          <md-icon md-font-icon="icon-close"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+  <form name="vm.planType" id="addPlanForm" ng-submit="addPlanCheck()" novalidate>
+    <md-dialog-content class="p-20">
+      <div class="generic-user-msg ph-20">Type a preferred plan type</div>
+      <div layout="row" layout-align="center center" class="mt-20">
+        <md-input-container class="md-block rel" flex="90" ng-if="!updateUomEnable">
+          <label>Plan type</label>
+          <input name="plantype" type="text" ng-model="plan.plantype" ng-maxlength="30" required>
+          <div ng-messages="vm.planType.plantype.$error">
+            <div ng-message="maxlength">Plan type must be between 30 characters</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block rel" flex="90" ng-if="updateUomEnable">
+          <label>Plan type</label>
+          <input name="editPlantype" type="text" ng-model="editUnit.RecordFieldData" ng-maxlength="30" required>
+          <div ng-messages="vm.planType.editPlantype.$error">
+            <div ng-message="maxlength">Plan type must be between 30 characters</div>
+          </div>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" md-whiteframe="2dp">
+      <span flex></span>
+      <md-progress-circular ng-show="addUomDisabled || updateUomDisabled"></md-progress-circular>
+      <md-button type="submit" md-no-ink class="md-accent md-raised" ng-disabled="addUomDisabled" ng-if="!updateUomEnable">Add</md-button>
+      <md-button type="submit" ng-disabled="updateUomDisabled" md-no-ink class="md-accent md-raised"  ng-if="updateUomEnable">Update</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
