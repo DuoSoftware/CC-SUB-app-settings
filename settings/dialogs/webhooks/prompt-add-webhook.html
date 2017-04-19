@@ -45,7 +45,7 @@
         <span><md-icon md-font-icon="icon-check-circle"></md-icon> All webhooks are selected</span>
       </div>
       <div layout="row" layout-align="start center" class="pv-10" ng-repeat="event in vm.webhookEventList" ng-click="null" ng-if="webhook.type == 'custom'">
-        <md-checkbox ng-model="event.isSelected" aria-label="Event" ng-disabled="event.isDisabled || event.isAlreadyUsed" class="md-primary m-0">{{event.eventType}}</md-checkbox>
+        <md-checkbox ng-model="event.isSelected" aria-label="Event" ng-disabled="event.isDisabled || event.isAlreadyUsed" class="md-primary m-0">{{event.eventDesc}}</md-checkbox>
       </div>
     </md-content>
 

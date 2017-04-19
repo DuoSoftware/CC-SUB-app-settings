@@ -1200,11 +1200,11 @@
 									$state.go($state.current, {}, {reload: true});
 									$rootScope.firstLoginDitected = false;
 
-									$charge.settingsapp().deleteGeneralData().success(function (data) {
-										console.log("Settings Rollback..");
-									}).error(function (data) {
-										console.log("Settings Rollback failed");
-									});
+									// $charge.settingsapp().deleteGeneralData().success(function (data) {
+									// 	console.log("Settings Rollback..");
+									// }).error(function (data) {
+									// 	console.log("Settings Rollback failed");
+									// });
 								}).error(function (data) {
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
