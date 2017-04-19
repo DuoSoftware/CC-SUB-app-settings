@@ -1,0 +1,43 @@
+<md-dialog class="prompt-dialog" style="width: 500px;">
+    <md-toolbar>
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <div layout="row" layout-align="start center" ng-if="!updateTermEnable">
+          <md-icon md-font-icon="icon-calendar"></md-icon> <h3>New due date term</h3>
+        </div>
+        <div layout="row" layout-align="start center" ng-if="updateTermEnable">
+          <md-icon md-font-icon="icon-calendar"></md-icon> <h3>{{invoice.termName}}</h3>
+        </div>
+        <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+          <md-icon md-font-icon="icon-close"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+  <form name="vm.dueTerms" id="dueTerms" ng-click="addPlanCheck()" novalidate>
+    <md-dialog-content>
+        <div layout="row" layout-align="center center">
+          <md-input-container class="md-block" flex="45">
+            <label>Term Name</label>
+            <input name="termName" type="text" ng-model="invoice.termName" ng-maxlength="20" required>
+            <div ng-messages="vm.invoices.termName.$error">
+              <div ng-message="maxlength">Term name must be between 1-20 characters</div>
+            </div>
+          </md-input-container>
+          <div flex="5"></div>
+          <md-input-container class="md-block" flex="45">
+            <label>Number of Days</label>
+            <input type="number" name="days" ng-model="invoice.NoOfDays" ng-maxlength="10" min="0" required>
+            <div ng-messages="vm.invoices.days.$error">
+              <div ng-message="maxlength">Days must be between 1-10 characters</div>
+            </div>
+          </md-input-container>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row" md-whiteframe="2dp">
+      <span flex></span>
+      <md-button ng-click="addTermCheck(invoice)" class="md-accent md-raised" ng-disabled="addTermsDisabled" ng-if="!updateTermEnable">Add</md-button>
+      <md-button ng-click="updateTermCheck(invoice)" class="md-accent md-raised" ng-disabled="updateTermsDisabled" ng-if="updateTermEnable">Update</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

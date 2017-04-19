@@ -1,109 +1,130 @@
-<md-dialog style="width: 70%;">
+<md-dialog class="prompt-dialog" style="width: 70%;">
   <form name="vm.editTaxForm" ng-submit="submitTax(isUpdate,taxHeader.taxcode)">
 
-    <md-card-header style="background-color: whitesmoke">
-      <div layout="row" layout-align="center center">
-        <div flex></div>
+    <md-toolbar>
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <div layout="row" layout-align="start center">
+          <md-icon md-font-icon="icon-percent"></md-icon> <h3>New individual tax</h3>
+        </div>
         <md-button class="md-icon-button">
           <md-icon md-font-icon="icon-close" ng-click="closeDialog()"></md-icon>
           <md-tooltip>Cancel</md-tooltip>
         </md-button>
       </div>
-    </md-card-header>
-
-    <md-content style="background-color: #fff;padding: 20px;" ms-scroll>
-      <div class="new-row-parent" flex>
-        <div class="content-block-wrapper">
-          <div class="content-block" layout="row">
-            <md-input-container class="tax-radio top">
-              <md-radio-group ng-required="true" ng-model="taxHeader.taxtype" ng-change="enableTaxType(taxHeader.taxtype)" layout="row">
-                <md-radio-button ng-value='true' class="md-checked">Fixed</md-radio-button>
-                <md-radio-button ng-value='false'>Slab</md-radio-button>
-              </md-radio-group>
-            </md-input-container>
-          </div>
-
-          <div class="content-block" layout="row">
-            <md-input-container class="md-block" flex="25">
-              <label>Tax Code</label>
-              <input name="taxCode" id="step1" ng-required="true" ng-maxlength="10" ng-model="taxHeader.taxcode">
-              <div ng-messages="vm.editTaxForm.taxCode.$error">
-                <div ng-message="required">Tax Code is required.</div>
-                <div ng-message="maxlength">Tax Code has to be less than 10 characters long</div>
-              </div>
-            </md-input-container>
-
-            <div flex="5">
-              <!--Spacer-->
-            </div>
-
-            <md-input-container class="md-block" flex >
-              <label>Tax Description</label>
-              <input ng-model="taxHeader.taxDesc">
-            </md-input-container>
-          </div>
-
-          <div class="content-block" layout="row" ng-hide="taxHeader.taxtype==false">
-            <md-input-container class="md-block bottom" flex style="margin-top: 0px">
-              <label>Type</label>
-              <md-select ng-required="!requiredStatus" name="type" ng-model="taxHeader.amount">
-                <md-option value="Amount">Amount</md-option>
-                <md-option value="%" selected="selected">%</md-option>
-              </md-select>
-            </md-input-container>
-            <div flex="5"></div>
-            <md-input-container class="md-block bottom" flex-gt-sm ng-hide="editableIndTax" style="margin-top: 0px">
-              <label>Rate</label>
-              <input type="number" name="taxRate" ng-required="!requiredStatus" ng-model="taxHeader.taxrate" min="0" valid-number decimal-point="general.decimalPoint">
-              <div ng-messages="vm.editTaxForm.taxRate.$error">
-                <div ng-message="required">Rate is required.</div>
-              </div>
-            </md-input-container>
-          </div>
-
-          <div class="content-block new-row" md-whiteframe="1dp" layout="row" ng-show="taxHeader.taxtype==false" ng-repeat="row in slabrows" style="background: transparent;height: 80px;padding-top: 20px;padding-right: 10px;margin-bottom: 10px">
-            <md-input-container class="md-block no-bottom" flex>
-              <label>From</label>
-              <input ng-required="requiredStatus" type="number" ng-model="row.frm" min="0">
-            </md-input-container>
-            <md-input-container class="md-block no-bottom" flex >
-              <label>To</label>
-              <input ng-required="requiredStatus" type="number" ng-model="row.to" min="0">
-            </md-input-container>
-            <md-input-container class="md-block no-bottom" flex >
-              <label>Amount</label>
-              <md-select ng-required="requiredStatus" name="type" ng-model="row.amount">
-                <md-option value="Amount">Amount</md-option>
-                <md-option value="%">%</md-option>
-              </md-select>
-            </md-input-container>
-            <md-input-container class="md-block no-bottom" flex>
-              <label>Tax</label>
-              <input type="number" ng-required="requiredStatus" ng-model="row.taxAmt" min="0" valid-number decimal-point="general.decimalPoint">
-            </md-input-container>
-            <md-input-container class="md-block top block-add-btn" flex="12">
-              <md-button ng-click="removerow($index)" md-no-ink class="md-warn">Remove</md-button>
-              <!--<md-button md-no-ink class="md-primary" style="color: #039be5;" ng-show="isSlug">Update</md-button>-->
-            </md-input-container>
-          </div>
-        </div>
-        <md-input-container class="md-block top block-add-btn" flex="12" ng-show="taxHeader.taxtype==false" style="margin-left: 20px">
-          <md-button ng-click="addrow()" md-no-ink class="md-accent">Add</md-button>
-          <!--<md-button md-no-ink class="md-primary" style="color: #039be5;" ng-show="isSlug">Update</md-button>-->
+    </md-toolbar>
+    <div class="pos-rel">
+      <div class="preloader" ng-if="!isTaxInfoLoaded">
+        <md-progress-circular></md-progress-circular>
+      </div>
+      <div layout="row" layout-align="center center" class="light-gray">
+        <md-input-container class="tax-radio">
+          <md-radio-group ng-required="true" ng-model="taxHeader.taxtype" ng-change="enableTaxType(taxHeader.taxtype)" layout="row">
+            <md-radio-button ng-value='true' class="md-checked">Fixed</md-radio-button>
+            <md-radio-button ng-value='false'>Slab</md-radio-button>
+          </md-radio-group>
         </md-input-container>
       </div>
-    </md-content>
+      <md-divider class="op-5"></md-divider>
+      <md-content class="p-16" ms-scroll>
+        <div class="new-row-parent" flex>
+          <div>
+            <div layout="row" layout-align="start center">
+              <md-input-container class="md-block" flex="30">
+                <label>Tax Code</label>
+                <input name="taxCode" id="step1" ng-required="true" ng-maxlength="10" ng-model="taxHeader.taxcode">
+                <div ng-messages="vm.editTaxForm.taxCode.$error">
+                  <div ng-message="required">Tax Code is required.</div>
+                  <div ng-message="maxlength">Tax Code has to be less than 10 characters long</div>
+                </div>
+              </md-input-container>
+              <div flex="5"><!--Spacer--></div>
+              <md-input-container class="md-block" flex>
+                <label>Tax Description</label>
+                <input ng-model="taxHeader.taxDesc" name="taxDesc" maxlength="200" md-maxlength="200">
+                <div ng-messages="vm.editTaxForm.taxDesc.$error">
+                  <div ng-message="maxlength">Tax description must be between 1-200 characters</div>
+                </div>
+              </md-input-container>
+            </div>
+          </div>
 
-    <md-dialog-actions>
-      <div ng-init="submitted=false" layout="row" layout-align="space-between center">
-        <div layout="row"></div>
+          <div>
+            <div class="content-block" layout="row" ng-hide="taxHeader.taxtype==false">
+              <md-input-container class="md-block mv-0" flex="30">
+                <label>Type</label>
+                <md-select ng-required="!requiredStatus" name="type" ng-model="taxHeader.amount">
+                  <md-option value="Amount">Amount</md-option>
+                  <md-option value="%" selected="selected">%</md-option>
+                </md-select>
+              </md-input-container>
+              <div flex="5"></div>
+              <md-input-container class="md-block mv-0" flex="30" ng-hide="editableIndTax">
+                <label>Rate</label>
+                <input type="number" name="taxRate" ng-required="!requiredStatus" ng-model="taxHeader.taxrate" min="0" valid-number decimal-point="general.decimalPoint">
+                <div ng-messages="vm.editTaxForm.taxRate.$error">
+                  <div ng-message="required">Rate is required.</div>
+                </div>
+              </md-input-container>
+            </div>
 
-        <div layout="row" class="layout-row">
-          <md-button ng-click="clearTaxField();">Reset</md-button>
-          <md-button ng-disabled="individualSubmit" class="md-raised md-warn" type="submit">Save</md-button>
+            <div layout="column" ng-show="taxHeader.taxtype==false">
+              <div layout="row" layout-align="start center" ng-repeat="row in slabrows" class="highlight-blue solid" >
+                <div class="v-rule-blue" layout="row" layout-align="start center" flex>
+                  <md-input-container class="md-block mb-0" flex>
+                    <label>From</label>
+                    <input ng-required="requiredStatus" type="number" ng-model="row.frm" min="0">
+                  </md-input-container>
+                  <div class="w-10"></div>
+                  <md-input-container class="md-block mb-0" flex >
+                    <label>To</label>
+                    <input ng-required="requiredStatus" type="number" ng-model="row.to" min="0">
+                  </md-input-container>
+                  <div class="w-10"></div>
+                  <md-input-container class="md-block mv-0" flex="20">
+                    <label>Type</label>
+                    <md-select ng-required="requiredStatus" name="type" ng-model="row.amount">
+                      <md-option value="Amount">Amount</md-option>
+                      <md-option value="%">%</md-option>
+                    </md-select>
+                  </md-input-container>
+                  <div class="w-10"></div>
+                  <md-input-container class="md-block mb-0" flex>
+                    <label>Tax</label>
+                    <input type="number" ng-required="requiredStatus" ng-model="row.taxAmt" min="0" valid-number decimal-point="general.decimalPoint">
+                  </md-input-container>
+                </div>
+                <div layout="row" layout-align="center center" class="w-60">
+                  <md-button ng-if="slabrows.length > 1" ng-click="removerow($index)" class="md-icon-button md-warn h-50 w-50"><md-icon md-font-icon="icon-close-circle" class="fs-24 w-20 h-20"></md-icon><md-tooltip>Remove row</md-tooltip> </md-button>
+                </div>
+              </div>
+              <div layout="row" layout-align="end center" class="h-60">
+                <div class="w-70">
+                  <md-button ng-click="addrow()" class="md-accent md-icon-button h-50 w-50"><md-icon md-font-icon="icon-plus-circle" class="fs-24 w-20 h-20"></md-icon><md-tooltip>Add row</md-tooltip> </md-button>
+                </div>
+              </div>
+            </div>
+
+
+            <!--<md-input-container class="md-block top block-add-btn" flex="12" ng-show="taxHeader.taxtype==false" style="margin-left: 20px">-->
+            <!--<md-button ng-click="addrow()" md-no-ink class="md-accent">Add</md-button>-->
+            <!--&lt;!&ndash;<md-button md-no-ink class="md-primary" style="color: #039be5;" ng-show="isSlug">Update</md-button>&ndash;&gt;-->
+            <!--</md-input-container>-->
+          </div>
         </div>
-      </div>
-    </md-dialog-actions>
+      </md-content>
+      <md-divider></md-divider>
+      <md-divider></md-divider>
+      <md-dialog-actions class="light-gray">
+        <div ng-init="submitted=false" layout="row" layout-align="space-between center">
+          <div layout="row"></div>
+
+          <div layout="row" class="layout-row">
+            <md-button ng-click="clearTaxField();">Reset</md-button>
+            <md-button ng-disabled="individualSubmit" class="md-raised md-accent" type="submit">Save</md-button>
+          </div>
+        </div>
+      </md-dialog-actions>
+    </div>
   </form>
 </md-dialog>
 

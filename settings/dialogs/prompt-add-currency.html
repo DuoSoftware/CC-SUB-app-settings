@@ -1,0 +1,48 @@
+<md-dialog class="prompt-dialog" style="width: 400px;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-star"></md-icon> <h3>New currency</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <form name="vm.addCurrencyForm" id="addCurrencyForm" ng-click="addCurrencyCheck(vm.selectedCurrency)" novalidate>
+        <md-dialog-content>
+            <div class="generic-user-msg">Type and select a preffered currency</div>
+            <div layout="row" layout-align="center center">
+                <md-input-container class="full" class="autocomp-inset" flex="90">
+                    <md-autocomplete flex required
+                                     md-select-on-match
+                                     ng-keypress="enter($event)"
+                                     ng-disabled="vm.isDisabled"
+                                     md-input-name="autocompleteField1"
+                                     md-no-cache="vm.noCache"
+                                     md-selected-item="vm.selectedCurrency"
+                                     md-selected-item-change=""
+                                     md-search-text-change="addCurrency(item)"
+                                     md-search-text="vm.searchCurrency"
+                                     md-items="item in queryCurrency(vm.searchCurrency)"
+                                     md-item-text="item.code"
+                                     md-floating-label="Currencies"
+                                     md-min-length="">
+                        <md-item-template>
+                            <span md-highlight-text="vm.searchText" ng-mouseover="tooltip=true">{{item.code}} - {{item.name}}</span>
+                            <!--<md-tooltip md-direction="right" md-visible="tooltip">{{item.name}}</md-tooltip>-->
+                        </md-item-template>
+                    </md-autocomplete>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row" md-whiteframe="2dp">
+            <span flex></span>
+            <md-button class="md-raised md-accent" type="submit">
+                Add
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
