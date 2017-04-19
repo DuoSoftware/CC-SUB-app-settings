@@ -1432,6 +1432,9 @@
                 <div class="preloader" ng-if="loadingWebhooks">
                   <md-progress-circular></md-progress-circular>
                 </div>
+                <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="vm.webhookList.length == 0">
+                  <span><md-icon md-font-icon="icon-information-outline"></md-icon> No webhook has added yet</span>
+                </div>
                 <div layout="row" class="action-row" ng-repeat="webhook in vm.webhookList" ng-click="webhookItemViewToggle(webhook)" layout-align="start center">
                   <span flex>{{webhook.endPoint}}</span>
                   <span flex="10" class="w-150" layout="row" layout-align="end center">
