@@ -1832,6 +1832,12 @@
 		$scope.loadingWebhooks = true;
 		var tempUsedEventsList=[];
 
+    vm.webhookHistoryList=[];
+    var skipAllWebhookHistory=0;
+    var takeAllWebhookHistory=100;
+    $scope.loadingWebhookHistory = true;
+    $scope.isMoreWebhookHistoryLoading = true;
+
 		$scope.loadWebhooksAttributes= function () {
 
 			vm.webhookEventList=[];
@@ -1904,6 +1910,37 @@
 				vm.webhookList=[];
 				$scope.loadingWebhooks = false;
 			})
+
+
+      vm.webhookHistoryList=[];
+      skipAllWebhookHistory=0;
+      $scope.loadingWebhookHistory = true;
+      $scope.isMoreWebhookHistoryLoading = true;
+      $charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+        console.log(data);
+        if($scope.loadingWebhookHistory)
+        {
+          skipAllWebhookHistory += takeAllWebhookHistory;
+
+          for (var i = 0; i < data.length; i++) {
+            vm.webhookHistoryList.push(data[i]);
+          }
+          $scope.loadingWebhookHistory = false;
+
+          if(data.length<takeAllWebhookHistory)
+          {
+            $scope.isMoreWebhookHistoryLoading = false;
+          }
+
+        }
+
+      }).error(function (data) {
+        console.log(data);
+        vm.webhookHistoryList=[];
+        $scope.loadingWebhookHistory = false;
+        $scope.isMoreWebhookHistoryLoading = false;
+      })
+
 		}
 
 		$scope.loadWebhookListPaging= function () {
@@ -1961,6 +1998,35 @@
 				}
 			}
 		}
+
+    $scope.loadWebhookHistoryListPaging= function () {
+      $scope.loadingWebhookHistory = true;
+      $scope.isMoreWebhookHistoryLoading = true;
+      $charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+        console.log(data);
+        if($scope.loadingWebhookHistory)
+        {
+          skipAllWebhookHistory += takeAllWebhookHistory;
+
+          for (var i = 0; i < data.length; i++) {
+            vm.webhookHistoryList.push(data[i]);
+          }
+          $scope.loadingWebhookHistory = false;
+
+          if(data.length<takeAllWebhookHistory)
+          {
+            $scope.isMoreWebhookHistoryLoading = false;
+          }
+
+        }
+
+      }).error(function (data) {
+        console.log(data);
+        vm.webhookHistoryList=[];
+        $scope.loadingWebhookHistory = false;
+        $scope.isMoreWebhookHistoryLoading = false;
+      })
+    }
 
 		$scope.addWebhookDialog = function() {
 			$mdDialog.show({
