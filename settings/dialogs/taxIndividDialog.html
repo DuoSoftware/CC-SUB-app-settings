@@ -1,5 +1,5 @@
 <md-dialog class="prompt-dialog" style="width: 70%;">
-  <form name="vm.editTaxForm" ng-submit="submitTax(isUpdate,taxHeader.taxcode)">
+  <form name="vm.editTaxForm" ng-submit="submitTax(isUpdate,taxHeader.taxcode)" novalidate>
 
     <md-toolbar>
       <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
@@ -119,6 +119,7 @@
           <div layout="row"></div>
 
           <div layout="row" class="layout-row">
+            <md-progress-circular class="gen-save-indicator" ng-if="individualSubmit"></md-progress-circular>
             <md-button ng-click="clearTaxField();">Reset</md-button>
             <md-button ng-disabled="individualSubmit" class="md-raised md-accent" type="submit">Save</md-button>
           </div>
