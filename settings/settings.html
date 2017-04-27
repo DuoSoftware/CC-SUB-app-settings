@@ -1518,6 +1518,39 @@
                         </md-card-actions>
                     </md-card>
 
+
+
+                    <md-card flex class="input-block-gen">
+                      <md-card-title>
+                        <div layout="row" layout-align="start center">
+                          <md-icon md-font-icon="icon-cog"></md-icon> <h3>Webhook History</h3>
+                        </div>
+                      </md-card-title>
+                      <div class="list-header" layout="row" flex>
+                        <span flex>Event Description</span>
+                        <span flex>Last Sent Date</span>
+                        <span flex>Last Sent URL</span>
+                        <span flex>Status</span>
+                      </div>
+                      <md-card-content class="p-0">
+                          <div class="preloader" ng-if="loadingWebhookHistory">
+                            <md-progress-circular></md-progress-circular>
+                          </div>
+                          <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="vm.webhookHistoryList.length == 0">
+                            <span><md-icon md-font-icon="icon-information-outline"></md-icon> No webhook history</span>
+                          </div>
+                          <div layout="row" class="action-row" ng-repeat="history in vm.webhookHistoryList" ng-click="" layout-align="start center">
+                            <span flex>{{history.eventDesc}}</span>
+                            <span flex>{{history.lastSentDate}}</span>
+                            <span flex>{{history.lastSentUrl}}</span>
+                            <span flex>{{history.status}}</span>
+                          </div>
+                          <div layout="row" layout-align="center center" class="" ng-if="isMoreWebhookHistoryLoading">
+                            <md-button ng-click="loadWebhookHistoryListPaging()" class="md-primary" style="font-size: 12px;font-weight: 400"><md-icon md-font-icon="icon-magnify"></md-icon> More</md-button>
+                          </div>
+                      </md-card-content>
+                    </md-card>
+
                     <!--<div class="content-block-wrapper">-->
                     <!--<div layout="row">-->
                     <!--<form name="vm.webHooks" id="webhooksForm" ng-submit="submitWebhook(enabledEditWH)" flex>-->
