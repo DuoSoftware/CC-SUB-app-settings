@@ -348,7 +348,7 @@
 			//debugger;
 			if(ev!=undefined) {
 				$scope.general.baseCurrency = ev.code;
-				self.searchText = null;
+				// self.searchText = null;
 			}
 		}
 
@@ -474,6 +474,7 @@
 			//debugger;
 			$scope.baseCurrencyDet=data[0];
 			$scope.general.baseCurrency=data[0].RecordFieldData;
+			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
 			$scope.baseCurrency=data[0].RecordFieldData;
 			$scope.general.GURecID=data[0].GuRecID;
 			//$scope.isAllGenLoaded.push("ok");
@@ -1604,6 +1605,19 @@
 		//  $rootScope.isBrandLoaded=false;
 		//})
 
+    var skipPlanChangeFee=0;
+    var takePlanChangeFee=100;
+    $scope.loadingPlanChangeFee = true;
+    $scope.planChangeFeeList=[];
+
+    var skipPlanKeyAttributes=0;
+    var takePlanKeyAttributes=100;
+    $scope.loadingPlanKeyAttributes = true;
+    $scope.planKeyAttributesList=[];
+
+    $scope.BaseCurrencyPlanChangeFee = "";
+    $scope.currencyRate = 1;
+
 		$scope.isPlanTypeLoaded = false;
 		$scope.loadProductAttributes= function () {
 			//$charge.settingsapp().getDuobaseValuesByTableName("CTS_CommonAttributes").success(function(data) {
@@ -1661,7 +1675,151 @@
 				$rootScope.isPlanTypeLoaded=false;
 				$scope.isPlanTypeLoaded = true;
 			})
+
+      skipPlanKeyAttributes=0;
+      $scope.loadingPlanKeyAttributes = true;
+      $scope.planKeyAttributesList=[];
+
+      $charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
+      {
+        console.log(data);
+
+        if($scope.loadingPlanKeyAttributes)
+        {
+          skipPlanKeyAttributes += takePlanKeyAttributes;
+
+          for (var i = 0; i < data.length; i++) {
+            $scope.planKeyAttributesList.push(data[i]);
+          }
+
+          $scope.loadingPlanKeyAttributes = false;
+
+          if(data.length<takePlanKeyAttributes){
+
+          }
+          else
+          {
+            $scope.loadPlanKeyAttributesPaging();
+          }
+
+        }
+
+      }).error(function(data)
+      {
+        $scope.loadingPlanKeyAttributes = false;
+      })
+
+      skipPlanChangeFee=0;
+      $scope.loadingPlanChangeFee = true;
+      $scope.planChangeFeeList=[];
+
+      $charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
+      {
+        console.log(data);
+
+        if($scope.loadingPlanChangeFee)
+        {
+          skipPlanChangeFee += takePlanChangeFee;
+
+          for (var i = 0; i < data.length; i++) {
+            data[i].editItem=false;
+            $scope.planChangeFeeList.push(data[i]);
+          }
+
+          $scope.loadingPlanChangeFee = false;
+
+          if(data.length<takePlanChangeFee){
+
+          }
+          else
+          {
+            $scope.loadPlanChangeFeePaging();
+          }
+
+        }
+
+      }).error(function(data)
+      {
+        $scope.planChangeFeeList = false;
+      })
+
+      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
+        $scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
+        console.log($scope.BaseCurrencyPlanChangeFee);
+        //$scope.selectedCurrency = $scope.BaseCurrency;
+
+      }).error(function(data) {
+        console.log(data);
+        $scope.BaseCurrencyPlanChangeFee="USD";
+        //$scope.selectedCurrency = $scope.BaseCurrency;
+      })
+
 		}
+
+    $scope.loadPlanKeyAttributesPaging= function () {
+      $scope.loadingPlanKeyAttributes = true;
+      $charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
+      {
+        console.log(data);
+
+        if($scope.loadingPlanKeyAttributes)
+        {
+          skipPlanKeyAttributes += takePlanKeyAttributes;
+
+          for (var i = 0; i < data.length; i++) {
+            $scope.planKeyAttributesList.push(data[i]);
+          }
+
+          $scope.loadingPlanKeyAttributes = false;
+
+          if(data.length<takePlanKeyAttributes){
+
+          }
+          else
+          {
+            $scope.loadPlanKeyAttributesPaging();
+          }
+
+        }
+
+      }).error(function(data)
+      {
+        $scope.loadingPlanKeyAttributes = false;
+      })
+    }
+
+    $scope.loadPlanChangeFeePaging= function () {
+      $scope.loadingPlanChangeFee = true;
+      $charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
+      {
+        console.log(data);
+
+        if($scope.loadingPlanChangeFee)
+        {
+          skipPlanChangeFee += takePlanChangeFee;
+
+          for (var i = 0; i < data.length; i++) {
+            data[i].editItem=false;
+            $scope.planChangeFeeList.push(data[i]);
+          }
+
+          $scope.loadingPlanChangeFee = false;
+
+          if(data.length<takePlanChangeFee){
+
+          }
+          else
+          {
+            $scope.loadPlanChangeFeePaging();
+          }
+
+        }
+
+      }).error(function(data)
+      {
+        $scope.planChangeFeeList = false;
+      })
+    }
 
 		vm.webhookEventList=[];
 		var skipAllEventsWH=0;
@@ -1819,7 +1977,7 @@
 					webHooks:vm.webHooks,
 					webhook:$scope.webhook,
 					enabledEditWH:$scope.enabledEditWH,
-					resetWebhook:$scope.resetWebhook,
+					// resetWebhook:$scope.resetWebhook,
 					loadWebhookListPaging: $scope.loadWebhookListPaging
 				}
 			});
@@ -2906,6 +3064,168 @@
 			})
 		}
 
+
+    $scope.changePlanFee={};
+
+    $scope.submitPlanChangeFee= function () {
+
+      $scope.planChangeFeeSubmitted=true;
+
+      $scope.changePlanFee.currency=$scope.BaseCurrencyPlanChangeFee;
+      $scope.changePlanFee.rate=$scope.currencyRate;
+
+      var planChangeFeeDuplicate=false;
+
+      for(var i = 0; i < $scope.planChangeFeeList.length; i++)
+      {
+        if($scope.planChangeFeeList[i].planFrom==$scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo==$scope.changePlanFee.planTo)
+        {
+          planChangeFeeDuplicate=true;
+          break;
+        }
+      }
+
+      if(!planChangeFeeDuplicate)
+      {
+        $charge.plan().createPlanChangeFee($scope.changePlanFee).success(function(data)
+        {
+          if(data.response=="succeeded")
+          {
+            notifications.toast("Successfully Plan Change Fee Created","success");
+            $scope.planChangeFeeSubmitted=false;
+            $scope.changePlanFee={};
+
+            skipPlanChangeFee=0;
+            $scope.planChangeFeeList=[];
+            $scope.loadPlanChangeFeePaging();
+
+          }
+          else
+          {
+            notifications.toast("Plan Change Fee Creation Failed","error");
+            $scope.planChangeFeeSubmitted=false;
+          }
+        }).error(function(data)
+        {
+          notifications.toast("Plan Change Fee Creation Failed","error");
+          $scope.planChangeFeeSubmitted=false;
+        })
+      }
+      else
+      {
+        notifications.toast("Duplicate Change Plans","error");
+        $scope.planChangeFeeSubmitted=false;
+        $scope.changePlanFee.planFrom="";
+        $scope.changePlanFee.planTo="";
+      }
+    }
+
+    $scope.planChangeFeeItemOriginal=[];
+    $scope.editPlanChangeFee= function (plan) {
+      //$scope.cancelEditPlanChangeFee($scope.planChangeFeeItemOriginal);
+
+      $scope.planChangeFeeItemOriginal=angular.copy(plan);
+      plan.editItem=true;
+
+    }
+
+    $scope.cancelEditPlanChangeFee= function (plan) {
+
+      plan.editItem=false;
+      plan.planFrom=angular.copy($scope.planChangeFeeItemOriginal.planFrom);
+      plan.planTo=angular.copy($scope.planChangeFeeItemOriginal.planTo);
+      plan.fee=angular.copy($scope.planChangeFeeItemOriginal.fee);
+      //plan.editItem=false;
+    }
+
+    $scope.updatingPlanChangeFee= function (updatePlan, index) {
+
+      $scope.planChangeFeeUpdateSubmitted=true;
+
+      var planChangeFeeUpdateDuplicate=false;
+      var planChangeFeeUpdateInvalid=false;
+
+      for(var i = 0; i < $scope.planChangeFeeList.length; i++)
+      {
+        if(index==i)
+        {
+
+        }
+        else if($scope.planChangeFeeList[i].planFrom==updatePlan.planFrom && $scope.planChangeFeeList[i].planTo==updatePlan.planTo)
+        {
+          planChangeFeeUpdateDuplicate=true;
+          break;
+        }
+      }
+      if(updatePlan.planFrom=="" || updatePlan.planTo=="" || updatePlan.fee=="" || updatePlan.fee==undefined)
+      {
+        planChangeFeeUpdateInvalid=true;
+        $scope.planChangeFeeUpdateSubmitted=false;
+      }
+
+      if(!planChangeFeeUpdateDuplicate && !planChangeFeeUpdateInvalid)
+      {
+        $charge.plan().updatePlanChangeFee(updatePlan).success(function(data)
+        {
+          if(data.response=="succeeded")
+          {
+            notifications.toast("Successfully Plan Change Fee Updated","success");
+            $scope.planChangeFeeUpdateSubmitted=false;
+
+            skipPlanChangeFee=0;
+            $scope.planChangeFeeList=[];
+            $scope.loadPlanChangeFeePaging();
+
+          }
+          else
+          {
+            notifications.toast("Plan Change Fee Updating Failed","error");
+            $scope.planChangeFeeUpdateSubmitted=false;
+          }
+        }).error(function(data)
+        {
+          notifications.toast("Plan Change Fee Updating Failed","error");
+          $scope.planChangeFeeUpdateSubmitted=false;
+        })
+      }
+      else
+      {
+        if(planChangeFeeUpdateInvalid)
+        {
+          notifications.toast("Invalid Change Plan Details","error");
+        }
+        else
+        {
+          notifications.toast("Duplicate Change Plans","error");
+        }
+        $scope.planChangeFeeUpdateSubmitted=false;
+      }
+    }
+
+    $scope.deletingPlanChangeFee= function (plan) {
+
+      $charge.plan().deletePlanChangeFee(plan.guChangeFeeID).success(function(data)
+      {
+        if(data.response=="succeeded")
+        {
+          notifications.toast("Successfully Plan Change Fee Deleted","success");
+
+          skipPlanChangeFee=0;
+          $scope.planChangeFeeList=[];
+          $scope.loadPlanChangeFeePaging();
+
+        }
+        else
+        {
+          notifications.toast("Plan Change Fee Deleting Failed","error");
+        }
+      }).error(function(data)
+      {
+        notifications.toast("Plan Change Fee Deleting Failed","error");
+      })
+
+    }
+
 		$scope.webhookTypeChange= function (type) {
 			for (var i = 0; i < vm.webhookEventList.length; i++) {
 				if(type=="all")
@@ -3004,19 +3324,19 @@
 			})
 		}
 
-		$scope.resetWebhook= function () {
-			$scope.webhook={};
-			$scope.webhook.type="custom";
-			$scope.webhook.mode="Live";
-			$scope.webhookTypeChange("custom");
-
-			vm.webhookList=[];
-			skipAllWebhooks=0;
-			tempUsedEventsList=[];
-			$scope.loadWebhookListPaging();
-
-			$scope.enabledEditWH=false;
-		}
+		// $scope.resetWebhook= function () {
+		// 	$scope.webhook={};
+		// 	$scope.webhook.type="custom";
+		// 	$scope.webhook.mode="Live";
+		// 	$scope.webhookTypeChange("custom");
+		//
+		// 	vm.webhookList=[];
+		// 	skipAllWebhooks=0;
+		// 	tempUsedEventsList=[];
+		// 	$scope.loadWebhookListPaging();
+		//
+		// 	$scope.enabledEditWH=false;
+		// }
 
 		$scope.selectChangeTemplate= function (template) {
 			for (var i = 0; i < vm.emailTemplateList.length; i++) {

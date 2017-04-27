@@ -52,9 +52,11 @@
     <md-divider></md-divider>
     <md-dialog-actions layout="row" class="bg-gray">
       <div layout="row" class="layout-row" ng-if="!enabledEditWH">
+        <md-progress-circular class="gen-save-indicator" ng-if="vm.webhookSubmitted"></md-progress-circular>
         <md-button ng-disabled="vm.webhookSubmitted" type="submit" class="md-raised md-accent" form="webhooksForm">Save</md-button>
       </div>
       <div layout="row" class="layout-row" ng-if="enabledEditWH">
+        <md-progress-circular class="gen-save-indicator" ng-if="vm.webhookSubmitted"></md-progress-circular>
         <md-button ng-click="resetWebhook();">Reset</md-button>
         <md-button ng-disabled="vm.webhookSubmitted" type="submit" class="md-raised md-accent" form="webhooksForm">Update</md-button>
       </div>
