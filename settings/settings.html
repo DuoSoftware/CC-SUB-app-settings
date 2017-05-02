@@ -3119,8 +3119,8 @@
             <!-- CONTENT WRAPPER - PAYMENT -->
             <div ng-switch-when="payment" class="content-wrapper" flex>
 
-                <md-content style="height: 100%" ms-scroll>
-                    <form name="vm.payments" ng-submit="savePayment()" style="height: 100%;">
+                <div style="height: 100%" layout="column">
+                    <form name="vm.payments" ng-submit="savePayment()" flex="40">
                         <div class="fill-wrapper" layout="column" layout-fill>
                             <md-card class="input-block-gen">
                                 <md-card-title>
@@ -3250,7 +3250,159 @@
 
                         </div>
                     </form>
-                </md-content>
+
+                    <form name="vm.paymentRetryProcessForm" ng-submit="submitPaymentRetryProcess()" flex="60">
+                      <div class="fill-wrapper" layout="column" layout-fill>
+                        <md-card class="input-block-gen">
+                          <md-card-title>
+                            <div layout="row" layout-align="start center">
+                              <md-icon md-font-icon="icon-cog"></md-icon> <h3>Payment Retry Configuration</h3>
+                            </div>
+                          </md-card-title>
+                          <md-content md-whiteframe="1dp" ms-scroll>
+                            <div layout="row" layout-align="start center">
+                              <div flex="30">
+                                <label>Process :</label>
+                              </div>
+                              <div flex>
+                                <md-input-container class="md-block bottom" flex="20">
+                                  <label></label>
+                                  <input name="payment" type="text" ng-disabled="true" ng-init="retryProcess.processName='Payment'" ng-model="retryProcess.processName" ng-maxlength="30">
+                                  <div ng-messages="vm.paymentRetryProcessForm.payment.$error">
+                                    <div ng-message="maxlength">Process has to be less than 30 characters long</div>
+                                  </div>
+                                </md-input-container>
+                              </div>
+                            </div>
+                            <div layout="row" layout-align="start center">
+                              <div flex="30">
+                                <label>1st Failed Attempt :</label>
+                              </div>
+                              <div layout="row" flex>
+                                <label>  Retry</label>
+                                <md-input-container class="md-block bottom" style="margin: 0" flex="20">
+                                  <label></label>
+                                  <md-select flex ng-required="true" ng-model="retryProcess.daysAfterAttempt1st">
+                                    <!--<md-option value="Services" ng-selected="true">Services</md-option>-->
+                                    <md-option ng-value="1">1</md-option>
+                                    <md-option ng-value="2">2</md-option>
+                                    <md-option ng-value="3">3</md-option>
+                                    <md-option ng-value="4">4</md-option>
+                                    <md-option ng-value="5">5</md-option>
+                                    <md-option ng-value="6">6</md-option>
+                                    <md-option ng-value="7">7</md-option>
+                                    <md-option ng-value="8">8</md-option>
+                                    <md-option ng-value="9">9</md-option>
+                                    <!--<md-option ng-value="Other">Other..</md-option>-->
+                                  </md-select>
+                                  <!--<input name="retryAttemptOther1st" type="number" ng-if="retryProcess.daysAfterAttempt1st=='Other'" ng-model="retryProcess.retryAttemptOther1st" ng-maxlength="4">-->
+                                  <!--<div ng-messages="vm.paymentRetryProcessForm.retryAttemptOther1st.$error">-->
+                                    <!--<div ng-message="maxlength">Digits has to be less than 4 characters long</div>-->
+                                  <!--</div>-->
+                                </md-input-container>
+                                <label> Days after the previous Attempt</label>
+                              </div>
+                              <div flex>
+                                <md-checkbox ng-model="retryProcess.emailNotification1st" aria-label="Event" class="md-primary">Email Notification</md-checkbox>
+                              </div>
+                            </div>
+                            <div layout="row" layout-align="start center">
+                              <div flex="30">
+                                <label>2nd Failed Attempt :</label>
+                              </div>
+                              <div layout="row" flex>
+                                <label>  Retry</label>
+                                <md-input-container class="md-block bottom" style="margin: 0" flex="20">
+                                  <label></label>
+                                  <md-select flex ng-required="true" ng-model="retryProcess.daysAfterAttempt2nd">
+                                    <!--<md-option value="Services" ng-selected="true">Services</md-option>-->
+                                    <md-option ng-value="1">1</md-option>
+                                    <md-option ng-value="2">2</md-option>
+                                    <md-option ng-value="3">3</md-option>
+                                    <md-option ng-value="4">4</md-option>
+                                    <md-option ng-value="5">5</md-option>
+                                    <md-option ng-value="6">6</md-option>
+                                    <md-option ng-value="7">7</md-option>
+                                    <md-option ng-value="8">8</md-option>
+                                    <md-option ng-value="9">9</md-option>
+                                    <!--<md-option ng-value="Other">Other..</md-option>-->
+                                  </md-select>
+                                  <!--<input name="retryAttemptOther2nd" type="number" ng-if="retryProcess.daysAfterAttempt2nd=='Other'" ng-model="retryProcess.retryAttemptOther2nd" ng-maxlength="4">-->
+                                  <!--<div ng-messages="vm.paymentRetryProcessForm.retryAttemptOther2nd.$error">-->
+                                    <!--<div ng-message="maxlength">Digits has to be less than 4 characters long</div>-->
+                                  <!--</div>-->
+                                </md-input-container>
+                                <label> Days after the previous Attempt</label>
+                              </div>
+                              <div flex>
+                                <md-checkbox ng-model="retryProcess.emailNotification2nd" aria-label="Event" class="md-primary">Email Notification</md-checkbox>
+                              </div>
+                            </div>
+                            <div layout="row" layout-align="start center">
+                              <div flex="30">
+                                <label>3rd Failed Attempt :</label>
+                              </div>
+                              <div layout="row" flex>
+                                <label>  Retry</label>
+                                <md-input-container class="md-block bottom" style="margin: 0" flex="20">
+                                  <label></label>
+                                  <md-select flex ng-required="true" ng-model="retryProcess.daysAfterAttempt3rd">
+                                    <!--<md-option value="Services" ng-selected="true">Services</md-option>-->
+                                    <md-option ng-value="1">1</md-option>
+                                    <md-option ng-value="2">2</md-option>
+                                    <md-option ng-value="3">3</md-option>
+                                    <md-option ng-value="4">4</md-option>
+                                    <md-option ng-value="5">5</md-option>
+                                    <md-option ng-value="6">6</md-option>
+                                    <md-option ng-value="7">7</md-option>
+                                    <md-option ng-value="8">8</md-option>
+                                    <md-option ng-value="9">9</md-option>
+                                    <!--<md-option ng-value="Other">Other..</md-option>-->
+                                  </md-select>
+                                  <!--<input name="retryAttemptOther3rd" type="number" ng-if="retryProcess.daysAfterAttempt3rd=='Other'" ng-model="retryProcess.retryAttemptOther3rd" ng-maxlength="4">-->
+                                  <!--<div ng-messages="vm.paymentRetryProcessForm.retryAttemptOther3rd.$error">-->
+                                    <!--<div ng-message="maxlength">Digits has to be less than 4 characters long</div>-->
+                                  <!--</div>-->
+                                </md-input-container>
+                                <label> Days after the previous Attempt</label>
+                              </div>
+                              <div flex>
+                                <md-checkbox ng-model="retryProcess.emailNotification3rd" aria-label="Event" class="md-primary">Email Notification</md-checkbox>
+                              </div>
+                            </div>
+                            <div layout="row" layout-align="start center">
+                              <div flex="30">
+                                <label>Then Finally :</label>
+                              </div>
+                              <div layout="row" flex>
+                                <md-input-container class="md-block bottom" flex="50">
+                                  <label></label>
+                                  <md-select flex ng-required="true" ng-model="retryProcess.daysAfterAttemptFinally">
+                                    <!--<md-option value="Services" ng-selected="true">Services</md-option>-->
+                                    <md-option ng-value="'Deactivate Profile'">Deactivate Profile</md-option>
+                                  </md-select>
+                                </md-input-container>
+                              </div>
+                              <div flex>
+                                <md-checkbox ng-model="retryProcess.emailNotificationFinally" aria-label="Event" class="md-primary">Email Notification</md-checkbox>
+                              </div>
+                            </div>
+                          </md-content>
+                        </md-card>
+
+                        <div ng-init="submitted=false" layout="row" layout-align="space-between center" class="md-whiteframe-8dp bottom-fixed-bar">
+                          <div layout="row"></div>
+
+                          <div layout="row" class="layout-row">
+                            <md-progress-circular class="gen-save-indicator" ng-if="paymentRetrySubmitted"></md-progress-circular>
+                            <md-button ng-click="clearPaymentFields();">Reset</md-button>
+                            <md-button ng-disabled="paymentRetrySubmitted" type="submit" class="md-raised md-accent">Save</md-button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </form>
+                </div>
             </div>
             <!--<div ng-switch-when="payment" class="content-wrapper" flex>-->
 
