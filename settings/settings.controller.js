@@ -13,7 +13,7 @@
 		.controller('settingscontroller', settingscontroller);
 
 	/** @ngInject */
-	function settingscontroller($scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
+	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
 	{
 		var vm = this;
 		vm.settingsCategoryState = "default";
@@ -45,6 +45,14 @@
 		//  greeting: 'Please pay within 7 days. Thank you for your business.',
 		//  message: 'In condimentum malesuada efficitur. Mauris volutpat placerat auctor. Ut ac congue dolor. Quisque scelerisque lacus sed feugiat fermentum. Cras aliquet facilisis pellentesque. Nunc hendrerit quam at leo commodo, a suscipit tellus dapibus. Etiam at felis volutpat est mollis lacinia. Mauris placerat sem sit amet velit mollis, in porttitor ex finibus. Proin eu nibh id libero tincidunt lacinia et eget eros.'
 		//};
+
+		var settingsTabs = document.getElementById('settingsTabs');
+		angular.forEach(settingsTabs.children[1].children, function (tab) {
+			console.log(tab)
+		});
+		//settingsTabs.find('md-tab-content').addClass('ms-scroll');
+
+		$scope.planChangeView=false;
 
 
 		//////////
@@ -223,6 +231,7 @@
 					break;
 				case 'individual-tax':
 					$scope.loadIndividualTaxes();
+					$scope.loadTaxGrps();
 					break;
 				case 'tax-groups':
 					$scope.loadTaxGrps();
@@ -1605,18 +1614,18 @@
 		//  $rootScope.isBrandLoaded=false;
 		//})
 
-    var skipPlanChangeFee=0;
-    var takePlanChangeFee=100;
-    $scope.loadingPlanChangeFee = true;
-    $scope.planChangeFeeList=[];
+		var skipPlanChangeFee=0;
+		var takePlanChangeFee=100;
+		$scope.loadingPlanChangeFee = true;
+		$scope.planChangeFeeList=[];
 
-    var skipPlanKeyAttributes=0;
-    var takePlanKeyAttributes=100;
-    $scope.loadingPlanKeyAttributes = true;
-    $scope.planKeyAttributesList=[];
+		var skipPlanKeyAttributes=0;
+		var takePlanKeyAttributes=100;
+		$scope.loadingPlanKeyAttributes = true;
+		$scope.planKeyAttributesList=[];
 
-    $scope.BaseCurrencyPlanChangeFee = "";
-    $scope.currencyRate = 1;
+		$scope.BaseCurrencyPlanChangeFee = "";
+		$scope.currencyRate = 1;
 
 		$scope.isPlanTypeLoaded = false;
 		$scope.loadProductAttributes= function () {
@@ -1676,150 +1685,150 @@
 				$scope.isPlanTypeLoaded = true;
 			})
 
-      skipPlanKeyAttributes=0;
-      $scope.loadingPlanKeyAttributes = true;
-      $scope.planKeyAttributesList=[];
+			skipPlanKeyAttributes=0;
+			$scope.loadingPlanKeyAttributes = true;
+			$scope.planKeyAttributesList=[];
 
-      $charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
-      {
-        console.log(data);
+			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
+			{
+				console.log(data);
 
-        if($scope.loadingPlanKeyAttributes)
-        {
-          skipPlanKeyAttributes += takePlanKeyAttributes;
+				if($scope.loadingPlanKeyAttributes)
+				{
+					skipPlanKeyAttributes += takePlanKeyAttributes;
 
-          for (var i = 0; i < data.length; i++) {
-            $scope.planKeyAttributesList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						$scope.planKeyAttributesList.push(data[i]);
+					}
 
-          $scope.loadingPlanKeyAttributes = false;
+					$scope.loadingPlanKeyAttributes = false;
 
-          if(data.length<takePlanKeyAttributes){
+					if(data.length<takePlanKeyAttributes){
 
-          }
-          else
-          {
-            $scope.loadPlanKeyAttributesPaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanKeyAttributesPaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.loadingPlanKeyAttributes = false;
-      })
+			}).error(function(data)
+			{
+				$scope.loadingPlanKeyAttributes = false;
+			})
 
-      skipPlanChangeFee=0;
-      $scope.loadingPlanChangeFee = true;
-      $scope.planChangeFeeList=[];
+			skipPlanChangeFee=0;
+			$scope.loadingPlanChangeFee = true;
+			$scope.planChangeFeeList=[];
 
-      $charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
-      {
-        console.log(data);
+			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
+			{
+				console.log(data);
 
-        if($scope.loadingPlanChangeFee)
-        {
-          skipPlanChangeFee += takePlanChangeFee;
+				if($scope.loadingPlanChangeFee)
+				{
+					skipPlanChangeFee += takePlanChangeFee;
 
-          for (var i = 0; i < data.length; i++) {
-            data[i].editItem=false;
-            $scope.planChangeFeeList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						data[i].editItem=false;
+						$scope.planChangeFeeList.push(data[i]);
+					}
 
-          $scope.loadingPlanChangeFee = false;
+					$scope.loadingPlanChangeFee = false;
 
-          if(data.length<takePlanChangeFee){
+					if(data.length<takePlanChangeFee){
 
-          }
-          else
-          {
-            $scope.loadPlanChangeFeePaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanChangeFeePaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.planChangeFeeList = false;
-      })
+			}).error(function(data)
+			{
+				$scope.planChangeFeeList = false;
+			})
 
-      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
-        $scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
-        console.log($scope.BaseCurrencyPlanChangeFee);
-        //$scope.selectedCurrency = $scope.BaseCurrency;
+			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
+				$scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
+				console.log($scope.BaseCurrencyPlanChangeFee);
+				//$scope.selectedCurrency = $scope.BaseCurrency;
 
-      }).error(function(data) {
-        console.log(data);
-        $scope.BaseCurrencyPlanChangeFee="USD";
-        //$scope.selectedCurrency = $scope.BaseCurrency;
-      })
+			}).error(function(data) {
+				console.log(data);
+				$scope.BaseCurrencyPlanChangeFee="USD";
+				//$scope.selectedCurrency = $scope.BaseCurrency;
+			})
 
 		}
 
-    $scope.loadPlanKeyAttributesPaging= function () {
-      $scope.loadingPlanKeyAttributes = true;
-      $charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
-      {
-        console.log(data);
+		$scope.loadPlanKeyAttributesPaging= function () {
+			$scope.loadingPlanKeyAttributes = true;
+			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
+			{
+				console.log(data);
 
-        if($scope.loadingPlanKeyAttributes)
-        {
-          skipPlanKeyAttributes += takePlanKeyAttributes;
+				if($scope.loadingPlanKeyAttributes)
+				{
+					skipPlanKeyAttributes += takePlanKeyAttributes;
 
-          for (var i = 0; i < data.length; i++) {
-            $scope.planKeyAttributesList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						$scope.planKeyAttributesList.push(data[i]);
+					}
 
-          $scope.loadingPlanKeyAttributes = false;
+					$scope.loadingPlanKeyAttributes = false;
 
-          if(data.length<takePlanKeyAttributes){
+					if(data.length<takePlanKeyAttributes){
 
-          }
-          else
-          {
-            $scope.loadPlanKeyAttributesPaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanKeyAttributesPaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.loadingPlanKeyAttributes = false;
-      })
-    }
+			}).error(function(data)
+			{
+				$scope.loadingPlanKeyAttributes = false;
+			})
+		}
 
-    $scope.loadPlanChangeFeePaging= function () {
-      $scope.loadingPlanChangeFee = true;
-      $charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
-      {
-        console.log(data);
+		$scope.loadPlanChangeFeePaging= function () {
+			$scope.loadingPlanChangeFee = true;
+			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
+			{
+				console.log(data);
 
-        if($scope.loadingPlanChangeFee)
-        {
-          skipPlanChangeFee += takePlanChangeFee;
+				if($scope.loadingPlanChangeFee)
+				{
+					skipPlanChangeFee += takePlanChangeFee;
 
-          for (var i = 0; i < data.length; i++) {
-            data[i].editItem=false;
-            $scope.planChangeFeeList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						data[i].editItem=false;
+						$scope.planChangeFeeList.push(data[i]);
+					}
 
-          $scope.loadingPlanChangeFee = false;
+					$scope.loadingPlanChangeFee = false;
 
-          if(data.length<takePlanChangeFee){
+					if(data.length<takePlanChangeFee){
 
-          }
-          else
-          {
-            $scope.loadPlanChangeFeePaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanChangeFeePaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.planChangeFeeList = false;
-      })
-    }
+			}).error(function(data)
+			{
+				$scope.planChangeFeeList = false;
+			})
+		}
 
 		vm.webhookEventList=[];
 		var skipAllEventsWH=0;
@@ -1832,11 +1841,11 @@
 		$scope.loadingWebhooks = true;
 		var tempUsedEventsList=[];
 
-    vm.webhookHistoryList=[];
-    var skipAllWebhookHistory=0;
-    var takeAllWebhookHistory=100;
-    $scope.loadingWebhookHistory = true;
-    $scope.isMoreWebhookHistoryLoading = true;
+		vm.webhookHistoryList=[];
+		var skipAllWebhookHistory=0;
+		var takeAllWebhookHistory=100;
+		$scope.loadingWebhookHistory = true;
+		$scope.isMoreWebhookHistoryLoading = true;
 
 		$scope.loadWebhooksAttributes= function () {
 
@@ -1912,34 +1921,34 @@
 			})
 
 
-      vm.webhookHistoryList=[];
-      skipAllWebhookHistory=0;
-      $scope.loadingWebhookHistory = true;
-      $scope.isMoreWebhookHistoryLoading = true;
-      $charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
-        console.log(data);
-        if($scope.loadingWebhookHistory)
-        {
-          skipAllWebhookHistory += takeAllWebhookHistory;
+			vm.webhookHistoryList=[];
+			skipAllWebhookHistory=0;
+			$scope.loadingWebhookHistory = true;
+			$scope.isMoreWebhookHistoryLoading = true;
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+				console.log(data);
+				if($scope.loadingWebhookHistory)
+				{
+					skipAllWebhookHistory += takeAllWebhookHistory;
 
-          for (var i = 0; i < data.length; i++) {
-            vm.webhookHistoryList.push(data[i]);
-          }
-          $scope.loadingWebhookHistory = false;
+					for (var i = 0; i < data.length; i++) {
+						vm.webhookHistoryList.push(data[i]);
+					}
+					$scope.loadingWebhookHistory = false;
 
-          if(data.length<takeAllWebhookHistory)
-          {
-            $scope.isMoreWebhookHistoryLoading = false;
-          }
+					if(data.length<takeAllWebhookHistory)
+					{
+						$scope.isMoreWebhookHistoryLoading = false;
+					}
 
-        }
+				}
 
-      }).error(function (data) {
-        console.log(data);
-        vm.webhookHistoryList=[];
-        $scope.loadingWebhookHistory = false;
-        $scope.isMoreWebhookHistoryLoading = false;
-      })
+			}).error(function (data) {
+				console.log(data);
+				vm.webhookHistoryList=[];
+				$scope.loadingWebhookHistory = false;
+				$scope.isMoreWebhookHistoryLoading = false;
+			})
 
 		}
 
@@ -1999,53 +2008,202 @@
 			}
 		}
 
-    $scope.loadWebhookHistoryListPaging= function () {
-      $scope.loadingWebhookHistory = true;
-      $scope.isMoreWebhookHistoryLoading = true;
-      $charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
-        console.log(data);
-        if($scope.loadingWebhookHistory)
-        {
-          skipAllWebhookHistory += takeAllWebhookHistory;
+		$scope.loadWebhookHistoryListPaging= function () {
+			$scope.loadingWebhookHistory = true;
+			$scope.isMoreWebhookHistoryLoading = true;
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+				console.log(data);
+				if($scope.loadingWebhookHistory)
+				{
+					skipAllWebhookHistory += takeAllWebhookHistory;
 
-          for (var i = 0; i < data.length; i++) {
-            vm.webhookHistoryList.push(data[i]);
-          }
-          $scope.loadingWebhookHistory = false;
+					for (var i = 0; i < data.length; i++) {
+						vm.webhookHistoryList.push(data[i]);
+					}
+					$scope.loadingWebhookHistory = false;
 
-          if(data.length<takeAllWebhookHistory)
-          {
-            $scope.isMoreWebhookHistoryLoading = false;
-          }
+					if(data.length<takeAllWebhookHistory)
+					{
+						$scope.isMoreWebhookHistoryLoading = false;
+					}
 
-        }
-
-      }).error(function (data) {
-        console.log(data);
-        vm.webhookHistoryList=[];
-        $scope.loadingWebhookHistory = false;
-        $scope.isMoreWebhookHistoryLoading = false;
-      })
-    }
-
-		$scope.addWebhookDialog = function() {
-			$mdDialog.show({
-				controller: 'AddWebhookController as vm',
-				templateUrl: 'app/main/settings/dialogs/webhooks/prompt-add-webhook.html',
-				clickOutsideToClose:false,
-				locals:{
-					// submitWebhook:$scope.submitWebhook,
-					skipAllWebhooks:$scope.skipAllWebhooks,
-					tempUsedEventsList:$scope.tempUsedEventsList,
-					webhookTypeChange:$scope.webhookTypeChange,
-					webhookSubmitted:vm.webhookSubmitted,
-					webhookEventList:vm.webhookEventList,
-					webHooks:vm.webHooks,
-					webhook:$scope.webhook,
-					enabledEditWH:$scope.enabledEditWH,
-					// resetWebhook:$scope.resetWebhook,
-					loadWebhookListPaging: $scope.loadWebhookListPaging
 				}
+
+			}).error(function (data) {
+				console.log(data);
+				vm.webhookHistoryList=[];
+				$scope.loadingWebhookHistory = false;
+				$scope.isMoreWebhookHistoryLoading = false;
+			})
+		}
+
+		vm.closeDialog = function () {
+			// vm.webhook={};
+			// vm.webhook.type="custom";
+			// vm.webhook.mode="Live";
+			// $scope.webhookTypeChange("custom");
+			//
+			// vm.webhookList=[];
+			// skipAllWebhooks=0;
+			// tempUsedEventsList=[];
+			$mdDialog.hide();
+			vm.enabledEditWH=false;
+		};
+
+		$scope.resetWebhook= function () {
+			vm.webhook={};
+			vm.webhook.type="custom";
+			vm.webhook.mode="Live";
+			$scope.webhookTypeChange("custom");
+
+			vm.webhookList=[];
+			skipAllWebhooks=0;
+			tempUsedEventsList=[];
+			$scope.loadWebhookListPaging();
+
+			vm.enabledEditWH=false;
+		};
+
+		vm.submitWebhook= function (editing) {
+			if(!editing)
+			{
+				if (vm.webHooks.$valid == true) {
+					vm.webhookSubmitted = true;
+
+					var webhookObj={};
+					var tempEventsSelected=false;
+					webhookObj.endPoint=vm.webhook.endPoint;
+					webhookObj.type=vm.webhook.type;
+					webhookObj.createdDate=new Date();
+					webhookObj.isEnabled=true;
+					webhookObj.eventCodes=[];
+
+					for (var i = 0; i < vm.webhookEventList.length; i++) {
+						if(vm.webhookEventList[i].isSelected)
+						{
+							webhookObj.eventCodes.push(vm.webhookEventList[i].eventType);
+							tempEventsSelected=true;
+						}
+					}
+
+					if(tempEventsSelected)
+					{
+						$charge.webhook().createWH(webhookObj).success(function (data) {
+							console.log(data);
+							// debugger;
+							if(data.error=="00000")
+							{
+								notifications.toast("Webhook Created Successfully", "success");
+								vm.webhook={};
+								vm.webhook.type="custom";
+								vm.webhook.mode="Live";
+								$scope.webhookTypeChange("custom");
+
+								vm.webhookList=[];
+								skipAllWebhooks=0;
+								tempUsedEventsList=[];
+								$mdDialog.hide();
+								$scope.loadWebhookListPaging();
+							}
+							else
+							{
+								notifications.toast("Webhook Creation Failed", "error");
+							}
+							//$scope.webhook={};
+							vm.webhookSubmitted = false;
+						}).error(function (data) {
+							$mdDialog.hide();
+							console.log(data);
+							vm.webhookSubmitted = false;
+						})
+					}
+					else
+					{
+						notifications.toast("Select Events for the Webhook", "error");
+						vm.webhookSubmitted = false;
+					}
+
+				}
+			}
+			else
+			{
+				if (vm.webHooks.$valid == true) {
+					vm.webhookSubmitted = true;
+
+					var webhookObj={};
+					var tempEventsSelected=false;
+					webhookObj.guWebhookId=vm.webhook.guWebhookId;
+					webhookObj.endPoint=vm.webhook.endPoint;
+					webhookObj.type=vm.webhook.type;
+					webhookObj.createdDate=new Date();
+					webhookObj.isEnabled=true;
+					webhookObj.eventCodes=[];
+
+					for (var i = 0; i < vm.webhookEventList.length; i++) {
+						if(vm.webhookEventList[i].isSelected)
+						{
+							webhookObj.eventCodes.push(vm.webhookEventList[i].eventType);
+							tempEventsSelected=true;
+						}
+					}
+
+					if(tempEventsSelected)
+					{
+						$charge.webhook().updateWH(webhookObj).success(function (data) {
+							console.log(data);
+							// debugger;
+							if(data.error=="00000")
+							{
+								notifications.toast("Webhook Updated Successfully", "success");
+								$scope.resetWebhook();
+								$mdDialog.hide();
+							}
+							else
+							{
+								notifications.toast("Webhook Updating Failed", "error");
+							}
+							//$scope.webhook={};
+							vm.webhookSubmitted = false;
+						}).error(function (data) {
+							$mdDialog.hide();
+							console.log(data);
+							vm.webhookSubmitted = false;
+						})
+					}
+					else
+					{
+						notifications.toast("Select Events for the Webhook", "error");
+						vm.webhookSubmitted = false;
+					}
+
+				}
+			}
+		}
+
+		$scope.addWebhookDialog = function(isEdit) {
+			if(isEdit){
+				vm.enabledEditWH = true;
+			}
+			$mdDialog.show({
+				controller: function () {
+					return vm;
+				},
+				controllerAs: 'vm',
+				templateUrl: 'app/main/settings/dialogs/webhooks/prompt-add-webhook.html',
+				clickOutsideToClose:false
+				// locals:{
+				// 	// submitWebhook:$scope.submitWebhook,
+				// 	skipAllWebhooks:$scope.skipAllWebhooks,
+				// 	tempUsedEventsList:$scope.tempUsedEventsList,
+				// 	webhookTypeChange:$scope.webhookTypeChange,
+				// 	webhookSubmitted:vm.webhookSubmitted,
+				// 	webhookEventList:vm.webhookEventList,
+				// 	webHooks:vm.webHooks,
+				// 	webhook:$scope.webhook,
+				// 	enabledEditWH:$scope.enabledEditWH,
+				// 	// resetWebhook:$scope.resetWebhook,
+				// 	loadWebhookListPaging: $scope.loadWebhookListPaging
+				// }
 			});
 		};
 
@@ -3131,166 +3289,170 @@
 		}
 
 
-    $scope.changePlanFee={};
+		$scope.changePlanFee={};
 
-    $scope.submitPlanChangeFee= function () {
+		$scope.submitPlanChangeFee= function () {
 
-      $scope.planChangeFeeSubmitted=true;
+			$scope.planChangeFeeSubmitted=true;
 
-      $scope.changePlanFee.currency=$scope.BaseCurrencyPlanChangeFee;
-      $scope.changePlanFee.rate=$scope.currencyRate;
+			$scope.changePlanFee.currency=$scope.BaseCurrencyPlanChangeFee;
+			$scope.changePlanFee.rate=$scope.currencyRate;
 
-      var planChangeFeeDuplicate=false;
+			var planChangeFeeDuplicate=false;
 
-      for(var i = 0; i < $scope.planChangeFeeList.length; i++)
-      {
-        if($scope.planChangeFeeList[i].planFrom==$scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo==$scope.changePlanFee.planTo)
-        {
-          planChangeFeeDuplicate=true;
-          break;
-        }
-      }
+			for(var i = 0; i < $scope.planChangeFeeList.length; i++)
+			{
+				if($scope.planChangeFeeList[i].planFrom==$scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo==$scope.changePlanFee.planTo)
+				{
+					planChangeFeeDuplicate=true;
+					break;
+				}
+			}
 
-      if(!planChangeFeeDuplicate)
-      {
-        $charge.plan().createPlanChangeFee($scope.changePlanFee).success(function(data)
-        {
-          if(data.response=="succeeded")
-          {
-            notifications.toast("Successfully Plan Change Fee Created","success");
-            $scope.planChangeFeeSubmitted=false;
-            $scope.changePlanFee={};
+			if(!planChangeFeeDuplicate)
+			{
+				$charge.plan().createPlanChangeFee($scope.changePlanFee).success(function(data)
+				{
+					if(data.response=="succeeded")
+					{
+						notifications.toast("Successfully plan change fee created","success");
+						$scope.planChangeFeeSubmitted=false;
+						$scope.changePlanFee={};
 
-            skipPlanChangeFee=0;
-            $scope.planChangeFeeList=[];
-            $scope.loadPlanChangeFeePaging();
+						skipPlanChangeFee=0;
+						$scope.planChangeFeeList=[];
+						$scope.loadPlanChangeFeePaging();
+						$scope.planChangeView=false;
+					}
+					else
+					{
+						notifications.toast("Plan change fee creation failed","error");
+						$scope.planChangeFeeSubmitted=false;
+						$scope.planChangeView=false;
+					}
+				}).error(function(data)
+				{
+					notifications.toast("Plan change fee creation failed","error");
+					$scope.planChangeFeeSubmitted=false;
+					$scope.planChangeView=false;
+				})
+			}
+			else
+			{
+				notifications.toast("Duplicate Change Plans","error");
+				$scope.planChangeFeeSubmitted=false;
+				$scope.changePlanFee.planFrom="";
+				$scope.changePlanFee.planTo="";
+			}
+		}
 
-          }
-          else
-          {
-            notifications.toast("Plan Change Fee Creation Failed","error");
-            $scope.planChangeFeeSubmitted=false;
-          }
-        }).error(function(data)
-        {
-          notifications.toast("Plan Change Fee Creation Failed","error");
-          $scope.planChangeFeeSubmitted=false;
-        })
-      }
-      else
-      {
-        notifications.toast("Duplicate Change Plans","error");
-        $scope.planChangeFeeSubmitted=false;
-        $scope.changePlanFee.planFrom="";
-        $scope.changePlanFee.planTo="";
-      }
-    }
 
-    $scope.planChangeFeeItemOriginal=[];
-    $scope.editPlanChangeFee= function (plan) {
-      //$scope.cancelEditPlanChangeFee($scope.planChangeFeeItemOriginal);
 
-      $scope.planChangeFeeItemOriginal=angular.copy(plan);
-      plan.editItem=true;
+		$scope.planChangeFeeItemOriginal=[];
+		$scope.editPlanChangeFee= function (plan) {
+			//$scope.cancelEditPlanChangeFee($scope.planChangeFeeItemOriginal);
 
-    }
+			$scope.planChangeFeeItemOriginal=angular.copy(plan);
+			plan.editItem=true;
 
-    $scope.cancelEditPlanChangeFee= function (plan) {
+		}
 
-      plan.editItem=false;
-      plan.planFrom=angular.copy($scope.planChangeFeeItemOriginal.planFrom);
-      plan.planTo=angular.copy($scope.planChangeFeeItemOriginal.planTo);
-      plan.fee=angular.copy($scope.planChangeFeeItemOriginal.fee);
-      //plan.editItem=false;
-    }
+		$scope.cancelEditPlanChangeFee= function (plan) {
 
-    $scope.updatingPlanChangeFee= function (updatePlan, index) {
+			plan.editItem=false;
+			plan.planFrom=angular.copy($scope.planChangeFeeItemOriginal.planFrom);
+			plan.planTo=angular.copy($scope.planChangeFeeItemOriginal.planTo);
+			plan.fee=angular.copy($scope.planChangeFeeItemOriginal.fee);
+			//plan.editItem=false;
+		}
 
-      $scope.planChangeFeeUpdateSubmitted=true;
+		$scope.updatingPlanChangeFee= function (updatePlan, index) {
 
-      var planChangeFeeUpdateDuplicate=false;
-      var planChangeFeeUpdateInvalid=false;
+			$scope.planChangeFeeUpdateSubmitted=true;
 
-      for(var i = 0; i < $scope.planChangeFeeList.length; i++)
-      {
-        if(index==i)
-        {
+			var planChangeFeeUpdateDuplicate=false;
+			var planChangeFeeUpdateInvalid=false;
 
-        }
-        else if($scope.planChangeFeeList[i].planFrom==updatePlan.planFrom && $scope.planChangeFeeList[i].planTo==updatePlan.planTo)
-        {
-          planChangeFeeUpdateDuplicate=true;
-          break;
-        }
-      }
-      if(updatePlan.planFrom=="" || updatePlan.planTo=="" || updatePlan.fee=="" || updatePlan.fee==undefined)
-      {
-        planChangeFeeUpdateInvalid=true;
-        $scope.planChangeFeeUpdateSubmitted=false;
-      }
+			for(var i = 0; i < $scope.planChangeFeeList.length; i++)
+			{
+				if(index==i)
+				{
 
-      if(!planChangeFeeUpdateDuplicate && !planChangeFeeUpdateInvalid)
-      {
-        $charge.plan().updatePlanChangeFee(updatePlan).success(function(data)
-        {
-          if(data.response=="succeeded")
-          {
-            notifications.toast("Successfully Plan Change Fee Updated","success");
-            $scope.planChangeFeeUpdateSubmitted=false;
+				}
+				else if($scope.planChangeFeeList[i].planFrom==updatePlan.planFrom && $scope.planChangeFeeList[i].planTo==updatePlan.planTo)
+				{
+					planChangeFeeUpdateDuplicate=true;
+					break;
+				}
+			}
+			if(updatePlan.planFrom=="" || updatePlan.planTo=="" || updatePlan.fee=="" || updatePlan.fee==undefined)
+			{
+				planChangeFeeUpdateInvalid=true;
+				$scope.planChangeFeeUpdateSubmitted=false;
+			}
 
-            skipPlanChangeFee=0;
-            $scope.planChangeFeeList=[];
-            $scope.loadPlanChangeFeePaging();
+			if(!planChangeFeeUpdateDuplicate && !planChangeFeeUpdateInvalid)
+			{
+				$charge.plan().updatePlanChangeFee(updatePlan).success(function(data)
+				{
+					if(data.response=="succeeded")
+					{
+						notifications.toast("Successfully Plan Change Fee Updated","success");
+						$scope.planChangeFeeUpdateSubmitted=false;
 
-          }
-          else
-          {
-            notifications.toast("Plan Change Fee Updating Failed","error");
-            $scope.planChangeFeeUpdateSubmitted=false;
-          }
-        }).error(function(data)
-        {
-          notifications.toast("Plan Change Fee Updating Failed","error");
-          $scope.planChangeFeeUpdateSubmitted=false;
-        })
-      }
-      else
-      {
-        if(planChangeFeeUpdateInvalid)
-        {
-          notifications.toast("Invalid Change Plan Details","error");
-        }
-        else
-        {
-          notifications.toast("Duplicate Change Plans","error");
-        }
-        $scope.planChangeFeeUpdateSubmitted=false;
-      }
-    }
+						skipPlanChangeFee=0;
+						$scope.planChangeFeeList=[];
+						$scope.loadPlanChangeFeePaging();
 
-    $scope.deletingPlanChangeFee= function (plan) {
+					}
+					else
+					{
+						notifications.toast("Plan Change Fee Updating Failed","error");
+						$scope.planChangeFeeUpdateSubmitted=false;
+					}
+				}).error(function(data)
+				{
+					notifications.toast("Plan Change Fee Updating Failed","error");
+					$scope.planChangeFeeUpdateSubmitted=false;
+				})
+			}
+			else
+			{
+				if(planChangeFeeUpdateInvalid)
+				{
+					notifications.toast("Invalid Change Plan Details","error");
+				}
+				else
+				{
+					notifications.toast("Duplicate Change Plans","error");
+				}
+				$scope.planChangeFeeUpdateSubmitted=false;
+			}
+		}
 
-      $charge.plan().deletePlanChangeFee(plan.guChangeFeeID).success(function(data)
-      {
-        if(data.response=="succeeded")
-        {
-          notifications.toast("Successfully Plan Change Fee Deleted","success");
+		$scope.deletingPlanChangeFee= function (plan) {
 
-          skipPlanChangeFee=0;
-          $scope.planChangeFeeList=[];
-          $scope.loadPlanChangeFeePaging();
+			$charge.plan().deletePlanChangeFee(plan.guChangeFeeID).success(function(data)
+			{
+				if(data.response=="succeeded")
+				{
+					notifications.toast("Successfully Plan Change Fee Deleted","success");
 
-        }
-        else
-        {
-          notifications.toast("Plan Change Fee Deleting Failed","error");
-        }
-      }).error(function(data)
-      {
-        notifications.toast("Plan Change Fee Deleting Failed","error");
-      })
+					skipPlanChangeFee=0;
+					$scope.planChangeFeeList=[];
+					$scope.loadPlanChangeFeePaging();
 
-    }
+				}
+				else
+				{
+					notifications.toast("Plan Change Fee Deleting Failed","error");
+				}
+			}).error(function(data)
+			{
+				notifications.toast("Plan Change Fee Deleting Failed","error");
+			})
+
+		}
 
 		$scope.webhookTypeChange= function (type) {
 			for (var i = 0; i < vm.webhookEventList.length; i++) {
@@ -3329,19 +3491,19 @@
 		}
 
 
-		$scope.webhook={};
+		vm.webhook={};
 		vm.webhookSubmitted = false;
 
-		$scope.enabledEditWH=false;
+		vm.enabledEditWH=false;
 
 		$scope.editWebhook= function (webhook) {
 			//$scope.resetWebhook();
 			$scope.webhookTypeChange("custom");
 			$scope.checkAlreadyUsedEvents();
-			$scope.enabledEditWH=true;
-			$scope.webhook.guWebhookId=webhook.guWebhookId;
-			$scope.webhook.endPoint=webhook.endPoint;
-			$scope.webhook.type=webhook.type;
+			vm.enabledEditWH=true;
+			vm.webhook.guWebhookId=webhook.guWebhookId;
+			vm.webhook.endPoint=webhook.endPoint;
+			vm.webhook.type=webhook.type;
 			for (var i = 0; i < webhook.eventCodes.length; i++) {
 				var eventCode=webhook.eventCodes[i];
 				for (var j = 0; j < vm.webhookEventList.length; j++) {
@@ -3352,7 +3514,7 @@
 					}
 				}
 			}
-			$scope.addWebhookDialog();
+			$scope.addWebhookDialog(true);
 		}
 
 		$scope.showDeleteWebhookConfirm = function(ev,webhook) {
@@ -5250,7 +5412,7 @@
 		var isPaymentLoaded=false;
 		$scope.paymentSettings=[];
 
-    $scope.PaymentRetryUpdating=false;
+		$scope.PaymentRetryUpdating=false;
 
 		$scope.loadPaymentAttributes= function () {
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength").success(function(data) {
@@ -5274,48 +5436,48 @@
 				isPaymentLoaded=false;
 			})
 
-      $scope.PaymentRetryUpdating=false;
+			$scope.PaymentRetryUpdating=false;
 
-      $charge.notification().getProcessByCode("Payment").success(function(data) {
-        console.log(data);
+			$charge.notification().getProcessByCode("Payment").success(function(data) {
+				console.log(data);
 
-        $scope.retryProcess={};
-        $scope.retryProcess.processCode="Payment";
-        $scope.retryProcess.processName="Payment";
-        for(var i=0;i<data.actions.length;i++)
-        {
-          var actionObj=data.actions[i];
-          if(actionObj.actionIndex==0)
-          {
-            $scope.retryProcess.daysAfterAttempt1st=actionObj.daysAfterAttempt;
-            $scope.retryProcess.emailNotification1st=actionObj.emailNotification==1?true:false;
-          }
-          else if(actionObj.actionIndex==1)
-          {
-            $scope.retryProcess.daysAfterAttempt2nd=actionObj.daysAfterAttempt;
-            $scope.retryProcess.emailNotification2nd=actionObj.emailNotification==1?true:false;
-          }
-          else if(actionObj.actionIndex==2)
-          {
-            $scope.retryProcess.daysAfterAttempt3rd=actionObj.daysAfterAttempt;
-            $scope.retryProcess.emailNotification3rd=actionObj.emailNotification==1?true:false;
-          }
-          else if(actionObj.actionIndex==3)
-          {
-            $scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
-            $scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
-          }
-        }
+				$scope.retryProcess={};
+				$scope.retryProcess.processCode="Payment";
+				$scope.retryProcess.processName="Payment";
+				for(var i=0;i<data.actions.length;i++)
+				{
+					var actionObj=data.actions[i];
+					if(actionObj.actionIndex==0)
+					{
+						$scope.retryProcess.daysAfterAttempt1st=actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification1st=actionObj.emailNotification==1?true:false;
+					}
+					else if(actionObj.actionIndex==1)
+					{
+						$scope.retryProcess.daysAfterAttempt2nd=actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification2nd=actionObj.emailNotification==1?true:false;
+					}
+					else if(actionObj.actionIndex==2)
+					{
+						$scope.retryProcess.daysAfterAttempt3rd=actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification3rd=actionObj.emailNotification==1?true:false;
+					}
+					else if(actionObj.actionIndex==3)
+					{
+						$scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
+						$scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
+					}
+				}
 
-        $scope.PaymentRetryUpdating=true;
+				$scope.PaymentRetryUpdating=true;
 
-      }).error(function(data) {
-        console.log(data);
-        if(data==204)
-        {
-          $scope.PaymentRetryUpdating=false;
-        }
-      })
+			}).error(function(data) {
+				console.log(data);
+				if(data==204)
+				{
+					$scope.PaymentRetryUpdating=false;
+				}
+			})
 		}
 
 
@@ -5356,92 +5518,92 @@
 		}
 
 
-    $scope.retryProcess={};
-    $scope.paymentRetrySubmitted=false;
-    $scope.submitPaymentRetryProcess= function () {
-      $scope.paymentRetrySubmitted=true;
+		$scope.retryProcess={};
+		$scope.paymentRetrySubmitted=false;
+		$scope.submitPaymentRetryProcess= function () {
+			$scope.paymentRetrySubmitted=true;
 
-      $scope.retryProcess.processCode="Payment";
-      $scope.retryProcess.actions=[];
+			$scope.retryProcess.processCode="Payment";
+			$scope.retryProcess.actions=[];
 
-      var actionObj1={};
-      var actionObj2={};
-      var actionObj3={};
-      var actionObj4={};
-      actionObj1.actionIndex=0;
-      actionObj1.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt1st;
-      actionObj1.processAction="Retry";
-      actionObj1.emailNotification=$scope.retryProcess.emailNotification1st;
-      $scope.retryProcess.actions.push(actionObj1);
+			var actionObj1={};
+			var actionObj2={};
+			var actionObj3={};
+			var actionObj4={};
+			actionObj1.actionIndex=0;
+			actionObj1.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt1st;
+			actionObj1.processAction="Retry";
+			actionObj1.emailNotification=$scope.retryProcess.emailNotification1st;
+			$scope.retryProcess.actions.push(actionObj1);
 
-      actionObj2.actionIndex=1;
-      actionObj2.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt2nd;
-      actionObj2.processAction="Retry";
-      actionObj2.emailNotification=$scope.retryProcess.emailNotification2nd;
-      $scope.retryProcess.actions.push(actionObj2);
+			actionObj2.actionIndex=1;
+			actionObj2.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt2nd;
+			actionObj2.processAction="Retry";
+			actionObj2.emailNotification=$scope.retryProcess.emailNotification2nd;
+			$scope.retryProcess.actions.push(actionObj2);
 
-      actionObj3.actionIndex=2;
-      actionObj3.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt3rd;
-      actionObj3.processAction="Retry";
-      actionObj3.emailNotification=$scope.retryProcess.emailNotification3rd;
-      $scope.retryProcess.actions.push(actionObj3);
+			actionObj3.actionIndex=2;
+			actionObj3.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt3rd;
+			actionObj3.processAction="Retry";
+			actionObj3.emailNotification=$scope.retryProcess.emailNotification3rd;
+			$scope.retryProcess.actions.push(actionObj3);
 
-      actionObj4.actionIndex=3;
-      actionObj4.daysAfterAttempt=0;
-      actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
-      actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
-      $scope.retryProcess.actions.push(actionObj4);
+			actionObj4.actionIndex=3;
+			actionObj4.daysAfterAttempt=0;
+			actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
+			actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
+			$scope.retryProcess.actions.push(actionObj4);
 
-      if(!$scope.PaymentRetryUpdating)
-      {
-        $charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
-          console.log(data);
-          if(data.response=="succeeded")
-          {
-            notifications.toast("Successfully Payment Retry Configuration Saved","success");
-            $scope.paymentRetrySubmitted=false;
+			if(!$scope.PaymentRetryUpdating)
+			{
+				$charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
+					console.log(data);
+					if(data.response=="succeeded")
+					{
+						notifications.toast("Successfully Payment Retry Configuration Saved","success");
+						$scope.paymentRetrySubmitted=false;
 
-            $scope.PaymentRetryUpdating=true;
+						$scope.PaymentRetryUpdating=true;
 
-          }
-          else
-          {
-            notifications.toast("Payment Retry Configuration Saving Failed","error");
-            $scope.paymentRetrySubmitted=false;
-          }
+					}
+					else
+					{
+						notifications.toast("Payment Retry Configuration Saving Failed","error");
+						$scope.paymentRetrySubmitted=false;
+					}
 
-        }).error(function(data) {
-          console.log(data);
-          notifications.toast("Payment Retry Configuration Saving Failed","error");
-          $scope.paymentRetrySubmitted=false;
-        })
-      }
-      else
-      {
-        $charge.notification().updateRetryProcess($scope.retryProcess).success(function(data) {
-          console.log(data);
-          if(data.response=="succeeded")
-          {
-            notifications.toast("Successfully Payment Retry Configuration Updated","success");
-            $scope.paymentRetrySubmitted=false;
+				}).error(function(data) {
+					console.log(data);
+					notifications.toast("Payment Retry Configuration Saving Failed","error");
+					$scope.paymentRetrySubmitted=false;
+				})
+			}
+			else
+			{
+				$charge.notification().updateRetryProcess($scope.retryProcess).success(function(data) {
+					console.log(data);
+					if(data.response=="succeeded")
+					{
+						notifications.toast("Successfully Payment Retry Configuration Updated","success");
+						$scope.paymentRetrySubmitted=false;
 
-            $scope.PaymentRetryUpdating=true;
+						$scope.PaymentRetryUpdating=true;
 
-          }
-          else
-          {
-            notifications.toast("Payment Retry Configuration Updating Failed","error");
-            $scope.paymentRetrySubmitted=false;
-          }
+					}
+					else
+					{
+						notifications.toast("Payment Retry Configuration Updating Failed","error");
+						$scope.paymentRetrySubmitted=false;
+					}
 
-        }).error(function(data) {
-          console.log(data);
-          notifications.toast("Payment Retry Configuration Updating Failed","error");
-          $scope.paymentRetrySubmitted=false;
-        })
-      }
+				}).error(function(data) {
+					console.log(data);
+					notifications.toast("Payment Retry Configuration Updating Failed","error");
+					$scope.paymentRetrySubmitted=false;
+				})
+			}
 
-    }
+		}
 		/*
 		 * Preferences tab end
 		 */
@@ -6031,6 +6193,216 @@
 			}, function() {
 			});
 		};
+
+		// PAYMENT GATEWAY - INTEGRATED FROM MY ACC ===============================================================================
+		$scope.isRegisteredWithStripe = false;
+		$scope.isRegButtonsShow = true;
+		$scope.isRegisteredWith2checkout = false;
+
+		$scope.loadCardDetails = function() {
+
+			$http({
+				method: 'GET',
+				url: "/azureshell/app/main/account/paymentMethod/cardHandler.php?view=getCardDetails",
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function (response) {
+
+				if(!response.data.status){
+					return;
+				}
+
+				$scope.cardDetails = response.data.data;
+
+
+				for (var i = 0; i < $scope.cardDetails.length; i++) {
+					$scope.cardDetails[i].rowId = i;
+				}
+
+			}, function (response) {
+				console.log(response);
+				$scope.cardDetails = null;
+
+			});
+
+		}
+
+		$scope.loadCardDetails();
+
+		$scope.checkPaymentMethodRegistry = function(){
+
+			$charge.paymentgateway().stripeCheckAccount().success(function (data) {
+
+				if(data.status) {
+					for (var i = 0; i < data.data.length; i++) {
+						if (data.data[i].gateway === "stripe")
+							$scope.isRegisteredWithStripe = true;
+
+						if (data.data[i].gateway === "2checkout")
+							$scope.isRegisteredWith2checkout = true;
+					}
+
+					$scope.isRegButtonsShow = false;
+
+				}
+
+			}).error(function(data) {
+				console.log( data);
+
+				$scope.isRegisteredWithStripe = false;
+				$scope.isRegisteredWith2checkout = false;
+				$scope.isRegButtonsShow = false;
+
+			});
+
+		}
+
+		$scope.checkPaymentMethodRegistry();
+
+		vm.openRegistrationMenu = function($mdOpenMenu, ev) {
+			$mdOpenMenu(ev);
+		};
+
+		$scope.proceedWithStripe = function(){
+
+
+			var confirm = $mdDialog.confirm()
+				.title('Connect with stripe')
+				.textContent('Do you want to proceed ?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$scope.isRegButtonsShow = true;
+				//$window.location.href = 'https://connect.stripe.com/oauth/authorize?response_type=code&scope=read_write&client_id=ca_9SnbSf9mKGaz5k4lelzQIQJZ3FjgQ79h';
+				$window.location.href = '/azureshell/app/main/account/paymentMethod/payment-partial.php';
+
+			}, function () {
+				$mdDialog.hide();
+
+			});
+
+
+		}
+
+		$scope.disconnectWithStripe = function(){
+
+			$scope.isRegButtonsShow = true;
+
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with stripe')
+				.textContent('Do you want to proceed with stripe disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+
+
+				$charge.paymentgateway().deactiveAcc().success(function (dataa) {
+
+					console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with stripe", "Success");
+						$scope.isRegisteredWithStripe = false;
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					console.log(data);
+					$scope.isRegButtonsShow= false;
+					notifications.toast("There is a problem, Please try again", "Error");
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.registerWithTwoCheckout = function() {
+
+
+			var confirm = $mdDialog.confirm()
+				.title('2Checkout Register')
+				.textContent('Do you want to proceed ?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function (ev) {
+
+				$mdDialog.show({
+					controller: 'GuidedPayment2CheckoutController',
+					templateUrl: 'app/main/account/dialogs/guided-payment-2checkout.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.checkPaymentMethodRegistry();
+
+					}, function() {
+
+					});
+
+			}, function () {
+				$mdDialog.hide();
+			});
+
+		}
+
+		$scope.deleteWithTwoCheckout = function() {
+
+
+			var confirm = $mdDialog.confirm()
+				.title('2Checkout disconnect')
+				.textContent('Do you want to proceed ?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().deleteClient().success(function (response) {
+
+					if(response.status){
+						$scope.isRegisteredWith2checkout = false;
+						notifications.toast("Successfully disconnected with 2checkout ", "success");
+					}else{
+						notifications.toast("2Checkout disconnection failed", "error");
+					}
+
+
+				}).error(function (response) {
+					console.log(response);
+					notifications.toast("2Checkout disconnection failed", "error");
+
+				});
+
+
+			}, function () {
+				$mdDialog.hide();
+			});
+
+		}
+		// / PAYMENT GATEWAY - INTEGRATED FROM MY ACC ==============================================================================
+
+
+
+
+
+
 		//debugger;
 
 		//$rootScope.firstLoginDitected = true;

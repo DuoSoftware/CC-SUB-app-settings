@@ -4,19 +4,19 @@
         <div layout="row" layout-align="start center">
           <i class="material-icons">share</i> <h3>New webhook</h3>
         </div>
-        <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+        <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
           <md-icon md-font-icon="icon-close"></md-icon>
         </md-button>
       </div>
     </md-toolbar>
 
-  <form name="vm.webHooks" id="webhooksForm" ng-submit="submitWebhook(enabledEditWH)" flex>
+  <form name="vm.webHooks" id="webhooksForm" ng-submit="vm.submitWebhook(vm.enabledEditWH)" flex>
     <div md-whiteframe="2dp" style="z-index: 1">
       <div class="p-16">
         <div layout="row" flex>
           <md-input-container class="md-block m-0" flex>
             <label>URL</label>
-            <input name="url" ng-required="true" type="url" ng-model="webhook.endPoint" ng-maxlength="100">
+            <input name="url" ng-required="true" type="url" ng-model="vm.webhook.endPoint" ng-maxlength="100">
             <div ng-messages="vm.webHooks.url.$error">
               <div ng-message="maxlength">Webhook URL has to be less than 100 characters long</div>
               <div ng-message="url">Invalid URL</div>
@@ -26,7 +26,7 @@
         <div layout="row" flex>
           <md-input-container class="md-block" flex="30">
             <label>Mode</label>
-            <md-select ng-required="true" flex ng-model="webhook.mode">
+            <md-select ng-required="true" flex ng-model="vm.webhook.mode">
               <md-option value="Live" selected>Live</md-option>
               <md-option value="Test">Test</md-option>
             </md-select>
@@ -34,28 +34,28 @@
         </div>
       </div>
       <div flex class="light-gray p-16">
-        <md-radio-group layout="row" layout-align="center center" ng-model="webhook.type" ng-init="webhook.type='custom'">
+        <md-radio-group layout="row" layout-align="center center" ng-model="vm.webhook.type" ng-init="vm.webhook.type='custom'">
           <md-radio-button value="custom" ng-click="webhookTypeChange('custom')" class="md-primary">Custom</md-radio-button>
           <md-radio-button value="all" ng-click="webhookTypeChange('all')" class="md-primary" selected>Select All</md-radio-button>
         </md-radio-group>
       </div>
     </div>
     <md-content class="ph-16" ms-scroll>
-      <div class="msg-empty-list text-center" ng-if="webhook.type == 'all'">
+      <div class="msg-empty-list text-center" ng-if="vm.webhook.type == 'all'">
         <span><md-icon md-font-icon="icon-check-circle"></md-icon> All webhooks are selected</span>
       </div>
-      <div layout="row" layout-align="start center" class="pv-10" ng-repeat="event in vm.webhookEventList" ng-click="null" ng-if="webhook.type == 'custom'">
+      <div layout="row" layout-align="start center" class="pv-10" ng-repeat="event in vm.webhookEventList" ng-click="null" ng-if="vm.webhook.type == 'custom'">
         <md-checkbox ng-model="event.isSelected" aria-label="Event" ng-disabled="event.isDisabled || event.isAlreadyUsed" class="md-primary m-0">{{event.eventDesc}}</md-checkbox>
       </div>
     </md-content>
 
     <md-divider></md-divider>
     <md-dialog-actions layout="row" class="bg-gray">
-      <div layout="row" class="layout-row" ng-if="!enabledEditWH">
+      <div layout="row" class="layout-row" ng-if="!vm.enabledEditWH">
         <md-progress-circular class="gen-save-indicator" ng-if="vm.webhookSubmitted"></md-progress-circular>
         <md-button ng-disabled="vm.webhookSubmitted" type="submit" class="md-raised md-accent" form="webhooksForm">Save</md-button>
       </div>
-      <div layout="row" class="layout-row" ng-if="enabledEditWH">
+      <div layout="row" class="layout-row" ng-if="vm.enabledEditWH">
         <md-progress-circular class="gen-save-indicator" ng-if="vm.webhookSubmitted"></md-progress-circular>
         <md-button ng-click="resetWebhook();">Reset</md-button>
         <md-button ng-disabled="vm.webhookSubmitted" type="submit" class="md-raised md-accent" form="webhooksForm">Update</md-button>
