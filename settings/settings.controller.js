@@ -103,7 +103,7 @@
 		};
 
 		$scope.taxGroupInfoDialog = function(ev, groupTaxData,index,code) {
-			debugger;
+
 			$mdDialog.show({
 				controller: 'TaxGroupDialogController as vm',
 				templateUrl: 'app/main/settings/dialogs/taxGroupInfoDialog.html',
@@ -303,19 +303,19 @@
 		//$scope.template.companyName="Company Name";
 
 		$charge.settings().currencies().success(function(data) {
-			//debugger;
+			//
 			for (var key in data) {
 				var dataRec=data[key];
 				$scope.currencies.push(dataRec);
 			}
-			//debugger;
+			//
 			//console.log(data);
 		}).error(function(data) {
 			console.log(data);
 		})
 
 		$charge.settings().languages().success(function(data) {
-			//debugger;
+			//
 			//for (var key in data) {
 			//    $scope.languages.push(key);
 			//}
@@ -337,11 +337,11 @@
 		$scope.querySearch =function (query) {
 
 			//Custom Filter
-			//debugger;
+			//
 			var results=[];
 			for (var i = 0; i< $scope.currencies.length;  ++i){
 				//console.log($scope.allBanks[i].value.value);
-				//debugger;
+				//
 				if($scope.currencies[i].code.toLowerCase().indexOf(query.toLowerCase()) !=-1)
 				{
 					if($scope.currencies[i].code.toLowerCase().startsWith(query.toLowerCase()))
@@ -354,7 +354,7 @@
 		}
 		$scope.setBaseCurrency=function(ev)
 		{
-			//debugger;
+			//
 			if(ev!=undefined) {
 				$scope.general.baseCurrency = ev.code;
 				// self.searchText = null;
@@ -372,7 +372,7 @@
 			var results=[];
 			for (var i = 0; i<$scope.currencies.length; ++i){
 				//console.log($scope.allBanks[i].value.value);
-				//debugger;
+				//
 				if($scope.currencies[i].code.toLowerCase().indexOf(query.toLowerCase()) !=-1)
 				{
 					if($scope.currencies[i].code.toLowerCase().startsWith(query.toLowerCase()))
@@ -401,14 +401,14 @@
 		$scope.general.userCurrency="";
 		$scope.general.currencyName="";
 		$scope.addCurrency= function (ev) {
-			debugger;
+
 			if(ev!=undefined) {
 				var currencyDet = $filter('filter')($scope.userCurrencies, {code: ev.code})[0];
 				if(currencyDet==null || currencyDet==undefined) {
 					if($scope.general.baseCurrency!=ev.code) {
 						$scope.general.userCurrency = $scope.general.userCurrency + " " + ev.code;
 						$scope.general.currencyName = $scope.general.currencyName == "" ? ev.name : $scope.general.currencyName + "," + ev.name;
-						debugger;
+
 						$scope.userCurrencies.push(ev);
 						self.searchCurrency = null;
 						$mdDialog.hide();
@@ -480,7 +480,7 @@
 			isFrequentCurrency=true;
 			isFrequentCurrencyName=true;
 			$scope.isAllGenLoaded=true;
-			//debugger;
+			//
 			$scope.baseCurrencyDet=data[0];
 			$scope.general.baseCurrency=data[0].RecordFieldData;
 			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
@@ -506,7 +506,7 @@
 
 
 			tempCurrencyCodes=[];
-			//debugger;
+			//
 			$scope.frequentCurrencies=data[4];
 			$scope.general.userCurrency=data[4].RecordFieldData;
 			tempCurrencyCodes=data[4].RecordFieldData.trimLeft().split(" ");
@@ -544,7 +544,7 @@
 
 
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
-		//  //debugger;
+		//  //
 		//  isBaseCurrency=true;
 		//  $scope.baseCurrencyDet=data;
 		//  $scope.general.baseCurrency=data[0].RecordFieldData;
@@ -552,7 +552,7 @@
 		//  $scope.general.GURecID=data[0].GuRecID;
 		//  $scope.isAllGenLoaded.push("ok");
 		//}).error(function(data) {
-		// debugger;
+		//
 		//  //$scope.general.GURecID=data[0].GuRecID;
 		//  isBaseCurrency=false;
 		//  $scope.isAllGenLoaded.push("ok");
@@ -607,7 +607,7 @@
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","FrequentCurrencies").success(function(data) {
 		//  isFrequentCurrency=true;
 		//  tempCurrencyCodes=[];
-		//  //debugger;
+		//  //
 		//  $scope.frequentCurrencies=data;
 		//  $scope.general.userCurrency=data[0].RecordFieldData;
 		//  tempCurrencyCodes=data[0].RecordFieldData.trimLeft().split(" ");
@@ -659,14 +659,15 @@
 		$scope.template.croppedLogo="";
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
 			isTemplateDet=true;
-			//debugger;
+			//
 			$scope.template.companyName=data[0].RecordFieldData;
 			$scope.template.companyAddress=data[1].RecordFieldData;
 			$scope.template.companyPhone=data[2].RecordFieldData;
 			$scope.template.companyEmail=data[3].RecordFieldData;
 			$scope.template.companyLogoPreview=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
 			$scope.template.croppedLogo=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
-			debugger;
+
+			$rootScope.companyDetailsPublic = $scope.template;
 			if($scope.template.croppedLogo!=""){
 				vm.isEditable=true;
 				//$http({
@@ -678,6 +679,7 @@
 				//
 				//});
 				$scope.cropper.croppedImage=$scope.template.croppedLogo;
+				$rootScope.companyLogoPublic=$scope.template.croppedLogo;
 			}
 			else
 				vm.isEditable=false;
@@ -691,7 +693,7 @@
 		var isFooterDet=false;
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_FooterAttributes").success(function(data) {
 			isFooterDet=true;
-			//debugger;
+			//
 			$scope.footerDet.greeting=data[0].RecordFieldData;
 			$scope.footerDet.disclaimer=data[1].RecordFieldData!=""?atob(data[1].RecordFieldData):"";
 			$scope.footerDet.GURecID=data[0].GuRecID;
@@ -703,7 +705,7 @@
 
 		$charge.flowtrans().getTranCount().success(function(data) {
 			$scope.transactionCount=data['count'];
-			//debugger;
+			//
 
 		}).error(function(data) {
 
@@ -749,7 +751,7 @@
 		//                          "FieldName": "FrequentCurrencies",
 		//                          "RecordFieldData": $scope.general.userCurrency
 		//                        }
-		//                        //debugger;
+		//                        //
 		//                        $charge.commondata().insertDuoBaseValuesAddition(req).success(function (data) {
 		//                          var req = {
 		//                            "RecordName": "CTS_GeneralAttributes",
@@ -904,7 +906,7 @@
 		$scope.imgWidth = "";
 		$scope.imgHeight = "";
 		$scope.saveGeneral = function() {
-			debugger;
+
 			if(vm.generalForm.$valid==true) {
 				$scope.generalSubmit=true;
 				if (!isBaseCurrency && !isCurrencyFormat && !isTimeZone && !isDateFormat && !isFrequentCurrency && !isFrequentCurrencyName && !isTemplateDet && !isDecimalPoint && !isFooterDet) {
@@ -1018,7 +1020,7 @@
 						"commonDatafieldDetails": $scope.generalFields,
 						"commonDataValueDetails": $scope.generalFieldValues
 					}
-					debugger;
+
 					$charge.settingsapp().store(req).success(function (data) {
 						//$scope.generalSubmit = false;
 						localStorage.removeItem('firstLogin');
@@ -1050,7 +1052,7 @@
 									"commonDatafieldDetails": $scope.companyFields,
 									"commonDataValueDetails": $scope.companyFieldValues
 								}
-								debugger;
+
 								$charge.settingsapp().store(req).success(function (data) {
 									$scope.saveFooter();
 									var req = {
@@ -1067,7 +1069,7 @@
 										"commonDatafieldDetails": $scope.footerFields,
 										"commonDataValueDetails": $scope.footerFieldValues
 									}
-									debugger;
+
 									$charge.settingsapp().store(req).success(function (data) {
 										notifications.toast("General records has been saved.", "success");
 										$scope.generalSubmit = false;
@@ -1131,7 +1133,7 @@
 							//      "commonDatafieldDetails": $scope.companyFields,
 							//      "commonDataValueDetails": $scope.companyFieldValues
 							//    }
-							//    debugger;
+							//
 							//    $charge.settingsapp().storeCompanyDetails(req).success(function (data) {
 							//      $scope.saveFooter();
 							//      var req = {
@@ -1148,7 +1150,7 @@
 							//        "commonDatafieldDetails": $scope.footerFields,
 							//        "commonDataValueDetails": $scope.footerFieldValues
 							//      }
-							//      debugger;
+							//
 							//      $charge.settingsapp().store(req).success(function (data) {
 							//        notifications.toast("General records has been saved.", "success");
 							//        $scope.generalSubmit = false;
@@ -1186,7 +1188,7 @@
 								"commonDatafieldDetails": $scope.companyFields,
 								"commonDataValueDetails": $scope.companyFieldValues
 							}
-							debugger;
+
 							$charge.settingsapp().store(req).success(function (data) {
 								$scope.saveFooter();
 								var req = {
@@ -1203,7 +1205,7 @@
 									"commonDatafieldDetails": $scope.footerFields,
 									"commonDataValueDetails": $scope.footerFieldValues
 								}
-								debugger;
+
 								$charge.settingsapp().store(req).success(function (data) {
 									notifications.toast("General records has been saved.", "success");
 									$scope.generalSubmit = false;
@@ -1332,7 +1334,7 @@
 				"FieldType": "CompanyLogoType",
 				"ColumnIndex": "4"
 			});
-			debugger;
+
 			//if($scope.cropper.croppedImage!=null)
 			//{
 			//  vm.isEditable = false;
@@ -1432,7 +1434,7 @@
 					"FieldName":"CompanyLogo",
 					"RecordFieldData":$scope.template.croppedLogo
 				}]
-			//debugger;
+			//
 			$charge.settingsapp().insertBulkDuoBaseValues(req).success(function(data) {
 				//notifications.toast("General records have been updated.", "success");
 				//$state.go($state.current, {}, {reload: true});
@@ -1482,7 +1484,7 @@
 
 		$scope.deleteFooter= function () {
 			$charge.settingsapp().deleteCommmon($scope.footerDet.GURecID).success(function (data) {
-				//debugger;
+				//
 				$scope.insertFooterIndividual();
 			}).error(function () {
 				notifications.toast("Error occured while updating Footer Record.", "error");
@@ -1501,7 +1503,7 @@
 					"FieldName":"Disclaimer",
 					"RecordFieldData":$scope.footerDet.disclaimer==undefined?"":btoa($scope.footerDet.disclaimer)
 				}]
-			//debugger;
+			//
 			$charge.settingsapp().insertBulkDuoBaseValues(req).success(function(data) {
 				notifications.toast("General records have been updated.", "success");
 				$scope.generalSubmit=false;
@@ -1526,7 +1528,7 @@
 					$scope.general.currencyName.trimRight(",");
 				}
 			}
-			debugger;
+
 			$scope.userCurrencies.splice(index,1);
 			tempCurrencyNames.splice(index,1);
 			tempCurrencyCodes.splice(index,1);
@@ -1574,13 +1576,13 @@
 		$scope.editCat=false;
 		//$charge.uom().getAllUOM('Product_123').success(function(data) {
 		//  $scope.UOMs=[];
-		//  //debugger;
+		//  //
 		//  console.log(data);
 		//  for(var i=0;i<data.length;i++)
 		//  {
-		//    //debugger;
+		//    //
 		//    $scope.UOMs.push(data[i][0]);
-		//    //debugger;
+		//    //
 		//  }
 		//}).error(function(data) {
 		//  console.log(data);
@@ -1606,7 +1608,7 @@
 		//  //console.log(data);
 		//  for(var i=0;i<data.length;i++)
 		//  {
-		//    //debugger;
+		//    //
 		//    $scope.brands.push(data[i]);
 		//  }
 		//}).error(function(data) {
@@ -1642,7 +1644,7 @@
 			//  //console.log(data);
 			//  for(var i=0;i<data.length;i++)
 			//  {
-			//    //debugger;
+			//    //
 			//    $scope.brands.push(data[i]);
 			//  }
 			//
@@ -1653,13 +1655,13 @@
 			//
 			//$charge.uom().getAllUOM('Product_123').success(function(data) {
 			//  $scope.UOMs=[];
-			//  //debugger;
+			//  //
 			//  console.log(data);
 			//  for(var i=0;i<data.length;i++)
 			//  {
-			//    //debugger;
+			//    //
 			//    $scope.UOMs.push(data[i][0]);
-			//    //debugger;
+			//    //
 			//  }
 			//}).error(function(data) {
 			//  console.log(data);
@@ -1667,7 +1669,7 @@
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 				var length = data.length;
-				// debugger;
+				//
 				$scope.planTypeList=[];
 				$rootScope.isPlanTypeLoaded=true;
 				for (var i = 0; i < length; i++) {
@@ -1858,7 +1860,7 @@
 
 			$charge.webhook().allEvents(skipAllEventsWH,takeAllEventsWH,'asc').success(function (data) {
 				console.log(data);
-				// debugger;
+				//
 				if($scope.loadingEventsWH)
 				{
 					skipAllEventsWH += takeAllEventsWH;
@@ -1885,7 +1887,7 @@
 
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
 				console.log(data);
-				// debugger;
+				//
 				if($scope.loadingWebhooks)
 				{
 					skipAllWebhooks += takeAllWebhooks;
@@ -1956,7 +1958,7 @@
 			$scope.loadingWebhooks = true;
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
 				console.log(data);
-				// debugger;
+				//
 				if($scope.loadingWebhooks)
 				{
 					skipAllWebhooks += takeAllWebhooks;
@@ -2090,7 +2092,7 @@
 					{
 						$charge.webhook().createWH(webhookObj).success(function (data) {
 							console.log(data);
-							// debugger;
+							//
 							if(data.error=="00000")
 							{
 								notifications.toast("Webhook Created Successfully", "success");
@@ -2151,7 +2153,7 @@
 					{
 						$charge.webhook().updateWH(webhookObj).success(function (data) {
 							console.log(data);
-							// debugger;
+							//
 							if(data.error=="00000")
 							{
 								notifications.toast("Webhook Updated Successfully", "success");
@@ -2219,7 +2221,7 @@
 
 			$charge.storage().allTemplates().success(function (data) {
 				console.log(data);
-				// debugger;
+				//
 				if($scope.loadingEmailTemplates)
 				{
 					for (var i = 0; i < data.result.length; i++) {
@@ -2246,7 +2248,7 @@
 
 		$scope.getDefaultEmailTemplate= function () {
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_EmailTemplates", "TemplateUrl").success(function (data) {
-				// debugger;
+				//
 				$scope.defaultEmailTemplate=data[0][0].RecordFieldData;
 				$scope.defaultEmailTemplateID=data[0][0].GuRecID;
 				$scope.selectChangeTemplate($scope.defaultEmailTemplate);
@@ -2266,7 +2268,7 @@
 		//  //console.log(data);
 		//  for(var i=0;i<data.length;i++)
 		//  {
-		//    //debugger;
+		//    //
 		//    $scope.stores.push(data[i]);
 		//  }
 		//}).error(function(data) {
@@ -2276,7 +2278,7 @@
 		$scope.loadInventoryAttributes= function () {
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 				var length = data.length;
-				// debugger;
+				//
 				$scope.stores=[];
 				$rootScope.isStoreLoaded=true;
 				for (var i = 0; i < length; i++) {
@@ -2427,7 +2429,7 @@
 
 		$scope.submitBrands= function () {
 			if (vm.brands.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.updateBraEnable) {
 					$scope.addBrand();
 				}
@@ -2460,7 +2462,7 @@
 			}
 			if(countBrand==0) {
 				$charge.settingsapp().update(req).success(function (data) {
-					//debugger;
+					//
 					if (data.count > 0) {
 						notifications.toast("Brand has been updated.", "success");
 						$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes", "Brand").success(function (data) {
@@ -2496,7 +2498,7 @@
 
 		$scope.submitStore= function () {
 			if (vm.stores.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.editInventory) {
 					$scope.addStore();
 				}
@@ -2532,7 +2534,7 @@
 							"FieldName": "Store",
 							"RecordFieldData": ev
 						}
-						debugger;
+
 						$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 							//console.log(data);
 							notifications.toast("Store has been added.", "success");
@@ -2551,7 +2553,7 @@
 
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 								var length = data.length;
-								// debugger;
+								//
 								$scope.stores=[];
 								$rootScope.isStoreLoaded=true;
 								for (var i = 0; i < length; i++) {
@@ -2624,7 +2626,7 @@
 									"ColumnIndex": "1"
 								}]
 						}
-						//debugger;
+						//
 						$charge.settingsapp().store(req).success(function (data) {
 							$rootScope.isStoreLoaded = true;
 							notifications.toast("Store has been added.", "success");
@@ -2641,7 +2643,7 @@
 
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 								var length = data.length;
-								// debugger;
+								//
 								$scope.stores=[];
 								$rootScope.isStoreLoaded=true;
 								for (var i = 0; i < length; i++) {
@@ -2710,7 +2712,7 @@
 			}
 			if(countStore==0) {
 				$charge.settingsapp().update(req).success(function (data) {
-					debugger;
+
 					if (data.count > 0) {
 						notifications.toast("Store has been updated.", "success");
 //              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
@@ -2729,7 +2731,7 @@
 
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 							var length = data.length;
-							// debugger;
+							//
 							$scope.stores=[];
 							$rootScope.isStoreLoaded=true;
 							for (var i = 0; i < length; i++) {
@@ -2773,7 +2775,7 @@
 
 		$scope.deleteAdditionalInv= function (ev) {
 			$charge.settingsapp().delete(ev).success(function(data) {
-				//debugger;
+				//
 			}).error(function(data) {
 
 			})
@@ -2794,7 +2796,7 @@
 						"FieldName": "DefaultStockLevel",
 						"RecordFieldData": $scope.inventory.defaultstocklevel
 					}
-					//debugger;
+					//
 					$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 						//console.log(data);
 						if ($scope.inventory.defaultstockDetails != undefined || $scope.inventory.defaultstockDetails != null) {
@@ -2864,17 +2866,17 @@
 
 			if(countUOM==0) {
 				$charge.uom().updateUOM(req).success(function (data) {
-					debugger;
+
 					if (data.count > 0) {
 						notifications.toast("UOM has been updated.", "success");
 						$charge.uom().getAllUOM('Product_123').success(function (data) {
 							$scope.UOMs = [];
-							//debugger;
+							//
 							console.log(data);
 							for (var i = 0; i < data.length; i++) {
-								//debugger;
+								//
 								$scope.UOMs.push(data[i][0]);
-								//debugger;
+								//
 							}
 
 							$scope.editUnit = "";
@@ -2904,7 +2906,7 @@
 
 		$scope.submitUOM = function() {
 			if (vm.unitOfMeasure.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.updateUomEnable) {
 					$scope.addUOM();
 				}
@@ -2918,7 +2920,7 @@
 		$scope.addUOM= function () {
 			var ev = $scope.product.uom;
 			$scope.addUomDisabled = true;
-			debugger;
+
 			if (ev != null && ev != "") {
 				var isDuplicate = false;
 				if ($scope.UOMs.length != 0) {
@@ -2953,12 +2955,12 @@
 						notifications.toast("UOM has been added.", "success");
 						$charge.uom().getAllUOM('Product_123').success(function (data) {
 							$scope.UOMs = [];
-							//debugger;
+							//
 							console.log(data);
 							for (var i = 0; i < data.length; i++) {
-								//debugger;
+								//
 								$scope.UOMs.push(data[i][0]);
-								//debugger;
+								//
 							}
 							$scope.product.uom = "";
 							$scope.addUomDisabled = false;
@@ -2985,7 +2987,7 @@
 		$scope.submitPlan= function (state) {
 			$scope.updateUomEnable = state;
 			if (vm.planType.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.updateUomEnable) {
 					$scope.addPlan();
 				}
@@ -3051,7 +3053,7 @@
 							"FieldName": "PlanType",
 							"RecordFieldData": ev
 						}
-						debugger;
+
 						$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 							//console.log(data);
 							notifications.toast("Type has been added.", "success");
@@ -3070,7 +3072,7 @@
 							//})
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 								var length = data.length;
-								// debugger;
+								//
 								$scope.planTypeList=[];
 								$rootScope.isPlanTypeLoaded=true;
 								for (var i = 0; i < length; i++) {
@@ -3123,7 +3125,7 @@
 									"ColumnIndex": "0"
 								}]
 						}
-						//debugger;
+						//
 						$charge.settingsapp().store(req).success(function (data) {
 							$rootScope.isPlanTypeLoaded = true;
 							notifications.toast("Type has been added.", "success");
@@ -3141,7 +3143,7 @@
 
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 								var length = data.length;
-								// debugger;
+								//
 								$scope.planTypeList=[];
 								$rootScope.isPlanTypeLoaded=true;
 								for (var i = 0; i < length; i++) {
@@ -3214,7 +3216,7 @@
 			}
 			if(countPlan==0) {
 				$charge.settingsapp().update(req).success(function (data) {
-					debugger;
+
 					if (data.count > 0) {
 						notifications.toast("Type has been updated.", "success");
 //              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
@@ -3233,7 +3235,7 @@
 
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 							var length = data.length;
-							// debugger;
+							//
 							$scope.planTypeList=[];
 							$rootScope.isPlanTypeLoaded=true;
 							for (var i = 0; i < length; i++) {
@@ -3279,9 +3281,9 @@
 		}
 
 		$scope.deletePlan= function (ev,index) {
-			debugger;
+
 			$charge.settingsapp().delete(ev).success(function(data) {
-				//debugger;
+				//
 				$scope.planTypeList.splice(index,1);
 			}).error(function(data) {
 				console.log(data);
@@ -3698,7 +3700,7 @@
 		$scope.addCategoryDisabled = false;
 		$scope.submitCategories = function() {
 			if (vm.categories.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.updateCatEnable) {
 					$scope.addCat();
 				}
@@ -3841,7 +3843,7 @@
 			}
 			if(countCat==0) {
 				$charge.settingsapp().update(req).success(function (data) {
-					//debugger;
+					//
 					if (data.count > 0) {
 						notifications.toast("Category has been updated.", "success");
 						$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes", "Category").success(function (data) {
@@ -3882,9 +3884,9 @@
 		}
 
 		$scope.deleteCommonData= function (ev,index) {
-			//debugger;
+			//
 			$charge.settingsapp().delete(ev).success(function(data) {
-				//debugger;
+				//
 				if(ev.ColumnIndex=="0")
 					$scope.categories.splice(index,1);
 				else if(ev.ColumnIndex=="1")
@@ -3895,9 +3897,9 @@
 		}
 
 		$scope.deleteStore= function (ev,index) {
-			debugger;
+
 			$charge.settingsapp().delete(ev).success(function(data) {
-				//debugger;
+				//
 				$scope.stores.splice(index,1);
 			}).error(function(data) {
 				console.log(data);
@@ -3905,9 +3907,9 @@
 		}
 
 		$scope.deleteUOM= function (ev,index) {
-			//debugger;
+			//
 			$charge.uom().delete(ev.GUUOMID).success(function(data) {
-				//debugger;
+				//
 				$scope.UOMs.splice(index,1);
 			}).error(function(data) {
 				console.log(data);
@@ -3975,21 +3977,21 @@
 		$scope.showReminderInfo = function (ev, index) {
 			$scope.reminderInfo.push($scope.invoiceReminders[index]);
 
-			debugger;
-			$mdDialog.show({
-				controller: 'ReminderDialogController as vm',
-				templateUrl: 'app/main/settings/dialogs/reminderDialogInfo.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose:true,
-				locals: {
-					reminderTypeDefault:'Before',
-					rowIndex:index,
-					reminderCon:$scope.invoiceReminders[index]
-				}
-			})
-				.then(function(reminders) {
-				})
+			//
+			// $mdDialog.show({
+			// 	controller: 'ReminderDialogController as vm',
+			// 	templateUrl: 'app/main/settings/dialogs/reminderDialogInfo.html',
+			// 	parent: angular.element(document.body),
+			// 	targetEvent: ev,
+			// 	clickOutsideToClose:true,
+			// 	locals: {
+			// 		reminderTypeDefault:'Before',
+			// 		rowIndex:index,
+			// 		reminderCon:$scope.invoiceReminders[index]
+			// 	}
+			// })
+			// 	.then(function(reminders) {
+			// 	})
 
 		}
 
@@ -4004,7 +4006,8 @@
 				locals: {
 					reminderTypeDefault:'Before',
 					rowIndex:index,
-					reminderCon:$scope.invoiceReminders[index]
+					reminderCon:$scope.invoiceReminders[index],
+					showReminderInfo: $scope.showReminderInfo
 				}
 			})
 				.then(function(reminders) {
@@ -4018,7 +4021,7 @@
 		}
 
 		$scope.turnOffReminder= function (index) {
-			//debugger;
+			//
 			$scope.invoiceReminders[index]['isDisabled']=!$scope.invoiceReminders[index]['isDisabled'];
 		}
 
@@ -4041,7 +4044,7 @@
 		$scope.invoice.prefixLength=0;
 		$scope.loadInvoiceAttributes= function () {
 			$scope.dueTermsLoaded = false;
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,FirstReminder,RecurringReminder,InvoiceTerms,CreditLimit").success(function(data) {
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,InvoiceTerms,CreditLimit").success(function(data) {
 				var length=data.length;
 				for(var i=0;i<length;i++)
 				{
@@ -4070,13 +4073,13 @@
 						$scope.invoice.allowPartialPay = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
 						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes=true : $scope.togglePaymentsYes=false : $scope.togglePaymentsYes=false;
 					}
-					if(obj.ColumnIndex=="6") {
-						$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-						$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-					}
-					if(obj.ColumnIndex=="7") {
-						$scope.invoice.RecurrReminder = obj.RecordFieldData;
-					}
+					// if(obj.ColumnIndex=="6") {
+					// 	$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+					// 	$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+					// }
+					// if(obj.ColumnIndex=="7") {
+					// 	$scope.invoice.RecurrReminder = obj.RecordFieldData;
+					// }
 					if (obj.ColumnIndex == "8") {
 						$scope.invoiceTerms = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[{
 								"termName":"NET-15",
@@ -4093,12 +4096,12 @@
 						obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
 					}
 				}
-				//debugger;
+				//
 				$scope.dueTermsLoaded = true;
 				isInvoiceLoaded=true;
 				if($scope.invoiceTerms.length==0)
 					$scope.addNewReminder(0);
-				//debugger;
+				//
 			}).error(function(data) {
 				$scope.dueTermsLoaded = true;
 				isInvoiceLoaded=false;
@@ -4185,7 +4188,7 @@
 			$scope.editOn=!$scope.editOn;
 		}
 		$scope.toggleSwitch= function (ev,ctrl) {
-			//debugger;
+			//
 			if(ctrl=="discount") {
 				if (ev) {
 					$scope.toggleDiscYes = true;
@@ -4354,7 +4357,7 @@
 		}
 
 		$scope.deleteInvoiceSettings= function (ev) {
-			//debugger;
+			//
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
@@ -4371,12 +4374,12 @@
 				$scope.addTermsDisabled = true;
 
 				vm.invoiceSubmit=true;
-				debugger;
+
 				if(isInvoiceLoaded) {
 					//var address = $filter('filter')($scope.invoiceSettings, { RecordFieldData: invoice.person_name })[0];
 					if ($scope.invoicePrefix == $scope.invoice.invoicePrefix) {
 						for (var i = 0; i < $scope.invoiceSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deleteInvoiceSettings($scope.invoiceSettings[i]);
 						}
 						var req = [{
@@ -4429,7 +4432,7 @@
 								"FieldName": "CreditLimit",
 								"RecordFieldData": $scope.invoice.enablecreditLimit==true?$scope.invoice.creditLimit:-1
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							vm.invoiceSubmit=false;
 							notifications.toast("Invoice settings has been applied.", "success");
@@ -4488,12 +4491,12 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
 									}
 								}
-								//debugger;
+								//
 								isInvoiceLoaded = true;
 								if($scope.invoiceTerms.length==0)
 									$scope.addNewReminder(0);
 								$scope.addTermsDisabled = false;
-//debugger;
+//
 							}).error(function (data) {
 								$scope.addTermsDisabled = false;
 								isInvoiceLoaded = false;
@@ -4509,7 +4512,7 @@
 						//if($scope.transactionCount== 0)
 						//{
 						for (var i = 0; i < $scope.invoiceSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deleteInvoiceSettings($scope.invoiceSettings[i]);
 						}
 						var req = [{
@@ -4562,7 +4565,7 @@
 								"FieldName": "CreditLimit",
 								"RecordFieldData": $scope.invoice.enablecreditLimit==true?$scope.invoice.creditLimit:-1
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Invoice settings has been applied.", "success");
 							vm.invoiceSubmit=false;
@@ -4621,12 +4624,12 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
 									}
 								}
-								//debugger;
+								//
 								isInvoiceLoaded = true;
 								if($scope.invoiceTerms.length==0)
 									$scope.addNewReminder(0);
 								$scope.addTermsDisabled = false;
-//debugger;
+//
 							}).error(function (data) {
 								isInvoiceLoaded = false;
 								$scope.addTermsDisabled = false;
@@ -4647,7 +4650,7 @@
 				}
 				else
 				{
-					debugger;
+
 					var req= {
 						"GURecID":"",
 						"RecordType":"CTS_InvoiceAttributes",
@@ -4835,12 +4838,12 @@
 									obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
 								}
 							}
-							//debugger;
+							//
 							isInvoiceLoaded = true;
 							if($scope.invoiceTerms.length==0)
 								$scope.addNewReminder(0);
 							$scope.addTermsDisabled = false;
-//debugger;
+//
 						}).error(function (data) {
 							isInvoiceLoaded = false;
 							$scope.addTermsDisabled = false;
@@ -4859,13 +4862,13 @@
 		$scope.quotation={};
 		vm.quotationSubmit=false;
 		$scope.saveQuotation= function () {
-			debugger;
+
 			if(vm.quotations.$valid==true) {
 				vm.quotationSubmit=true;
 				if (isQuotationLoaded) {
 					if ($scope.quotationPrefix == $scope.quotation.quotationPrefix) {
 						for (var i = 0; i < $scope.quotationSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deleteQuotationSettings($scope.quotationSettings[i]);
 						}
 						var req = [{
@@ -4888,7 +4891,7 @@
 								"FieldName": "QuotationSIVEA",
 								"RecordFieldData": $scope.quotation.sendQuotation == true ? 1 : 0
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Quotation settings has been applied.", "success");
 							vm.quotationSubmit=false;
@@ -4917,9 +4920,9 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes = true : $scope.tgInvoiceQuoteYes = false : $scope.tgInvoiceQuoteYes = false;
 									}
 								}
-								//debugger;
+								//
 								isQuotationLoaded = true;
-								//debugger;
+								//
 							}).error(function (data) {
 								isQuotationLoaded = false;
 							})
@@ -4931,7 +4934,7 @@
 					else {
 						//if ($scope.transactionCount == 0) {
 						for (var i = 0; i < $scope.quotationSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deleteQuotationSettings($scope.quotationSettings[i]);
 						}
 						var req = [{
@@ -4954,7 +4957,7 @@
 								"FieldName": "QuotationSIVEA",
 								"RecordFieldData": $scope.quotation.sendQuotation == true ? 1 : 0
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Quotation settings has been applied.", "success");
 							vm.quotationSubmit=false;
@@ -4983,9 +4986,9 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes = true : $scope.tgInvoiceQuoteYes = false : $scope.tgInvoiceQuoteYes = false;
 									}
 								}
-								//debugger;
+								//
 								isQuotationLoaded = true;
-								//debugger;
+								//
 							}).error(function (data) {
 								isQuotationLoaded = false;
 							})
@@ -5002,7 +5005,7 @@
 					}
 				}
 				else {
-					debugger;
+
 					var req = {
 						"GURecID": "",
 						"RecordType": "CTS_QuotationAttributes",
@@ -5095,9 +5098,9 @@
 									obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes = true : $scope.tgInvoiceQuoteYes = false : $scope.tgInvoiceQuoteYes = false;
 								}
 							}
-							//debugger;
+							//
 							isQuotationLoaded = true;
-							//debugger;
+							//
 						}).error(function (data) {
 							isQuotationLoaded = false;
 						})
@@ -5111,7 +5114,7 @@
 
 
 		$scope.deleteQuotationSettings= function (ev) {
-			//debugger;
+			//
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
@@ -5127,7 +5130,7 @@
 		}
 
 		$scope.toggleQuotSwitch= function (ev,ctrl) {
-			//debugger;
+			//
 			if(ctrl=="discount") {
 				if (ev) {
 					$scope.tgDiscQuoteYes = true;
@@ -5176,9 +5179,9 @@
 						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes=true : $scope.tgInvoiceQuoteYes=false : $scope.tgInvoiceQuoteYes=false;
 					}
 				}
-				//debugger;
+				//
 				isQuotationLoaded=true;
-				//debugger;
+				//
 			}).error(function(data) {
 				isQuotationLoaded=false;
 			})
@@ -5231,7 +5234,7 @@
 				if (isPaymentLoaded) {
 					if ($scope.paymentPrefix == $scope.payment.paymentPrefix) {
 						for (var i = 0; i < $scope.paymentSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deletePaymentSettings($scope.paymentSettings[i]);
 						}
 						var req = [{
@@ -5244,7 +5247,7 @@
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							vm.paymentSubmit=false;
 							notifications.toast("Payment settings has been applied.", "success");
@@ -5265,9 +5268,9 @@
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
 								}
-								//debugger;
+								//
 								isPaymentLoaded = true;
-								//debugger;
+								//
 							}).error(function (data) {
 								isPaymentLoaded = false;
 							})
@@ -5279,7 +5282,7 @@
 					else {
 						//if ($scope.transactionCount == 0) {
 						for (var i = 0; i < $scope.paymentSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deletePaymentSettings($scope.paymentSettings[i]);
 						}
 						var req = [{
@@ -5292,7 +5295,7 @@
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
 							}]
-						debugger;
+
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Payment settings has been applied.", "success");
 							vm.paymentSubmit=false;
@@ -5313,9 +5316,9 @@
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
 								}
-								//debugger;
+								//
 								isPaymentLoaded = true;
-								//debugger;
+								//
 							}).error(function (data) {
 								isPaymentLoaded = false;
 							})
@@ -5332,7 +5335,7 @@
 					}
 				}
 				else {
-					debugger;
+
 					var req = {
 						"GURecID": "",
 						"RecordType": "CTS_PaymentAttributes",
@@ -5393,9 +5396,9 @@
 									localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 								}
 							}
-							//debugger;
+							//
 							isPaymentLoaded = true;
-							//debugger;
+							//
 						}).error(function (data) {
 							isPaymentLoaded = false;
 						})
@@ -5429,12 +5432,33 @@
 						$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 					}
 				}
-				//debugger;
+				//
 				isPaymentLoaded=true;
-				//debugger;
+				//
 			}).error(function(data) {
 				isPaymentLoaded=false;
 			})
+			$scope.remindersInPaymentLoaded = false;
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
+				var length = data.length;
+				for (var i = 0; i < length; i++) {
+					var obj = data[i][0];
+					$scope.invoiceSettings.push(data[i][0]);
+					if(obj.ColumnIndex=="6") {
+						$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+						$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+					}
+					if(obj.ColumnIndex=="7") {
+						$scope.invoice.RecurrReminder = obj.RecordFieldData;
+					}
+				}
+				$scope.remindersInPaymentLoaded = true;
+
+			}).error(function (data) {
+				$scope.addNewReminder(0);
+				$scope.remindersInPaymentLoaded = false;
+			});
+
 
 			$scope.PaymentRetryUpdating=false;
 
@@ -5509,7 +5533,7 @@
 		}
 
 		$scope.deletePaymentSettings= function (ev) {
-			//debugger;
+			//
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
@@ -5646,7 +5670,7 @@
 		$scope.isIndTaxLoaded = false;
 		$scope.loadIndividualTaxes= function () {
 			$charge.tax().all(skip,take,"asc").success(function(data) {
-				//debugger;
+				//
 				skip += take;
 				if(response=="") {
 					//if($scope.loading) {
@@ -5678,7 +5702,7 @@
 		$scope.isGrpTaxLoaded = false;
 		$scope.loadTaxGrps= function () {
 			$charge.tax().allgroups(skipGrp,takeGrp,"asc").success(function(data) {
-				//debugger;
+				//
 				skipGrp += takeGrp;
 				if(response=="") {
 					//if($scope.loading) {
@@ -5733,10 +5757,10 @@
 		//$scope.updateTax=function(ev,index)
 		//{
 		//
-		//  debugger;
+		//
 		//  $scope.taxHeader={};
 		//  $scope.isUpdate=true;
-		//  //debugger;
+		//  //
 		//  $charge.tax().getTaxByIDs(ev.taxid).success(function(data) {
 		//    console.log(data);
 		//    $scope.taxHeader.taxcode=ev.taxcode;
@@ -5797,7 +5821,7 @@
 		//$scope.individualSubmit=false;
 		//$scope.submitTax=function(type,index)
 		//{
-		//  debugger;
+		//
 		//  if(vm.editTaxForm.$valid==true) {
 		//    $scope.individualSubmit=true;
 		//    if ($scope.taxHeader.taxcode != undefined && $scope.taxHeader.taxcode != "") {
@@ -5876,7 +5900,7 @@
 		//            "taxdetails": $scope.taxdetails
 		//          }
 		//          $charge.tax().updateTax(req).success(function (data) {
-		//            debugger;
+		//
 		//            notifications.toast("Tax has been updated.", "success");
 		//            $scope.individualSubmit = false;
 		//            var taxHd = req;
@@ -5945,7 +5969,7 @@
 		//            else {
 		//            }
 		//          }
-		//          //debugger;
+		//          //
 		//          if (taxHeader.taxtype == true) {
 		//            taxHeader.taxtype = 1;
 		//            if (taxHeader.amount == "Amount")
@@ -5972,7 +5996,7 @@
 		//          }
 		//
 		//          $charge.tax().storeTax(req).success(function (data) {
-		//            debugger;
+		//
 		//            $scope.individualSubmit=false;
 		//            var taxHd = req;
 		//            taxHd.taxid = data.id;
@@ -5987,7 +6011,7 @@
 		//            $scope.taxGroupList = [];
 		//            var skipGrp = 0, takeGrp = 100;
 		//            $charge.tax().allgroups(skipGrp, takeGrp, "asc").success(function (data) {
-		//              debugger;
+		//
 		//              notifications.toast("Tax has been added.", "success");
 		//              skipGrp += takeGrp;
 		//              if (response == "") {
@@ -6066,9 +6090,9 @@
 		//}
 
 		$scope.deleteTax= function (ev,index) {
-			debugger;
+
 			$charge.tax().deleteTax(ev.taxid).success(function(data) {
-				debugger;
+
 				notifications.toast("Tax has been deleted.", "success");
 				$scope.fixedRates.splice(index,1);
 			}).error(function(data) {
@@ -6098,7 +6122,7 @@
 		//  if(code == "showTaxList"){
 		//    $scope.childTaxesDisplay = true;
 		//  }
-		//  debugger;
+		//
 		//  $scope.taxGrpHeader={};
 		//  $scope.isUpdateGrp=true;
 		//
@@ -6116,7 +6140,7 @@
 		//      }
 		//      //data.groupDetail[data.groupDetail.length - 1].newItem = true;
 		//      $scope.taxgrpdetails=data.groupDetail;
-		//      debugger;
+		//
 		//    }
 		//    else
 		//    {
@@ -6139,7 +6163,7 @@
 
 		$scope.deleteTaxGrp= function (ev,index) {
 			$charge.tax().deleteTaxGrp(ev.taxgroupid).success(function(data) {
-				debugger;
+
 				notifications.toast("Tax Group has been deleted.", "success");
 				$scope.taxGroupList.splice(index,1);
 			}).error(function(data) {
@@ -6403,7 +6427,7 @@
 
 
 
-		//debugger;
+		//
 
 		//$rootScope.firstLoginDitected = true;
 		//if($rootScope.firstLoginDitected === true){
@@ -6414,7 +6438,7 @@
 		//$scope.isUpdateGrp=false;
 		//vm.taxGrpSubmit=false;
 		//$scope.submitTaxGrp= function () {
-		//  debugger;
+		//
 		//  if($scope.taxgrpdetails.length!=0) {
 		//    if (vm.taxGrpForm.$valid == true) {
 		//      vm.taxGrpSubmit = true;
@@ -6459,9 +6483,9 @@
 		//            "status": status,
 		//            "taxiddetails": $scope.taxiddetails
 		//          }
-		//          debugger;
+		//
 		//          $charge.tax().updateTaxGrp(req).success(function (data) {
-		//            debugger;
+		//
 		//            notifications.toast("Tax Group has been updated.", "success");
 		//            vm.taxGrpSubmit = false;
 		//            var taxgroup = req;
@@ -6524,9 +6548,9 @@
 		//            "taxiddetails": $scope.taxiddetails
 		//          }
 		//
-		//          debugger;
+		//
 		//          $charge.tax().storeTaxGrp(req).success(function (data) {
-		//            debugger;
+		//
 		//            vm.taxGrpSubmit = false;
 		//            notifications.toast("Tax Group has been added.", "success");
 		//            var taxgroup = req;

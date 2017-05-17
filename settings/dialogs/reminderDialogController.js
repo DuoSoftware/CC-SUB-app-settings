@@ -17,11 +17,12 @@
     .controller('ReminderDialogController', ReminderDialogController);
 
   /** @ngInject */
-  function ReminderDialogController($mdDialog, $scope,reminderTypeDefault,rowIndex,reminderCon)
+  function ReminderDialogController($mdDialog, $scope,reminderTypeDefault,rowIndex,reminderCon,showReminderInfo)
   {
     var vm=this;
     $scope.invoiceReminder={};
     $scope.invoiceReminder.reminderType=reminderTypeDefault;
+    $scope.showReminderInfo = showReminderInfo;
 
     if(reminderCon!=undefined || reminderCon!='' ||reminderCon !=null)
       $scope.invoiceReminder=angular.copy(reminderCon);
@@ -36,6 +37,7 @@
           $scope.invoiceReminder.chkDisabled=false;
         $mdDialog.hide($scope.invoiceReminder);
       }
+		$scope.showReminderInfo();
     }
 
     $scope.checkReminderType= function (type) {

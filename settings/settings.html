@@ -662,43 +662,6 @@
                             </md-card>
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
-                                    <div layout="row" layout-align="space-between center" flex>
-                                        <div layout="row"><md-icon md-font-icon="icon-calendar-clock"></md-icon> <h3>Reminders</h3></div>
-                                        <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addReminder()"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
-                                    </div>
-                                </md-card-title>
-                                <div class="list-header" layout="row">
-                                    <div flex layout-align="center start">Reminder</div>
-                                    <div flex="5"></div>
-                                    <div flex="10" class="text-right">Actions</div>
-                                </div>
-                                <md-card-content style="padding: 0">
-                                    <div>
-                                        <div class="preloader" ng-if="!dueTermsLoaded">
-                                            <md-progress-circular></md-progress-circular>
-                                        </div>
-                                        <div layout="row" layout-align="start center" class="action-row" ng-repeat="invoiceReminder in invoiceReminders">
-                                            <div flex layout="row" layout-align="start center">
-                                                <span>Reminder - </span> {{invoiceReminder.No}} <md-button class="md-icon-button" ng-click="showReminderInfo($event, $index)"><md-icon md-font-icon="icon-information" style="color: rgba(0, 0, 0, 0.21);"></md-icon></md-button>
-                                                <span class="pill disabled" layout="row" layout-align="center center" ng-show="invoiceReminder.isDisabled">Disabled</span>
-                                                <span class="pill enabled" layout="row" layout-align="center center" ng-hide="invoiceReminder.isDisabled">Enabled</span>
-                                            </div>
-                                            <div>
-                                                <md-button ng-if="invoiceReminder.isDisabled" ng-click="showReminderDialog($event,$index);" class="md-accent" style="margin-right: 5px">Turn on</md-button>
-                                                <md-button ng-if="!invoiceReminder.isDisabled" ng-click="turnOffReminder($index);" class="md-warn">Turn off</md-button>
-                                                <md-button ng-click="removeReminder($index)" class="md-icon-button md-warn action-row-remove"><md-icon md-font-icon="icon-close-circle"></md-icon> <md-tooltip>Delete</md-tooltip></md-button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </md-card-content>
-                                <!--<md-card-actions>-->
-                                    <!--<div layout="row" class="plan_footer" layout-align="end center">-->
-                                        <!--<md-button class="md-icon-button md-accent m-5" ng-click="addReminder()"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add reminder</md-tooltip> </md-button>-->
-                                    <!--</div>-->
-                                <!--</md-card-actions>-->
-                            </md-card>
-                            <md-card flex class="input-block-gen">
-                                <md-card-title>
                                     <div layout="row" layout-align="start center">
                                         <md-icon md-font-icon="icon-star"></md-icon> <h3>Other</h3>
                                     </div>
@@ -823,9 +786,60 @@
                                                         </div>
                                                     </md-card-content>
                                                 </md-card>
-
+                                                <md-card flex class="input-block-gen">
+                                                    <md-card-title>
+                                                        <div layout="row" layout-align="space-between center" flex>
+                                                            <div layout="row"><md-icon md-font-icon="icon-calendar-clock"></md-icon> <h3>Reminders</h3></div>
+                                                            <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addReminder()"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                                        </div>
+                                                    </md-card-title>
+                                                    <div class="list-header" layout="row">
+                                                        <div flex layout-align="center start">Reminder name</div>
+                                                        <div flex layout-align="center start">Reminder</div>
+                                                        <div flex="20" class="text-right">Actions</div>
+                                                    </div>
+                                                    <md-card-content class="p-0">
+                                                        <div>
+                                                            <div class="preloader" ng-if="!remindersInPaymentLoaded">
+                                                                <md-progress-circular></md-progress-circular>
+                                                            </div>
+                                                            <div layout="row" layout-align="start center" class="action-row" ng-repeat="invoiceReminder in invoiceReminders">
+                                                                <div flex layout="row" layout-align="start center">
+                                                                    <div flex layout="row" layout-align="start center">
+                                                                        <span>Reminder - </span> {{invoiceReminder.No}}
+                                                                        <span class="pill disabled" layout="row" layout-align="center center" ng-show="invoiceReminder.isDisabled">Disabled</span>
+                                                                        <span class="pill enabled" layout="row" layout-align="center center" ng-hide="invoiceReminder.isDisabled">Enabled</span>
+                                                                    </div>
+                                                                    <!--<md-button class="md-icon-button" ng-click="showReminderInfo($event, $index)"><md-icon md-font-icon="icon-information" style="color: rgba(0, 0, 0, 0.21);"></md-icon></md-button>-->
+                                                                    <div layout="row" layout-align="start center" flex>
+                                                                        <div ng-if="invoiceReminder.isDisabled">
+                                                                            <i class="op-5">This reminder is off</i>
+                                                                        </div>
+                                                                        <div ng-if="!invoiceReminder.isDisabled">
+                                                                            <span ng-hide="invoiceReminder.ReminderType == 'OnDueDate'">
+                                                                            <span class="md-accent">{{invoiceReminder.ReminderDays}}</span>&nbsp;day<span ng-if="invoiceReminder.ReminderDays>1">s</span>&nbsp;
+                                                                            </span>
+                                                                            <span ng-if="invoiceReminder.ReminderType == 'Before'"> <b>before</b> the due date.</span>
+                                                                            <span ng-if="invoiceReminder.ReminderType == 'OnDueDate'"> <b ng-class="{'caps':invoiceReminder.ReminderType == 'OnDueDate'}">on</b> the due date.</span>
+                                                                            <span ng-if="invoiceReminder.ReminderType == 'After'"> <b>after</b> the due date.</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div flex="20" layout-align="end center" layout="row">
+                                                                    <md-button ng-if="invoiceReminder.isDisabled" ng-click="showReminderDialog($event,$index);" class="md-accent" style="margin-right: 5px">Turn on</md-button>
+                                                                    <md-button ng-if="!invoiceReminder.isDisabled" ng-click="turnOffReminder($index);" class="md-warn">Turn off</md-button>
+                                                                    <md-button ng-click="removeReminder($index)" class="md-icon-button md-warn action-row-remove"><md-icon md-font-icon="icon-close-circle"></md-icon> <md-tooltip>Delete</md-tooltip></md-button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </md-card-content>
+                                                    <!--<md-card-actions>-->
+                                                    <!--<div layout="row" class="plan_footer" layout-align="end center">-->
+                                                    <!--<md-button class="md-icon-button md-accent m-5" ng-click="addReminder()"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add reminder</md-tooltip> </md-button>-->
+                                                    <!--</div>-->
+                                                    <!--</md-card-actions>-->
+                                                </md-card>
                                                 <div flex></div>
-
                                             </div>
                                         </form>
                                     </md-content>
@@ -1135,7 +1149,7 @@
                             <div layout="row" class="layout-row">
                                 <md-progress-circular class="gen-save-indicator" ng-if="vm.paymentSubmit"></md-progress-circular>
                                 <md-button ng-click="clearPaymentFields();">Reset</md-button>
-                                <md-button ng-disabled="vm.paymentSubmit" type="submit" class="md-raised md-accent">Save</md-button>
+                                <md-button ng-disabled="vm.paymentSubmit" type="submit" form="settingsPaymentForm" class="md-raised md-accent">Save</md-button>
                             </div>
                         </div>
                         <div ng-if="paymentsInnerNav==1" ng-init="submitted=false" layout="row" layout-align="space-between center" class="md-whiteframe-8dp bottom-fixed-bar">
