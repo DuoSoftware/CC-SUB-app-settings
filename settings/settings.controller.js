@@ -13,7 +13,7 @@
 		.controller('settingscontroller', settingscontroller);
 
 	/** @ngInject */
-	function settingscontroller($scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
+	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
 	{
 		var vm = this;
 		vm.settingsCategoryState = "default";
@@ -45,6 +45,14 @@
 		//  greeting: 'Please pay within 7 days. Thank you for your business.',
 		//  message: 'In condimentum malesuada efficitur. Mauris volutpat placerat auctor. Ut ac congue dolor. Quisque scelerisque lacus sed feugiat fermentum. Cras aliquet facilisis pellentesque. Nunc hendrerit quam at leo commodo, a suscipit tellus dapibus. Etiam at felis volutpat est mollis lacinia. Mauris placerat sem sit amet velit mollis, in porttitor ex finibus. Proin eu nibh id libero tincidunt lacinia et eget eros.'
 		//};
+
+		var settingsTabs = document.getElementById('settingsTabs');
+		angular.forEach(settingsTabs.children[1].children, function (tab) {
+			console.log(tab)
+		});
+		//settingsTabs.find('md-tab-content').addClass('ms-scroll');
+
+		$scope.planChangeView=false;
 
 
 		//////////
@@ -95,7 +103,7 @@
 		};
 
 		$scope.taxGroupInfoDialog = function(ev, groupTaxData,index,code) {
-			debugger;
+
 			$mdDialog.show({
 				controller: 'TaxGroupDialogController as vm',
 				templateUrl: 'app/main/settings/dialogs/taxGroupInfoDialog.html',
@@ -223,6 +231,7 @@
 					break;
 				case 'individual-tax':
 					$scope.loadIndividualTaxes();
+					$scope.loadTaxGrps();
 					break;
 				case 'tax-groups':
 					$scope.loadTaxGrps();
@@ -294,19 +303,19 @@
 		//$scope.template.companyName="Company Name";
 
 		$charge.settings().currencies().success(function(data) {
-			//debugger;
+			//
 			for (var key in data) {
 				var dataRec=data[key];
 				$scope.currencies.push(dataRec);
 			}
-			//debugger;
+			//
 			//console.log(data);
 		}).error(function(data) {
 			console.log(data);
 		})
 
 		$charge.settings().languages().success(function(data) {
-			//debugger;
+			//
 			//for (var key in data) {
 			//    $scope.languages.push(key);
 			//}
@@ -328,11 +337,11 @@
 		$scope.querySearch =function (query) {
 
 			//Custom Filter
-			//debugger;
+			//
 			var results=[];
 			for (var i = 0; i< $scope.currencies.length;  ++i){
 				//console.log($scope.allBanks[i].value.value);
-				//debugger;
+				//
 				if($scope.currencies[i].code.toLowerCase().indexOf(query.toLowerCase()) !=-1)
 				{
 					if($scope.currencies[i].code.toLowerCase().startsWith(query.toLowerCase()))
@@ -345,7 +354,7 @@
 		}
 		$scope.setBaseCurrency=function(ev)
 		{
-			//debugger;
+			//
 			if(ev!=undefined) {
 				$scope.general.baseCurrency = ev.code;
 				// self.searchText = null;
@@ -363,7 +372,7 @@
 			var results=[];
 			for (var i = 0; i<$scope.currencies.length; ++i){
 				//console.log($scope.allBanks[i].value.value);
-				//debugger;
+				//
 				if($scope.currencies[i].code.toLowerCase().indexOf(query.toLowerCase()) !=-1)
 				{
 					if($scope.currencies[i].code.toLowerCase().startsWith(query.toLowerCase()))
@@ -392,14 +401,14 @@
 		$scope.general.userCurrency="";
 		$scope.general.currencyName="";
 		$scope.addCurrency= function (ev) {
-			debugger;
+
 			if(ev!=undefined) {
 				var currencyDet = $filter('filter')($scope.userCurrencies, {code: ev.code})[0];
 				if(currencyDet==null || currencyDet==undefined) {
 					if($scope.general.baseCurrency!=ev.code) {
 						$scope.general.userCurrency = $scope.general.userCurrency + " " + ev.code;
 						$scope.general.currencyName = $scope.general.currencyName == "" ? ev.name : $scope.general.currencyName + "," + ev.name;
-						debugger;
+
 						$scope.userCurrencies.push(ev);
 						self.searchCurrency = null;
 						$mdDialog.hide();
@@ -471,7 +480,7 @@
 			isFrequentCurrency=true;
 			isFrequentCurrencyName=true;
 			$scope.isAllGenLoaded=true;
-			//debugger;
+			//
 			$scope.baseCurrencyDet=data[0];
 			$scope.general.baseCurrency=data[0].RecordFieldData;
 			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
@@ -497,7 +506,7 @@
 
 
 			tempCurrencyCodes=[];
-			//debugger;
+			//
 			$scope.frequentCurrencies=data[4];
 			$scope.general.userCurrency=data[4].RecordFieldData;
 			tempCurrencyCodes=data[4].RecordFieldData.trimLeft().split(" ");
@@ -535,7 +544,7 @@
 
 
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
-		//  //debugger;
+		//  //
 		//  isBaseCurrency=true;
 		//  $scope.baseCurrencyDet=data;
 		//  $scope.general.baseCurrency=data[0].RecordFieldData;
@@ -543,7 +552,7 @@
 		//  $scope.general.GURecID=data[0].GuRecID;
 		//  $scope.isAllGenLoaded.push("ok");
 		//}).error(function(data) {
-		// debugger;
+		//
 		//  //$scope.general.GURecID=data[0].GuRecID;
 		//  isBaseCurrency=false;
 		//  $scope.isAllGenLoaded.push("ok");
@@ -598,7 +607,7 @@
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","FrequentCurrencies").success(function(data) {
 		//  isFrequentCurrency=true;
 		//  tempCurrencyCodes=[];
-		//  //debugger;
+		//  //
 		//  $scope.frequentCurrencies=data;
 		//  $scope.general.userCurrency=data[0].RecordFieldData;
 		//  tempCurrencyCodes=data[0].RecordFieldData.trimLeft().split(" ");
@@ -650,14 +659,15 @@
 		$scope.template.croppedLogo="";
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
 			isTemplateDet=true;
-			//debugger;
+			//
 			$scope.template.companyName=data[0].RecordFieldData;
 			$scope.template.companyAddress=data[1].RecordFieldData;
 			$scope.template.companyPhone=data[2].RecordFieldData;
 			$scope.template.companyEmail=data[3].RecordFieldData;
 			$scope.template.companyLogoPreview=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
 			$scope.template.croppedLogo=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
-			debugger;
+
+			$rootScope.companyDetailsPublic = $scope.template;
 			if($scope.template.croppedLogo!=""){
 				vm.isEditable=true;
 				//$http({
@@ -669,6 +679,7 @@
 				//
 				//});
 				$scope.cropper.croppedImage=$scope.template.croppedLogo;
+				$rootScope.companyLogoPublic=$scope.template.croppedLogo;
 			}
 			else
 				vm.isEditable=false;
@@ -682,7 +693,7 @@
 		var isFooterDet=false;
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_FooterAttributes").success(function(data) {
 			isFooterDet=true;
-			//debugger;
+			//
 			$scope.footerDet.greeting=data[0].RecordFieldData;
 			$scope.footerDet.disclaimer=data[1].RecordFieldData!=""?atob(data[1].RecordFieldData):"";
 			$scope.footerDet.GURecID=data[0].GuRecID;
@@ -694,7 +705,7 @@
 
 		$charge.flowtrans().getTranCount().success(function(data) {
 			$scope.transactionCount=data['count'];
-			//debugger;
+			//
 
 		}).error(function(data) {
 
@@ -740,7 +751,7 @@
 		//                          "FieldName": "FrequentCurrencies",
 		//                          "RecordFieldData": $scope.general.userCurrency
 		//                        }
-		//                        //debugger;
+		//                        //
 		//                        $charge.commondata().insertDuoBaseValuesAddition(req).success(function (data) {
 		//                          var req = {
 		//                            "RecordName": "CTS_GeneralAttributes",
@@ -895,7 +906,7 @@
 		$scope.imgWidth = "";
 		$scope.imgHeight = "";
 		$scope.saveGeneral = function() {
-			debugger;
+
 			if(vm.generalForm.$valid==true) {
 				$scope.generalSubmit=true;
 				if (!isBaseCurrency && !isCurrencyFormat && !isTimeZone && !isDateFormat && !isFrequentCurrency && !isFrequentCurrencyName && !isTemplateDet && !isDecimalPoint && !isFooterDet) {
@@ -1009,7 +1020,7 @@
 						"commonDatafieldDetails": $scope.generalFields,
 						"commonDataValueDetails": $scope.generalFieldValues
 					}
-					debugger;
+
 					$charge.settingsapp().store(req).success(function (data) {
 						//$scope.generalSubmit = false;
 						localStorage.removeItem('firstLogin');
@@ -1041,7 +1052,7 @@
 									"commonDatafieldDetails": $scope.companyFields,
 									"commonDataValueDetails": $scope.companyFieldValues
 								}
-								debugger;
+
 								$charge.settingsapp().store(req).success(function (data) {
 									$scope.saveFooter();
 									var req = {
@@ -1058,7 +1069,7 @@
 										"commonDatafieldDetails": $scope.footerFields,
 										"commonDataValueDetails": $scope.footerFieldValues
 									}
-									debugger;
+
 									$charge.settingsapp().store(req).success(function (data) {
 										notifications.toast("General records has been saved.", "success");
 										$scope.generalSubmit = false;
@@ -1122,7 +1133,7 @@
 							//      "commonDatafieldDetails": $scope.companyFields,
 							//      "commonDataValueDetails": $scope.companyFieldValues
 							//    }
-							//    debugger;
+							//
 							//    $charge.settingsapp().storeCompanyDetails(req).success(function (data) {
 							//      $scope.saveFooter();
 							//      var req = {
@@ -1139,7 +1150,7 @@
 							//        "commonDatafieldDetails": $scope.footerFields,
 							//        "commonDataValueDetails": $scope.footerFieldValues
 							//      }
-							//      debugger;
+							//
 							//      $charge.settingsapp().store(req).success(function (data) {
 							//        notifications.toast("General records has been saved.", "success");
 							//        $scope.generalSubmit = false;
@@ -1177,7 +1188,7 @@
 								"commonDatafieldDetails": $scope.companyFields,
 								"commonDataValueDetails": $scope.companyFieldValues
 							}
-							debugger;
+
 							$charge.settingsapp().store(req).success(function (data) {
 								$scope.saveFooter();
 								var req = {
@@ -1194,7 +1205,7 @@
 									"commonDatafieldDetails": $scope.footerFields,
 									"commonDataValueDetails": $scope.footerFieldValues
 								}
-								debugger;
+
 								$charge.settingsapp().store(req).success(function (data) {
 									notifications.toast("General records has been saved.", "success");
 									$scope.generalSubmit = false;
@@ -1323,7 +1334,7 @@
 				"FieldType": "CompanyLogoType",
 				"ColumnIndex": "4"
 			});
-			debugger;
+
 			//if($scope.cropper.croppedImage!=null)
 			//{
 			//  vm.isEditable = false;
@@ -1423,7 +1434,7 @@
 					"FieldName":"CompanyLogo",
 					"RecordFieldData":$scope.template.croppedLogo
 				}]
-			//debugger;
+			//
 			$charge.settingsapp().insertBulkDuoBaseValues(req).success(function(data) {
 				//notifications.toast("General records have been updated.", "success");
 				//$state.go($state.current, {}, {reload: true});
@@ -1473,7 +1484,7 @@
 
 		$scope.deleteFooter= function () {
 			$charge.settingsapp().deleteCommmon($scope.footerDet.GURecID).success(function (data) {
-				//debugger;
+				//
 				$scope.insertFooterIndividual();
 			}).error(function () {
 				notifications.toast("Error occured while updating Footer Record.", "error");
@@ -1492,7 +1503,7 @@
 					"FieldName":"Disclaimer",
 					"RecordFieldData":$scope.footerDet.disclaimer==undefined?"":btoa($scope.footerDet.disclaimer)
 				}]
-			//debugger;
+			//
 			$charge.settingsapp().insertBulkDuoBaseValues(req).success(function(data) {
 				notifications.toast("General records have been updated.", "success");
 				$scope.generalSubmit=false;
@@ -1517,7 +1528,7 @@
 					$scope.general.currencyName.trimRight(",");
 				}
 			}
-			debugger;
+
 			$scope.userCurrencies.splice(index,1);
 			tempCurrencyNames.splice(index,1);
 			tempCurrencyCodes.splice(index,1);
@@ -1565,13 +1576,13 @@
 		$scope.editCat=false;
 		//$charge.uom().getAllUOM('Product_123').success(function(data) {
 		//  $scope.UOMs=[];
-		//  //debugger;
+		//  //
 		//  console.log(data);
 		//  for(var i=0;i<data.length;i++)
 		//  {
-		//    //debugger;
+		//    //
 		//    $scope.UOMs.push(data[i][0]);
-		//    //debugger;
+		//    //
 		//  }
 		//}).error(function(data) {
 		//  console.log(data);
@@ -1597,7 +1608,7 @@
 		//  //console.log(data);
 		//  for(var i=0;i<data.length;i++)
 		//  {
-		//    //debugger;
+		//    //
 		//    $scope.brands.push(data[i]);
 		//  }
 		//}).error(function(data) {
@@ -1605,18 +1616,18 @@
 		//  $rootScope.isBrandLoaded=false;
 		//})
 
-    var skipPlanChangeFee=0;
-    var takePlanChangeFee=100;
-    $scope.loadingPlanChangeFee = true;
-    $scope.planChangeFeeList=[];
+		var skipPlanChangeFee=0;
+		var takePlanChangeFee=100;
+		$scope.loadingPlanChangeFee = true;
+		$scope.planChangeFeeList=[];
 
-    var skipPlanKeyAttributes=0;
-    var takePlanKeyAttributes=100;
-    $scope.loadingPlanKeyAttributes = true;
-    $scope.planKeyAttributesList=[];
+		var skipPlanKeyAttributes=0;
+		var takePlanKeyAttributes=100;
+		$scope.loadingPlanKeyAttributes = true;
+		$scope.planKeyAttributesList=[];
 
-    $scope.BaseCurrencyPlanChangeFee = "";
-    $scope.currencyRate = 1;
+		$scope.BaseCurrencyPlanChangeFee = "";
+		$scope.currencyRate = 1;
 
 		$scope.isPlanTypeLoaded = false;
 		$scope.loadProductAttributes= function () {
@@ -1633,7 +1644,7 @@
 			//  //console.log(data);
 			//  for(var i=0;i<data.length;i++)
 			//  {
-			//    //debugger;
+			//    //
 			//    $scope.brands.push(data[i]);
 			//  }
 			//
@@ -1644,13 +1655,13 @@
 			//
 			//$charge.uom().getAllUOM('Product_123').success(function(data) {
 			//  $scope.UOMs=[];
-			//  //debugger;
+			//  //
 			//  console.log(data);
 			//  for(var i=0;i<data.length;i++)
 			//  {
-			//    //debugger;
+			//    //
 			//    $scope.UOMs.push(data[i][0]);
-			//    //debugger;
+			//    //
 			//  }
 			//}).error(function(data) {
 			//  console.log(data);
@@ -1658,7 +1669,7 @@
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 				var length = data.length;
-				// debugger;
+				//
 				$scope.planTypeList=[];
 				$rootScope.isPlanTypeLoaded=true;
 				for (var i = 0; i < length; i++) {
@@ -1676,150 +1687,150 @@
 				$scope.isPlanTypeLoaded = true;
 			})
 
-      skipPlanKeyAttributes=0;
-      $scope.loadingPlanKeyAttributes = true;
-      $scope.planKeyAttributesList=[];
+			skipPlanKeyAttributes=0;
+			$scope.loadingPlanKeyAttributes = true;
+			$scope.planKeyAttributesList=[];
 
-      $charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
-      {
-        console.log(data);
+			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
+			{
+				console.log(data);
 
-        if($scope.loadingPlanKeyAttributes)
-        {
-          skipPlanKeyAttributes += takePlanKeyAttributes;
+				if($scope.loadingPlanKeyAttributes)
+				{
+					skipPlanKeyAttributes += takePlanKeyAttributes;
 
-          for (var i = 0; i < data.length; i++) {
-            $scope.planKeyAttributesList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						$scope.planKeyAttributesList.push(data[i]);
+					}
 
-          $scope.loadingPlanKeyAttributes = false;
+					$scope.loadingPlanKeyAttributes = false;
 
-          if(data.length<takePlanKeyAttributes){
+					if(data.length<takePlanKeyAttributes){
 
-          }
-          else
-          {
-            $scope.loadPlanKeyAttributesPaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanKeyAttributesPaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.loadingPlanKeyAttributes = false;
-      })
+			}).error(function(data)
+			{
+				$scope.loadingPlanKeyAttributes = false;
+			})
 
-      skipPlanChangeFee=0;
-      $scope.loadingPlanChangeFee = true;
-      $scope.planChangeFeeList=[];
+			skipPlanChangeFee=0;
+			$scope.loadingPlanChangeFee = true;
+			$scope.planChangeFeeList=[];
 
-      $charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
-      {
-        console.log(data);
+			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
+			{
+				console.log(data);
 
-        if($scope.loadingPlanChangeFee)
-        {
-          skipPlanChangeFee += takePlanChangeFee;
+				if($scope.loadingPlanChangeFee)
+				{
+					skipPlanChangeFee += takePlanChangeFee;
 
-          for (var i = 0; i < data.length; i++) {
-            data[i].editItem=false;
-            $scope.planChangeFeeList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						data[i].editItem=false;
+						$scope.planChangeFeeList.push(data[i]);
+					}
 
-          $scope.loadingPlanChangeFee = false;
+					$scope.loadingPlanChangeFee = false;
 
-          if(data.length<takePlanChangeFee){
+					if(data.length<takePlanChangeFee){
 
-          }
-          else
-          {
-            $scope.loadPlanChangeFeePaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanChangeFeePaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.planChangeFeeList = false;
-      })
+			}).error(function(data)
+			{
+				$scope.planChangeFeeList = false;
+			})
 
-      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
-        $scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
-        console.log($scope.BaseCurrencyPlanChangeFee);
-        //$scope.selectedCurrency = $scope.BaseCurrency;
+			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
+				$scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
+				console.log($scope.BaseCurrencyPlanChangeFee);
+				//$scope.selectedCurrency = $scope.BaseCurrency;
 
-      }).error(function(data) {
-        console.log(data);
-        $scope.BaseCurrencyPlanChangeFee="USD";
-        //$scope.selectedCurrency = $scope.BaseCurrency;
-      })
+			}).error(function(data) {
+				console.log(data);
+				$scope.BaseCurrencyPlanChangeFee="USD";
+				//$scope.selectedCurrency = $scope.BaseCurrency;
+			})
 
 		}
 
-    $scope.loadPlanKeyAttributesPaging= function () {
-      $scope.loadingPlanKeyAttributes = true;
-      $charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
-      {
-        console.log(data);
+		$scope.loadPlanKeyAttributesPaging= function () {
+			$scope.loadingPlanKeyAttributes = true;
+			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
+			{
+				console.log(data);
 
-        if($scope.loadingPlanKeyAttributes)
-        {
-          skipPlanKeyAttributes += takePlanKeyAttributes;
+				if($scope.loadingPlanKeyAttributes)
+				{
+					skipPlanKeyAttributes += takePlanKeyAttributes;
 
-          for (var i = 0; i < data.length; i++) {
-            $scope.planKeyAttributesList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						$scope.planKeyAttributesList.push(data[i]);
+					}
 
-          $scope.loadingPlanKeyAttributes = false;
+					$scope.loadingPlanKeyAttributes = false;
 
-          if(data.length<takePlanKeyAttributes){
+					if(data.length<takePlanKeyAttributes){
 
-          }
-          else
-          {
-            $scope.loadPlanKeyAttributesPaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanKeyAttributesPaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.loadingPlanKeyAttributes = false;
-      })
-    }
+			}).error(function(data)
+			{
+				$scope.loadingPlanKeyAttributes = false;
+			})
+		}
 
-    $scope.loadPlanChangeFeePaging= function () {
-      $scope.loadingPlanChangeFee = true;
-      $charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
-      {
-        console.log(data);
+		$scope.loadPlanChangeFeePaging= function () {
+			$scope.loadingPlanChangeFee = true;
+			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
+			{
+				console.log(data);
 
-        if($scope.loadingPlanChangeFee)
-        {
-          skipPlanChangeFee += takePlanChangeFee;
+				if($scope.loadingPlanChangeFee)
+				{
+					skipPlanChangeFee += takePlanChangeFee;
 
-          for (var i = 0; i < data.length; i++) {
-            data[i].editItem=false;
-            $scope.planChangeFeeList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						data[i].editItem=false;
+						$scope.planChangeFeeList.push(data[i]);
+					}
 
-          $scope.loadingPlanChangeFee = false;
+					$scope.loadingPlanChangeFee = false;
 
-          if(data.length<takePlanChangeFee){
+					if(data.length<takePlanChangeFee){
 
-          }
-          else
-          {
-            $scope.loadPlanChangeFeePaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanChangeFeePaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.planChangeFeeList = false;
-      })
-    }
+			}).error(function(data)
+			{
+				$scope.planChangeFeeList = false;
+			})
+		}
 
 		vm.webhookEventList=[];
 		var skipAllEventsWH=0;
@@ -1832,11 +1843,11 @@
 		$scope.loadingWebhooks = true;
 		var tempUsedEventsList=[];
 
-    vm.webhookHistoryList=[];
-    var skipAllWebhookHistory=0;
-    var takeAllWebhookHistory=100;
-    $scope.loadingWebhookHistory = true;
-    $scope.isMoreWebhookHistoryLoading = true;
+		vm.webhookHistoryList=[];
+		var skipAllWebhookHistory=0;
+		var takeAllWebhookHistory=100;
+		$scope.loadingWebhookHistory = true;
+		$scope.isMoreWebhookHistoryLoading = true;
 
 		$scope.loadWebhooksAttributes= function () {
 
@@ -1849,7 +1860,7 @@
 
 			$charge.webhook().allEvents(skipAllEventsWH,takeAllEventsWH,'asc').success(function (data) {
 				console.log(data);
-				// debugger;
+				//
 				if($scope.loadingEventsWH)
 				{
 					skipAllEventsWH += takeAllEventsWH;
@@ -1876,7 +1887,7 @@
 
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
 				console.log(data);
-				// debugger;
+				//
 				if($scope.loadingWebhooks)
 				{
 					skipAllWebhooks += takeAllWebhooks;
@@ -1912,34 +1923,34 @@
 			})
 
 
-      vm.webhookHistoryList=[];
-      skipAllWebhookHistory=0;
-      $scope.loadingWebhookHistory = true;
-      $scope.isMoreWebhookHistoryLoading = true;
-      $charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
-        console.log(data);
-        if($scope.loadingWebhookHistory)
-        {
-          skipAllWebhookHistory += takeAllWebhookHistory;
+			vm.webhookHistoryList=[];
+			skipAllWebhookHistory=0;
+			$scope.loadingWebhookHistory = true;
+			$scope.isMoreWebhookHistoryLoading = true;
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+				console.log(data);
+				if($scope.loadingWebhookHistory)
+				{
+					skipAllWebhookHistory += takeAllWebhookHistory;
 
-          for (var i = 0; i < data.length; i++) {
-            vm.webhookHistoryList.push(data[i]);
-          }
-          $scope.loadingWebhookHistory = false;
+					for (var i = 0; i < data.length; i++) {
+						vm.webhookHistoryList.push(data[i]);
+					}
+					$scope.loadingWebhookHistory = false;
 
-          if(data.length<takeAllWebhookHistory)
-          {
-            $scope.isMoreWebhookHistoryLoading = false;
-          }
+					if(data.length<takeAllWebhookHistory)
+					{
+						$scope.isMoreWebhookHistoryLoading = false;
+					}
 
-        }
+				}
 
-      }).error(function (data) {
-        console.log(data);
-        vm.webhookHistoryList=[];
-        $scope.loadingWebhookHistory = false;
-        $scope.isMoreWebhookHistoryLoading = false;
-      })
+			}).error(function (data) {
+				console.log(data);
+				vm.webhookHistoryList=[];
+				$scope.loadingWebhookHistory = false;
+				$scope.isMoreWebhookHistoryLoading = false;
+			})
 
 		}
 
@@ -1947,7 +1958,7 @@
 			$scope.loadingWebhooks = true;
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
 				console.log(data);
-				// debugger;
+				//
 				if($scope.loadingWebhooks)
 				{
 					skipAllWebhooks += takeAllWebhooks;
@@ -1999,53 +2010,202 @@
 			}
 		}
 
-    $scope.loadWebhookHistoryListPaging= function () {
-      $scope.loadingWebhookHistory = true;
-      $scope.isMoreWebhookHistoryLoading = true;
-      $charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
-        console.log(data);
-        if($scope.loadingWebhookHistory)
-        {
-          skipAllWebhookHistory += takeAllWebhookHistory;
+		$scope.loadWebhookHistoryListPaging= function () {
+			$scope.loadingWebhookHistory = true;
+			$scope.isMoreWebhookHistoryLoading = true;
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+				console.log(data);
+				if($scope.loadingWebhookHistory)
+				{
+					skipAllWebhookHistory += takeAllWebhookHistory;
 
-          for (var i = 0; i < data.length; i++) {
-            vm.webhookHistoryList.push(data[i]);
-          }
-          $scope.loadingWebhookHistory = false;
+					for (var i = 0; i < data.length; i++) {
+						vm.webhookHistoryList.push(data[i]);
+					}
+					$scope.loadingWebhookHistory = false;
 
-          if(data.length<takeAllWebhookHistory)
-          {
-            $scope.isMoreWebhookHistoryLoading = false;
-          }
+					if(data.length<takeAllWebhookHistory)
+					{
+						$scope.isMoreWebhookHistoryLoading = false;
+					}
 
-        }
-
-      }).error(function (data) {
-        console.log(data);
-        vm.webhookHistoryList=[];
-        $scope.loadingWebhookHistory = false;
-        $scope.isMoreWebhookHistoryLoading = false;
-      })
-    }
-
-		$scope.addWebhookDialog = function() {
-			$mdDialog.show({
-				controller: 'AddWebhookController as vm',
-				templateUrl: 'app/main/settings/dialogs/webhooks/prompt-add-webhook.html',
-				clickOutsideToClose:false,
-				locals:{
-					// submitWebhook:$scope.submitWebhook,
-					skipAllWebhooks:$scope.skipAllWebhooks,
-					tempUsedEventsList:$scope.tempUsedEventsList,
-					webhookTypeChange:$scope.webhookTypeChange,
-					webhookSubmitted:vm.webhookSubmitted,
-					webhookEventList:vm.webhookEventList,
-					webHooks:vm.webHooks,
-					webhook:$scope.webhook,
-					enabledEditWH:$scope.enabledEditWH,
-					// resetWebhook:$scope.resetWebhook,
-					loadWebhookListPaging: $scope.loadWebhookListPaging
 				}
+
+			}).error(function (data) {
+				console.log(data);
+				vm.webhookHistoryList=[];
+				$scope.loadingWebhookHistory = false;
+				$scope.isMoreWebhookHistoryLoading = false;
+			})
+		}
+
+		vm.closeDialog = function () {
+			// vm.webhook={};
+			// vm.webhook.type="custom";
+			// vm.webhook.mode="Live";
+			// $scope.webhookTypeChange("custom");
+			//
+			// vm.webhookList=[];
+			// skipAllWebhooks=0;
+			// tempUsedEventsList=[];
+			$mdDialog.hide();
+			vm.enabledEditWH=false;
+		};
+
+		$scope.resetWebhook= function () {
+			vm.webhook={};
+			vm.webhook.type="custom";
+			vm.webhook.mode="Live";
+			$scope.webhookTypeChange("custom");
+
+			vm.webhookList=[];
+			skipAllWebhooks=0;
+			tempUsedEventsList=[];
+			$scope.loadWebhookListPaging();
+
+			vm.enabledEditWH=false;
+		};
+
+		vm.submitWebhook= function (editing) {
+			if(!editing)
+			{
+				if (vm.webHooks.$valid == true) {
+					vm.webhookSubmitted = true;
+
+					var webhookObj={};
+					var tempEventsSelected=false;
+					webhookObj.endPoint=vm.webhook.endPoint;
+					webhookObj.type=vm.webhook.type;
+					webhookObj.createdDate=new Date();
+					webhookObj.isEnabled=true;
+					webhookObj.eventCodes=[];
+
+					for (var i = 0; i < vm.webhookEventList.length; i++) {
+						if(vm.webhookEventList[i].isSelected)
+						{
+							webhookObj.eventCodes.push(vm.webhookEventList[i].eventType);
+							tempEventsSelected=true;
+						}
+					}
+
+					if(tempEventsSelected)
+					{
+						$charge.webhook().createWH(webhookObj).success(function (data) {
+							console.log(data);
+							//
+							if(data.error=="00000")
+							{
+								notifications.toast("Webhook Created Successfully", "success");
+								vm.webhook={};
+								vm.webhook.type="custom";
+								vm.webhook.mode="Live";
+								$scope.webhookTypeChange("custom");
+
+								vm.webhookList=[];
+								skipAllWebhooks=0;
+								tempUsedEventsList=[];
+								$mdDialog.hide();
+								$scope.loadWebhookListPaging();
+							}
+							else
+							{
+								notifications.toast("Webhook Creation Failed", "error");
+							}
+							//$scope.webhook={};
+							vm.webhookSubmitted = false;
+						}).error(function (data) {
+							$mdDialog.hide();
+							console.log(data);
+							vm.webhookSubmitted = false;
+						})
+					}
+					else
+					{
+						notifications.toast("Select Events for the Webhook", "error");
+						vm.webhookSubmitted = false;
+					}
+
+				}
+			}
+			else
+			{
+				if (vm.webHooks.$valid == true) {
+					vm.webhookSubmitted = true;
+
+					var webhookObj={};
+					var tempEventsSelected=false;
+					webhookObj.guWebhookId=vm.webhook.guWebhookId;
+					webhookObj.endPoint=vm.webhook.endPoint;
+					webhookObj.type=vm.webhook.type;
+					webhookObj.createdDate=new Date();
+					webhookObj.isEnabled=true;
+					webhookObj.eventCodes=[];
+
+					for (var i = 0; i < vm.webhookEventList.length; i++) {
+						if(vm.webhookEventList[i].isSelected)
+						{
+							webhookObj.eventCodes.push(vm.webhookEventList[i].eventType);
+							tempEventsSelected=true;
+						}
+					}
+
+					if(tempEventsSelected)
+					{
+						$charge.webhook().updateWH(webhookObj).success(function (data) {
+							console.log(data);
+							//
+							if(data.error=="00000")
+							{
+								notifications.toast("Webhook Updated Successfully", "success");
+								$scope.resetWebhook();
+								$mdDialog.hide();
+							}
+							else
+							{
+								notifications.toast("Webhook Updating Failed", "error");
+							}
+							//$scope.webhook={};
+							vm.webhookSubmitted = false;
+						}).error(function (data) {
+							$mdDialog.hide();
+							console.log(data);
+							vm.webhookSubmitted = false;
+						})
+					}
+					else
+					{
+						notifications.toast("Select Events for the Webhook", "error");
+						vm.webhookSubmitted = false;
+					}
+
+				}
+			}
+		}
+
+		$scope.addWebhookDialog = function(isEdit) {
+			if(isEdit){
+				vm.enabledEditWH = true;
+			}
+			$mdDialog.show({
+				controller: function () {
+					return vm;
+				},
+				controllerAs: 'vm',
+				templateUrl: 'app/main/settings/dialogs/webhooks/prompt-add-webhook.html',
+				clickOutsideToClose:false
+				// locals:{
+				// 	// submitWebhook:$scope.submitWebhook,
+				// 	skipAllWebhooks:$scope.skipAllWebhooks,
+				// 	tempUsedEventsList:$scope.tempUsedEventsList,
+				// 	webhookTypeChange:$scope.webhookTypeChange,
+				// 	webhookSubmitted:vm.webhookSubmitted,
+				// 	webhookEventList:vm.webhookEventList,
+				// 	webHooks:vm.webHooks,
+				// 	webhook:$scope.webhook,
+				// 	enabledEditWH:$scope.enabledEditWH,
+				// 	// resetWebhook:$scope.resetWebhook,
+				// 	loadWebhookListPaging: $scope.loadWebhookListPaging
+				// }
 			});
 		};
 
@@ -2061,7 +2221,7 @@
 
 			$charge.storage().allTemplates().success(function (data) {
 				console.log(data);
-				// debugger;
+				//
 				if($scope.loadingEmailTemplates)
 				{
 					for (var i = 0; i < data.result.length; i++) {
@@ -2088,7 +2248,7 @@
 
 		$scope.getDefaultEmailTemplate= function () {
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_EmailTemplates", "TemplateUrl").success(function (data) {
-				// debugger;
+				//
 				$scope.defaultEmailTemplate=data[0][0].RecordFieldData;
 				$scope.defaultEmailTemplateID=data[0][0].GuRecID;
 				$scope.selectChangeTemplate($scope.defaultEmailTemplate);
@@ -2108,7 +2268,7 @@
 		//  //console.log(data);
 		//  for(var i=0;i<data.length;i++)
 		//  {
-		//    //debugger;
+		//    //
 		//    $scope.stores.push(data[i]);
 		//  }
 		//}).error(function(data) {
@@ -2118,7 +2278,7 @@
 		$scope.loadInventoryAttributes= function () {
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 				var length = data.length;
-				// debugger;
+				//
 				$scope.stores=[];
 				$rootScope.isStoreLoaded=true;
 				for (var i = 0; i < length; i++) {
@@ -2269,7 +2429,7 @@
 
 		$scope.submitBrands= function () {
 			if (vm.brands.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.updateBraEnable) {
 					$scope.addBrand();
 				}
@@ -2302,7 +2462,7 @@
 			}
 			if(countBrand==0) {
 				$charge.settingsapp().update(req).success(function (data) {
-					//debugger;
+					//
 					if (data.count > 0) {
 						notifications.toast("Brand has been updated.", "success");
 						$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes", "Brand").success(function (data) {
@@ -2338,7 +2498,7 @@
 
 		$scope.submitStore= function () {
 			if (vm.stores.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.editInventory) {
 					$scope.addStore();
 				}
@@ -2374,7 +2534,7 @@
 							"FieldName": "Store",
 							"RecordFieldData": ev
 						}
-						debugger;
+
 						$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 							//console.log(data);
 							notifications.toast("Store has been added.", "success");
@@ -2393,7 +2553,7 @@
 
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 								var length = data.length;
-								// debugger;
+								//
 								$scope.stores=[];
 								$rootScope.isStoreLoaded=true;
 								for (var i = 0; i < length; i++) {
@@ -2466,7 +2626,7 @@
 									"ColumnIndex": "1"
 								}]
 						}
-						//debugger;
+						//
 						$charge.settingsapp().store(req).success(function (data) {
 							$rootScope.isStoreLoaded = true;
 							notifications.toast("Store has been added.", "success");
@@ -2483,7 +2643,7 @@
 
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 								var length = data.length;
-								// debugger;
+								//
 								$scope.stores=[];
 								$rootScope.isStoreLoaded=true;
 								for (var i = 0; i < length; i++) {
@@ -2552,7 +2712,7 @@
 			}
 			if(countStore==0) {
 				$charge.settingsapp().update(req).success(function (data) {
-					debugger;
+
 					if (data.count > 0) {
 						notifications.toast("Store has been updated.", "success");
 //              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
@@ -2571,7 +2731,7 @@
 
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 							var length = data.length;
-							// debugger;
+							//
 							$scope.stores=[];
 							$rootScope.isStoreLoaded=true;
 							for (var i = 0; i < length; i++) {
@@ -2615,7 +2775,7 @@
 
 		$scope.deleteAdditionalInv= function (ev) {
 			$charge.settingsapp().delete(ev).success(function(data) {
-				//debugger;
+				//
 			}).error(function(data) {
 
 			})
@@ -2636,7 +2796,7 @@
 						"FieldName": "DefaultStockLevel",
 						"RecordFieldData": $scope.inventory.defaultstocklevel
 					}
-					//debugger;
+					//
 					$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 						//console.log(data);
 						if ($scope.inventory.defaultstockDetails != undefined || $scope.inventory.defaultstockDetails != null) {
@@ -2706,17 +2866,17 @@
 
 			if(countUOM==0) {
 				$charge.uom().updateUOM(req).success(function (data) {
-					debugger;
+
 					if (data.count > 0) {
 						notifications.toast("UOM has been updated.", "success");
 						$charge.uom().getAllUOM('Product_123').success(function (data) {
 							$scope.UOMs = [];
-							//debugger;
+							//
 							console.log(data);
 							for (var i = 0; i < data.length; i++) {
-								//debugger;
+								//
 								$scope.UOMs.push(data[i][0]);
-								//debugger;
+								//
 							}
 
 							$scope.editUnit = "";
@@ -2746,7 +2906,7 @@
 
 		$scope.submitUOM = function() {
 			if (vm.unitOfMeasure.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.updateUomEnable) {
 					$scope.addUOM();
 				}
@@ -2760,7 +2920,7 @@
 		$scope.addUOM= function () {
 			var ev = $scope.product.uom;
 			$scope.addUomDisabled = true;
-			debugger;
+
 			if (ev != null && ev != "") {
 				var isDuplicate = false;
 				if ($scope.UOMs.length != 0) {
@@ -2795,12 +2955,12 @@
 						notifications.toast("UOM has been added.", "success");
 						$charge.uom().getAllUOM('Product_123').success(function (data) {
 							$scope.UOMs = [];
-							//debugger;
+							//
 							console.log(data);
 							for (var i = 0; i < data.length; i++) {
-								//debugger;
+								//
 								$scope.UOMs.push(data[i][0]);
-								//debugger;
+								//
 							}
 							$scope.product.uom = "";
 							$scope.addUomDisabled = false;
@@ -2827,7 +2987,7 @@
 		$scope.submitPlan= function (state) {
 			$scope.updateUomEnable = state;
 			if (vm.planType.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.updateUomEnable) {
 					$scope.addPlan();
 				}
@@ -2893,7 +3053,7 @@
 							"FieldName": "PlanType",
 							"RecordFieldData": ev
 						}
-						debugger;
+
 						$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 							//console.log(data);
 							notifications.toast("Type has been added.", "success");
@@ -2912,7 +3072,7 @@
 							//})
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 								var length = data.length;
-								// debugger;
+								//
 								$scope.planTypeList=[];
 								$rootScope.isPlanTypeLoaded=true;
 								for (var i = 0; i < length; i++) {
@@ -2965,7 +3125,7 @@
 									"ColumnIndex": "0"
 								}]
 						}
-						//debugger;
+						//
 						$charge.settingsapp().store(req).success(function (data) {
 							$rootScope.isPlanTypeLoaded = true;
 							notifications.toast("Type has been added.", "success");
@@ -2983,7 +3143,7 @@
 
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 								var length = data.length;
-								// debugger;
+								//
 								$scope.planTypeList=[];
 								$rootScope.isPlanTypeLoaded=true;
 								for (var i = 0; i < length; i++) {
@@ -3056,7 +3216,7 @@
 			}
 			if(countPlan==0) {
 				$charge.settingsapp().update(req).success(function (data) {
-					debugger;
+
 					if (data.count > 0) {
 						notifications.toast("Type has been updated.", "success");
 //              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
@@ -3075,7 +3235,7 @@
 
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 							var length = data.length;
-							// debugger;
+							//
 							$scope.planTypeList=[];
 							$rootScope.isPlanTypeLoaded=true;
 							for (var i = 0; i < length; i++) {
@@ -3121,9 +3281,9 @@
 		}
 
 		$scope.deletePlan= function (ev,index) {
-			debugger;
+
 			$charge.settingsapp().delete(ev).success(function(data) {
-				//debugger;
+				//
 				$scope.planTypeList.splice(index,1);
 			}).error(function(data) {
 				console.log(data);
@@ -3131,166 +3291,170 @@
 		}
 
 
-    $scope.changePlanFee={};
+		$scope.changePlanFee={};
 
-    $scope.submitPlanChangeFee= function () {
+		$scope.submitPlanChangeFee= function () {
 
-      $scope.planChangeFeeSubmitted=true;
+			$scope.planChangeFeeSubmitted=true;
 
-      $scope.changePlanFee.currency=$scope.BaseCurrencyPlanChangeFee;
-      $scope.changePlanFee.rate=$scope.currencyRate;
+			$scope.changePlanFee.currency=$scope.BaseCurrencyPlanChangeFee;
+			$scope.changePlanFee.rate=$scope.currencyRate;
 
-      var planChangeFeeDuplicate=false;
+			var planChangeFeeDuplicate=false;
 
-      for(var i = 0; i < $scope.planChangeFeeList.length; i++)
-      {
-        if($scope.planChangeFeeList[i].planFrom==$scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo==$scope.changePlanFee.planTo)
-        {
-          planChangeFeeDuplicate=true;
-          break;
-        }
-      }
+			for(var i = 0; i < $scope.planChangeFeeList.length; i++)
+			{
+				if($scope.planChangeFeeList[i].planFrom==$scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo==$scope.changePlanFee.planTo)
+				{
+					planChangeFeeDuplicate=true;
+					break;
+				}
+			}
 
-      if(!planChangeFeeDuplicate)
-      {
-        $charge.plan().createPlanChangeFee($scope.changePlanFee).success(function(data)
-        {
-          if(data.response=="succeeded")
-          {
-            notifications.toast("Successfully Plan Change Fee Created","success");
-            $scope.planChangeFeeSubmitted=false;
-            $scope.changePlanFee={};
+			if(!planChangeFeeDuplicate)
+			{
+				$charge.plan().createPlanChangeFee($scope.changePlanFee).success(function(data)
+				{
+					if(data.response=="succeeded")
+					{
+						notifications.toast("Successfully plan change fee created","success");
+						$scope.planChangeFeeSubmitted=false;
+						$scope.changePlanFee={};
 
-            skipPlanChangeFee=0;
-            $scope.planChangeFeeList=[];
-            $scope.loadPlanChangeFeePaging();
+						skipPlanChangeFee=0;
+						$scope.planChangeFeeList=[];
+						$scope.loadPlanChangeFeePaging();
+						$scope.planChangeView=false;
+					}
+					else
+					{
+						notifications.toast("Plan change fee creation failed","error");
+						$scope.planChangeFeeSubmitted=false;
+						$scope.planChangeView=false;
+					}
+				}).error(function(data)
+				{
+					notifications.toast("Plan change fee creation failed","error");
+					$scope.planChangeFeeSubmitted=false;
+					$scope.planChangeView=false;
+				})
+			}
+			else
+			{
+				notifications.toast("Duplicate Change Plans","error");
+				$scope.planChangeFeeSubmitted=false;
+				$scope.changePlanFee.planFrom="";
+				$scope.changePlanFee.planTo="";
+			}
+		}
 
-          }
-          else
-          {
-            notifications.toast("Plan Change Fee Creation Failed","error");
-            $scope.planChangeFeeSubmitted=false;
-          }
-        }).error(function(data)
-        {
-          notifications.toast("Plan Change Fee Creation Failed","error");
-          $scope.planChangeFeeSubmitted=false;
-        })
-      }
-      else
-      {
-        notifications.toast("Duplicate Change Plans","error");
-        $scope.planChangeFeeSubmitted=false;
-        $scope.changePlanFee.planFrom="";
-        $scope.changePlanFee.planTo="";
-      }
-    }
 
-    $scope.planChangeFeeItemOriginal=[];
-    $scope.editPlanChangeFee= function (plan) {
-      //$scope.cancelEditPlanChangeFee($scope.planChangeFeeItemOriginal);
 
-      $scope.planChangeFeeItemOriginal=angular.copy(plan);
-      plan.editItem=true;
+		$scope.planChangeFeeItemOriginal=[];
+		$scope.editPlanChangeFee= function (plan) {
+			//$scope.cancelEditPlanChangeFee($scope.planChangeFeeItemOriginal);
 
-    }
+			$scope.planChangeFeeItemOriginal=angular.copy(plan);
+			plan.editItem=true;
 
-    $scope.cancelEditPlanChangeFee= function (plan) {
+		}
 
-      plan.editItem=false;
-      plan.planFrom=angular.copy($scope.planChangeFeeItemOriginal.planFrom);
-      plan.planTo=angular.copy($scope.planChangeFeeItemOriginal.planTo);
-      plan.fee=angular.copy($scope.planChangeFeeItemOriginal.fee);
-      //plan.editItem=false;
-    }
+		$scope.cancelEditPlanChangeFee= function (plan) {
 
-    $scope.updatingPlanChangeFee= function (updatePlan, index) {
+			plan.editItem=false;
+			plan.planFrom=angular.copy($scope.planChangeFeeItemOriginal.planFrom);
+			plan.planTo=angular.copy($scope.planChangeFeeItemOriginal.planTo);
+			plan.fee=angular.copy($scope.planChangeFeeItemOriginal.fee);
+			//plan.editItem=false;
+		}
 
-      $scope.planChangeFeeUpdateSubmitted=true;
+		$scope.updatingPlanChangeFee= function (updatePlan, index) {
 
-      var planChangeFeeUpdateDuplicate=false;
-      var planChangeFeeUpdateInvalid=false;
+			$scope.planChangeFeeUpdateSubmitted=true;
 
-      for(var i = 0; i < $scope.planChangeFeeList.length; i++)
-      {
-        if(index==i)
-        {
+			var planChangeFeeUpdateDuplicate=false;
+			var planChangeFeeUpdateInvalid=false;
 
-        }
-        else if($scope.planChangeFeeList[i].planFrom==updatePlan.planFrom && $scope.planChangeFeeList[i].planTo==updatePlan.planTo)
-        {
-          planChangeFeeUpdateDuplicate=true;
-          break;
-        }
-      }
-      if(updatePlan.planFrom=="" || updatePlan.planTo=="" || updatePlan.fee=="" || updatePlan.fee==undefined)
-      {
-        planChangeFeeUpdateInvalid=true;
-        $scope.planChangeFeeUpdateSubmitted=false;
-      }
+			for(var i = 0; i < $scope.planChangeFeeList.length; i++)
+			{
+				if(index==i)
+				{
 
-      if(!planChangeFeeUpdateDuplicate && !planChangeFeeUpdateInvalid)
-      {
-        $charge.plan().updatePlanChangeFee(updatePlan).success(function(data)
-        {
-          if(data.response=="succeeded")
-          {
-            notifications.toast("Successfully Plan Change Fee Updated","success");
-            $scope.planChangeFeeUpdateSubmitted=false;
+				}
+				else if($scope.planChangeFeeList[i].planFrom==updatePlan.planFrom && $scope.planChangeFeeList[i].planTo==updatePlan.planTo)
+				{
+					planChangeFeeUpdateDuplicate=true;
+					break;
+				}
+			}
+			if(updatePlan.planFrom=="" || updatePlan.planTo=="" || updatePlan.fee=="" || updatePlan.fee==undefined)
+			{
+				planChangeFeeUpdateInvalid=true;
+				$scope.planChangeFeeUpdateSubmitted=false;
+			}
 
-            skipPlanChangeFee=0;
-            $scope.planChangeFeeList=[];
-            $scope.loadPlanChangeFeePaging();
+			if(!planChangeFeeUpdateDuplicate && !planChangeFeeUpdateInvalid)
+			{
+				$charge.plan().updatePlanChangeFee(updatePlan).success(function(data)
+				{
+					if(data.response=="succeeded")
+					{
+						notifications.toast("Successfully Plan Change Fee Updated","success");
+						$scope.planChangeFeeUpdateSubmitted=false;
 
-          }
-          else
-          {
-            notifications.toast("Plan Change Fee Updating Failed","error");
-            $scope.planChangeFeeUpdateSubmitted=false;
-          }
-        }).error(function(data)
-        {
-          notifications.toast("Plan Change Fee Updating Failed","error");
-          $scope.planChangeFeeUpdateSubmitted=false;
-        })
-      }
-      else
-      {
-        if(planChangeFeeUpdateInvalid)
-        {
-          notifications.toast("Invalid Change Plan Details","error");
-        }
-        else
-        {
-          notifications.toast("Duplicate Change Plans","error");
-        }
-        $scope.planChangeFeeUpdateSubmitted=false;
-      }
-    }
+						skipPlanChangeFee=0;
+						$scope.planChangeFeeList=[];
+						$scope.loadPlanChangeFeePaging();
 
-    $scope.deletingPlanChangeFee= function (plan) {
+					}
+					else
+					{
+						notifications.toast("Plan Change Fee Updating Failed","error");
+						$scope.planChangeFeeUpdateSubmitted=false;
+					}
+				}).error(function(data)
+				{
+					notifications.toast("Plan Change Fee Updating Failed","error");
+					$scope.planChangeFeeUpdateSubmitted=false;
+				})
+			}
+			else
+			{
+				if(planChangeFeeUpdateInvalid)
+				{
+					notifications.toast("Invalid Change Plan Details","error");
+				}
+				else
+				{
+					notifications.toast("Duplicate Change Plans","error");
+				}
+				$scope.planChangeFeeUpdateSubmitted=false;
+			}
+		}
 
-      $charge.plan().deletePlanChangeFee(plan.guChangeFeeID).success(function(data)
-      {
-        if(data.response=="succeeded")
-        {
-          notifications.toast("Successfully Plan Change Fee Deleted","success");
+		$scope.deletingPlanChangeFee= function (plan) {
 
-          skipPlanChangeFee=0;
-          $scope.planChangeFeeList=[];
-          $scope.loadPlanChangeFeePaging();
+			$charge.plan().deletePlanChangeFee(plan.guChangeFeeID).success(function(data)
+			{
+				if(data.response=="succeeded")
+				{
+					notifications.toast("Successfully Plan Change Fee Deleted","success");
 
-        }
-        else
-        {
-          notifications.toast("Plan Change Fee Deleting Failed","error");
-        }
-      }).error(function(data)
-      {
-        notifications.toast("Plan Change Fee Deleting Failed","error");
-      })
+					skipPlanChangeFee=0;
+					$scope.planChangeFeeList=[];
+					$scope.loadPlanChangeFeePaging();
 
-    }
+				}
+				else
+				{
+					notifications.toast("Plan Change Fee Deleting Failed","error");
+				}
+			}).error(function(data)
+			{
+				notifications.toast("Plan Change Fee Deleting Failed","error");
+			})
+
+		}
 
 		$scope.webhookTypeChange= function (type) {
 			for (var i = 0; i < vm.webhookEventList.length; i++) {
@@ -3329,19 +3493,19 @@
 		}
 
 
-		$scope.webhook={};
+		vm.webhook={};
 		vm.webhookSubmitted = false;
 
-		$scope.enabledEditWH=false;
+		vm.enabledEditWH=false;
 
 		$scope.editWebhook= function (webhook) {
 			//$scope.resetWebhook();
 			$scope.webhookTypeChange("custom");
 			$scope.checkAlreadyUsedEvents();
-			$scope.enabledEditWH=true;
-			$scope.webhook.guWebhookId=webhook.guWebhookId;
-			$scope.webhook.endPoint=webhook.endPoint;
-			$scope.webhook.type=webhook.type;
+			vm.enabledEditWH=true;
+			vm.webhook.guWebhookId=webhook.guWebhookId;
+			vm.webhook.endPoint=webhook.endPoint;
+			vm.webhook.type=webhook.type;
 			for (var i = 0; i < webhook.eventCodes.length; i++) {
 				var eventCode=webhook.eventCodes[i];
 				for (var j = 0; j < vm.webhookEventList.length; j++) {
@@ -3352,7 +3516,7 @@
 					}
 				}
 			}
-			$scope.addWebhookDialog();
+			$scope.addWebhookDialog(true);
 		}
 
 		$scope.showDeleteWebhookConfirm = function(ev,webhook) {
@@ -3536,7 +3700,7 @@
 		$scope.addCategoryDisabled = false;
 		$scope.submitCategories = function() {
 			if (vm.categories.$valid == true) {
-				//debugger;
+				//
 				if (!$scope.updateCatEnable) {
 					$scope.addCat();
 				}
@@ -3679,7 +3843,7 @@
 			}
 			if(countCat==0) {
 				$charge.settingsapp().update(req).success(function (data) {
-					//debugger;
+					//
 					if (data.count > 0) {
 						notifications.toast("Category has been updated.", "success");
 						$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes", "Category").success(function (data) {
@@ -3720,9 +3884,9 @@
 		}
 
 		$scope.deleteCommonData= function (ev,index) {
-			//debugger;
+			//
 			$charge.settingsapp().delete(ev).success(function(data) {
-				//debugger;
+				//
 				if(ev.ColumnIndex=="0")
 					$scope.categories.splice(index,1);
 				else if(ev.ColumnIndex=="1")
@@ -3733,9 +3897,9 @@
 		}
 
 		$scope.deleteStore= function (ev,index) {
-			debugger;
+
 			$charge.settingsapp().delete(ev).success(function(data) {
-				//debugger;
+				//
 				$scope.stores.splice(index,1);
 			}).error(function(data) {
 				console.log(data);
@@ -3743,9 +3907,9 @@
 		}
 
 		$scope.deleteUOM= function (ev,index) {
-			//debugger;
+			//
 			$charge.uom().delete(ev.GUUOMID).success(function(data) {
-				//debugger;
+				//
 				$scope.UOMs.splice(index,1);
 			}).error(function(data) {
 				console.log(data);
@@ -3813,21 +3977,21 @@
 		$scope.showReminderInfo = function (ev, index) {
 			$scope.reminderInfo.push($scope.invoiceReminders[index]);
 
-			debugger;
-			$mdDialog.show({
-				controller: 'ReminderDialogController as vm',
-				templateUrl: 'app/main/settings/dialogs/reminderDialogInfo.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose:true,
-				locals: {
-					reminderTypeDefault:'Before',
-					rowIndex:index,
-					reminderCon:$scope.invoiceReminders[index]
-				}
-			})
-				.then(function(reminders) {
-				})
+			//
+			// $mdDialog.show({
+			// 	controller: 'ReminderDialogController as vm',
+			// 	templateUrl: 'app/main/settings/dialogs/reminderDialogInfo.html',
+			// 	parent: angular.element(document.body),
+			// 	targetEvent: ev,
+			// 	clickOutsideToClose:true,
+			// 	locals: {
+			// 		reminderTypeDefault:'Before',
+			// 		rowIndex:index,
+			// 		reminderCon:$scope.invoiceReminders[index]
+			// 	}
+			// })
+			// 	.then(function(reminders) {
+			// 	})
 
 		}
 
@@ -3842,7 +4006,8 @@
 				locals: {
 					reminderTypeDefault:'Before',
 					rowIndex:index,
-					reminderCon:$scope.invoiceReminders[index]
+					reminderCon:$scope.invoiceReminders[index],
+					showReminderInfo: $scope.showReminderInfo
 				}
 			})
 				.then(function(reminders) {
@@ -3856,7 +4021,7 @@
 		}
 
 		$scope.turnOffReminder= function (index) {
-			//debugger;
+			//
 			$scope.invoiceReminders[index]['isDisabled']=!$scope.invoiceReminders[index]['isDisabled'];
 		}
 
@@ -3879,7 +4044,7 @@
 		$scope.invoice.prefixLength=0;
 		$scope.loadInvoiceAttributes= function () {
 			$scope.dueTermsLoaded = false;
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,FirstReminder,RecurringReminder,InvoiceTerms,CreditLimit").success(function(data) {
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,InvoiceTerms,CreditLimit").success(function(data) {
 				var length=data.length;
 				for(var i=0;i<length;i++)
 				{
@@ -3908,13 +4073,13 @@
 						$scope.invoice.allowPartialPay = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
 						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes=true : $scope.togglePaymentsYes=false : $scope.togglePaymentsYes=false;
 					}
-					if(obj.ColumnIndex=="6") {
-						$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-						$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-					}
-					if(obj.ColumnIndex=="7") {
-						$scope.invoice.RecurrReminder = obj.RecordFieldData;
-					}
+					// if(obj.ColumnIndex=="6") {
+					// 	$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+					// 	$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+					// }
+					// if(obj.ColumnIndex=="7") {
+					// 	$scope.invoice.RecurrReminder = obj.RecordFieldData;
+					// }
 					if (obj.ColumnIndex == "8") {
 						$scope.invoiceTerms = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[{
 								"termName":"NET-15",
@@ -3931,12 +4096,12 @@
 						obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
 					}
 				}
-				//debugger;
+				//
 				$scope.dueTermsLoaded = true;
 				isInvoiceLoaded=true;
 				if($scope.invoiceTerms.length==0)
 					$scope.addNewReminder(0);
-				//debugger;
+				//
 			}).error(function(data) {
 				$scope.dueTermsLoaded = true;
 				isInvoiceLoaded=false;
@@ -4023,7 +4188,7 @@
 			$scope.editOn=!$scope.editOn;
 		}
 		$scope.toggleSwitch= function (ev,ctrl) {
-			//debugger;
+			//
 			if(ctrl=="discount") {
 				if (ev) {
 					$scope.toggleDiscYes = true;
@@ -4192,7 +4357,7 @@
 		}
 
 		$scope.deleteInvoiceSettings= function (ev) {
-			//debugger;
+			//
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
@@ -4209,12 +4374,12 @@
 				$scope.addTermsDisabled = true;
 
 				vm.invoiceSubmit=true;
-				debugger;
+
 				if(isInvoiceLoaded) {
 					//var address = $filter('filter')($scope.invoiceSettings, { RecordFieldData: invoice.person_name })[0];
 					if ($scope.invoicePrefix == $scope.invoice.invoicePrefix) {
 						for (var i = 0; i < $scope.invoiceSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deleteInvoiceSettings($scope.invoiceSettings[i]);
 						}
 						var req = [{
@@ -4267,7 +4432,7 @@
 								"FieldName": "CreditLimit",
 								"RecordFieldData": $scope.invoice.enablecreditLimit==true?$scope.invoice.creditLimit:-1
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							vm.invoiceSubmit=false;
 							notifications.toast("Invoice settings has been applied.", "success");
@@ -4326,12 +4491,12 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
 									}
 								}
-								//debugger;
+								//
 								isInvoiceLoaded = true;
 								if($scope.invoiceTerms.length==0)
 									$scope.addNewReminder(0);
 								$scope.addTermsDisabled = false;
-//debugger;
+//
 							}).error(function (data) {
 								$scope.addTermsDisabled = false;
 								isInvoiceLoaded = false;
@@ -4347,7 +4512,7 @@
 						//if($scope.transactionCount== 0)
 						//{
 						for (var i = 0; i < $scope.invoiceSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deleteInvoiceSettings($scope.invoiceSettings[i]);
 						}
 						var req = [{
@@ -4400,7 +4565,7 @@
 								"FieldName": "CreditLimit",
 								"RecordFieldData": $scope.invoice.enablecreditLimit==true?$scope.invoice.creditLimit:-1
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Invoice settings has been applied.", "success");
 							vm.invoiceSubmit=false;
@@ -4459,12 +4624,12 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
 									}
 								}
-								//debugger;
+								//
 								isInvoiceLoaded = true;
 								if($scope.invoiceTerms.length==0)
 									$scope.addNewReminder(0);
 								$scope.addTermsDisabled = false;
-//debugger;
+//
 							}).error(function (data) {
 								isInvoiceLoaded = false;
 								$scope.addTermsDisabled = false;
@@ -4485,7 +4650,7 @@
 				}
 				else
 				{
-					debugger;
+
 					var req= {
 						"GURecID":"",
 						"RecordType":"CTS_InvoiceAttributes",
@@ -4673,12 +4838,12 @@
 									obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
 								}
 							}
-							//debugger;
+							//
 							isInvoiceLoaded = true;
 							if($scope.invoiceTerms.length==0)
 								$scope.addNewReminder(0);
 							$scope.addTermsDisabled = false;
-//debugger;
+//
 						}).error(function (data) {
 							isInvoiceLoaded = false;
 							$scope.addTermsDisabled = false;
@@ -4697,13 +4862,13 @@
 		$scope.quotation={};
 		vm.quotationSubmit=false;
 		$scope.saveQuotation= function () {
-			debugger;
+
 			if(vm.quotations.$valid==true) {
 				vm.quotationSubmit=true;
 				if (isQuotationLoaded) {
 					if ($scope.quotationPrefix == $scope.quotation.quotationPrefix) {
 						for (var i = 0; i < $scope.quotationSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deleteQuotationSettings($scope.quotationSettings[i]);
 						}
 						var req = [{
@@ -4726,7 +4891,7 @@
 								"FieldName": "QuotationSIVEA",
 								"RecordFieldData": $scope.quotation.sendQuotation == true ? 1 : 0
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Quotation settings has been applied.", "success");
 							vm.quotationSubmit=false;
@@ -4755,9 +4920,9 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes = true : $scope.tgInvoiceQuoteYes = false : $scope.tgInvoiceQuoteYes = false;
 									}
 								}
-								//debugger;
+								//
 								isQuotationLoaded = true;
-								//debugger;
+								//
 							}).error(function (data) {
 								isQuotationLoaded = false;
 							})
@@ -4769,7 +4934,7 @@
 					else {
 						//if ($scope.transactionCount == 0) {
 						for (var i = 0; i < $scope.quotationSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deleteQuotationSettings($scope.quotationSettings[i]);
 						}
 						var req = [{
@@ -4792,7 +4957,7 @@
 								"FieldName": "QuotationSIVEA",
 								"RecordFieldData": $scope.quotation.sendQuotation == true ? 1 : 0
 							}]
-						//debugger;
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Quotation settings has been applied.", "success");
 							vm.quotationSubmit=false;
@@ -4821,9 +4986,9 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes = true : $scope.tgInvoiceQuoteYes = false : $scope.tgInvoiceQuoteYes = false;
 									}
 								}
-								//debugger;
+								//
 								isQuotationLoaded = true;
-								//debugger;
+								//
 							}).error(function (data) {
 								isQuotationLoaded = false;
 							})
@@ -4840,7 +5005,7 @@
 					}
 				}
 				else {
-					debugger;
+
 					var req = {
 						"GURecID": "",
 						"RecordType": "CTS_QuotationAttributes",
@@ -4933,9 +5098,9 @@
 									obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes = true : $scope.tgInvoiceQuoteYes = false : $scope.tgInvoiceQuoteYes = false;
 								}
 							}
-							//debugger;
+							//
 							isQuotationLoaded = true;
-							//debugger;
+							//
 						}).error(function (data) {
 							isQuotationLoaded = false;
 						})
@@ -4949,7 +5114,7 @@
 
 
 		$scope.deleteQuotationSettings= function (ev) {
-			//debugger;
+			//
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
@@ -4965,7 +5130,7 @@
 		}
 
 		$scope.toggleQuotSwitch= function (ev,ctrl) {
-			//debugger;
+			//
 			if(ctrl=="discount") {
 				if (ev) {
 					$scope.tgDiscQuoteYes = true;
@@ -5014,9 +5179,9 @@
 						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes=true : $scope.tgInvoiceQuoteYes=false : $scope.tgInvoiceQuoteYes=false;
 					}
 				}
-				//debugger;
+				//
 				isQuotationLoaded=true;
-				//debugger;
+				//
 			}).error(function(data) {
 				isQuotationLoaded=false;
 			})
@@ -5069,7 +5234,7 @@
 				if (isPaymentLoaded) {
 					if ($scope.paymentPrefix == $scope.payment.paymentPrefix) {
 						for (var i = 0; i < $scope.paymentSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deletePaymentSettings($scope.paymentSettings[i]);
 						}
 						var req = [{
@@ -5081,12 +5246,22 @@
 								"RecordName": "CTS_PaymentAttributes",
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
-							}]
-						//debugger;
+							},
+              {
+                "RecordName": "CTS_PaymentAttributes",
+                "FieldName": "FirstReminder",
+                "RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
+              },
+              {
+                "RecordName": "CTS_PaymentAttributes",
+                "FieldName": "RecurringReminder",
+                "RecordFieldData": $scope.payment.RecurrReminder
+              }]
+						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							vm.paymentSubmit=false;
 							notifications.toast("Payment settings has been applied.", "success");
-							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength").success(function (data) {
+							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 								$scope.paymentSettings = [];
 								var length = data.length;
 								for (var i = 0; i < length; i++) {
@@ -5102,10 +5277,17 @@
 										localStorage.removeItem('PaymentPrefixLength');
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
+                  if (obj.ColumnIndex == "2") {
+                    $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                    $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                  }
+                  if (obj.ColumnIndex == "3") {
+                    $scope.payment.RecurrReminder = obj.RecordFieldData;
+                  }
 								}
-								//debugger;
+								//
 								isPaymentLoaded = true;
-								//debugger;
+								//
 							}).error(function (data) {
 								isPaymentLoaded = false;
 							})
@@ -5117,7 +5299,7 @@
 					else {
 						//if ($scope.transactionCount == 0) {
 						for (var i = 0; i < $scope.paymentSettings.length; i++) {
-							//debugger;
+							//
 							$scope.deletePaymentSettings($scope.paymentSettings[i]);
 						}
 						var req = [{
@@ -5129,12 +5311,22 @@
 								"RecordName": "CTS_PaymentAttributes",
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
-							}]
-						debugger;
+							},
+              {
+                "RecordName": "CTS_PaymentAttributes",
+                "FieldName": "FirstReminder",
+                "RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
+              },
+              {
+                "RecordName": "CTS_PaymentAttributes",
+                "FieldName": "RecurringReminder",
+                "RecordFieldData": $scope.payment.RecurrReminder
+              }]
+
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Payment settings has been applied.", "success");
 							vm.paymentSubmit=false;
-							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength").success(function (data) {
+							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 								$scope.paymentSettings = [];
 								var length = data.length;
 								for (var i = 0; i < length; i++) {
@@ -5150,10 +5342,17 @@
 										localStorage.removeItem('PaymentPrefixLength');
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
+                  if (obj.ColumnIndex == "2") {
+                    $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                    $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                  }
+                  if (obj.ColumnIndex == "3") {
+                    $scope.payment.RecurrReminder = obj.RecordFieldData;
+                  }
 								}
-								//debugger;
+								//
 								isPaymentLoaded = true;
-								//debugger;
+								//
 							}).error(function (data) {
 								isPaymentLoaded = false;
 							})
@@ -5170,7 +5369,7 @@
 					}
 				}
 				else {
-					debugger;
+
 					var req = {
 						"GURecID": "",
 						"RecordType": "CTS_PaymentAttributes",
@@ -5196,7 +5395,21 @@
 								"FieldName": "PaymentPrefixLength",
 								"FieldType": "PaymentPrefixLengthType",
 								"ColumnIndex": "1"
-							}],
+							},
+              {
+                "FieldCultureName":"FirstReminder",
+                "FieldID":"",
+                "FieldName":"FirstReminder",
+                "FieldType":"FirstReminderType",
+                "ColumnIndex":"2"
+              },
+              {
+                "FieldCultureName":"RecurringReminder",
+                "FieldID":"",
+                "FieldName":"RecurringReminder",
+                "FieldType":"RecurringReminderType",
+                "ColumnIndex":"3"
+              }],
 						"commonDataValueDetails": [
 							{
 								"RowID": "",
@@ -5207,7 +5420,17 @@
 								"RowID": "",
 								"RecordFieldData": $scope.payment.prefixLength,
 								"ColumnIndex": "1"
-							}]
+							},
+              {
+                "RowID":"",
+                "RecordFieldData":$scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):"",
+                "ColumnIndex":"2"
+              },
+              {
+                "RowID":"",
+                "RecordFieldData":$scope.payment.RecurrReminder,
+                "ColumnIndex":"3"
+              }]
 					}
 
 					$charge.settingsapp().store(req).success(function (data) {
@@ -5215,7 +5438,7 @@
 						notifications.toast("Payment settings has been applied.", "success");
 						vm.paymentSubmit=false;
 
-						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength").success(function (data) {
+						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 							$scope.paymentSettings = [];
 							var length = data.length;
 							for (var i = 0; i < length; i++) {
@@ -5230,10 +5453,17 @@
 									$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 									localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 								}
+                if (obj.ColumnIndex == "2") {
+                  $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                  $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                }
+                if (obj.ColumnIndex == "3") {
+                  $scope.payment.RecurrReminder = obj.RecordFieldData;
+                }
 							}
-							//debugger;
+							//
 							isPaymentLoaded = true;
-							//debugger;
+							//
 						}).error(function (data) {
 							isPaymentLoaded = false;
 						})
@@ -5250,10 +5480,11 @@
 		var isPaymentLoaded=false;
 		$scope.paymentSettings=[];
 
-    $scope.PaymentRetryUpdating=false;
+		$scope.PaymentRetryUpdating=false;
 
 		$scope.loadPaymentAttributes= function () {
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength").success(function(data) {
+      $scope.remindersInPaymentLoaded = false;
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function(data) {
 				var length=data.length;
 				for(var i=0;i<length;i++)
 				{
@@ -5266,56 +5497,87 @@
 					if(obj.ColumnIndex=="1") {
 						$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 					}
+          if (obj.ColumnIndex == "2") {
+            $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+            $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+          }
+          if (obj.ColumnIndex == "3") {
+            $scope.payment.RecurrReminder = obj.RecordFieldData;
+          }
 				}
-				//debugger;
+        $scope.remindersInPaymentLoaded = true;
+				//
 				isPaymentLoaded=true;
-				//debugger;
+				//
 			}).error(function(data) {
+        $scope.addNewReminder(0);
+        $scope.remindersInPaymentLoaded = true;
 				isPaymentLoaded=false;
 			})
+			//$scope.remindersInPaymentLoaded = false;
+			//$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
+			//	var length = data.length;
+			//	for (var i = 0; i < length; i++) {
+			//		var obj = data[i][0];
+			//		$scope.invoiceSettings.push(data[i][0]);
+			//		if(obj.ColumnIndex=="6") {
+			//			$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+			//			$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+			//		}
+			//		if(obj.ColumnIndex=="7") {
+			//			$scope.invoice.RecurrReminder = obj.RecordFieldData;
+			//		}
+			//	}
+			//	$scope.remindersInPaymentLoaded = true;
+            //
+			//}).error(function (data) {
+			//	$scope.addNewReminder(0);
+			//	$scope.remindersInPaymentLoaded = false;
+			//});
 
-      $scope.PaymentRetryUpdating=false;
 
-      $charge.notification().getProcessByCode("Payment").success(function(data) {
-        console.log(data);
+			$scope.PaymentRetryUpdating=false;
 
-        $scope.retryProcess={};
-        $scope.retryProcess.processCode="Payment";
-        $scope.retryProcess.processName="Payment";
-        for(var i=0;i<data.actions.length;i++)
-        {
-          var actionObj=data.actions[i];
-          if(actionObj.actionIndex==0)
-          {
-            $scope.retryProcess.daysAfterAttempt1st=actionObj.daysAfterAttempt;
-            $scope.retryProcess.emailNotification1st=actionObj.emailNotification==1?true:false;
-          }
-          else if(actionObj.actionIndex==1)
-          {
-            $scope.retryProcess.daysAfterAttempt2nd=actionObj.daysAfterAttempt;
-            $scope.retryProcess.emailNotification2nd=actionObj.emailNotification==1?true:false;
-          }
-          else if(actionObj.actionIndex==2)
-          {
-            $scope.retryProcess.daysAfterAttempt3rd=actionObj.daysAfterAttempt;
-            $scope.retryProcess.emailNotification3rd=actionObj.emailNotification==1?true:false;
-          }
-          else if(actionObj.actionIndex==3)
-          {
-            $scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
-            $scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
-          }
-        }
+			$charge.notification().getProcessByCode("Payment").success(function(data) {
+				console.log(data);
 
-        $scope.PaymentRetryUpdating=true;
+				$scope.retryProcess={};
+				$scope.retryProcess.processCode="Payment";
+				$scope.retryProcess.processName="Payment";
+				for(var i=0;i<data.actions.length;i++)
+				{
+					var actionObj=data.actions[i];
+					if(actionObj.actionIndex==0)
+					{
+						$scope.retryProcess.daysAfterAttempt1st=actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification1st=actionObj.emailNotification==1?true:false;
+					}
+					else if(actionObj.actionIndex==1)
+					{
+						$scope.retryProcess.daysAfterAttempt2nd=actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification2nd=actionObj.emailNotification==1?true:false;
+					}
+					else if(actionObj.actionIndex==2)
+					{
+						$scope.retryProcess.daysAfterAttempt3rd=actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification3rd=actionObj.emailNotification==1?true:false;
+					}
+					else if(actionObj.actionIndex==3)
+					{
+						$scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
+						$scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
+					}
+				}
 
-      }).error(function(data) {
-        console.log(data);
-        if(data==204)
-        {
-          $scope.PaymentRetryUpdating=false;
-        }
-      })
+				$scope.PaymentRetryUpdating=true;
+
+			}).error(function(data) {
+				console.log(data);
+				if(data==204)
+				{
+					$scope.PaymentRetryUpdating=false;
+				}
+			})
 		}
 
 
@@ -5347,7 +5609,7 @@
 		}
 
 		$scope.deletePaymentSettings= function (ev) {
-			//debugger;
+			//
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
@@ -5356,92 +5618,92 @@
 		}
 
 
-    $scope.retryProcess={};
-    $scope.paymentRetrySubmitted=false;
-    $scope.submitPaymentRetryProcess= function () {
-      $scope.paymentRetrySubmitted=true;
+		$scope.retryProcess={};
+		$scope.paymentRetrySubmitted=false;
+		$scope.submitPaymentRetryProcess= function () {
+			$scope.paymentRetrySubmitted=true;
 
-      $scope.retryProcess.processCode="Payment";
-      $scope.retryProcess.actions=[];
+			$scope.retryProcess.processCode="Payment";
+			$scope.retryProcess.actions=[];
 
-      var actionObj1={};
-      var actionObj2={};
-      var actionObj3={};
-      var actionObj4={};
-      actionObj1.actionIndex=0;
-      actionObj1.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt1st;
-      actionObj1.processAction="Retry";
-      actionObj1.emailNotification=$scope.retryProcess.emailNotification1st;
-      $scope.retryProcess.actions.push(actionObj1);
+			var actionObj1={};
+			var actionObj2={};
+			var actionObj3={};
+			var actionObj4={};
+			actionObj1.actionIndex=0;
+			actionObj1.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt1st;
+			actionObj1.processAction="Retry";
+			actionObj1.emailNotification=$scope.retryProcess.emailNotification1st;
+			$scope.retryProcess.actions.push(actionObj1);
 
-      actionObj2.actionIndex=1;
-      actionObj2.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt2nd;
-      actionObj2.processAction="Retry";
-      actionObj2.emailNotification=$scope.retryProcess.emailNotification2nd;
-      $scope.retryProcess.actions.push(actionObj2);
+			actionObj2.actionIndex=1;
+			actionObj2.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt2nd;
+			actionObj2.processAction="Retry";
+			actionObj2.emailNotification=$scope.retryProcess.emailNotification2nd;
+			$scope.retryProcess.actions.push(actionObj2);
 
-      actionObj3.actionIndex=2;
-      actionObj3.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt3rd;
-      actionObj3.processAction="Retry";
-      actionObj3.emailNotification=$scope.retryProcess.emailNotification3rd;
-      $scope.retryProcess.actions.push(actionObj3);
+			actionObj3.actionIndex=2;
+			actionObj3.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt3rd;
+			actionObj3.processAction="Retry";
+			actionObj3.emailNotification=$scope.retryProcess.emailNotification3rd;
+			$scope.retryProcess.actions.push(actionObj3);
 
-      actionObj4.actionIndex=3;
-      actionObj4.daysAfterAttempt=0;
-      actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
-      actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
-      $scope.retryProcess.actions.push(actionObj4);
+			actionObj4.actionIndex=3;
+			actionObj4.daysAfterAttempt=0;
+			actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
+			actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
+			$scope.retryProcess.actions.push(actionObj4);
 
-      if(!$scope.PaymentRetryUpdating)
-      {
-        $charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
-          console.log(data);
-          if(data.response=="succeeded")
-          {
-            notifications.toast("Successfully Payment Retry Configuration Saved","success");
-            $scope.paymentRetrySubmitted=false;
+			if(!$scope.PaymentRetryUpdating)
+			{
+				$charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
+					console.log(data);
+					if(data.response=="succeeded")
+					{
+						notifications.toast("Successfully Payment Retry Configuration Saved","success");
+						$scope.paymentRetrySubmitted=false;
 
-            $scope.PaymentRetryUpdating=true;
+						$scope.PaymentRetryUpdating=true;
 
-          }
-          else
-          {
-            notifications.toast("Payment Retry Configuration Saving Failed","error");
-            $scope.paymentRetrySubmitted=false;
-          }
+					}
+					else
+					{
+						notifications.toast("Payment Retry Configuration Saving Failed","error");
+						$scope.paymentRetrySubmitted=false;
+					}
 
-        }).error(function(data) {
-          console.log(data);
-          notifications.toast("Payment Retry Configuration Saving Failed","error");
-          $scope.paymentRetrySubmitted=false;
-        })
-      }
-      else
-      {
-        $charge.notification().updateRetryProcess($scope.retryProcess).success(function(data) {
-          console.log(data);
-          if(data.response=="succeeded")
-          {
-            notifications.toast("Successfully Payment Retry Configuration Updated","success");
-            $scope.paymentRetrySubmitted=false;
+				}).error(function(data) {
+					console.log(data);
+					notifications.toast("Payment Retry Configuration Saving Failed","error");
+					$scope.paymentRetrySubmitted=false;
+				})
+			}
+			else
+			{
+				$charge.notification().updateRetryProcess($scope.retryProcess).success(function(data) {
+					console.log(data);
+					if(data.response=="succeeded")
+					{
+						notifications.toast("Successfully Payment Retry Configuration Updated","success");
+						$scope.paymentRetrySubmitted=false;
 
-            $scope.PaymentRetryUpdating=true;
+						$scope.PaymentRetryUpdating=true;
 
-          }
-          else
-          {
-            notifications.toast("Payment Retry Configuration Updating Failed","error");
-            $scope.paymentRetrySubmitted=false;
-          }
+					}
+					else
+					{
+						notifications.toast("Payment Retry Configuration Updating Failed","error");
+						$scope.paymentRetrySubmitted=false;
+					}
 
-        }).error(function(data) {
-          console.log(data);
-          notifications.toast("Payment Retry Configuration Updating Failed","error");
-          $scope.paymentRetrySubmitted=false;
-        })
-      }
+				}).error(function(data) {
+					console.log(data);
+					notifications.toast("Payment Retry Configuration Updating Failed","error");
+					$scope.paymentRetrySubmitted=false;
+				})
+			}
 
-    }
+		}
 		/*
 		 * Preferences tab end
 		 */
@@ -5484,7 +5746,7 @@
 		$scope.isIndTaxLoaded = false;
 		$scope.loadIndividualTaxes= function () {
 			$charge.tax().all(skip,take,"asc").success(function(data) {
-				//debugger;
+				//
 				skip += take;
 				if(response=="") {
 					//if($scope.loading) {
@@ -5516,7 +5778,7 @@
 		$scope.isGrpTaxLoaded = false;
 		$scope.loadTaxGrps= function () {
 			$charge.tax().allgroups(skipGrp,takeGrp,"asc").success(function(data) {
-				//debugger;
+				//
 				skipGrp += takeGrp;
 				if(response=="") {
 					//if($scope.loading) {
@@ -5571,10 +5833,10 @@
 		//$scope.updateTax=function(ev,index)
 		//{
 		//
-		//  debugger;
+		//
 		//  $scope.taxHeader={};
 		//  $scope.isUpdate=true;
-		//  //debugger;
+		//  //
 		//  $charge.tax().getTaxByIDs(ev.taxid).success(function(data) {
 		//    console.log(data);
 		//    $scope.taxHeader.taxcode=ev.taxcode;
@@ -5635,7 +5897,7 @@
 		//$scope.individualSubmit=false;
 		//$scope.submitTax=function(type,index)
 		//{
-		//  debugger;
+		//
 		//  if(vm.editTaxForm.$valid==true) {
 		//    $scope.individualSubmit=true;
 		//    if ($scope.taxHeader.taxcode != undefined && $scope.taxHeader.taxcode != "") {
@@ -5714,7 +5976,7 @@
 		//            "taxdetails": $scope.taxdetails
 		//          }
 		//          $charge.tax().updateTax(req).success(function (data) {
-		//            debugger;
+		//
 		//            notifications.toast("Tax has been updated.", "success");
 		//            $scope.individualSubmit = false;
 		//            var taxHd = req;
@@ -5783,7 +6045,7 @@
 		//            else {
 		//            }
 		//          }
-		//          //debugger;
+		//          //
 		//          if (taxHeader.taxtype == true) {
 		//            taxHeader.taxtype = 1;
 		//            if (taxHeader.amount == "Amount")
@@ -5810,7 +6072,7 @@
 		//          }
 		//
 		//          $charge.tax().storeTax(req).success(function (data) {
-		//            debugger;
+		//
 		//            $scope.individualSubmit=false;
 		//            var taxHd = req;
 		//            taxHd.taxid = data.id;
@@ -5825,7 +6087,7 @@
 		//            $scope.taxGroupList = [];
 		//            var skipGrp = 0, takeGrp = 100;
 		//            $charge.tax().allgroups(skipGrp, takeGrp, "asc").success(function (data) {
-		//              debugger;
+		//
 		//              notifications.toast("Tax has been added.", "success");
 		//              skipGrp += takeGrp;
 		//              if (response == "") {
@@ -5904,9 +6166,9 @@
 		//}
 
 		$scope.deleteTax= function (ev,index) {
-			debugger;
+
 			$charge.tax().deleteTax(ev.taxid).success(function(data) {
-				debugger;
+
 				notifications.toast("Tax has been deleted.", "success");
 				$scope.fixedRates.splice(index,1);
 			}).error(function(data) {
@@ -5936,7 +6198,7 @@
 		//  if(code == "showTaxList"){
 		//    $scope.childTaxesDisplay = true;
 		//  }
-		//  debugger;
+		//
 		//  $scope.taxGrpHeader={};
 		//  $scope.isUpdateGrp=true;
 		//
@@ -5954,7 +6216,7 @@
 		//      }
 		//      //data.groupDetail[data.groupDetail.length - 1].newItem = true;
 		//      $scope.taxgrpdetails=data.groupDetail;
-		//      debugger;
+		//
 		//    }
 		//    else
 		//    {
@@ -5977,7 +6239,7 @@
 
 		$scope.deleteTaxGrp= function (ev,index) {
 			$charge.tax().deleteTaxGrp(ev.taxgroupid).success(function(data) {
-				debugger;
+
 				notifications.toast("Tax Group has been deleted.", "success");
 				$scope.taxGroupList.splice(index,1);
 			}).error(function(data) {
@@ -6031,7 +6293,217 @@
 			}, function() {
 			});
 		};
-		//debugger;
+
+		// PAYMENT GATEWAY - INTEGRATED FROM MY ACC ===============================================================================
+		$scope.isRegisteredWithStripe = false;
+		$scope.isRegButtonsShow = true;
+		$scope.isRegisteredWith2checkout = false;
+
+		$scope.loadCardDetails = function() {
+
+			$http({
+				method: 'GET',
+				url: "/azureshell/app/main/account/paymentMethod/cardHandler.php?view=getCardDetails",
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}).then(function (response) {
+
+				if(!response.data.status){
+					return;
+				}
+
+				$scope.cardDetails = response.data.data;
+
+
+				for (var i = 0; i < $scope.cardDetails.length; i++) {
+					$scope.cardDetails[i].rowId = i;
+				}
+
+			}, function (response) {
+				console.log(response);
+				$scope.cardDetails = null;
+
+			});
+
+		}
+
+		$scope.loadCardDetails();
+
+		$scope.checkPaymentMethodRegistry = function(){
+
+			$charge.paymentgateway().stripeCheckAccount().success(function (data) {
+
+				if(data.status) {
+					for (var i = 0; i < data.data.length; i++) {
+						if (data.data[i].gateway === "stripe")
+							$scope.isRegisteredWithStripe = true;
+
+						if (data.data[i].gateway === "2checkout")
+							$scope.isRegisteredWith2checkout = true;
+					}
+
+					$scope.isRegButtonsShow = false;
+
+				}
+
+			}).error(function(data) {
+				console.log( data);
+
+				$scope.isRegisteredWithStripe = false;
+				$scope.isRegisteredWith2checkout = false;
+				$scope.isRegButtonsShow = false;
+
+			});
+
+		}
+
+		$scope.checkPaymentMethodRegistry();
+
+		vm.openRegistrationMenu = function($mdOpenMenu, ev) {
+			$mdOpenMenu(ev);
+		};
+
+		$scope.proceedWithStripe = function(){
+
+
+			var confirm = $mdDialog.confirm()
+				.title('Connect with stripe')
+				.textContent('Do you want to proceed ?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$scope.isRegButtonsShow = true;
+				//$window.location.href = 'https://connect.stripe.com/oauth/authorize?response_type=code&scope=read_write&client_id=ca_9SnbSf9mKGaz5k4lelzQIQJZ3FjgQ79h';
+				$window.location.href = '/azureshell/app/main/account/paymentMethod/payment-partial.php';
+
+			}, function () {
+				$mdDialog.hide();
+
+			});
+
+
+		}
+
+		$scope.disconnectWithStripe = function(){
+
+			$scope.isRegButtonsShow = true;
+
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with stripe')
+				.textContent('Do you want to proceed with stripe disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+
+
+				$charge.paymentgateway().deactiveAcc().success(function (dataa) {
+
+					console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with stripe", "Success");
+						$scope.isRegisteredWithStripe = false;
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					console.log(data);
+					$scope.isRegButtonsShow= false;
+					notifications.toast("There is a problem, Please try again", "Error");
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.registerWithTwoCheckout = function() {
+
+
+			var confirm = $mdDialog.confirm()
+				.title('2Checkout Register')
+				.textContent('Do you want to proceed ?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function (ev) {
+
+				$mdDialog.show({
+					controller: 'GuidedPayment2CheckoutController',
+					templateUrl: 'app/main/account/dialogs/guided-payment-2checkout.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.checkPaymentMethodRegistry();
+
+					}, function() {
+
+					});
+
+			}, function () {
+				$mdDialog.hide();
+			});
+
+		}
+
+		$scope.deleteWithTwoCheckout = function() {
+
+
+			var confirm = $mdDialog.confirm()
+				.title('2Checkout disconnect')
+				.textContent('Do you want to proceed ?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().deleteClient().success(function (response) {
+
+					if(response.status){
+						$scope.isRegisteredWith2checkout = false;
+						notifications.toast("Successfully disconnected with 2checkout ", "success");
+					}else{
+						notifications.toast("2Checkout disconnection failed", "error");
+					}
+
+
+				}).error(function (response) {
+					console.log(response);
+					notifications.toast("2Checkout disconnection failed", "error");
+
+				});
+
+
+			}, function () {
+				$mdDialog.hide();
+			});
+
+		}
+		// / PAYMENT GATEWAY - INTEGRATED FROM MY ACC ==============================================================================
+
+
+
+
+
+
+		//
 
 		//$rootScope.firstLoginDitected = true;
 		//if($rootScope.firstLoginDitected === true){
@@ -6042,7 +6514,7 @@
 		//$scope.isUpdateGrp=false;
 		//vm.taxGrpSubmit=false;
 		//$scope.submitTaxGrp= function () {
-		//  debugger;
+		//
 		//  if($scope.taxgrpdetails.length!=0) {
 		//    if (vm.taxGrpForm.$valid == true) {
 		//      vm.taxGrpSubmit = true;
@@ -6087,9 +6559,9 @@
 		//            "status": status,
 		//            "taxiddetails": $scope.taxiddetails
 		//          }
-		//          debugger;
+		//
 		//          $charge.tax().updateTaxGrp(req).success(function (data) {
-		//            debugger;
+		//
 		//            notifications.toast("Tax Group has been updated.", "success");
 		//            vm.taxGrpSubmit = false;
 		//            var taxgroup = req;
@@ -6152,9 +6624,9 @@
 		//            "taxiddetails": $scope.taxiddetails
 		//          }
 		//
-		//          debugger;
+		//
 		//          $charge.tax().storeTaxGrp(req).success(function (data) {
-		//            debugger;
+		//
 		//            vm.taxGrpSubmit = false;
 		//            notifications.toast("Tax Group has been added.", "success");
 		//            var taxgroup = req;
