@@ -5246,12 +5246,22 @@
 								"RecordName": "CTS_PaymentAttributes",
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
-							}]
+							},
+              {
+                "RecordName": "CTS_PaymentAttributes",
+                "FieldName": "FirstReminder",
+                "RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
+              },
+              {
+                "RecordName": "CTS_PaymentAttributes",
+                "FieldName": "RecurringReminder",
+                "RecordFieldData": $scope.payment.RecurrReminder
+              }]
 						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							vm.paymentSubmit=false;
 							notifications.toast("Payment settings has been applied.", "success");
-							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength").success(function (data) {
+							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 								$scope.paymentSettings = [];
 								var length = data.length;
 								for (var i = 0; i < length; i++) {
@@ -5267,6 +5277,13 @@
 										localStorage.removeItem('PaymentPrefixLength');
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
+                  if (obj.ColumnIndex == "2") {
+                    $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                    $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                  }
+                  if (obj.ColumnIndex == "3") {
+                    $scope.payment.RecurrReminder = obj.RecordFieldData;
+                  }
 								}
 								//
 								isPaymentLoaded = true;
@@ -5294,12 +5311,22 @@
 								"RecordName": "CTS_PaymentAttributes",
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
-							}]
+							},
+              {
+                "RecordName": "CTS_PaymentAttributes",
+                "FieldName": "FirstReminder",
+                "RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
+              },
+              {
+                "RecordName": "CTS_PaymentAttributes",
+                "FieldName": "RecurringReminder",
+                "RecordFieldData": $scope.payment.RecurrReminder
+              }]
 
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Payment settings has been applied.", "success");
 							vm.paymentSubmit=false;
-							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength").success(function (data) {
+							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 								$scope.paymentSettings = [];
 								var length = data.length;
 								for (var i = 0; i < length; i++) {
@@ -5315,6 +5342,13 @@
 										localStorage.removeItem('PaymentPrefixLength');
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
+                  if (obj.ColumnIndex == "2") {
+                    $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                    $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                  }
+                  if (obj.ColumnIndex == "3") {
+                    $scope.payment.RecurrReminder = obj.RecordFieldData;
+                  }
 								}
 								//
 								isPaymentLoaded = true;
@@ -5361,7 +5395,21 @@
 								"FieldName": "PaymentPrefixLength",
 								"FieldType": "PaymentPrefixLengthType",
 								"ColumnIndex": "1"
-							}],
+							},
+              {
+                "FieldCultureName":"FirstReminder",
+                "FieldID":"",
+                "FieldName":"FirstReminder",
+                "FieldType":"FirstReminderType",
+                "ColumnIndex":"2"
+              },
+              {
+                "FieldCultureName":"RecurringReminder",
+                "FieldID":"",
+                "FieldName":"RecurringReminder",
+                "FieldType":"RecurringReminderType",
+                "ColumnIndex":"3"
+              }],
 						"commonDataValueDetails": [
 							{
 								"RowID": "",
@@ -5372,7 +5420,17 @@
 								"RowID": "",
 								"RecordFieldData": $scope.payment.prefixLength,
 								"ColumnIndex": "1"
-							}]
+							},
+              {
+                "RowID":"",
+                "RecordFieldData":$scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):"",
+                "ColumnIndex":"2"
+              },
+              {
+                "RowID":"",
+                "RecordFieldData":$scope.payment.RecurrReminder,
+                "ColumnIndex":"3"
+              }]
 					}
 
 					$charge.settingsapp().store(req).success(function (data) {
@@ -5380,7 +5438,7 @@
 						notifications.toast("Payment settings has been applied.", "success");
 						vm.paymentSubmit=false;
 
-						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength").success(function (data) {
+						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 							$scope.paymentSettings = [];
 							var length = data.length;
 							for (var i = 0; i < length; i++) {
@@ -5395,6 +5453,13 @@
 									$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 									localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 								}
+                if (obj.ColumnIndex == "2") {
+                  $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                  $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+                }
+                if (obj.ColumnIndex == "3") {
+                  $scope.payment.RecurrReminder = obj.RecordFieldData;
+                }
 							}
 							//
 							isPaymentLoaded = true;
@@ -5418,7 +5483,8 @@
 		$scope.PaymentRetryUpdating=false;
 
 		$scope.loadPaymentAttributes= function () {
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength").success(function(data) {
+      $scope.remindersInPaymentLoaded = false;
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function(data) {
 				var length=data.length;
 				for(var i=0;i<length;i++)
 				{
@@ -5431,33 +5497,43 @@
 					if(obj.ColumnIndex=="1") {
 						$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 					}
+          if (obj.ColumnIndex == "2") {
+            $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+            $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+          }
+          if (obj.ColumnIndex == "3") {
+            $scope.payment.RecurrReminder = obj.RecordFieldData;
+          }
 				}
+        $scope.remindersInPaymentLoaded = true;
 				//
 				isPaymentLoaded=true;
 				//
 			}).error(function(data) {
+        $scope.addNewReminder(0);
+        $scope.remindersInPaymentLoaded = true;
 				isPaymentLoaded=false;
 			})
-			$scope.remindersInPaymentLoaded = false;
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
-				var length = data.length;
-				for (var i = 0; i < length; i++) {
-					var obj = data[i][0];
-					$scope.invoiceSettings.push(data[i][0]);
-					if(obj.ColumnIndex=="6") {
-						$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-						$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-					}
-					if(obj.ColumnIndex=="7") {
-						$scope.invoice.RecurrReminder = obj.RecordFieldData;
-					}
-				}
-				$scope.remindersInPaymentLoaded = true;
-
-			}).error(function (data) {
-				$scope.addNewReminder(0);
-				$scope.remindersInPaymentLoaded = false;
-			});
+			//$scope.remindersInPaymentLoaded = false;
+			//$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
+			//	var length = data.length;
+			//	for (var i = 0; i < length; i++) {
+			//		var obj = data[i][0];
+			//		$scope.invoiceSettings.push(data[i][0]);
+			//		if(obj.ColumnIndex=="6") {
+			//			$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+			//			$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+			//		}
+			//		if(obj.ColumnIndex=="7") {
+			//			$scope.invoice.RecurrReminder = obj.RecordFieldData;
+			//		}
+			//	}
+			//	$scope.remindersInPaymentLoaded = true;
+            //
+			//}).error(function (data) {
+			//	$scope.addNewReminder(0);
+			//	$scope.remindersInPaymentLoaded = false;
+			//});
 
 
 			$scope.PaymentRetryUpdating=false;
