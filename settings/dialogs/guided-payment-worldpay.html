@@ -1,0 +1,66 @@
+<md-dialog aria-label="worldpay" class="guided-payment">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>World pay</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="closeDialog()">
+          <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div layout="row">
+        <div layout="column" class="guide-portion" flex="50">
+          <div layout="column" style="margin-bottom: 20px">
+            <h2>World pay Gateway</h2>
+            <div class="2c0-cards">
+              <img src="assets/images/worldpay-accepts.png" alt=""/>
+            </div>
+          </div>
+
+          <md-divider></md-divider>
+
+          <h3>To use this World pay... </h3>
+          <ul>
+            <li>Go to https://online.worldpay.com/dashboard/overview</li>
+            <li>Sign in</li>
+            <li>Then go to settings tab and then click 'API Keys' tab </b> </li>
+            <li>Enter given service and client keys</li>
+          </ul>
+        </div>
+
+        <div class="form-portion" layout="column" flex="50">
+          <md-card md-whiteframe="3dp" flex style="background: #ffffff;">
+            <form name="worldPayForm" ng-submit="submitworldpayRegistration()" flex novalidate>
+              <div layout="column" layout-align="space-between start" style="height: 100%;">
+                <md-input-container>
+                  <label>Service key</label>
+                  <input type="text" name="servicekey" required ng-model="worldPay.skey"/>
+                  <div ng-messages="worldPayForm.servicekey.$error">
+                    <div ng-message="required"></div>
+                  </div>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Client key</label>
+                  <input type="text" name="clientkey" required ng-model="worldPay.ckey"/>
+                  <div ng-messages="worldPayForm.clientkey.$error">
+                    <div ng-message="required"></div>
+                  </div>
+                </md-input-container>
+
+                <div flex></div>
+
+                <div layout="row" layout-align="end center" style="width: 100%;">
+                  <md-button class="md-primary" ng-click="closeDialog()">Cancel</md-button>
+                  <md-button class="md-raised md-warn" type="submit">Submit</md-button>
+                </div>
+              </div>
+            </form>
+          </md-card>
+        </div>
+      </div>
+    </md-dialog-content>
+
+</md-dialog>

@@ -1,0 +1,89 @@
+<md-dialog aria-label="braintree" class="guided-payment">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Braintree</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="closeDialog()">
+          <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div layout="row">
+        <div layout="column" class="guide-portion" flex="50">
+          <div layout="column" style="margin-bottom: 20px">
+            <h2>Braintree Gateway</h2>
+            <div class="2c0-cards">
+              <img src="assets/images/braintree-accepts.png" alt=""/>
+            </div>
+          </div>
+
+          <md-divider></md-divider>
+
+          <h3>To use this Braintree ... </h3>
+          <ul>
+            <li>
+              <p>Chargify will use your default Braintree merchant account for transactions if you do not provide
+                a merchant account id. Therefore, Chargify will transact ONLY in the currency of your default Braintree
+                merchant account, REGARDLESS of the Chargify currency setting. Please be sure that your currency is set
+                to the currency of your default merchant account if not using a merchant account id, or currency of the
+                merchant account id provided. Otherwise your customers will be shown the incorrect currency within Chargify.
+              </p></li>
+            <li><p>
+              Note: Braintree has two different APIs. If you were provided with a Login and Password rather than a Merchant ID,
+              public key and private key, you will need to contact Support to enable the legacy v1 API.
+            </p></li>
+          </ul>
+        </div>
+
+        <div class="form-portion" layout="column" flex="50">
+          <md-card md-whiteframe="3dp" flex style="background: #ffffff;">
+            <form name="braintreeForm" ng-submit="submitbraintreeRegistration()" flex novalidate>
+              <div layout="column" layout-align="space-between start" style="height: 100%;">
+                <md-input-container>
+                  <label>Private Key</label>
+                  <input type="text" name="servicekey" required ng-model="braintree.skey"/>
+                  <div ng-messages="braintreeForm.servicekey.$error">
+                    <div ng-message="required"></div>
+                  </div>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Public key</label>
+                  <input type="text" name="publickey" required ng-model="braintree.pkey"/>
+                  <div ng-messages="braintreeForm.publickey.$error">
+                    <div ng-message="required"></div>
+                  </div>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Merchant ID</label>
+                  <input type="text" name="merchantId" required ng-model="braintree.merchantId"/>
+                  <div ng-messages="braintreeForm.merchantId.$error">
+                    <div ng-message="required"></div>
+                  </div>
+                </md-input-container>
+
+                <md-input-container>
+                  <label>Currency</label>
+                  <input type="text" name="currency" required ng-model="braintree.currency"/>
+                  <div ng-messages="braintreeForm.currency.$error">
+                    <div ng-message="required"></div>
+                  </div>
+                </md-input-container>
+
+                <div flex></div>
+
+                <div layout="row" layout-align="end center" style="width: 100%;">
+                  <md-button class="md-primary" ng-click="closeDialog()">Cancel</md-button>
+                  <md-button class="md-raised md-warn" type="submit">Submit</md-button>
+                </div>
+              </div>
+            </form>
+          </md-card>
+        </div>
+      </div>
+    </md-dialog-content>
+
+</md-dialog>

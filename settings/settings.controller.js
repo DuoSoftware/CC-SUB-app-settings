@@ -6303,7 +6303,7 @@
 
 			$http({
 				method: 'GET',
-				url: "/azureshell/app/main/account/paymentMethod/cardHandler.php?view=getCardDetails",
+				url: "/azureshell/app/main/settings/paymentMethod/cardHandler.php?view=getCardDetails",
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -6377,7 +6377,7 @@
 
 				$scope.isRegButtonsShow = true;
 				//$window.location.href = 'https://connect.stripe.com/oauth/authorize?response_type=code&scope=read_write&client_id=ca_9SnbSf9mKGaz5k4lelzQIQJZ3FjgQ79h';
-				$window.location.href = '/azureshell/app/main/account/paymentMethod/payment-partial.php';
+				$window.location.href = '/azureshell/app/main/settings/paymentMethod/payment-partial.php';
 
 			}, function () {
 				$mdDialog.hide();
@@ -6562,7 +6562,7 @@
 
       $mdDialog.show({
         controller: 'GuidedPaymenttestGatewayController',
-        templateUrl: 'app/main/account/dialogs/guided-payment-testGateway.html',
+        templateUrl: 'app/main/settings/dialogs/guided-payment-testGateway.html',
         parent: angular.element(document.body),
         targetEvent: ev,
         clickOutsideToClose:false,
@@ -6605,7 +6605,7 @@
 
         $mdDialog.show({
           controller: 'GuidedPaymentworldpayController',
-          templateUrl: 'app/main/account/dialogs/guided-payment-worldpay.html',
+          templateUrl: 'app/main/settings/dialogs/guided-payment-worldpay.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose:false,
@@ -6623,7 +6623,7 @@
 
         $mdDialog.show({
           controller: 'GuidedPaymentbraintreeController',
-          templateUrl: 'app/main/account/dialogs/guided-payment-braintree.html',
+          templateUrl: 'app/main/settings/dialogs/guided-payment-braintree.html',
           parent: angular.element(document.body),
           targetEvent: ev,
           clickOutsideToClose:false,
@@ -6665,7 +6665,7 @@
         //
 		// 		$mdDialog.show({
 		// 			controller: 'GuidedPayment2CheckoutController',
-		// 			templateUrl: 'app/main/account/dialogs/guided-payment-2checkout.html',
+		// 			templateUrl: 'app/main/settings/dialogs/guided-payment-2checkout.html',
 		// 			parent: angular.element(document.body),
 		// 			targetEvent: ev,
 		// 			clickOutsideToClose:false,
