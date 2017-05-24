@@ -6295,9 +6295,9 @@
 		};
 
 		// PAYMENT GATEWAY - INTEGRATED FROM MY ACC ===============================================================================
-		$scope.isRegisteredWithStripe = false;
-		$scope.isRegButtonsShow = true;
-		$scope.isRegisteredWith2checkout = false;
+		// $scope.isRegisteredWithStripe = false;
+		 $scope.isRegButtonsShow = true;
+		// $scope.isRegisteredWith2checkout = false;
 
 		$scope.loadCardDetails = function() {
 
@@ -6330,35 +6330,35 @@
 
 		$scope.loadCardDetails();
 
-		$scope.checkPaymentMethodRegistry = function(){
-
-			$charge.paymentgateway().stripeCheckAccount().success(function (data) {
-
-				if(data.status) {
-					for (var i = 0; i < data.data.length; i++) {
-						if (data.data[i].gateway === "stripe")
-							$scope.isRegisteredWithStripe = true;
-
-						if (data.data[i].gateway === "2checkout")
-							$scope.isRegisteredWith2checkout = true;
-					}
-
-					$scope.isRegButtonsShow = false;
-
-				}
-
-			}).error(function(data) {
-				console.log( data);
-
-				$scope.isRegisteredWithStripe = false;
-				$scope.isRegisteredWith2checkout = false;
-				$scope.isRegButtonsShow = false;
-
-			});
-
-		}
-
-		$scope.checkPaymentMethodRegistry();
+		// $scope.checkPaymentMethodRegistry = function(){
+        //
+		// 	$charge.paymentgateway().stripeCheckAccount().success(function (data) {
+        //
+		// 		if(data.status) {
+		// 			for (var i = 0; i < data.data.length; i++) {
+		// 				if (data.data[i].gateway === "stripe")
+		// 					$scope.isRegisteredWithStripe = true;
+        //
+		// 				if (data.data[i].gateway === "2checkout")
+		// 					$scope.isRegisteredWith2checkout = true;
+		// 			}
+        //
+		// 			$scope.isRegButtonsShow = false;
+        //
+		// 		}
+        //
+		// 	}).error(function(data) {
+		// 		console.log( data);
+        //
+		// 		$scope.isRegisteredWithStripe = false;
+		// 		$scope.isRegisteredWith2checkout = false;
+		// 		$scope.isRegButtonsShow = false;
+        //
+		// 	});
+        //
+		// }
+        //
+		// $scope.checkPaymentMethodRegistry();
 
 		vm.openRegistrationMenu = function($mdOpenMenu, ev) {
 			$mdOpenMenu(ev);
@@ -6429,74 +6429,298 @@
 
 		}
 
-		$scope.registerWithTwoCheckout = function() {
+
+    $scope.disconnectWithbraintree = function(key){
+
+      $scope.isRegButtonsShow = true;
+
+      $scope.braintree = key;
+
+      var confirm = $mdDialog.confirm()
+        .title('Disconnect with braintree')
+        .textContent('Do you want to proceed with braintree disconnection?')
+        .ariaLabel('Lucky day')
+        .ok('Yes')
+        .cancel('No');
+      $mdDialog.show(confirm).then(function () {
 
 
-			var confirm = $mdDialog.confirm()
-				.title('2Checkout Register')
-				.textContent('Do you want to proceed ?')
-				.ariaLabel('Lucky day')
-				.ok('Yes')
-				.cancel('No');
-			$mdDialog.show(confirm).then(function (ev) {
 
-				$mdDialog.show({
-					controller: 'GuidedPayment2CheckoutController',
-					templateUrl: 'app/main/account/dialogs/guided-payment-2checkout.html',
-					parent: angular.element(document.body),
-					targetEvent: ev,
-					clickOutsideToClose:false,
-					locals:{
-						idToken : $scope.idToken
-					}
-				})
-					.then(function(answer) {
-						$scope.checkPaymentMethodRegistry();
+        $charge.paymentgateway().disconnectWithBraintree($scope.braintree).success(function (dataa) {
 
-					}, function() {
+          console.log(dataa);
 
-					});
+          if(dataa.status)
+          {
+            notifications.toast("You have successfully disconnected with braintree", "Success");
+            $scope.loadOnlinePaymentRegistration();
+          }else{
+            notifications.toast("There is a problem, Please try again", "Error");
+          }
 
-			}, function () {
-				$mdDialog.hide();
-			});
+          $scope.isRegButtonsShow= false;
 
-		}
+        }).error(function (data) {
+          console.log(data);
+          $scope.isRegButtonsShow= false;
+          notifications.toast("There is a problem, Please try again", "Error");
 
-		$scope.deleteWithTwoCheckout = function() {
+        });
 
+      }, function () {
+        $scope.isRegButtonsShow = true;
+      });
 
-			var confirm = $mdDialog.confirm()
-				.title('2Checkout disconnect')
-				.textContent('Do you want to proceed ?')
-				.ariaLabel('Lucky day')
-				.ok('Yes')
-				.cancel('No');
-			$mdDialog.show(confirm).then(function () {
+    }
 
-				$charge.paymentgateway().deleteClient().success(function (response) {
+    $scope.disconnectWithWorldPay = function(key){
 
-					if(response.status){
-						$scope.isRegisteredWith2checkout = false;
-						notifications.toast("Successfully disconnected with 2checkout ", "success");
-					}else{
-						notifications.toast("2Checkout disconnection failed", "error");
-					}
+      $scope.isRegButtonsShow = true;
+
+      $scope.worldpay = key;
+
+      var confirm = $mdDialog.confirm()
+        .title('Disconnect with worldpay')
+        .textContent('Do you want to proceed with worldpay disconnection?')
+        .ariaLabel('Lucky day')
+        .ok('Yes')
+        .cancel('No');
+      $mdDialog.show(confirm).then(function () {
 
 
-				}).error(function (response) {
-					console.log(response);
-					notifications.toast("2Checkout disconnection failed", "error");
 
-				});
+        $charge.paymentgateway().disconnectWithworldpay($scope.worldpay).success(function (dataa) {
+
+          console.log(dataa);
+
+          if(dataa.status)
+          {
+            notifications.toast("You have successfully disconnected with worldpay", "Success");
+            $scope.loadOnlinePaymentRegistration();
+          }else{
+            notifications.toast("There is a problem, Please try again", "Error");
+          }
+
+          $scope.isRegButtonsShow= false;
+
+        }).error(function (data) {
+          console.log(data);
+          $scope.isRegButtonsShow= false;
+          notifications.toast("There is a problem, Please try again", "Error");
+
+        });
+
+      }, function () {
+        $scope.isRegButtonsShow = true;
+      });
+
+    }
 
 
-			}, function () {
-				$mdDialog.hide();
-			});
+    //============================================================
 
-		}
-		// / PAYMENT GATEWAY - INTEGRATED FROM MY ACC ==============================================================================
+    $scope.currentGateways = [];
+    $scope.defaultGateway = "";
+
+    $scope.loadOnlinePaymentRegistration = function(){
+
+      $charge.paymentgateway().availableGateways().success(function (data) {
+        if(data.status) {
+
+          $scope.currentGateways = data.data.availableGateway;
+
+          $scope.defaultGateway = data.data.defaultGatway['0'].gateway;
+
+          for (i = 0; i < $scope.currentGateways.length; i++) {
+
+            if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
+              $scope.currentGateways[i].isConnected = true;
+              $scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
+            }
+            else
+            {
+              $scope.currentGateways[i].isConnected = false;
+            }
+
+          }
+
+        }
+
+      }).error(function(data) {
+        console.log( data);
+
+        $scope.currentGateways = [];
+
+      });
+
+
+    }
+
+    $scope.loadOnlinePaymentRegistration();
+
+    $scope.viewTestGateway = function(ev) {
+
+      $mdDialog.show({
+        controller: 'GuidedPaymenttestGatewayController',
+        templateUrl: 'app/main/account/dialogs/guided-payment-testGateway.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose:false,
+        locals:{
+          idToken : $scope.idToken
+        }
+      })
+        .then(function(answer) {
+          // add method after
+        }, function() {
+
+        });
+
+    }
+
+    $scope.makeDefault= function(gateway){
+
+      $charge.paymentgateway().makeDefaultGateway(gateway).success(function (data) {
+
+        if(data.status) {
+          $scope.defaultGateway = gateway;
+
+          notifications.toast("Default gateway changed", "Success");
+
+        }else{
+          notifications.toast("There is a problem, Please try again", "Error");
+        }
+
+      }).error(function(data) {
+        console.log( data);
+        notifications.toast("There is a problem, Please try again", "Error");
+      });
+    }
+
+    $scope.proceedWithGateway= function (gateway,ev) {
+      if(gateway === 'stripe'){
+        $scope.proceedWithStripe();
+      }
+      else if(gateway === 'worldpay'){
+
+        $mdDialog.show({
+          controller: 'GuidedPaymentworldpayController',
+          templateUrl: 'app/main/account/dialogs/guided-payment-worldpay.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:false,
+          locals:{
+            idToken : $scope.idToken
+          }
+        })
+          .then(function(answer) {
+            $scope.loadOnlinePaymentRegistration();
+
+          }, function() {
+
+          });
+      }else if(gateway === 'braintree'){
+
+        $mdDialog.show({
+          controller: 'GuidedPaymentbraintreeController',
+          templateUrl: 'app/main/account/dialogs/guided-payment-braintree.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:false,
+          locals:{
+            idToken : $scope.idToken
+          }
+        })
+          .then(function(answer) {
+            $scope.loadOnlinePaymentRegistration();
+
+          }, function() {
+
+          });
+      }
+    }
+
+    $scope.disconnectWithGateway= function (gateway,key) {
+      if(gateway === 'stripe'){
+        $scope.disconnectWithStripe();
+      }
+      else if(gateway === 'worldpay'){
+        $scope.disconnectWithWorldPay(key)
+      }else if(gateway === 'braintree'){
+        $scope.disconnectWithbraintree(key)
+      }
+    }
+
+
+    // $scope.registerWithTwoCheckout = function() {
+        //
+        //
+		// 	var confirm = $mdDialog.confirm()
+		// 		.title('2Checkout Register')
+		// 		.textContent('Do you want to proceed ?')
+		// 		.ariaLabel('Lucky day')
+		// 		.ok('Yes')
+		// 		.cancel('No');
+		// 	$mdDialog.show(confirm).then(function (ev) {
+        //
+		// 		$mdDialog.show({
+		// 			controller: 'GuidedPayment2CheckoutController',
+		// 			templateUrl: 'app/main/account/dialogs/guided-payment-2checkout.html',
+		// 			parent: angular.element(document.body),
+		// 			targetEvent: ev,
+		// 			clickOutsideToClose:false,
+		// 			locals:{
+		// 				idToken : $scope.idToken
+		// 			}
+		// 		})
+		// 			.then(function(answer) {
+		// 				$scope.checkPaymentMethodRegistry();
+        //
+		// 			}, function() {
+        //
+		// 			});
+        //
+		// 	}, function () {
+		// 		$mdDialog.hide();
+		// 	});
+        //
+		// }
+        //
+		// $scope.deleteWithTwoCheckout = function() {
+        //
+        //
+		// 	var confirm = $mdDialog.confirm()
+		// 		.title('2Checkout disconnect')
+		// 		.textContent('Do you want to proceed ?')
+		// 		.ariaLabel('Lucky day')
+		// 		.ok('Yes')
+		// 		.cancel('No');
+		// 	$mdDialog.show(confirm).then(function () {
+        //
+		// 		$charge.paymentgateway().deleteClient().success(function (response) {
+        //
+		// 			if(response.status){
+		// 				$scope.isRegisteredWith2checkout = false;
+		// 				notifications.toast("Successfully disconnected with 2checkout ", "success");
+		// 			}else{
+		// 				notifications.toast("2Checkout disconnection failed", "error");
+		// 			}
+        //
+        //
+		// 		}).error(function (response) {
+		// 			console.log(response);
+		// 			notifications.toast("2Checkout disconnection failed", "error");
+        //
+		// 		});
+        //
+        //
+		// 	}, function () {
+		// 		$mdDialog.hide();
+		// 	});
+        //
+		// }
+
+		// END PAYMENT GATEWAY - INTEGRATED FROM MY ACC ==============================================================================
 
 
 
