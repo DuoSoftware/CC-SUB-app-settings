@@ -1257,24 +1257,31 @@
                           <md-card flex="30" class="payment-card" ng-repeat="gateway in currentGateways">
                             <div layout="row" layout-align="center center">
                               <md-input-container style="margin: 0;">
-                                <!--<div class="online_stripe" ng-class="{'online_disabled': gateway.isConnected}"></div>-->
-                                <div>{{gateway.paymentGateway}}</div>
+                                <div class="online_{{gateway.paymentGateway | lowercase}}" ng-class="{'online_disabled': !gateway.isConnected}"></div>
+                                <!--<div>{{gateway.paymentGateway}}</div>-->
                               </md-input-container>
 
-                              <div flex ng-if="defaultGateway != gateway.paymentGateway">
-                                <md-button ng-click="makeDefault(gateway.paymentGateway)">
-                                  <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
-                                </md-button>
-                              </div>
-                              <div flex ng-if="defaultGateway === gateway.paymentGateway ">Default</div>
+                              <!--<div flex ng-if="defaultGateway != gateway.paymentGateway">-->
+                                <!--<md-button ng-click="makeDefault(gateway.paymentGateway)">-->
+                                  <!--<md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>-->
+                                <!--</md-button>-->
+                              <!--</div>-->
+                              <div class="default-gateway" ng-if="defaultGateway === gateway.paymentGateway">Default</div>
 
-                              <md-input-container style="margin: 0;" ng-if="gateway.paymentGateway != 'testGateway'">
+                              <md-input-container ng-if="gateway.paymentGateway != 'testGateway'" class="m-0">
                                 <md-menu>
                                   <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="vm.openRegistrationMenu($mdOpenMenu, $event)">
                                     <md-icon md-font-icon="icon-dots-vertical"></md-icon>
 
                                   </md-button>
                                   <md-menu-content width="4" ng-disabled="isRegButtonsShow">
+                                    <md-menu-item>
+                                      <md-button ng-disabled="defaultGateway == gateway.paymentGateway || !gateway.isConnected" ng-click="makeDefault(gateway.paymentGateway)">
+                                        <md-icon md-font-icon="icon-heart" md-menu-align-target></md-icon>
+                                        Make default
+                                      </md-button>
+                                    </md-menu-item>
+                                      <md-divider></md-divider>
                                     <md-menu-item>
                                       <md-button ng-disabled="gateway.isConnected" ng-click="proceedWithGateway(gateway.paymentGateway)">
                                         <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>

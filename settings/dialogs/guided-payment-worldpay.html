@@ -1,66 +1,66 @@
-<md-dialog aria-label="worldpay" class="guided-payment">
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
     <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>World pay</h2>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="closeDialog()">
-          <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
-        </md-button>
-      </div>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with Worldpay</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
     </md-toolbar>
 
-    <md-dialog-content>
-      <div layout="row">
-        <div layout="column" class="guide-portion" flex="50">
-          <div layout="column" style="margin-bottom: 20px">
-            <h2>World pay Gateway</h2>
-            <div class="2c0-cards">
-              <img src="assets/images/worldpay-accepts.png" alt=""/>
-            </div>
-          </div>
 
-          <md-divider></md-divider>
-
-          <h3>To use this World pay... </h3>
-          <ul>
-            <li>Go to https://online.worldpay.com/dashboard/overview</li>
-            <li>Sign in</li>
-            <li>Then go to settings tab and then click 'API Keys' tab </b> </li>
-            <li>Enter given service and client keys</li>
-          </ul>
-        </div>
-
-        <div class="form-portion" layout="column" flex="50">
-          <md-card md-whiteframe="3dp" flex style="background: #ffffff;">
-            <form name="worldPayForm" ng-submit="submitworldpayRegistration()" flex novalidate>
-              <div layout="column" layout-align="space-between start" style="height: 100%;">
-                <md-input-container>
-                  <label>Service key</label>
-                  <input type="text" name="servicekey" required ng-model="worldPay.skey"/>
-                  <div ng-messages="worldPayForm.servicekey.$error">
-                    <div ng-message="required"></div>
-                  </div>
-                </md-input-container>
-
-                <md-input-container>
-                  <label>Client key</label>
-                  <input type="text" name="clientkey" required ng-model="worldPay.ckey"/>
-                  <div ng-messages="worldPayForm.clientkey.$error">
-                    <div ng-message="required"></div>
-                  </div>
-                </md-input-container>
-
-                <div flex></div>
-
-                <div layout="row" layout-align="end center" style="width: 100%;">
-                  <md-button class="md-primary" ng-click="closeDialog()">Cancel</md-button>
-                  <md-button class="md-raised md-warn" type="submit">Submit</md-button>
+    <md-content class="p-16" ms-scroll>
+        <div layout="row">
+            <div layout="column" class="guide-portion" flex>
+                <div layout="column" style="margin-bottom: 20px">
+                    <div class="mb-10">Worldpay accepts...</div>
+                    <div class="2c0-cards">
+                        <img src="assets/images/worldpay-accepts.png" alt=""/>
+                    </div>
                 </div>
-              </div>
-            </form>
-          </md-card>
+                <md-divider></md-divider>
+                <h3 class="mb-0 fw-500">Usage</h3>
+                <ul>
+                    <li>Go to https://online.worldpay.com/dashboard/overview.</li>
+                    <li>Sign in.</li>
+                    <li>Then go to <b>xSettings</b> tab and then click <b>API Keys</b> tab.</b> </li>
+                    <li>Enter given service and client keys.</li>
+                </ul>
+            </div>
+            <div class="w-20"></div>
+            <div class="form-portion" layout="column" flex="40">
+                <div md-whiteframe="3dp" flex class="p-10">
+                    <form name="worldPayForm" ng-submit="submitworldpayRegistration()" flex novalidate>
+                        <div layout="column" layout-align="space-between start" fill-height>
+                            <md-input-container fill-width class="mb-0">
+                                <label>Service key</label>
+                                <input type="text" name="servicekey" required ng-model="worldPay.skey"/>
+                                <div ng-messages="worldPayForm.servicekey.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container fill-width class="mb-0">
+                                <label>Client key</label>
+                                <input type="text" name="clientkey" required ng-model="worldPay.ckey"/>
+                                <div ng-messages="worldPayForm.clientkey.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <div flex></div>
+
+                            <div layout="row" layout-align="end center" fill-width>
+                                <!--<md-button class="md-primary" ng-click="closeDialog()">Cancel</md-button>-->
+                                <md-button class="md-raised md-accent" type="submit">Submit</md-button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
-    </md-dialog-content>
+    </md-content>
 
 </md-dialog>
