@@ -1,77 +1,31 @@
-<md-dialog aria-label="testGateway" class="guided-payment">
+<md-dialog class="prompt-dialog guided-payment" style="width: 45%;">
     <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>Test Gateway</h2>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="closeDialog()">
-          <md-icon md-font-icon="icon-close" aria-label="Close dialog"></md-icon>
-        </md-button>
-      </div>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>CloudCharge test gateway</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
     </md-toolbar>
 
-    <md-dialog-content>
-      <div layout="row">
-        <div layout="column" class="guide-portion" flex="50">
-          <div layout="column" style="margin-bottom: 20px">
-            <h2>This is a Test Gateway</h2>
-            <!--<div class="2c0-cards">-->
-              <!--<img src="assets/images/testGateway-accepts.png" alt=""/>-->
-            <!--</div>-->
-          </div>
 
-          <md-divider></md-divider>
-
-          <h3>To use this Test Gateway... </h3>
-          <ul>
-            <li>For success scenario
-                <p>Card number : 4242 4242 4242 4242,
-                   Any coming date,
-                   CSV : 123
-                </p>
-            </li>
-            <li>For error scenario
-              <p>Card number : 5555 4444 4444 4444,
-                Any coming date,
-                CSV : 123
-              </p></li>
-            <!--<li>Ensure you have selected 'Off' for demo settings</li>-->
-            <!--<li>Choose the 'Direct Return (Our URL)' option under Direct Return</li>-->
-            <!--<li>Enter the below URL in Approved URL field <b>http://dev.cloudcharge.com/services/ duosoftware.ipn.service/testGateway_ipn.php</b> </li>-->
-            <!--<li>Click on Save Changes and you are done</li>-->
-          </ul>
+    <md-content class="p-16" ms-scroll>
+        <div layout="row">
+            <div layout="column" class="guide-portion" flex>
+                <h3 class="m-0 fw-500">Usage</h3>
+                <ul>
+                    <li class="mb-10">For success scenario
+                        </br><span class="outline"><span class="op-5">Card number :</span><b>4242 4242 4242 4242</b></span> <span class="outline"><b>Any coming date</b></span> <span class="outline"><b>CSV : 123</b></span>
+                    </li>
+                    <li class="mb-10">For error scenario
+                        </br><span class="outline"><span class="op-5">Card number :</span><b>5555 4444 4444 4444</b></span> <span class="outline"><b>Any coming date</b></span> <span class="outline"><b>CSV : 123</b></span>
+                    </li>
+                </ul>
+            </div>
         </div>
-
-        <!--<div class="form-portion" layout="column" flex="50">-->
-          <!--<md-card md-whiteframe="3dp" flex style="background: #ffffff;">-->
-            <!--<form name="twoCheckoutForm" ng-submit="submittestGatewayRegistration()" flex novalidate>-->
-              <!--<div layout="column" layout-align="space-between start" style="height: 100%;">-->
-                <!--<md-input-container>-->
-                  <!--<label>2CO Account No</label>-->
-                  <!--<input type="text" name="accNo" required ng-model="twoCheckOut.sid"/>-->
-                  <!--<div ng-messages="twoCheckoutForm.accNo.$error">-->
-                    <!--<div ng-message="required"></div>-->
-                  <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container>-->
-                  <!--<label>Secret Word</label>-->
-                  <!--<input type="text" name="secretWord" required ng-model="twoCheckOut.skey"/>-->
-                  <!--<div ng-messages="twoCheckoutForm.secretWord.$error">-->
-                    <!--<div ng-message="required"></div>-->
-                  <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<div flex></div>-->
-
-                <!--<div layout="row" layout-align="end center" style="width: 100%;">-->
-                  <!--<md-button class="md-primary" ng-click="closeDialog()">Cancel</md-button>-->
-                  <!--<md-button class="md-raised md-warn" type="submit">Submit</md-button>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</form>-->
-          <!--</md-card>-->
-        <!--</div>-->
-      </div>
-    </md-dialog-content>
+    </md-content>
 
 </md-dialog>
+
