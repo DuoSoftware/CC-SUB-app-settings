@@ -14,13 +14,45 @@
     <md-content class="p-16" ms-scroll>
         <div layout="row">
             <div layout="column" class="guide-portion" flex>
-                <h3 class="m-0 fw-500">Usage</h3>
+                <div class="m-0">Use below numbers for test scenarios.</div>
                 <ul>
                     <li class="mb-10">For success scenario
-                        </br><span class="outline"><span class="op-5">Card number :</span><b>4242 4242 4242 4242</b></span> <span class="outline"><b>Any coming date</b></span> <span class="outline"><b>CSV : 123</b></span>
+                        <div layout="row" layout-align="start start">
+                            <span layout="column" layout-align="center end" class="mr-10">
+                                <span class="outline">
+                                    <span class="op-5">Card number :</span><b id="success_no">4242 4242 4242 4242</b>
+                                </span>
+                                <div layout="row" layout-align="end center">
+                                    <span class="copied-to-clipboard animate-fade-in-out" ng-if="successCopied && copyStarted" ng-hide="coppiedTimeout">Copied</span>
+                                    <md-button class="md-icon-button offset-right" ng-click="copyToClipboard('success_no')"><md-icon md-font-icon="icon-content-copy" class="fs-20 font-accent"></md-icon><md-tooltip>Copy to clipboard</md-tooltip></md-button>
+                                </div>
+                            </span>
+                            <span class="outline mr-10">
+                                <b>Any coming date</b>
+                            </span>
+                            <span class="outline">
+                                <b>CSV : 123</b>
+                            </span>
+                        </div>
                     </li>
                     <li class="mb-10">For error scenario
-                        </br><span class="outline"><span class="op-5">Card number :</span><b>5555 4444 4444 4444</b></span> <span class="outline"><b>Any coming date</b></span> <span class="outline"><b>CSV : 123</b></span>
+                        <div layout="row" layout-align="start start">
+                            <span layout="column" layout-align="center end" class="mr-10">
+                                <span class="outline">
+                                    <span class="op-5">Card number :</span><b id="error_no">5555 4444 4444 4444</b>
+                                </span>
+                                <div layout="row" layout-align="end center">
+                                    <span class="copied-to-clipboard animate-fade-in-out" ng-if="!successCopied && copyStarted" ng-hide="coppiedTimeout">Copied</span>
+                                    <md-button class="md-icon-button offset-right" ng-click="copyToClipboard('error_no')"><md-icon md-font-icon="icon-content-copy" class="fs-20 font-accent"></md-icon><md-tooltip>Copy to clipboard</md-tooltip></md-button>
+                                </div>
+                            </span>
+                            <span class="outline mr-10">
+                                <b>Any coming date</b>
+                            </span>
+                            <span class="outline">
+                                <b>CSV : 123</b>
+                            </span>
+                        </div>
                     </li>
                 </ul>
             </div>

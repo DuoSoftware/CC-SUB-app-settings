@@ -5247,16 +5247,16 @@
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
 							},
-              {
-                "RecordName": "CTS_PaymentAttributes",
-                "FieldName": "FirstReminder",
-                "RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
-              },
-              {
-                "RecordName": "CTS_PaymentAttributes",
-                "FieldName": "RecurringReminder",
-                "RecordFieldData": $scope.payment.RecurrReminder
-              }]
+							{
+								"RecordName": "CTS_PaymentAttributes",
+								"FieldName": "FirstReminder",
+								"RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
+							},
+							{
+								"RecordName": "CTS_PaymentAttributes",
+								"FieldName": "RecurringReminder",
+								"RecordFieldData": $scope.payment.RecurrReminder
+							}]
 						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							vm.paymentSubmit=false;
@@ -5277,13 +5277,13 @@
 										localStorage.removeItem('PaymentPrefixLength');
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
-                  if (obj.ColumnIndex == "2") {
-                    $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                    $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                  }
-                  if (obj.ColumnIndex == "3") {
-                    $scope.payment.RecurrReminder = obj.RecordFieldData;
-                  }
+									if (obj.ColumnIndex == "2") {
+										$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+										$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+									}
+									if (obj.ColumnIndex == "3") {
+										$scope.payment.RecurrReminder = obj.RecordFieldData;
+									}
 								}
 								//
 								isPaymentLoaded = true;
@@ -5312,16 +5312,16 @@
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
 							},
-              {
-                "RecordName": "CTS_PaymentAttributes",
-                "FieldName": "FirstReminder",
-                "RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
-              },
-              {
-                "RecordName": "CTS_PaymentAttributes",
-                "FieldName": "RecurringReminder",
-                "RecordFieldData": $scope.payment.RecurrReminder
-              }]
+							{
+								"RecordName": "CTS_PaymentAttributes",
+								"FieldName": "FirstReminder",
+								"RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
+							},
+							{
+								"RecordName": "CTS_PaymentAttributes",
+								"FieldName": "RecurringReminder",
+								"RecordFieldData": $scope.payment.RecurrReminder
+							}]
 
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Payment settings has been applied.", "success");
@@ -5342,13 +5342,13 @@
 										localStorage.removeItem('PaymentPrefixLength');
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
-                  if (obj.ColumnIndex == "2") {
-                    $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                    $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                  }
-                  if (obj.ColumnIndex == "3") {
-                    $scope.payment.RecurrReminder = obj.RecordFieldData;
-                  }
+									if (obj.ColumnIndex == "2") {
+										$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+										$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+									}
+									if (obj.ColumnIndex == "3") {
+										$scope.payment.RecurrReminder = obj.RecordFieldData;
+									}
 								}
 								//
 								isPaymentLoaded = true;
@@ -5396,20 +5396,20 @@
 								"FieldType": "PaymentPrefixLengthType",
 								"ColumnIndex": "1"
 							},
-              {
-                "FieldCultureName":"FirstReminder",
-                "FieldID":"",
-                "FieldName":"FirstReminder",
-                "FieldType":"FirstReminderType",
-                "ColumnIndex":"2"
-              },
-              {
-                "FieldCultureName":"RecurringReminder",
-                "FieldID":"",
-                "FieldName":"RecurringReminder",
-                "FieldType":"RecurringReminderType",
-                "ColumnIndex":"3"
-              }],
+							{
+								"FieldCultureName":"FirstReminder",
+								"FieldID":"",
+								"FieldName":"FirstReminder",
+								"FieldType":"FirstReminderType",
+								"ColumnIndex":"2"
+							},
+							{
+								"FieldCultureName":"RecurringReminder",
+								"FieldID":"",
+								"FieldName":"RecurringReminder",
+								"FieldType":"RecurringReminderType",
+								"ColumnIndex":"3"
+							}],
 						"commonDataValueDetails": [
 							{
 								"RowID": "",
@@ -5421,16 +5421,16 @@
 								"RecordFieldData": $scope.payment.prefixLength,
 								"ColumnIndex": "1"
 							},
-              {
-                "RowID":"",
-                "RecordFieldData":$scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):"",
-                "ColumnIndex":"2"
-              },
-              {
-                "RowID":"",
-                "RecordFieldData":$scope.payment.RecurrReminder,
-                "ColumnIndex":"3"
-              }]
+							{
+								"RowID":"",
+								"RecordFieldData":$scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):"",
+								"ColumnIndex":"2"
+							},
+							{
+								"RowID":"",
+								"RecordFieldData":$scope.payment.RecurrReminder,
+								"ColumnIndex":"3"
+							}]
 					}
 
 					$charge.settingsapp().store(req).success(function (data) {
@@ -5453,13 +5453,13 @@
 									$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 									localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 								}
-                if (obj.ColumnIndex == "2") {
-                  $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                  $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                }
-                if (obj.ColumnIndex == "3") {
-                  $scope.payment.RecurrReminder = obj.RecordFieldData;
-                }
+								if (obj.ColumnIndex == "2") {
+									$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+									$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+								}
+								if (obj.ColumnIndex == "3") {
+									$scope.payment.RecurrReminder = obj.RecordFieldData;
+								}
 							}
 							//
 							isPaymentLoaded = true;
@@ -5483,7 +5483,7 @@
 		$scope.PaymentRetryUpdating=false;
 
 		$scope.loadPaymentAttributes= function () {
-      $scope.remindersInPaymentLoaded = false;
+			$scope.remindersInPaymentLoaded = false;
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function(data) {
 				var length=data.length;
 				for(var i=0;i<length;i++)
@@ -5497,21 +5497,21 @@
 					if(obj.ColumnIndex=="1") {
 						$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 					}
-          if (obj.ColumnIndex == "2") {
-            $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-            $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-          }
-          if (obj.ColumnIndex == "3") {
-            $scope.payment.RecurrReminder = obj.RecordFieldData;
-          }
+					if (obj.ColumnIndex == "2") {
+						$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+						$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+					}
+					if (obj.ColumnIndex == "3") {
+						$scope.payment.RecurrReminder = obj.RecordFieldData;
+					}
 				}
-        $scope.remindersInPaymentLoaded = true;
+				$scope.remindersInPaymentLoaded = true;
 				//
 				isPaymentLoaded=true;
 				//
 			}).error(function(data) {
-        $scope.addNewReminder(0);
-        $scope.remindersInPaymentLoaded = true;
+				$scope.addNewReminder(0);
+				$scope.remindersInPaymentLoaded = true;
 				isPaymentLoaded=false;
 			})
 			//$scope.remindersInPaymentLoaded = false;
@@ -5529,7 +5529,7 @@
 			//		}
 			//	}
 			//	$scope.remindersInPaymentLoaded = true;
-            //
+			//
 			//}).error(function (data) {
 			//	$scope.addNewReminder(0);
 			//	$scope.remindersInPaymentLoaded = false;
@@ -6296,7 +6296,7 @@
 
 		// PAYMENT GATEWAY - INTEGRATED FROM MY ACC ===============================================================================
 		// $scope.isRegisteredWithStripe = false;
-		 $scope.isRegButtonsShow = true;
+		$scope.isRegButtonsShow = true;
 		// $scope.isRegisteredWith2checkout = false;
 
 		$scope.loadCardDetails = function() {
@@ -6331,33 +6331,33 @@
 		$scope.loadCardDetails();
 
 		// $scope.checkPaymentMethodRegistry = function(){
-        //
+		//
 		// 	$charge.paymentgateway().stripeCheckAccount().success(function (data) {
-        //
+		//
 		// 		if(data.status) {
 		// 			for (var i = 0; i < data.data.length; i++) {
 		// 				if (data.data[i].gateway === "stripe")
 		// 					$scope.isRegisteredWithStripe = true;
-        //
+		//
 		// 				if (data.data[i].gateway === "2checkout")
 		// 					$scope.isRegisteredWith2checkout = true;
 		// 			}
-        //
+		//
 		// 			$scope.isRegButtonsShow = false;
-        //
+		//
 		// 		}
-        //
+		//
 		// 	}).error(function(data) {
 		// 		console.log( data);
-        //
+		//
 		// 		$scope.isRegisteredWithStripe = false;
 		// 		$scope.isRegisteredWith2checkout = false;
 		// 		$scope.isRegButtonsShow = false;
-        //
+		//
 		// 	});
-        //
+		//
 		// }
-        //
+		//
 		// $scope.checkPaymentMethodRegistry();
 
 		vm.openRegistrationMenu = function($mdOpenMenu, ev) {
@@ -6430,294 +6430,294 @@
 		}
 
 
-    $scope.disconnectWithbraintree = function(key){
+		$scope.disconnectWithbraintree = function(key){
 
-      $scope.isRegButtonsShow = true;
+			$scope.isRegButtonsShow = true;
 
-      $scope.braintree = key;
+			$scope.braintree = key;
 
-      var confirm = $mdDialog.confirm()
-        .title('Disconnect with braintree')
-        .textContent('Do you want to proceed with braintree disconnection?')
-        .ariaLabel('Lucky day')
-        .ok('Yes')
-        .cancel('No');
-      $mdDialog.show(confirm).then(function () {
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with braintree')
+				.textContent('Do you want to proceed with braintree disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
 
 
 
-        $charge.paymentgateway().disconnectWithBraintree($scope.braintree).success(function (dataa) {
+				$charge.paymentgateway().disconnectWithBraintree($scope.braintree).success(function (dataa) {
 
-          console.log(dataa);
+					console.log(dataa);
 
-          if(dataa.status)
-          {
-            notifications.toast("You have successfully disconnected with braintree", "Success");
-            $scope.loadOnlinePaymentRegistration();
-          }else{
-            notifications.toast("There is a problem, Please try again", "Error");
-          }
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with braintree", "Success");
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
 
-          $scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow= false;
 
-        }).error(function (data) {
-          console.log(data);
-          $scope.isRegButtonsShow= false;
-          notifications.toast("There is a problem, Please try again", "Error");
+				}).error(function (data) {
+					console.log(data);
+					$scope.isRegButtonsShow= false;
+					notifications.toast("There is a problem, Please try again", "Error");
 
-        });
+				});
 
-      }, function () {
-        $scope.isRegButtonsShow = true;
-      });
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
 
-    }
+		}
 
-    $scope.disconnectWithWorldPay = function(key){
+		$scope.disconnectWithWorldPay = function(key){
 
-      $scope.isRegButtonsShow = true;
+			$scope.isRegButtonsShow = true;
 
-      $scope.worldpay = key;
+			$scope.worldpay = key;
 
-      var confirm = $mdDialog.confirm()
-        .title('Disconnect with worldpay')
-        .textContent('Do you want to proceed with worldpay disconnection?')
-        .ariaLabel('Lucky day')
-        .ok('Yes')
-        .cancel('No');
-      $mdDialog.show(confirm).then(function () {
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with worldpay')
+				.textContent('Do you want to proceed with worldpay disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
 
 
 
-        $charge.paymentgateway().disconnectWithworldpay($scope.worldpay).success(function (dataa) {
+				$charge.paymentgateway().disconnectWithworldpay($scope.worldpay).success(function (dataa) {
 
-          console.log(dataa);
+					console.log(dataa);
 
-          if(dataa.status)
-          {
-            notifications.toast("You have successfully disconnected with worldpay", "Success");
-            $scope.loadOnlinePaymentRegistration();
-          }else{
-            notifications.toast("There is a problem, Please try again", "Error");
-          }
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with worldpay", "Success");
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
 
-          $scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow= false;
 
-        }).error(function (data) {
-          console.log(data);
-          $scope.isRegButtonsShow= false;
-          notifications.toast("There is a problem, Please try again", "Error");
+				}).error(function (data) {
+					console.log(data);
+					$scope.isRegButtonsShow= false;
+					notifications.toast("There is a problem, Please try again", "Error");
 
-        });
+				});
 
-      }, function () {
-        $scope.isRegButtonsShow = true;
-      });
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
 
-    }
+		}
 
-    $scope.disconnectWithAuthorize = function(key){
+		$scope.disconnectWithAuthorize = function(key){
 
-      $scope.isRegButtonsShow = true;
+			$scope.isRegButtonsShow = true;
 
-      $scope.authorize = key;
+			$scope.authorize = key;
 
-      var confirm = $mdDialog.confirm()
-        .title('Disconnect with AuthorizedNet')
-        .textContent('Do you want to proceed with AuthorizedNet disconnection?')
-        .ariaLabel('Lucky day')
-        .ok('Yes')
-        .cancel('No');
-      $mdDialog.show(confirm).then(function () {
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with AuthorizedNet')
+				.textContent('Do you want to proceed with AuthorizedNet disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
 
-        $charge.paymentgateway().disconnectWithAuthorize($scope.authorize).success(function (dataa) {
+				$charge.paymentgateway().disconnectWithAuthorize($scope.authorize).success(function (dataa) {
 
-          console.log(dataa);
+					console.log(dataa);
 
-          if(dataa.status)
-          {
-            notifications.toast("You have successfully disconnected with AuthorizedNet", "Success");
-            $scope.loadOnlinePaymentRegistration();
-          }else{
-            notifications.toast("There is a problem, Please try again", "Error");
-          }
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with AuthorizedNet", "Success");
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
 
-          $scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow= false;
 
-        }).error(function (data) {
-          console.log(data);
-          $scope.isRegButtonsShow= false;
-          notifications.toast("There is a problem, Please try again", "Error");
+				}).error(function (data) {
+					console.log(data);
+					$scope.isRegButtonsShow= false;
+					notifications.toast("There is a problem, Please try again", "Error");
 
-        });
+				});
 
-      }, function () {
-        $scope.isRegButtonsShow = true;
-      });
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
 
-    }
+		}
 
 
-    //============================================================
+		//============================================================
 
-    $scope.currentGateways = [];
-    $scope.defaultGateway = "";
+		$scope.currentGateways = [];
+		$scope.defaultGateway = "";
 
-    $scope.loadOnlinePaymentRegistration = function(){
+		$scope.loadOnlinePaymentRegistration = function(){
 
-      $charge.paymentgateway().availableGateways().success(function (data) {
-        if(data.status) {
+			$charge.paymentgateway().availableGateways().success(function (data) {
+				if(data.status) {
 
-          $scope.currentGateways = data.data.availableGateway;
+					$scope.currentGateways = data.data.availableGateway;
 
-          $scope.defaultGateway = data.data.defaultGatway['0'].gateway;
+					$scope.defaultGateway = data.data.defaultGatway['0'].gateway;
 
-          for (i = 0; i < $scope.currentGateways.length; i++) {
+					for (i = 0; i < $scope.currentGateways.length; i++) {
 
-            if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
-              $scope.currentGateways[i].isConnected = true;
-              $scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
-            }
-            else
-            {
-              $scope.currentGateways[i].isConnected = false;
-            }
+						if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
+							$scope.currentGateways[i].isConnected = true;
+							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
+						}
+						else
+						{
+							$scope.currentGateways[i].isConnected = false;
+						}
 
-          }
+					}
 
-        }
+				}
 
-      }).error(function(data) {
-        console.log( data);
+			}).error(function(data) {
+				console.log( data);
 
-        $scope.currentGateways = [];
+				$scope.currentGateways = [];
 
-      });
+			});
 
 
-    }
+		}
 
-    $scope.loadOnlinePaymentRegistration();
+		$scope.loadOnlinePaymentRegistration();
 
-    $scope.viewTestGateway = function(ev) {
+		$scope.viewTestGateway = function(ev) {
 
-      $mdDialog.show({
-        controller: 'GuidedPaymenttestGatewayController',
-        templateUrl: 'app/main/settings/dialogs/guided-payment-testGateway.html',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        clickOutsideToClose:false,
-        locals:{
-          idToken : $scope.idToken
-        }
-      })
-        .then(function(answer) {
-          // add method after
-        }, function() {
+			$mdDialog.show({
+				controller: 'GuidedPaymenttestGatewayController',
+				templateUrl: 'app/main/settings/dialogs/guided-payment-testGateway.html',
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose:false,
+				locals:{
+					idToken : $scope.idToken
+				}
+			})
+				.then(function(answer) {
+					// add method after
+				}, function() {
 
-        });
+				});
 
-    }
+		}
 
-    $scope.makeDefault= function(gateway){
+		$scope.makeDefault= function(gateway){
 
-      $charge.paymentgateway().makeDefaultGateway(gateway).success(function (data) {
+			$charge.paymentgateway().makeDefaultGateway(gateway).success(function (data) {
 
-        if(data.status) {
-          $scope.defaultGateway = gateway;
+				if(data.status) {
+					$scope.defaultGateway = gateway;
 
-          notifications.toast("Default gateway changed", "Success");
+					notifications.toast("Default gateway changed", "Success");
 
-        }else{
-          notifications.toast("There is a problem, Please try again", "Error");
-        }
+				}else{
+					notifications.toast("There is a problem, Please try again", "Error");
+				}
 
-      }).error(function(data) {
-        console.log( data);
-        notifications.toast("There is a problem, Please try again", "Error");
-      });
-    }
+			}).error(function(data) {
+				console.log( data);
+				notifications.toast("There is a problem, Please try again", "Error");
+			});
+		}
 
-    $scope.proceedWithGateway= function (gateway,ev) {
-      if(gateway === 'stripe'){
-        $scope.proceedWithStripe();
-      }
-      else if(gateway === 'worldpay'){
+		$scope.proceedWithGateway= function (gateway,ev) {
+			if(gateway === 'stripe'){
+				$scope.proceedWithStripe();
+			}
+			else if(gateway === 'worldpay'){
 
-        $mdDialog.show({
-          controller: 'GuidedPaymentworldpayController',
-          templateUrl: 'app/main/settings/dialogs/guided-payment-worldpay.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose:false,
-          locals:{
-            idToken : $scope.idToken
-          }
-        })
-          .then(function(answer) {
-            $scope.loadOnlinePaymentRegistration();
+				$mdDialog.show({
+					controller: 'GuidedPaymentworldpayController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-worldpay.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
 
-          }, function() {
+					}, function() {
 
-          });
-      }else if(gateway === 'braintree'){
+					});
+			}else if(gateway === 'braintree'){
 
-        $mdDialog.show({
-          controller: 'GuidedPaymentbraintreeController',
-          templateUrl: 'app/main/settings/dialogs/guided-payment-braintree.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose:false,
-          locals:{
-            idToken : $scope.idToken
-          }
-        })
-          .then(function(answer) {
-            $scope.loadOnlinePaymentRegistration();
+				$mdDialog.show({
+					controller: 'GuidedPaymentbraintreeController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-braintree.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
 
-          }, function() {
+					}, function() {
 
-          });
-      }
-      else if(gateway === 'authorizednet'){
+					});
+			}
+			else if(gateway === 'authorizednet'){
 
-        $mdDialog.show({
-          controller: 'GuidedPaymentauthorizeController',
-          templateUrl: 'app/main/settings/dialogs/guided-payment-authorize.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose:false,
-          locals:{
-            idToken : $scope.idToken
-          }
-        })
-          .then(function(answer) {
-            $scope.loadOnlinePaymentRegistration();
+				$mdDialog.show({
+					controller: 'GuidedPaymentauthorizeController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-authorize.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
 
-          }, function() {
+					}, function() {
 
-          });
-      }
-    }
+					});
+			}
+		}
 
-    $scope.disconnectWithGateway= function (gateway,key) {
-      if(gateway === 'stripe'){
-        $scope.disconnectWithStripe();
-      }
-      else if(gateway === 'worldpay'){
-        $scope.disconnectWithWorldPay(key)
-      }else if(gateway === 'braintree'){
-        $scope.disconnectWithbraintree(key)
-      }else if(gateway === 'authorizednet'){
-        $scope.disconnectWithAuthorize(key);
-      }
-    }
+		$scope.disconnectWithGateway= function (gateway,key) {
+			if(gateway === 'stripe'){
+				$scope.disconnectWithStripe();
+			}
+			else if(gateway === 'worldpay'){
+				$scope.disconnectWithWorldPay(key)
+			}else if(gateway === 'braintree'){
+				$scope.disconnectWithbraintree(key)
+			}else if(gateway === 'authorizednet'){
+				$scope.disconnectWithAuthorize(key);
+			}
+		}
 
 
 
-    // $scope.registerWithTwoCheckout = function() {
-        //
-        //
+		// $scope.registerWithTwoCheckout = function() {
+		//
+		//
 		// 	var confirm = $mdDialog.confirm()
 		// 		.title('2Checkout Register')
 		// 		.textContent('Do you want to proceed ?')
@@ -6725,7 +6725,7 @@
 		// 		.ok('Yes')
 		// 		.cancel('No');
 		// 	$mdDialog.show(confirm).then(function (ev) {
-        //
+		//
 		// 		$mdDialog.show({
 		// 			controller: 'GuidedPayment2CheckoutController',
 		// 			templateUrl: 'app/main/settings/dialogs/guided-payment-2checkout.html',
@@ -6738,20 +6738,20 @@
 		// 		})
 		// 			.then(function(answer) {
 		// 				$scope.checkPaymentMethodRegistry();
-        //
+		//
 		// 			}, function() {
-        //
+		//
 		// 			});
-        //
+		//
 		// 	}, function () {
 		// 		$mdDialog.hide();
 		// 	});
-        //
+		//
 		// }
-        //
+		//
 		// $scope.deleteWithTwoCheckout = function() {
-        //
-        //
+		//
+		//
 		// 	var confirm = $mdDialog.confirm()
 		// 		.title('2Checkout disconnect')
 		// 		.textContent('Do you want to proceed ?')
@@ -6759,28 +6759,28 @@
 		// 		.ok('Yes')
 		// 		.cancel('No');
 		// 	$mdDialog.show(confirm).then(function () {
-        //
+		//
 		// 		$charge.paymentgateway().deleteClient().success(function (response) {
-        //
+		//
 		// 			if(response.status){
 		// 				$scope.isRegisteredWith2checkout = false;
 		// 				notifications.toast("Successfully disconnected with 2checkout ", "success");
 		// 			}else{
 		// 				notifications.toast("2Checkout disconnection failed", "error");
 		// 			}
-        //
-        //
+		//
+		//
 		// 		}).error(function (response) {
 		// 			console.log(response);
 		// 			notifications.toast("2Checkout disconnection failed", "error");
-        //
+		//
 		// 		});
-        //
-        //
+		//
+		//
 		// 	}, function () {
 		// 		$mdDialog.hide();
 		// 	});
-        //
+		//
 		// }
 
 		// END PAYMENT GATEWAY - INTEGRATED FROM MY ACC ==============================================================================
