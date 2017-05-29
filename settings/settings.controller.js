@@ -6516,6 +6516,47 @@
 
     }
 
+    $scope.disconnectWithAuthorize = function(key){
+
+      $scope.isRegButtonsShow = true;
+
+      $scope.authorize = key;
+
+      var confirm = $mdDialog.confirm()
+        .title('Disconnect with AuthorizedNet')
+        .textContent('Do you want to proceed with AuthorizedNet disconnection?')
+        .ariaLabel('Lucky day')
+        .ok('Yes')
+        .cancel('No');
+      $mdDialog.show(confirm).then(function () {
+
+        $charge.paymentgateway().disconnectWithAuthorize($scope.authorize).success(function (dataa) {
+
+          console.log(dataa);
+
+          if(dataa.status)
+          {
+            notifications.toast("You have successfully disconnected with AuthorizedNet", "Success");
+            $scope.loadOnlinePaymentRegistration();
+          }else{
+            notifications.toast("There is a problem, Please try again", "Error");
+          }
+
+          $scope.isRegButtonsShow= false;
+
+        }).error(function (data) {
+          console.log(data);
+          $scope.isRegButtonsShow= false;
+          notifications.toast("There is a problem, Please try again", "Error");
+
+        });
+
+      }, function () {
+        $scope.isRegButtonsShow = true;
+      });
+
+    }
+
 
     //============================================================
 
@@ -6638,6 +6679,25 @@
 
           });
       }
+      else if(gateway === 'authorizednet'){
+
+        $mdDialog.show({
+          controller: 'GuidedPaymentauthorizeController',
+          templateUrl: 'app/main/settings/dialogs/guided-payment-authorize.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:false,
+          locals:{
+            idToken : $scope.idToken
+          }
+        })
+          .then(function(answer) {
+            $scope.loadOnlinePaymentRegistration();
+
+          }, function() {
+
+          });
+      }
     }
 
     $scope.disconnectWithGateway= function (gateway,key) {
@@ -6648,8 +6708,11 @@
         $scope.disconnectWithWorldPay(key)
       }else if(gateway === 'braintree'){
         $scope.disconnectWithbraintree(key)
+      }else if(gateway === 'authorizednet'){
+        $scope.disconnectWithAuthorize(key);
       }
     }
+
 
 
     // $scope.registerWithTwoCheckout = function() {

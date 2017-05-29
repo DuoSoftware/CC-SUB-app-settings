@@ -3,7 +3,7 @@
   'use strict';
 
   angular
-    .module('app.account')
+    .module('app.settings')
     .controller('GuidedPaymentbraintreeController', GuidedPaymentbraintreeController);
 
   /** @ngInject */
