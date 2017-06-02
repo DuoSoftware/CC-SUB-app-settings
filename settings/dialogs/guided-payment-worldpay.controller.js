@@ -32,7 +32,7 @@
 
         }).error(function (response) {
 
-          console.log(response);
+          // console.log(response);
           notifications.toast("World pay registration failed", "error");
         });
       }

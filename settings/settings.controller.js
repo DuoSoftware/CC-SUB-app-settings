@@ -48,7 +48,7 @@
 
 		var settingsTabs = document.getElementById('settingsTabs');
 		angular.forEach(settingsTabs.children[1].children, function (tab) {
-			console.log(tab)
+			//console.log(tab)
 		});
 		//settingsTabs.find('md-tab-content').addClass('ms-scroll');
 
@@ -311,7 +311,7 @@
 			//
 			//console.log(data);
 		}).error(function(data) {
-			console.log(data);
+			//console.log(data);
 		})
 
 		$charge.settings().languages().success(function(data) {
@@ -326,7 +326,7 @@
 			}
 			//console.log(data);
 		}).error(function(data) {
-			console.log(data);
+			//console.log(data);
 		})
 
 		var self = this;
@@ -1080,9 +1080,9 @@
 										$scope.generalSubmit = false;
 
 										$charge.settingsapp().deleteGeneralData().success(function (data) {
-											console.log("Settings Rollback..");
+											//console.log("Settings Rollback..");
 										}).error(function (data) {
-											console.log("Settings Rollback failed");
+											//console.log("Settings Rollback failed");
 										});
 
 									});
@@ -1091,20 +1091,20 @@
 									$scope.generalSubmit = false;
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
-										console.log("Settings Rollback..");
+										//console.log("Settings Rollback..");
 									}).error(function (data) {
-										console.log("Settings Rollback failed");
+										//console.log("Settings Rollback failed");
 									});
 
 								});
 							}).error(function (data) {
-								console.log(data);
+								//console.log(data);
 								$scope.generalSubmit = false;
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
-									console.log("Settings Rollback..");
+									//console.log("Settings Rollback..");
 								}).error(function (data) {
-									console.log("Settings Rollback failed");
+									//console.log("Settings Rollback failed");
 								});
 
 							})
@@ -1222,9 +1222,9 @@
 									$scope.generalSubmit = false;
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
-										console.log("Settings Rollback..");
+										//console.log("Settings Rollback..");
 									}).error(function (data) {
-										console.log("Settings Rollback failed");
+										//console.log("Settings Rollback failed");
 									});
 
 								});
@@ -1233,9 +1233,9 @@
 								$scope.generalSubmit = false;
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
-									console.log("Settings Rollback..");
+									//console.log("Settings Rollback..");
 								}).error(function (data) {
-									console.log("Settings Rollback failed");
+									//console.log("Settings Rollback failed");
 								});
 
 							});
@@ -1248,9 +1248,9 @@
 						$scope.generalSubmit = false;
 
 						$charge.settingsapp().deleteGeneralData().success(function (data) {
-							console.log("Settings Rollback..");
+							//console.log("Settings Rollback..");
 						}).error(function (data) {
-							console.log("Settings Rollback failed");
+							//console.log("Settings Rollback failed");
 						});
 
 					})
@@ -1365,7 +1365,7 @@
 						$scope.insertCompanyIndividual();
 
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 						$scope.generalSubmit = false;
 					})
 
@@ -1664,7 +1664,7 @@
 			//    //
 			//  }
 			//}).error(function(data) {
-			//  console.log(data);
+			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  console.log(data);
 			//})
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
@@ -1693,7 +1693,7 @@
 
 			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
 			{
-				console.log(data);
+				//console.log(data);
 
 				if($scope.loadingPlanKeyAttributes)
 				{
@@ -1726,7 +1726,7 @@
 
 			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
 			{
-				console.log(data);
+				//console.log(data);
 
 				if($scope.loadingPlanChangeFee)
 				{
@@ -1756,11 +1756,11 @@
 
 			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
 				$scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
-				console.log($scope.BaseCurrencyPlanChangeFee);
+				//console.log($scope.BaseCurrencyPlanChangeFee);
 				//$scope.selectedCurrency = $scope.BaseCurrency;
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 				$scope.BaseCurrencyPlanChangeFee="USD";
 				//$scope.selectedCurrency = $scope.BaseCurrency;
 			})
@@ -1771,7 +1771,7 @@
 			$scope.loadingPlanKeyAttributes = true;
 			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
 			{
-				console.log(data);
+				//console.log(data);
 
 				if($scope.loadingPlanKeyAttributes)
 				{
@@ -1803,7 +1803,7 @@
 			$scope.loadingPlanChangeFee = true;
 			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
 			{
-				console.log(data);
+				//console.log(data);
 
 				if($scope.loadingPlanChangeFee)
 				{
@@ -1859,7 +1859,7 @@
 			tempUsedEventsList=[];
 
 			$charge.webhook().allEvents(skipAllEventsWH,takeAllEventsWH,'asc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				//
 				if($scope.loadingEventsWH)
 				{
@@ -1877,7 +1877,7 @@
 					}
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.webhookEventList=[];
 				$scope.loadingEventsWH = false;
 			})
@@ -1886,7 +1886,7 @@
 			skipAllWebhooks=0;
 
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				//
 				if($scope.loadingWebhooks)
 				{
@@ -1917,7 +1917,7 @@
 					}
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.webhookList=[];
 				$scope.loadingWebhooks = false;
 			})
@@ -1928,7 +1928,7 @@
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
 			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				if($scope.loadingWebhookHistory)
 				{
 					skipAllWebhookHistory += takeAllWebhookHistory;
@@ -1946,7 +1946,7 @@
 				}
 
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.webhookHistoryList=[];
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
@@ -1957,7 +1957,7 @@
 		$scope.loadWebhookListPaging= function () {
 			$scope.loadingWebhooks = true;
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				//
 				if($scope.loadingWebhooks)
 				{
@@ -1988,7 +1988,7 @@
 					}
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				$scope.loadingWebhooks = false;
 				if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH && tempUsedEventsList.length!=0)
 				{
@@ -2014,7 +2014,7 @@
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
 			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				if($scope.loadingWebhookHistory)
 				{
 					skipAllWebhookHistory += takeAllWebhookHistory;
@@ -2032,7 +2032,7 @@
 				}
 
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.webhookHistoryList=[];
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
@@ -2091,7 +2091,7 @@
 					if(tempEventsSelected)
 					{
 						$charge.webhook().createWH(webhookObj).success(function (data) {
-							console.log(data);
+							//console.log(data);
 							//
 							if(data.error=="00000")
 							{
@@ -2115,7 +2115,7 @@
 							vm.webhookSubmitted = false;
 						}).error(function (data) {
 							$mdDialog.hide();
-							console.log(data);
+							//console.log(data);
 							vm.webhookSubmitted = false;
 						})
 					}
@@ -2152,7 +2152,7 @@
 					if(tempEventsSelected)
 					{
 						$charge.webhook().updateWH(webhookObj).success(function (data) {
-							console.log(data);
+							//console.log(data);
 							//
 							if(data.error=="00000")
 							{
@@ -2168,7 +2168,7 @@
 							vm.webhookSubmitted = false;
 						}).error(function (data) {
 							$mdDialog.hide();
-							console.log(data);
+							//console.log(data);
 							vm.webhookSubmitted = false;
 						})
 					}
@@ -2220,7 +2220,7 @@
 			$scope.loadingEmailTemplates = true;
 
 			$charge.storage().allTemplates().success(function (data) {
-				console.log(data);
+				//console.log(data);
 				//
 				if($scope.loadingEmailTemplates)
 				{
@@ -2237,7 +2237,7 @@
 
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.emailTemplateList=[];
 				$scope.loadingEmailTemplates = false;
 			})
@@ -2341,7 +2341,7 @@
 								$scope.addBrandDisabled = false;
 								//$mdDialog.hide($scope.brands);
 							}).error(function (data) {
-								console.log(data);
+								//console.log(data);
 								$scope.addBrandDisabled = false;
 							})
 
@@ -2350,7 +2350,7 @@
 							//  //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							//}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addBrandDisabled = false;
 						})
 					}
@@ -2394,7 +2394,7 @@
 								$scope.addBrandDisabled = false;
 								//$mdDialog.hide($scope.brands);
 							}).error(function (data) {
-								console.log(data);
+								//console.log(data);
 								$scope.addBrandDisabled = false;
 							})
 
@@ -2403,7 +2403,7 @@
 							//  //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							//}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addBrandDisabled = false;
 						})
 					}
@@ -2474,7 +2474,7 @@
 							$scope.updateBraEnable = !$scope.updateBraEnable;
 							$scope.updateBrandDisabled = false;
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.updateBrandDisabled = false;
 						})
 					}
@@ -2484,7 +2484,7 @@
 						$scope.updateBrandDisabled = false;
 					}
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.updateBrandDisabled = false;
 				})
 			}
@@ -2573,17 +2573,17 @@
 								$scope.inventory.store = "";
 								$scope.addInventoryDisabled = false;
 							}).error(function (data) {
-								console.log(data);
+								//console.log(data);
 								$scope.addInventoryDisabled = false;
 							})
 
 							if (data.IsSuccess) {
-								console.log(data);
+								//console.log(data);
 								$scope.addInventoryDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addInventoryDisabled = false;
 						})
 					}
@@ -2664,11 +2664,11 @@
 							})
 
 							if (data.IsSuccess) {
-								console.log(data);
+								//console.log(data);
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 						})
 					}
 				}
@@ -2761,7 +2761,7 @@
 						$scope.updateInventoryDisabled = false;
 					}
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.updateInventoryDisabled = false;
 				})
 			}
@@ -2872,7 +2872,7 @@
 						$charge.uom().getAllUOM('Product_123').success(function (data) {
 							$scope.UOMs = [];
 							//
-							console.log(data);
+							//console.log(data);
 							for (var i = 0; i < data.length; i++) {
 								//
 								$scope.UOMs.push(data[i][0]);
@@ -2883,7 +2883,7 @@
 							$scope.updateUomEnable = !$scope.updateUomEnable;
 							$scope.updateUomDisabled = false;
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.updateUomDisabled = false;
 						})
 					} else {
@@ -2892,7 +2892,7 @@
 						$scope.updateUomDisabled = false;
 					}
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.updateUomDisabled = false;
 				})
 			}
@@ -2956,7 +2956,7 @@
 						$charge.uom().getAllUOM('Product_123').success(function (data) {
 							$scope.UOMs = [];
 							//
-							console.log(data);
+							//console.log(data);
 							for (var i = 0; i < data.length; i++) {
 								//
 								$scope.UOMs.push(data[i][0]);
@@ -2966,7 +2966,7 @@
 							$scope.addUomDisabled = false;
 							//$mdDialog.hide($scope.UOMs);
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addUomDisabled = false;
 						})
 						//if(data.IsSuccess) {
@@ -3089,12 +3089,12 @@
 							})
 
 							if (data.error=="00000") {
-								console.log(data);
+								//console.log(data);
 								$scope.addUomDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addUomDisabled = false;
 						})
 					}
@@ -3160,12 +3160,12 @@
 							})
 
 							if (data[0].error=="00000") {
-								console.log(data);
+								//console.log(data);
 								$scope.addUomDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addUomDisabled = false;
 						})
 					}
@@ -3266,7 +3266,7 @@
 					}
 				}).error(function (data) {
 					$mdDialog.hide();
-					console.log(data);
+					//console.log(data);
 					$scope.updateUomDisabled = false;
 					$scope.updateUomEnable = false;
 				})
@@ -3286,7 +3286,7 @@
 				//
 				$scope.planTypeList.splice(index,1);
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -3550,7 +3550,7 @@
 					notifications.toast("Webhook Deleting Failed", "error");
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -3633,12 +3633,12 @@
 							$scope.defaultEmailTemplate=angular.copy(tempEmailTemplate);
 							vm.emailTemplateSubmitted=false;
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							notifications.toast("Template Saving Error", "error");
 							vm.emailTemplateSubmitted=false;
 						})
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
 						vm.emailTemplateSubmitted=false;
 					})
@@ -3682,7 +3682,7 @@
 						vm.emailTemplateSubmitted=false;
 
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
 						vm.emailTemplateSubmitted=false;
 					})
@@ -3756,7 +3756,7 @@
 							//}
 						}).error(function (data) {
 							$scope.addCategoryDisabled = false;
-							console.log(data);
+							//console.log(data);
 						})
 					}
 					else {
@@ -3800,16 +3800,16 @@
 								//$mdDialog.hide($scope.categories);
 							}).error(function (data) {
 								$scope.addCategoryDisabled = false;
-								console.log(data);
+								//console.log(data);
 							})
 
 							if (data.IsSuccess) {
-								console.log(data);
+								//console.log(data);
 								$scope.addCategoryDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 						})
 					}
 				}
@@ -3855,7 +3855,7 @@
 							$scope.updateCatEnable = !$scope.updateCatEnable;
 							$scope.updateCategoryDisabled = false;
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.updateCategoryDisabled = false;
 						})
 					} else {
@@ -3864,7 +3864,7 @@
 						$scope.updateCategoryDisabled = false;
 					}
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.updateCategoryDisabled = false;
 				})
 			}
@@ -3892,7 +3892,7 @@
 				else if(ev.ColumnIndex=="1")
 					$scope.brands.splice(index,1);
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -3902,7 +3902,7 @@
 				//
 				$scope.stores.splice(index,1);
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -3912,7 +3912,7 @@
 				//
 				$scope.UOMs.splice(index,1);
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -4361,7 +4361,7 @@
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -4502,7 +4502,7 @@
 								isInvoiceLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.invoiceSubmit=false;
 							$scope.addTermsDisabled = false;
 						})
@@ -4635,7 +4635,7 @@
 								$scope.addTermsDisabled = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.invoiceSubmit=false;
 							$scope.addTermsDisabled = false;
 						})
@@ -4787,7 +4787,7 @@
 					}
 
 					$charge.settingsapp().store(req).success(function(data) {
-						console.log(data);
+						//console.log(data);
 						vm.invoiceSubmit=false;
 						notifications.toast("Invoice settings has been applied.", "success");
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes", "InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,FirstReminder,RecurringReminder,InvoiceTerms,CreditLimit").success(function (data) {
@@ -4849,7 +4849,7 @@
 							$scope.addTermsDisabled = false;
 						})
 					}).error(function(data) {
-						console.log(data);
+						//console.log(data);
 						vm.invoiceSubmit=false;
 						$scope.addTermsDisabled = false;
 					})
@@ -4927,7 +4927,7 @@
 								isQuotationLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.quotationSubmit=false;
 						})
 					}
@@ -4993,7 +4993,7 @@
 								isQuotationLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.quotationSubmit=false;
 						})
 						//}
@@ -5070,7 +5070,7 @@
 					}
 
 					$charge.settingsapp().store(req).success(function (data) {
-						console.log(data);
+						//console.log(data);
 						vm.quotationSubmit=false;
 						notifications.toast("Quotation settings has been applied.", "success");
 
@@ -5105,7 +5105,7 @@
 							isQuotationLoaded = false;
 						})
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 						vm.quotationSubmit=false;
 					})
 				}
@@ -5118,7 +5118,7 @@
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -5292,7 +5292,7 @@
 								isPaymentLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.paymentSubmit=false;
 						})
 					}
@@ -5357,7 +5357,7 @@
 								isPaymentLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.paymentSubmit=false;
 						})
 						//}
@@ -5434,7 +5434,7 @@
 					}
 
 					$charge.settingsapp().store(req).success(function (data) {
-						console.log(data);
+						//console.log(data);
 						notifications.toast("Payment settings has been applied.", "success");
 						vm.paymentSubmit=false;
 
@@ -5468,7 +5468,7 @@
 							isPaymentLoaded = false;
 						})
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 					})
 
 
@@ -5539,7 +5539,7 @@
 			$scope.PaymentRetryUpdating=false;
 
 			$charge.notification().getProcessByCode("Payment").success(function(data) {
-				console.log(data);
+				//console.log(data);
 
 				$scope.retryProcess={};
 				$scope.retryProcess.processCode="Payment";
@@ -5572,7 +5572,7 @@
 				$scope.PaymentRetryUpdating=true;
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 				if(data==204)
 				{
 					$scope.PaymentRetryUpdating=false;
@@ -5613,7 +5613,7 @@
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -5657,7 +5657,7 @@
 			if(!$scope.PaymentRetryUpdating)
 			{
 				$charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
-					console.log(data);
+					//console.log(data);
 					if(data.response=="succeeded")
 					{
 						notifications.toast("Successfully Payment Retry Configuration Saved","success");
@@ -5673,7 +5673,7 @@
 					}
 
 				}).error(function(data) {
-					console.log(data);
+					//console.log(data);
 					notifications.toast("Payment Retry Configuration Saving Failed","error");
 					$scope.paymentRetrySubmitted=false;
 				})
@@ -5681,7 +5681,7 @@
 			else
 			{
 				$charge.notification().updateRetryProcess($scope.retryProcess).success(function(data) {
-					console.log(data);
+					//console.log(data);
 					if(data.response=="succeeded")
 					{
 						notifications.toast("Successfully Payment Retry Configuration Updated","success");
@@ -5697,7 +5697,7 @@
 					}
 
 				}).error(function(data) {
-					console.log(data);
+					//console.log(data);
 					notifications.toast("Payment Retry Configuration Updating Failed","error");
 					$scope.paymentRetrySubmitted=false;
 				})
@@ -6321,7 +6321,7 @@
 				}
 
 			}, function (response) {
-				console.log(response);
+				//console.log(response);
 				$scope.cardDetails = null;
 
 			});
@@ -6400,11 +6400,9 @@
 				.cancel('No');
 			$mdDialog.show(confirm).then(function () {
 
-
-
 				$charge.paymentgateway().deactiveAcc().success(function (dataa) {
 
-					console.log(dataa);
+					//console.log(dataa);
 
 					if(dataa.status)
 					{
@@ -6415,9 +6413,10 @@
 					}
 
 					$scope.isRegButtonsShow= false;
+					$scope.$apply();
 
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.isRegButtonsShow= false;
 					notifications.toast("There is a problem, Please try again", "Error");
 
@@ -6448,7 +6447,7 @@
 
 				$charge.paymentgateway().disconnectWithBraintree($scope.braintree).success(function (dataa) {
 
-					console.log(dataa);
+					//console.log(dataa);
 
 					if(dataa.status)
 					{
@@ -6461,7 +6460,7 @@
 					$scope.isRegButtonsShow= false;
 
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.isRegButtonsShow= false;
 					notifications.toast("There is a problem, Please try again", "Error");
 
@@ -6491,7 +6490,7 @@
 
 				$charge.paymentgateway().disconnectWithworldpay($scope.worldpay).success(function (dataa) {
 
-					console.log(dataa);
+					//console.log(dataa);
 
 					if(dataa.status)
 					{
@@ -6504,7 +6503,7 @@
 					$scope.isRegButtonsShow= false;
 
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.isRegButtonsShow= false;
 					notifications.toast("There is a problem, Please try again", "Error");
 
@@ -6532,7 +6531,7 @@
 
 				$charge.paymentgateway().disconnectWithAuthorize($scope.authorize).success(function (dataa) {
 
-					console.log(dataa);
+					//console.log(dataa);
 
 					if(dataa.status)
 					{
@@ -6545,7 +6544,7 @@
 					$scope.isRegButtonsShow= false;
 
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.isRegButtonsShow= false;
 					notifications.toast("There is a problem, Please try again", "Error");
 
@@ -6588,7 +6587,7 @@
 				}
 
 			}).error(function(data) {
-				console.log( data);
+				//console.log( data);
 
 				$scope.currentGateways = [];
 
@@ -6633,7 +6632,7 @@
 				}
 
 			}).error(function(data) {
-				console.log( data);
+				//console.log( data);
 				notifications.toast("There is a problem, Please try again", "Error");
 			});
 		}

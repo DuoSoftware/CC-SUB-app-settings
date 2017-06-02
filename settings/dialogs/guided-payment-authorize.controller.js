@@ -17,7 +17,7 @@
     };
 
     $scope.submitauthorizeRegistration = function () {
-       debugger;
+       // debugger;
       if($scope.authorizeForm.$valid){
 
         $charge.paymentgateway().registerWithAuthorize($scope.authorize).success(function (response) {
@@ -33,7 +33,7 @@
 
         }).error(function (response) {
 
-          console.log(response);
+          // console.log(response);
           notifications.toast("authorize registration failed", "error");
         });
       }

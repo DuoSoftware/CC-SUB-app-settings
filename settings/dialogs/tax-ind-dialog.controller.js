@@ -62,7 +62,7 @@
 		//};
 
 		$scope.enableTaxType= function (ev) {
-			debugger;
+			// debugger;
 			$scope.requiredStatus=ev==true?false:true;
 			if($scope.requiredStatus)
 			{
@@ -113,7 +113,7 @@
 
 		$scope.addrow = function () {
 			//tax.newItem=false;
-			debugger;
+			// debugger;
 			$scope.addNewRow();
 		}
 
@@ -126,13 +126,13 @@
 		$scope.updateTax=function(ev,index)
 		{
 			$scope.isTaxInfoLoaded = false;
-			debugger;
+			// debugger;
 			$scope.taxHeader={};
 			$scope.isUpdate=true;
 			//debugger;
 			$charge.tax().getTaxByIDs(ev.taxid).success(function(data) {
-				debugger;
-				console.log(data);
+				// debugger;
+				// console.log(data);
 				$scope.taxHeader.taxcode=ev.taxcode;
 				$scope.displaytaxCode=ev.taxcode;
 				$scope.taxHeader.taxid=ev.taxid;
@@ -192,7 +192,7 @@
 
 		$scope.submitTax=function(type,index)
 		{
-			debugger;
+			// debugger;
 			if(vm.editTaxForm.$valid==true) {
 				$scope.individualSubmit=true;
 				if ($scope.taxHeader.taxcode != undefined && $scope.taxHeader.taxcode != "") {
@@ -271,7 +271,7 @@
 								"taxdetails": $scope.taxdetails
 							}
 							$charge.tax().updateTax(req).success(function (data) {
-								debugger;
+								// debugger;
 								notifications.toast("Tax has been updated.", "success");
 								$scope.isTaxInfoLoaded = false;
 								$scope.individualSubmit = false;
@@ -369,7 +369,7 @@
 							}
 
 							$charge.tax().storeTax(req).success(function (data) {
-								debugger;
+								// debugger;
 								$scope.individualSubmit=false;
 								var taxHd = req;
 								taxHd.taxid = data.data.taxId;
@@ -384,7 +384,7 @@
 								$scope.taxGroupList = [];
 								var skipGrp = 0, takeGrp = 100;
 								$charge.tax().allgroups(skipGrp, takeGrp, "asc").success(function (data) {
-									debugger;
+									// debugger;
 									notifications.toast("Tax has been added.", "success");
 									skipGrp += takeGrp;
 									if (response == "") {
@@ -400,7 +400,7 @@
 
 									$scope.isTaxInfoLoaded = false;
 								}).error(function (data) {
-									//console.log(data);
+									// console.log(data);
 									// response = data;
 									$scope.isTaxInfoLoaded = false;
 									$scope.isSpinnerShown = false;

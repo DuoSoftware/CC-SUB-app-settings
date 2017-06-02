@@ -147,7 +147,7 @@
           if($scope.general.baseCurrency!=ev.code) {
             $scope.general.userCurrency = $scope.general.userCurrency + " " + ev.code;
             $scope.general.currencyName = $scope.general.currencyName == "" ? ev.name : $scope.general.currencyName + "," + ev.name;
-            debugger;
+            // debugger;
             $scope.userCurrencies.push(ev);
             self.searchCurrency = null;
           }
@@ -181,7 +181,7 @@
           $scope.general.currencyName.trimRight(",");
         }
       }
-      debugger;
+      // debugger;
       $scope.userCurrencies.splice(index,1);
       tempCurrencyNames.splice(index,1);
       tempCurrencyCodes.splice(index,1);
@@ -194,7 +194,7 @@
     $scope.imgHeight = "";
     $scope.general.decimalPoint=2;
     $scope.saveGeneralSite = function() {
-      debugger;
+      // debugger;
       if(vm.generalForm.$valid==true) {
         $scope.generalSubmit=true;
 
@@ -308,7 +308,7 @@
             "commonDatafieldDetails": $scope.generalFields,
             "commonDataValueDetails": $scope.generalFieldValues
           }
-          debugger;
+          // debugger;
           $charge.commondata().store(req).success(function (data) {
             localStorage.removeItem('firstLogin');
             localStorage.setItem("firstLogin", $scope.general.baseCurrency);
@@ -337,7 +337,7 @@
                       "commonDatafieldDetails": $scope.companyFields,
                       "commonDataValueDetails": $scope.companyFieldValues
                     }
-                    debugger;
+                    // debugger;
                     $charge.commondata().store(req).success(function (data) {
                       $scope.saveFooter();
                       var req = {
@@ -354,7 +354,7 @@
                         "commonDatafieldDetails": $scope.footerFields,
                         "commonDataValueDetails": $scope.footerFieldValues
                       }
-                      debugger;
+                      // debugger;
                       $charge.commondata().store(req).success(function (data) {
                         $scope.saveInvoiceSite();
                       }).error(function (data) {
@@ -388,7 +388,7 @@
                 "commonDatafieldDetails": $scope.companyFields,
                 "commonDataValueDetails": $scope.companyFieldValues
               }
-              debugger;
+              // debugger;
               $charge.commondata().store(req).success(function (data) {
                 $scope.saveFooter();
                 var req = {
@@ -405,7 +405,7 @@
                   "commonDatafieldDetails": $scope.footerFields,
                   "commonDataValueDetails": $scope.footerFieldValues
                 }
-                debugger;
+                // debugger;
                 $charge.commondata().store(req).success(function (data) {
                   $scope.saveInvoiceSite();
                 }).error(function (data) {
