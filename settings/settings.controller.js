@@ -6400,6 +6400,8 @@
 				.cancel('No');
 			$mdDialog.show(confirm).then(function () {
 
+
+
 				$charge.paymentgateway().deactiveAcc().success(function (dataa) {
 
 					//console.log(dataa);
@@ -6408,12 +6410,12 @@
 					{
 						notifications.toast("You have successfully disconnected with stripe", "Success");
 						$scope.isRegisteredWithStripe = false;
+						$scope.loadOnlinePaymentRegistration();
 					}else{
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
 					$scope.isRegButtonsShow= false;
-					$scope.$apply();
 
 				}).error(function (data) {
 					//console.log(data);
