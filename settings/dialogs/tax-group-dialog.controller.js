@@ -244,7 +244,7 @@
 		//function querySearch (query,index) {
 		//  var results=[];
 		//  for (var i = 0; i<$scope.taxGroups.length; ++i){
-		//    //console.log($scope.allBanks[i].value.value);
+		   //console.log($scope.allBanks[i].value.value);
 		//    if($scope.taxGroups[i].taxcode.toLowerCase().indexOf(query.toLowerCase()) !=-1)
 		//    {
 		//      if($scope.taxGroups[i].taxcode.toLowerCase().startsWith(query.toLowerCase()))
@@ -301,7 +301,7 @@
 
 			$scope.groupInfoLoaded = false;
 			$charge.tax().getTaxGrpByIDs(ev.taxgroupid).success(function(data) {
-				console.log(data);
+				// console.log(data);
 				$scope.taxGrpHeader=data[0];
 				$scope.displayTaxGrp=data[0].taxgroupcode;
 				if(data.groupDetail.length!=0) {

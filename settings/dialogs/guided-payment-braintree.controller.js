@@ -18,7 +18,7 @@
     };
 
     $scope.submitbraintreeRegistration = function () {
-       debugger;
+       // debugger;
       if($scope.braintreeForm.$valid){
 
         $charge.paymentgateway().registerWithBraintree($scope.braintree).success(function (response) {
@@ -34,7 +34,7 @@
 
         }).error(function (response) {
 
-          console.log(response);
+          // console.log(response);
           notifications.toast("Braintree registration failed", "error");
         });
       }

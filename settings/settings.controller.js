@@ -6400,8 +6400,6 @@
 				.cancel('No');
 			$mdDialog.show(confirm).then(function () {
 
-
-
 				$charge.paymentgateway().deactiveAcc().success(function (dataa) {
 
 					//console.log(dataa);
@@ -6415,6 +6413,7 @@
 					}
 
 					$scope.isRegButtonsShow= false;
+					$scope.$apply();
 
 				}).error(function (data) {
 					//console.log(data);
