@@ -48,7 +48,7 @@
 
 		var settingsTabs = document.getElementById('settingsTabs');
 		angular.forEach(settingsTabs.children[1].children, function (tab) {
-			console.log(tab)
+			//console.log(tab)
 		});
 		//settingsTabs.find('md-tab-content').addClass('ms-scroll');
 
@@ -311,7 +311,7 @@
 			//
 			//console.log(data);
 		}).error(function(data) {
-			console.log(data);
+			//console.log(data);
 		})
 
 		$charge.settings().languages().success(function(data) {
@@ -326,7 +326,7 @@
 			}
 			//console.log(data);
 		}).error(function(data) {
-			console.log(data);
+			//console.log(data);
 		})
 
 		var self = this;
@@ -1080,9 +1080,9 @@
 										$scope.generalSubmit = false;
 
 										$charge.settingsapp().deleteGeneralData().success(function (data) {
-											console.log("Settings Rollback..");
+											//console.log("Settings Rollback..");
 										}).error(function (data) {
-											console.log("Settings Rollback failed");
+											//console.log("Settings Rollback failed");
 										});
 
 									});
@@ -1091,20 +1091,20 @@
 									$scope.generalSubmit = false;
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
-										console.log("Settings Rollback..");
+										//console.log("Settings Rollback..");
 									}).error(function (data) {
-										console.log("Settings Rollback failed");
+										//console.log("Settings Rollback failed");
 									});
 
 								});
 							}).error(function (data) {
-								console.log(data);
+								//console.log(data);
 								$scope.generalSubmit = false;
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
-									console.log("Settings Rollback..");
+									//console.log("Settings Rollback..");
 								}).error(function (data) {
-									console.log("Settings Rollback failed");
+									//console.log("Settings Rollback failed");
 								});
 
 							})
@@ -1222,9 +1222,9 @@
 									$scope.generalSubmit = false;
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
-										console.log("Settings Rollback..");
+										//console.log("Settings Rollback..");
 									}).error(function (data) {
-										console.log("Settings Rollback failed");
+										//console.log("Settings Rollback failed");
 									});
 
 								});
@@ -1233,9 +1233,9 @@
 								$scope.generalSubmit = false;
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
-									console.log("Settings Rollback..");
+									//console.log("Settings Rollback..");
 								}).error(function (data) {
-									console.log("Settings Rollback failed");
+									//console.log("Settings Rollback failed");
 								});
 
 							});
@@ -1248,9 +1248,9 @@
 						$scope.generalSubmit = false;
 
 						$charge.settingsapp().deleteGeneralData().success(function (data) {
-							console.log("Settings Rollback..");
+							//console.log("Settings Rollback..");
 						}).error(function (data) {
-							console.log("Settings Rollback failed");
+							//console.log("Settings Rollback failed");
 						});
 
 					})
@@ -1365,7 +1365,7 @@
 						$scope.insertCompanyIndividual();
 
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 						$scope.generalSubmit = false;
 					})
 
@@ -1664,7 +1664,7 @@
 			//    //
 			//  }
 			//}).error(function(data) {
-			//  console.log(data);
+			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  console.log(data);
 			//})
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
@@ -1693,7 +1693,7 @@
 
 			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
 			{
-				console.log(data);
+				//console.log(data);
 
 				if($scope.loadingPlanKeyAttributes)
 				{
@@ -1726,7 +1726,7 @@
 
 			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
 			{
-				console.log(data);
+				//console.log(data);
 
 				if($scope.loadingPlanChangeFee)
 				{
@@ -1756,11 +1756,11 @@
 
 			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
 				$scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
-				console.log($scope.BaseCurrencyPlanChangeFee);
+				//console.log($scope.BaseCurrencyPlanChangeFee);
 				//$scope.selectedCurrency = $scope.BaseCurrency;
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 				$scope.BaseCurrencyPlanChangeFee="USD";
 				//$scope.selectedCurrency = $scope.BaseCurrency;
 			})
@@ -1771,7 +1771,7 @@
 			$scope.loadingPlanKeyAttributes = true;
 			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
 			{
-				console.log(data);
+				//console.log(data);
 
 				if($scope.loadingPlanKeyAttributes)
 				{
@@ -1803,7 +1803,7 @@
 			$scope.loadingPlanChangeFee = true;
 			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
 			{
-				console.log(data);
+				//console.log(data);
 
 				if($scope.loadingPlanChangeFee)
 				{
@@ -1859,7 +1859,7 @@
 			tempUsedEventsList=[];
 
 			$charge.webhook().allEvents(skipAllEventsWH,takeAllEventsWH,'asc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				//
 				if($scope.loadingEventsWH)
 				{
@@ -1877,7 +1877,7 @@
 					}
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.webhookEventList=[];
 				$scope.loadingEventsWH = false;
 			})
@@ -1886,7 +1886,7 @@
 			skipAllWebhooks=0;
 
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				//
 				if($scope.loadingWebhooks)
 				{
@@ -1917,7 +1917,7 @@
 					}
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.webhookList=[];
 				$scope.loadingWebhooks = false;
 			})
@@ -1928,7 +1928,7 @@
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
 			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				if($scope.loadingWebhookHistory)
 				{
 					skipAllWebhookHistory += takeAllWebhookHistory;
@@ -1946,7 +1946,7 @@
 				}
 
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.webhookHistoryList=[];
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
@@ -1957,7 +1957,7 @@
 		$scope.loadWebhookListPaging= function () {
 			$scope.loadingWebhooks = true;
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				//
 				if($scope.loadingWebhooks)
 				{
@@ -1988,7 +1988,7 @@
 					}
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				$scope.loadingWebhooks = false;
 				if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH && tempUsedEventsList.length!=0)
 				{
@@ -2014,7 +2014,7 @@
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
 			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
-				console.log(data);
+				//console.log(data);
 				if($scope.loadingWebhookHistory)
 				{
 					skipAllWebhookHistory += takeAllWebhookHistory;
@@ -2032,7 +2032,7 @@
 				}
 
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.webhookHistoryList=[];
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
@@ -2091,7 +2091,7 @@
 					if(tempEventsSelected)
 					{
 						$charge.webhook().createWH(webhookObj).success(function (data) {
-							console.log(data);
+							//console.log(data);
 							//
 							if(data.error=="00000")
 							{
@@ -2115,7 +2115,7 @@
 							vm.webhookSubmitted = false;
 						}).error(function (data) {
 							$mdDialog.hide();
-							console.log(data);
+							//console.log(data);
 							vm.webhookSubmitted = false;
 						})
 					}
@@ -2152,7 +2152,7 @@
 					if(tempEventsSelected)
 					{
 						$charge.webhook().updateWH(webhookObj).success(function (data) {
-							console.log(data);
+							//console.log(data);
 							//
 							if(data.error=="00000")
 							{
@@ -2168,7 +2168,7 @@
 							vm.webhookSubmitted = false;
 						}).error(function (data) {
 							$mdDialog.hide();
-							console.log(data);
+							//console.log(data);
 							vm.webhookSubmitted = false;
 						})
 					}
@@ -2220,7 +2220,7 @@
 			$scope.loadingEmailTemplates = true;
 
 			$charge.storage().allTemplates().success(function (data) {
-				console.log(data);
+				//console.log(data);
 				//
 				if($scope.loadingEmailTemplates)
 				{
@@ -2237,7 +2237,7 @@
 
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 				vm.emailTemplateList=[];
 				$scope.loadingEmailTemplates = false;
 			})
@@ -2341,7 +2341,7 @@
 								$scope.addBrandDisabled = false;
 								//$mdDialog.hide($scope.brands);
 							}).error(function (data) {
-								console.log(data);
+								//console.log(data);
 								$scope.addBrandDisabled = false;
 							})
 
@@ -2350,7 +2350,7 @@
 							//  //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							//}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addBrandDisabled = false;
 						})
 					}
@@ -2394,7 +2394,7 @@
 								$scope.addBrandDisabled = false;
 								//$mdDialog.hide($scope.brands);
 							}).error(function (data) {
-								console.log(data);
+								//console.log(data);
 								$scope.addBrandDisabled = false;
 							})
 
@@ -2403,7 +2403,7 @@
 							//  //notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							//}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addBrandDisabled = false;
 						})
 					}
@@ -2474,7 +2474,7 @@
 							$scope.updateBraEnable = !$scope.updateBraEnable;
 							$scope.updateBrandDisabled = false;
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.updateBrandDisabled = false;
 						})
 					}
@@ -2484,7 +2484,7 @@
 						$scope.updateBrandDisabled = false;
 					}
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.updateBrandDisabled = false;
 				})
 			}
@@ -2573,17 +2573,17 @@
 								$scope.inventory.store = "";
 								$scope.addInventoryDisabled = false;
 							}).error(function (data) {
-								console.log(data);
+								//console.log(data);
 								$scope.addInventoryDisabled = false;
 							})
 
 							if (data.IsSuccess) {
-								console.log(data);
+								//console.log(data);
 								$scope.addInventoryDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addInventoryDisabled = false;
 						})
 					}
@@ -2664,11 +2664,11 @@
 							})
 
 							if (data.IsSuccess) {
-								console.log(data);
+								//console.log(data);
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 						})
 					}
 				}
@@ -2761,7 +2761,7 @@
 						$scope.updateInventoryDisabled = false;
 					}
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.updateInventoryDisabled = false;
 				})
 			}
@@ -2872,7 +2872,7 @@
 						$charge.uom().getAllUOM('Product_123').success(function (data) {
 							$scope.UOMs = [];
 							//
-							console.log(data);
+							//console.log(data);
 							for (var i = 0; i < data.length; i++) {
 								//
 								$scope.UOMs.push(data[i][0]);
@@ -2883,7 +2883,7 @@
 							$scope.updateUomEnable = !$scope.updateUomEnable;
 							$scope.updateUomDisabled = false;
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.updateUomDisabled = false;
 						})
 					} else {
@@ -2892,7 +2892,7 @@
 						$scope.updateUomDisabled = false;
 					}
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.updateUomDisabled = false;
 				})
 			}
@@ -2956,7 +2956,7 @@
 						$charge.uom().getAllUOM('Product_123').success(function (data) {
 							$scope.UOMs = [];
 							//
-							console.log(data);
+							//console.log(data);
 							for (var i = 0; i < data.length; i++) {
 								//
 								$scope.UOMs.push(data[i][0]);
@@ -2966,7 +2966,7 @@
 							$scope.addUomDisabled = false;
 							//$mdDialog.hide($scope.UOMs);
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addUomDisabled = false;
 						})
 						//if(data.IsSuccess) {
@@ -3089,12 +3089,12 @@
 							})
 
 							if (data.error=="00000") {
-								console.log(data);
+								//console.log(data);
 								$scope.addUomDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addUomDisabled = false;
 						})
 					}
@@ -3160,12 +3160,12 @@
 							})
 
 							if (data[0].error=="00000") {
-								console.log(data);
+								//console.log(data);
 								$scope.addUomDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.addUomDisabled = false;
 						})
 					}
@@ -3266,7 +3266,7 @@
 					}
 				}).error(function (data) {
 					$mdDialog.hide();
-					console.log(data);
+					//console.log(data);
 					$scope.updateUomDisabled = false;
 					$scope.updateUomEnable = false;
 				})
@@ -3286,7 +3286,7 @@
 				//
 				$scope.planTypeList.splice(index,1);
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -3550,7 +3550,7 @@
 					notifications.toast("Webhook Deleting Failed", "error");
 				}
 			}).error(function (data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -3633,12 +3633,12 @@
 							$scope.defaultEmailTemplate=angular.copy(tempEmailTemplate);
 							vm.emailTemplateSubmitted=false;
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							notifications.toast("Template Saving Error", "error");
 							vm.emailTemplateSubmitted=false;
 						})
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
 						vm.emailTemplateSubmitted=false;
 					})
@@ -3682,7 +3682,7 @@
 						vm.emailTemplateSubmitted=false;
 
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
 						vm.emailTemplateSubmitted=false;
 					})
@@ -3756,7 +3756,7 @@
 							//}
 						}).error(function (data) {
 							$scope.addCategoryDisabled = false;
-							console.log(data);
+							//console.log(data);
 						})
 					}
 					else {
@@ -3800,16 +3800,16 @@
 								//$mdDialog.hide($scope.categories);
 							}).error(function (data) {
 								$scope.addCategoryDisabled = false;
-								console.log(data);
+								//console.log(data);
 							})
 
 							if (data.IsSuccess) {
-								console.log(data);
+								//console.log(data);
 								$scope.addCategoryDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 						})
 					}
 				}
@@ -3855,7 +3855,7 @@
 							$scope.updateCatEnable = !$scope.updateCatEnable;
 							$scope.updateCategoryDisabled = false;
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							$scope.updateCategoryDisabled = false;
 						})
 					} else {
@@ -3864,7 +3864,7 @@
 						$scope.updateCategoryDisabled = false;
 					}
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.updateCategoryDisabled = false;
 				})
 			}
@@ -3892,7 +3892,7 @@
 				else if(ev.ColumnIndex=="1")
 					$scope.brands.splice(index,1);
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -3902,7 +3902,7 @@
 				//
 				$scope.stores.splice(index,1);
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -3912,7 +3912,7 @@
 				//
 				$scope.UOMs.splice(index,1);
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -4361,7 +4361,7 @@
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -4502,7 +4502,7 @@
 								isInvoiceLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.invoiceSubmit=false;
 							$scope.addTermsDisabled = false;
 						})
@@ -4635,7 +4635,7 @@
 								$scope.addTermsDisabled = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.invoiceSubmit=false;
 							$scope.addTermsDisabled = false;
 						})
@@ -4787,7 +4787,7 @@
 					}
 
 					$charge.settingsapp().store(req).success(function(data) {
-						console.log(data);
+						//console.log(data);
 						vm.invoiceSubmit=false;
 						notifications.toast("Invoice settings has been applied.", "success");
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes", "InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,FirstReminder,RecurringReminder,InvoiceTerms,CreditLimit").success(function (data) {
@@ -4849,7 +4849,7 @@
 							$scope.addTermsDisabled = false;
 						})
 					}).error(function(data) {
-						console.log(data);
+						//console.log(data);
 						vm.invoiceSubmit=false;
 						$scope.addTermsDisabled = false;
 					})
@@ -4927,7 +4927,7 @@
 								isQuotationLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.quotationSubmit=false;
 						})
 					}
@@ -4993,7 +4993,7 @@
 								isQuotationLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.quotationSubmit=false;
 						})
 						//}
@@ -5070,7 +5070,7 @@
 					}
 
 					$charge.settingsapp().store(req).success(function (data) {
-						console.log(data);
+						//console.log(data);
 						vm.quotationSubmit=false;
 						notifications.toast("Quotation settings has been applied.", "success");
 
@@ -5105,7 +5105,7 @@
 							isQuotationLoaded = false;
 						})
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 						vm.quotationSubmit=false;
 					})
 				}
@@ -5118,7 +5118,7 @@
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -5247,16 +5247,16 @@
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
 							},
-              {
-                "RecordName": "CTS_PaymentAttributes",
-                "FieldName": "FirstReminder",
-                "RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
-              },
-              {
-                "RecordName": "CTS_PaymentAttributes",
-                "FieldName": "RecurringReminder",
-                "RecordFieldData": $scope.payment.RecurrReminder
-              }]
+							{
+								"RecordName": "CTS_PaymentAttributes",
+								"FieldName": "FirstReminder",
+								"RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
+							},
+							{
+								"RecordName": "CTS_PaymentAttributes",
+								"FieldName": "RecurringReminder",
+								"RecordFieldData": $scope.payment.RecurrReminder
+							}]
 						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							vm.paymentSubmit=false;
@@ -5277,13 +5277,13 @@
 										localStorage.removeItem('PaymentPrefixLength');
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
-                  if (obj.ColumnIndex == "2") {
-                    $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                    $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                  }
-                  if (obj.ColumnIndex == "3") {
-                    $scope.payment.RecurrReminder = obj.RecordFieldData;
-                  }
+									if (obj.ColumnIndex == "2") {
+										$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+										$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+									}
+									if (obj.ColumnIndex == "3") {
+										$scope.payment.RecurrReminder = obj.RecordFieldData;
+									}
 								}
 								//
 								isPaymentLoaded = true;
@@ -5292,7 +5292,7 @@
 								isPaymentLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.paymentSubmit=false;
 						})
 					}
@@ -5312,16 +5312,16 @@
 								"FieldName": "PaymentPrefixLength",
 								"RecordFieldData": $scope.payment.prefixLength
 							},
-              {
-                "RecordName": "CTS_PaymentAttributes",
-                "FieldName": "FirstReminder",
-                "RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
-              },
-              {
-                "RecordName": "CTS_PaymentAttributes",
-                "FieldName": "RecurringReminder",
-                "RecordFieldData": $scope.payment.RecurrReminder
-              }]
+							{
+								"RecordName": "CTS_PaymentAttributes",
+								"FieldName": "FirstReminder",
+								"RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
+							},
+							{
+								"RecordName": "CTS_PaymentAttributes",
+								"FieldName": "RecurringReminder",
+								"RecordFieldData": $scope.payment.RecurrReminder
+							}]
 
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Payment settings has been applied.", "success");
@@ -5342,13 +5342,13 @@
 										localStorage.removeItem('PaymentPrefixLength');
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
-                  if (obj.ColumnIndex == "2") {
-                    $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                    $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                  }
-                  if (obj.ColumnIndex == "3") {
-                    $scope.payment.RecurrReminder = obj.RecordFieldData;
-                  }
+									if (obj.ColumnIndex == "2") {
+										$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+										$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+									}
+									if (obj.ColumnIndex == "3") {
+										$scope.payment.RecurrReminder = obj.RecordFieldData;
+									}
 								}
 								//
 								isPaymentLoaded = true;
@@ -5357,7 +5357,7 @@
 								isPaymentLoaded = false;
 							})
 						}).error(function (data) {
-							console.log(data);
+							//console.log(data);
 							vm.paymentSubmit=false;
 						})
 						//}
@@ -5396,20 +5396,20 @@
 								"FieldType": "PaymentPrefixLengthType",
 								"ColumnIndex": "1"
 							},
-              {
-                "FieldCultureName":"FirstReminder",
-                "FieldID":"",
-                "FieldName":"FirstReminder",
-                "FieldType":"FirstReminderType",
-                "ColumnIndex":"2"
-              },
-              {
-                "FieldCultureName":"RecurringReminder",
-                "FieldID":"",
-                "FieldName":"RecurringReminder",
-                "FieldType":"RecurringReminderType",
-                "ColumnIndex":"3"
-              }],
+							{
+								"FieldCultureName":"FirstReminder",
+								"FieldID":"",
+								"FieldName":"FirstReminder",
+								"FieldType":"FirstReminderType",
+								"ColumnIndex":"2"
+							},
+							{
+								"FieldCultureName":"RecurringReminder",
+								"FieldID":"",
+								"FieldName":"RecurringReminder",
+								"FieldType":"RecurringReminderType",
+								"ColumnIndex":"3"
+							}],
 						"commonDataValueDetails": [
 							{
 								"RowID": "",
@@ -5421,20 +5421,20 @@
 								"RecordFieldData": $scope.payment.prefixLength,
 								"ColumnIndex": "1"
 							},
-              {
-                "RowID":"",
-                "RecordFieldData":$scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):"",
-                "ColumnIndex":"2"
-              },
-              {
-                "RowID":"",
-                "RecordFieldData":$scope.payment.RecurrReminder,
-                "ColumnIndex":"3"
-              }]
+							{
+								"RowID":"",
+								"RecordFieldData":$scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):"",
+								"ColumnIndex":"2"
+							},
+							{
+								"RowID":"",
+								"RecordFieldData":$scope.payment.RecurrReminder,
+								"ColumnIndex":"3"
+							}]
 					}
 
 					$charge.settingsapp().store(req).success(function (data) {
-						console.log(data);
+						//console.log(data);
 						notifications.toast("Payment settings has been applied.", "success");
 						vm.paymentSubmit=false;
 
@@ -5453,13 +5453,13 @@
 									$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 									localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 								}
-                if (obj.ColumnIndex == "2") {
-                  $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                  $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-                }
-                if (obj.ColumnIndex == "3") {
-                  $scope.payment.RecurrReminder = obj.RecordFieldData;
-                }
+								if (obj.ColumnIndex == "2") {
+									$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+									$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+								}
+								if (obj.ColumnIndex == "3") {
+									$scope.payment.RecurrReminder = obj.RecordFieldData;
+								}
 							}
 							//
 							isPaymentLoaded = true;
@@ -5468,7 +5468,7 @@
 							isPaymentLoaded = false;
 						})
 					}).error(function (data) {
-						console.log(data);
+						//console.log(data);
 					})
 
 
@@ -5483,7 +5483,7 @@
 		$scope.PaymentRetryUpdating=false;
 
 		$scope.loadPaymentAttributes= function () {
-      $scope.remindersInPaymentLoaded = false;
+			$scope.remindersInPaymentLoaded = false;
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function(data) {
 				var length=data.length;
 				for(var i=0;i<length;i++)
@@ -5497,21 +5497,21 @@
 					if(obj.ColumnIndex=="1") {
 						$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 					}
-          if (obj.ColumnIndex == "2") {
-            $scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-            $scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-          }
-          if (obj.ColumnIndex == "3") {
-            $scope.payment.RecurrReminder = obj.RecordFieldData;
-          }
+					if (obj.ColumnIndex == "2") {
+						$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+						$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+					}
+					if (obj.ColumnIndex == "3") {
+						$scope.payment.RecurrReminder = obj.RecordFieldData;
+					}
 				}
-        $scope.remindersInPaymentLoaded = true;
+				$scope.remindersInPaymentLoaded = true;
 				//
 				isPaymentLoaded=true;
 				//
 			}).error(function(data) {
-        $scope.addNewReminder(0);
-        $scope.remindersInPaymentLoaded = true;
+				$scope.addNewReminder(0);
+				$scope.remindersInPaymentLoaded = true;
 				isPaymentLoaded=false;
 			})
 			//$scope.remindersInPaymentLoaded = false;
@@ -5529,7 +5529,7 @@
 			//		}
 			//	}
 			//	$scope.remindersInPaymentLoaded = true;
-            //
+			//
 			//}).error(function (data) {
 			//	$scope.addNewReminder(0);
 			//	$scope.remindersInPaymentLoaded = false;
@@ -5539,7 +5539,7 @@
 			$scope.PaymentRetryUpdating=false;
 
 			$charge.notification().getProcessByCode("Payment").success(function(data) {
-				console.log(data);
+				//console.log(data);
 
 				$scope.retryProcess={};
 				$scope.retryProcess.processCode="Payment";
@@ -5572,7 +5572,7 @@
 				$scope.PaymentRetryUpdating=true;
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 				if(data==204)
 				{
 					$scope.PaymentRetryUpdating=false;
@@ -5613,7 +5613,7 @@
 			$charge.settingsapp().delete(ev).success(function(data) {
 
 			}).error(function(data) {
-				console.log(data);
+				//console.log(data);
 			})
 		}
 
@@ -5657,7 +5657,7 @@
 			if(!$scope.PaymentRetryUpdating)
 			{
 				$charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
-					console.log(data);
+					//console.log(data);
 					if(data.response=="succeeded")
 					{
 						notifications.toast("Successfully Payment Retry Configuration Saved","success");
@@ -5673,7 +5673,7 @@
 					}
 
 				}).error(function(data) {
-					console.log(data);
+					//console.log(data);
 					notifications.toast("Payment Retry Configuration Saving Failed","error");
 					$scope.paymentRetrySubmitted=false;
 				})
@@ -5681,7 +5681,7 @@
 			else
 			{
 				$charge.notification().updateRetryProcess($scope.retryProcess).success(function(data) {
-					console.log(data);
+					//console.log(data);
 					if(data.response=="succeeded")
 					{
 						notifications.toast("Successfully Payment Retry Configuration Updated","success");
@@ -5697,7 +5697,7 @@
 					}
 
 				}).error(function(data) {
-					console.log(data);
+					//console.log(data);
 					notifications.toast("Payment Retry Configuration Updating Failed","error");
 					$scope.paymentRetrySubmitted=false;
 				})
@@ -6295,15 +6295,15 @@
 		};
 
 		// PAYMENT GATEWAY - INTEGRATED FROM MY ACC ===============================================================================
-		$scope.isRegisteredWithStripe = false;
+		// $scope.isRegisteredWithStripe = false;
 		$scope.isRegButtonsShow = true;
-		$scope.isRegisteredWith2checkout = false;
+		// $scope.isRegisteredWith2checkout = false;
 
 		$scope.loadCardDetails = function() {
 
 			$http({
 				method: 'GET',
-				url: "/azureshell/app/main/account/paymentMethod/cardHandler.php?view=getCardDetails",
+				url: "/azureshell/app/main/settings/paymentMethod/cardHandler.php?view=getCardDetails",
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -6321,7 +6321,7 @@
 				}
 
 			}, function (response) {
-				console.log(response);
+				//console.log(response);
 				$scope.cardDetails = null;
 
 			});
@@ -6330,35 +6330,35 @@
 
 		$scope.loadCardDetails();
 
-		$scope.checkPaymentMethodRegistry = function(){
-
-			$charge.paymentgateway().stripeCheckAccount().success(function (data) {
-
-				if(data.status) {
-					for (var i = 0; i < data.data.length; i++) {
-						if (data.data[i].gateway === "stripe")
-							$scope.isRegisteredWithStripe = true;
-
-						if (data.data[i].gateway === "2checkout")
-							$scope.isRegisteredWith2checkout = true;
-					}
-
-					$scope.isRegButtonsShow = false;
-
-				}
-
-			}).error(function(data) {
-				console.log( data);
-
-				$scope.isRegisteredWithStripe = false;
-				$scope.isRegisteredWith2checkout = false;
-				$scope.isRegButtonsShow = false;
-
-			});
-
-		}
-
-		$scope.checkPaymentMethodRegistry();
+		// $scope.checkPaymentMethodRegistry = function(){
+		//
+		// 	$charge.paymentgateway().stripeCheckAccount().success(function (data) {
+		//
+		// 		if(data.status) {
+		// 			for (var i = 0; i < data.data.length; i++) {
+		// 				if (data.data[i].gateway === "stripe")
+		// 					$scope.isRegisteredWithStripe = true;
+		//
+		// 				if (data.data[i].gateway === "2checkout")
+		// 					$scope.isRegisteredWith2checkout = true;
+		// 			}
+		//
+		// 			$scope.isRegButtonsShow = false;
+		//
+		// 		}
+		//
+		// 	}).error(function(data) {
+		// 		console.log( data);
+		//
+		// 		$scope.isRegisteredWithStripe = false;
+		// 		$scope.isRegisteredWith2checkout = false;
+		// 		$scope.isRegButtonsShow = false;
+		//
+		// 	});
+		//
+		// }
+		//
+		// $scope.checkPaymentMethodRegistry();
 
 		vm.openRegistrationMenu = function($mdOpenMenu, ev) {
 			$mdOpenMenu(ev);
@@ -6377,7 +6377,7 @@
 
 				$scope.isRegButtonsShow = true;
 				//$window.location.href = 'https://connect.stripe.com/oauth/authorize?response_type=code&scope=read_write&client_id=ca_9SnbSf9mKGaz5k4lelzQIQJZ3FjgQ79h';
-				$window.location.href = '/azureshell/app/main/account/paymentMethod/payment-partial.php';
+				$window.location.href = '/azureshell/app/main/settings/paymentMethod/payment-partial.php';
 
 			}, function () {
 				$mdDialog.hide();
@@ -6404,7 +6404,7 @@
 
 				$charge.paymentgateway().deactiveAcc().success(function (dataa) {
 
-					console.log(dataa);
+					//console.log(dataa);
 
 					if(dataa.status)
 					{
@@ -6417,7 +6417,7 @@
 					$scope.isRegButtonsShow= false;
 
 				}).error(function (data) {
-					console.log(data);
+					//console.log(data);
 					$scope.isRegButtonsShow= false;
 					notifications.toast("There is a problem, Please try again", "Error");
 
@@ -6429,20 +6429,224 @@
 
 		}
 
-		$scope.registerWithTwoCheckout = function() {
 
+		$scope.disconnectWithbraintree = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.braintree = key;
 
 			var confirm = $mdDialog.confirm()
-				.title('2Checkout Register')
-				.textContent('Do you want to proceed ?')
+				.title('Disconnect with braintree')
+				.textContent('Do you want to proceed with braintree disconnection?')
 				.ariaLabel('Lucky day')
 				.ok('Yes')
 				.cancel('No');
-			$mdDialog.show(confirm).then(function (ev) {
+			$mdDialog.show(confirm).then(function () {
+
+
+
+				$charge.paymentgateway().disconnectWithBraintree($scope.braintree).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with braintree", "Success");
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					notifications.toast("There is a problem, Please try again", "Error");
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithWorldPay = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.worldpay = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with worldpay')
+				.textContent('Do you want to proceed with worldpay disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+
+
+				$charge.paymentgateway().disconnectWithworldpay($scope.worldpay).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with worldpay", "Success");
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					notifications.toast("There is a problem, Please try again", "Error");
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithAuthorize = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with AuthorizedNet')
+				.textContent('Do you want to proceed with AuthorizedNet disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithAuthorize($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with AuthorizedNet", "Success");
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					notifications.toast("There is a problem, Please try again", "Error");
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+
+		//============================================================
+
+		$scope.currentGateways = [];
+		$scope.defaultGateway = "";
+
+		$scope.loadOnlinePaymentRegistration = function(){
+
+			$charge.paymentgateway().availableGateways().success(function (data) {
+				if(data.status) {
+
+					$scope.currentGateways = data.data.availableGateway;
+
+					$scope.defaultGateway = data.data.defaultGatway['0'].gateway;
+
+					for (i = 0; i < $scope.currentGateways.length; i++) {
+
+						if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
+							$scope.currentGateways[i].isConnected = true;
+							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
+						}
+						else
+						{
+							$scope.currentGateways[i].isConnected = false;
+						}
+
+					}
+
+				}
+
+			}).error(function(data) {
+				//console.log( data);
+
+				$scope.currentGateways = [];
+
+			});
+
+
+		}
+
+		$scope.loadOnlinePaymentRegistration();
+
+		$scope.viewTestGateway = function(ev) {
+
+			$mdDialog.show({
+				controller: 'GuidedPaymenttestGatewayController',
+				templateUrl: 'app/main/settings/dialogs/guided-payment-testGateway.html',
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose:false,
+				locals:{
+					idToken : $scope.idToken
+				}
+			})
+				.then(function(answer) {
+					// add method after
+				}, function() {
+
+				});
+
+		}
+
+		$scope.makeDefault= function(gateway){
+
+			$charge.paymentgateway().makeDefaultGateway(gateway).success(function (data) {
+
+				if(data.status) {
+					$scope.defaultGateway = gateway;
+
+					notifications.toast("Default gateway changed", "Success");
+
+				}else{
+					notifications.toast("There is a problem, Please try again", "Error");
+				}
+
+			}).error(function(data) {
+				//console.log( data);
+				notifications.toast("There is a problem, Please try again", "Error");
+			});
+		}
+
+		$scope.proceedWithGateway= function (gateway,ev) {
+			if(gateway === 'stripe'){
+				$scope.proceedWithStripe();
+			}
+			else if(gateway === 'worldpay'){
 
 				$mdDialog.show({
-					controller: 'GuidedPayment2CheckoutController',
-					templateUrl: 'app/main/account/dialogs/guided-payment-2checkout.html',
+					controller: 'GuidedPaymentworldpayController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-worldpay.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose:false,
@@ -6451,52 +6655,135 @@
 					}
 				})
 					.then(function(answer) {
-						$scope.checkPaymentMethodRegistry();
+						$scope.loadOnlinePaymentRegistration();
 
 					}, function() {
 
 					});
+			}else if(gateway === 'braintree'){
 
-			}, function () {
-				$mdDialog.hide();
-			});
-
-		}
-
-		$scope.deleteWithTwoCheckout = function() {
-
-
-			var confirm = $mdDialog.confirm()
-				.title('2Checkout disconnect')
-				.textContent('Do you want to proceed ?')
-				.ariaLabel('Lucky day')
-				.ok('Yes')
-				.cancel('No');
-			$mdDialog.show(confirm).then(function () {
-
-				$charge.paymentgateway().deleteClient().success(function (response) {
-
-					if(response.status){
-						$scope.isRegisteredWith2checkout = false;
-						notifications.toast("Successfully disconnected with 2checkout ", "success");
-					}else{
-						notifications.toast("2Checkout disconnection failed", "error");
+				$mdDialog.show({
+					controller: 'GuidedPaymentbraintreeController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-braintree.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
 					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
 
+					}, function() {
 
-				}).error(function (response) {
-					console.log(response);
-					notifications.toast("2Checkout disconnection failed", "error");
+					});
+			}
+			else if(gateway === 'authorizednet'){
 
-				});
+				$mdDialog.show({
+					controller: 'GuidedPaymentauthorizeController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-authorize.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
 
+					}, function() {
 
-			}, function () {
-				$mdDialog.hide();
-			});
-
+					});
+			}
 		}
-		// / PAYMENT GATEWAY - INTEGRATED FROM MY ACC ==============================================================================
+
+		$scope.disconnectWithGateway= function (gateway,key) {
+			if(gateway === 'stripe'){
+				$scope.disconnectWithStripe();
+			}
+			else if(gateway === 'worldpay'){
+				$scope.disconnectWithWorldPay(key)
+			}else if(gateway === 'braintree'){
+				$scope.disconnectWithbraintree(key)
+			}else if(gateway === 'authorizednet'){
+				$scope.disconnectWithAuthorize(key);
+			}
+		}
+
+
+
+		// $scope.registerWithTwoCheckout = function() {
+		//
+		//
+		// 	var confirm = $mdDialog.confirm()
+		// 		.title('2Checkout Register')
+		// 		.textContent('Do you want to proceed ?')
+		// 		.ariaLabel('Lucky day')
+		// 		.ok('Yes')
+		// 		.cancel('No');
+		// 	$mdDialog.show(confirm).then(function (ev) {
+		//
+		// 		$mdDialog.show({
+		// 			controller: 'GuidedPayment2CheckoutController',
+		// 			templateUrl: 'app/main/settings/dialogs/guided-payment-2checkout.html',
+		// 			parent: angular.element(document.body),
+		// 			targetEvent: ev,
+		// 			clickOutsideToClose:false,
+		// 			locals:{
+		// 				idToken : $scope.idToken
+		// 			}
+		// 		})
+		// 			.then(function(answer) {
+		// 				$scope.checkPaymentMethodRegistry();
+		//
+		// 			}, function() {
+		//
+		// 			});
+		//
+		// 	}, function () {
+		// 		$mdDialog.hide();
+		// 	});
+		//
+		// }
+		//
+		// $scope.deleteWithTwoCheckout = function() {
+		//
+		//
+		// 	var confirm = $mdDialog.confirm()
+		// 		.title('2Checkout disconnect')
+		// 		.textContent('Do you want to proceed ?')
+		// 		.ariaLabel('Lucky day')
+		// 		.ok('Yes')
+		// 		.cancel('No');
+		// 	$mdDialog.show(confirm).then(function () {
+		//
+		// 		$charge.paymentgateway().deleteClient().success(function (response) {
+		//
+		// 			if(response.status){
+		// 				$scope.isRegisteredWith2checkout = false;
+		// 				notifications.toast("Successfully disconnected with 2checkout ", "success");
+		// 			}else{
+		// 				notifications.toast("2Checkout disconnection failed", "error");
+		// 			}
+		//
+		//
+		// 		}).error(function (response) {
+		// 			console.log(response);
+		// 			notifications.toast("2Checkout disconnection failed", "error");
+		//
+		// 		});
+		//
+		//
+		// 	}, function () {
+		// 		$mdDialog.hide();
+		// 	});
+		//
+		// }
+
+		// END PAYMENT GATEWAY - INTEGRATED FROM MY ACC ==============================================================================
 
 
 
