@@ -8,10 +8,6 @@ $CLIENT_ID = '';
 
   if (isset($_GET['CLIENT_ID'])) {
     $CLIENT_ID = $_GET['CLIENT_ID'];
- }else
- {
- print_r('Error: No client Id ');
- exit();
  }
 
 
