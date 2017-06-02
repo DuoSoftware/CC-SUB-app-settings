@@ -37,12 +37,12 @@ require_once ($doc.'/services/config/settings.php');
 	  //var_dump($resp);
 
 	  if($resp['status']){
-        header('Location: //'.$res[0] .'/azureshell/#/account');
+        header('Location: //'.$res[0] .'/azureshell/#/settings');
 	  }else{
 
 	    var_dump($resp);
 
-      $url = '//'.$res[0].'/azureshell/#/account';
+      $url = '//'.$res[0].'/azureshell/#/settings';
       echo "<br/> <a href='$url'>Go Back</a>";
 
 	  }
@@ -56,13 +56,13 @@ require_once ($doc.'/services/config/settings.php');
         $error =  $_GET['error_description'];
 
         if($error === 'The user denied your request'){
-           header('Location: //'.$res[0] .'/azureshell/#/account');
+           header('Location: //'.$res[0] .'/azureshell/#/settings');
         }else{
 
           print_r('Error : '.$error);
 
-          //$url = 'http://'.$res[0] .'/azureshell/#/account';
-          $url = '//'.$res[0] .'/azureshell/#/account';
+          //$url = 'http://'.$res[0] .'/azureshell/#/settings';
+          $url = '//'.$res[0] .'/azureshell/#/settings';
           echo "<br/> <a href='$url'>Go Back</a>";
         }
 
