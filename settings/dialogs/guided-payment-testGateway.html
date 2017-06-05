@@ -18,15 +18,15 @@
                 <ul>
                     <li class="mb-10">For success scenario
                         <div layout="row" layout-align="start start">
-                            <span layout="column" layout-align="center end" class="mr-10">
+                            <span layout="column" layout-align="center end">
                                 <span class="outline">
-                                    <span class="op-5">Card number :</span><b id="success_no">4242 4242 4242 4242</b>
+                                    <span class="op-5">Card number :</span><b id="success_no">5424 0000 0000 0023</b>
                                 </span>
-                                <div layout="row" layout-align="end center">
+                                <div layout="row" layout-align="end center" class="h-40">
                                     <span class="copied-to-clipboard animate-fade-in-out" ng-if="successCopied && copyStarted" ng-hide="coppiedTimeout">Copied</span>
-                                    <md-button class="md-icon-button offset-right" ng-click="copyToClipboard('success_no')"><md-icon md-font-icon="icon-content-copy" class="fs-20 font-accent"></md-icon><md-tooltip>Copy to clipboard</md-tooltip></md-button>
                                 </div>
                             </span>
+                            <md-button class="md-icon-button ml-0 pl-0 pt-0" ng-click="copyToClipboard('success_no')"><md-icon md-font-icon="icon-content-copy" class="fs-20 font-accent"></md-icon><md-tooltip>Copy to clipboard</md-tooltip></md-button>
                             <span class="outline mr-10">
                                 <b>Any coming date</b>
                             </span>
@@ -37,15 +37,15 @@
                     </li>
                     <li class="mb-10">For error scenario
                         <div layout="row" layout-align="start start">
-                            <span layout="column" layout-align="center end" class="mr-10">
+                            <span layout="column" layout-align="center end">
                                 <span class="outline">
-                                    <span class="op-5">Card number :</span><b id="error_no">5555 4444 4444 4444</b>
+                                    <span class="op-5">Card number :</span><b id="error_no">5424 0000 0000 0020</b>
                                 </span>
-                                <div layout="row" layout-align="end center">
+                                <div layout="row" layout-align="end center" class="h-40">
                                     <span class="copied-to-clipboard animate-fade-in-out" ng-if="!successCopied && copyStarted" ng-hide="coppiedTimeout">Copied</span>
-                                    <md-button class="md-icon-button offset-right" ng-click="copyToClipboard('error_no')"><md-icon md-font-icon="icon-content-copy" class="fs-20 font-accent"></md-icon><md-tooltip>Copy to clipboard</md-tooltip></md-button>
                                 </div>
                             </span>
+                            <md-button class="md-icon-button ml-0 pl-0 pt-0" ng-click="copyToClipboard('error_no')"><md-icon md-font-icon="icon-content-copy" class="fs-20 font-accent"></md-icon><md-tooltip>Copy to clipboard</md-tooltip></md-button>
                             <span class="outline mr-10">
                                 <b>Any coming date</b>
                             </span>
