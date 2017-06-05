@@ -6364,7 +6364,7 @@
 			$mdOpenMenu(ev);
 		};
 
-		$scope.proceedWithStripe = function(CLIENT_ID){
+		$scope.proceedWithStripe = function(){
 
 
 			var confirm = $mdDialog.confirm()
@@ -6377,7 +6377,7 @@
 
 				$scope.isRegButtonsShow = true;
 				//$window.location.href = 'https://connect.stripe.com/oauth/authorize?response_type=code&scope=read_write&client_id=ca_9SnbSf9mKGaz5k4lelzQIQJZ3FjgQ79h';
-				$window.location.href = '/azureshell/app/main/settings/paymentMethod/payment-partial.php?CLIENT_ID='+CLIENT_ID;
+				$window.location.href = '/azureshell/app/main/settings/paymentMethod/payment-partial.php';
 
 			}, function () {
 				$mdDialog.hide();
@@ -6640,10 +6640,10 @@
 		}
 
 		$scope.proceedWithGateway= function (gateway,ev) {
-			if(gateway.paymentGateway === 'stripe'){
-				$scope.proceedWithStripe(gateway.clientId);
+			if(gateway === 'stripe'){
+				$scope.proceedWithStripe();
 			}
-			else if(gateway.paymentGateway === 'worldpay'){
+			else if(gateway === 'worldpay'){
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentworldpayController',
@@ -6661,7 +6661,7 @@
 					}, function() {
 
 					});
-			}else if(gateway.paymentGateway === 'braintree'){
+			}else if(gateway === 'braintree'){
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentbraintreeController',
@@ -6680,7 +6680,7 @@
 
 					});
 			}
-			else if(gateway.paymentGateway === 'authorizednet'){
+			else if(gateway === 'authorizednet'){
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentauthorizeController',
