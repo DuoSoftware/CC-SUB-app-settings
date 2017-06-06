@@ -660,6 +660,7 @@
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
 			isTemplateDet=true;
 			//
+      $scope.template.companyDet=data;
 			$scope.template.companyName=data[0].RecordFieldData;
 			$scope.template.companyAddress=data[1].RecordFieldData;
 			$scope.template.companyPhone=data[2].RecordFieldData;
@@ -694,6 +695,7 @@
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_FooterAttributes").success(function(data) {
 			isFooterDet=true;
 			//
+      $scope.footerDet.footersDet=data;
 			$scope.footerDet.greeting=data[0].RecordFieldData;
 			$scope.footerDet.disclaimer=data[1].RecordFieldData!=""?atob(data[1].RecordFieldData):"";
 			$scope.footerDet.GURecID=data[0].GuRecID;
@@ -869,6 +871,108 @@
 
 		}
 
+    $scope.updateGeneralCheckProcess= function () {
+
+      if($scope.cropper.croppedImage!=null && $scope.cropper.croppedImage!="" && $scope.productImgChanged) {
+        //angular.forEach($scope.template.companyLogo, function (obj) {
+        var uploadImageObj = {
+          "base64Image": $scope.cropper.croppedImage,
+          "fileName": $scope.productImgFileName,
+          "format": $scope.productImgFileType,
+          "app": "Company",
+          "fileType": "image"
+        }
+        $charge.storage().storeImage(uploadImageObj).success(function (data) {
+          $scope.template.croppedLogo=data.fileUrl;
+          $scope.productImgChanged=false;
+          $scope.updateGeneralRecords();
+
+        }).error(function (data) {
+          //console.log(data);
+          notifications.toast("Error occured while uploading Company logo.", "error");
+          $scope.generalSubmit = false;
+        })
+      }
+      else
+      {
+        $scope.updateGeneralRecords();
+      }
+    }
+
+    $scope.updateGeneralRecords= function () {
+      var updateData=[{
+        "RowID": $scope.baseCurrencyDet.RowID,
+        "RecordFieldData": $scope.general.baseCurrency
+      },
+      {
+        "RowID": $scope.currencyFormatDet.RowID,
+        "RecordFieldData": $scope.general.currencyFormat
+      },
+      {
+        "RowID": $scope.timezoneDet.RowID,
+        "RecordFieldData": $scope.general.timezone
+      },
+      {
+        "RowID": $scope.dateformatDet.RowID,
+        "RecordFieldData": $scope.general.dateFormat
+      },
+      {
+        "RowID": $scope.frequentCurrencies.RowID,
+        "RecordFieldData": $scope.general.userCurrency
+      },
+      {
+        "RowID": $scope.frequentCurrencyNames.RowID,
+        "RecordFieldData": $scope.general.currencyName
+      },
+      {
+        "RowID": $scope.decimalPointDet.RowID,
+        "RecordFieldData": $scope.general.decimalPoint
+      },
+      {
+        "RowID": $scope.template.companyDet[0].RowID,
+        "RecordFieldData": $scope.template.companyName
+      },
+      {
+        "RowID": $scope.template.companyDet[1].RowID,
+        "RecordFieldData": $scope.template.companyAddress
+      },
+      {
+        "RowID": $scope.template.companyDet[2].RowID,
+        "RecordFieldData": $scope.template.companyPhone
+      },
+      {
+        "RowID": $scope.template.companyDet[3].RowID,
+        "RecordFieldData": $scope.template.companyEmail
+      },
+      {
+        "RowID": $scope.template.companyDet[4].RowID,
+        "RecordFieldData": $scope.template.croppedLogo
+      },
+      {
+        "RowID": $scope.footerDet.footersDet[0].RowID,
+        "RecordFieldData": $scope.footerDet.greeting==undefined?"":$scope.footerDet.greeting
+      },
+      {
+        "RowID": $scope.footerDet.footersDet[1].RowID,
+        "RecordFieldData": $scope.footerDet.disclaimer==undefined?"":btoa($scope.footerDet.disclaimer)
+      }]
+
+      $charge.settingsapp().updateGeneralDataByRowId(updateData).success(function(data) {
+        localStorage.removeItem('firstLogin');
+        localStorage.setItem("firstLogin", $scope.general.baseCurrency);
+        notifications.toast("General records have been updated.", "success");
+        $scope.template.companyLogo=[];
+        $scope.productImgChanged=false;
+        $scope.generalSubmit=false;
+        $state.go($state.current, {}, {reload: true});
+      }).error(function () {
+        notifications.toast("Error occured while updating General Record.", "error");
+        $scope.template.companyLogo=[];
+        $scope.generalSubmit=false;
+      })
+    }
+
+
 		//Save General Records
 
 		//Image Uploader===================================
@@ -883,6 +987,7 @@
 		$scope.bounds.bottom = 0;
 		$scope.productImgFileName = "";
 		$scope.productImgSrc = "";
+		$scope.productImgChanged = false;
 		var files = [];
 
 		$scope.triggerImgInput = function () {
@@ -891,6 +996,7 @@
 				files = this.files;
 
 				if(files.length > 0) {
+          $scope.productImgChanged = true;
 					var splitIndex=files[0].name.lastIndexOf('.');
 					$scope.productImgFileName = files[0].name.substr(0,splitIndex);
 					$scope.productImgFileType = files[0].type.split("/")[1];
@@ -1258,7 +1364,8 @@
 				else {
 					if ($scope.baseCurrency != $scope.general.baseCurrency) {
 						if ($scope.transactionCount == 0)
-							$scope.deleteGeneral();
+              $scope.updateGeneralCheckProcess();
+							//$scope.deleteGeneral();
 						else {
 							notifications.toast("Base Currency cannot be changed.", "error");
 							$scope.general.baseCurrency = $scope.baseCurrency;
@@ -1266,7 +1373,8 @@
 						}
 					}
 					else {
-						$scope.deleteGeneral();
+            $scope.updateGeneralCheckProcess();
+						//$scope.deleteGeneral();
 					}
 				}
 			}
@@ -6364,7 +6472,7 @@
 			$mdOpenMenu(ev);
 		};
 
-		$scope.proceedWithStripe = function(CLIENT_ID){
+		$scope.proceedWithStripe = function(){
 
 
 			var confirm = $mdDialog.confirm()
@@ -6377,7 +6485,7 @@
 
 				$scope.isRegButtonsShow = true;
 				//$window.location.href = 'https://connect.stripe.com/oauth/authorize?response_type=code&scope=read_write&client_id=ca_9SnbSf9mKGaz5k4lelzQIQJZ3FjgQ79h';
-				$window.location.href = '/azureshell/app/main/settings/paymentMethod/payment-partial.php?CLIENT_ID='+CLIENT_ID;
+				$window.location.href = '/azureshell/app/main/settings/paymentMethod/payment-partial.php';
 
 			}, function () {
 				$mdDialog.hide();
@@ -6400,8 +6508,6 @@
 				.cancel('No');
 			$mdDialog.show(confirm).then(function () {
 
-
-
 				$charge.paymentgateway().deactiveAcc().success(function (dataa) {
 
 					//console.log(dataa);
@@ -6410,12 +6516,12 @@
 					{
 						notifications.toast("You have successfully disconnected with stripe", "Success");
 						$scope.isRegisteredWithStripe = false;
-						$scope.loadOnlinePaymentRegistration();
 					}else{
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
 					$scope.isRegButtonsShow= false;
+					$scope.$apply();
 
 				}).error(function (data) {
 					//console.log(data);
@@ -6640,10 +6746,10 @@
 		}
 
 		$scope.proceedWithGateway= function (gateway,ev) {
-			if(gateway.paymentGateway === 'stripe'){
-				$scope.proceedWithStripe(gateway.clientId);
+			if(gateway === 'stripe'){
+				$scope.proceedWithStripe();
 			}
-			else if(gateway.paymentGateway === 'worldpay'){
+			else if(gateway === 'worldpay'){
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentworldpayController',
@@ -6661,7 +6767,7 @@
 					}, function() {
 
 					});
-			}else if(gateway.paymentGateway === 'braintree'){
+			}else if(gateway === 'braintree'){
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentbraintreeController',
@@ -6680,7 +6786,7 @@
 
 					});
 			}
-			else if(gateway.paymentGateway === 'authorizednet'){
+			else if(gateway === 'authorizednet'){
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentauthorizeController',
