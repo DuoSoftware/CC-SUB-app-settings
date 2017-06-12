@@ -1268,13 +1268,13 @@
                                 <!--</div>-->
                                 <div class="default-gateway" ng-if="defaultGateway === gateway.paymentGateway">Default</div>
 
-                                <md-input-container ng-if="gateway.paymentGateway != 'testGateway'" class="m-0">
-                                    <md-menu>
+                                <md-input-container ng-if="gateway.paymentGateway != 'testGateway' " class="m-0">
+                                    <md-menu ng-if="gateway.support">
                                         <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="vm.openRegistrationMenu($mdOpenMenu, $event)">
                                             <md-icon md-font-icon="icon-dots-vertical"></md-icon>
 
                                         </md-button>
-                                        <md-menu-content width="4" ng-disabled="isRegButtonsShow">
+                                        <md-menu-content width="4" ng-disabled="isRegButtonsShow ">
                                             <md-menu-item>
                                                 <md-button ng-disabled="defaultGateway == gateway.paymentGateway || !gateway.isConnected" ng-click="makeDefault(gateway.paymentGateway)">
                                                     <md-icon md-font-icon="icon-heart" md-menu-align-target></md-icon>
