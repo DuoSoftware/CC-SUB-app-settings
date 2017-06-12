@@ -356,6 +356,7 @@
 		{
 			//
 			if(ev!=undefined) {
+
 				$scope.general.baseCurrency = ev.code;
 				// self.searchText = null;
 			}
@@ -483,6 +484,9 @@
 			//
 			$scope.baseCurrencyDet=data[0];
 			$scope.general.baseCurrency=data[0].RecordFieldData;
+
+      $scope.loadOnlinePaymentRegistration(); // load gateways
+
 			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
 			$scope.baseCurrency=data[0].RecordFieldData;
 			$scope.general.GURecID=data[0].GuRecID;
@@ -540,6 +544,8 @@
 			isFrequentCurrency=false;
 			isFrequentCurrencyName=false;
 			$scope.isAllGenLoaded=false;
+
+      $scope.loadOnlinePaymentRegistration();
 		})
 
 
@@ -6565,8 +6571,7 @@
 		$scope.defaultGateway = "";
 
 		$scope.loadOnlinePaymentRegistration = function(){
-
-			$charge.paymentgateway().availableGateways().success(function (data) {
+			$charge.paymentgateway().availableGateways($scope.general.baseCurrency).success(function (data) {
 				if(data.status) {
 
 					$scope.currentGateways = data.data.availableGateway;
@@ -6597,8 +6602,6 @@
 
 
 		}
-
-		$scope.loadOnlinePaymentRegistration();
 
 		$scope.viewTestGateway = function(ev) {
 
