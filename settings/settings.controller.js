@@ -6571,7 +6571,7 @@
 		$scope.defaultGateway = "";
 
 		$scope.loadOnlinePaymentRegistration = function(){
-			$charge.paymentgateway().availableGateways($scope.general.baseCurrency+'D').success(function (data) {
+			$charge.paymentgateway().availableGateways($scope.general.baseCurrency).success(function (data) {
 				if(data.status) {
 
 					$scope.currentGateways = data.data.availableGateway;
