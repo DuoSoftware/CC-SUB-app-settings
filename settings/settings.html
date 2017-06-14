@@ -89,7 +89,7 @@
                                         <md-autocomplete flex class="mt-20"
                                                          md-select-on-match
                                                          ng-keypress="enter($event)"
-                                                         ng-disabled="UIbaseCurrency != null && UIbaseCurrency != ''"
+                                                         ng-disabled="vm.isDisabled"
                                                          md-input-name="autocompleteField"
                                                          md-no-cache="vm.noCache"
                                                          md-selected-item="vm.selectedItem"
