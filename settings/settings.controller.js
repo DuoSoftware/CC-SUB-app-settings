@@ -58,6 +58,43 @@
 		//////////
 		$scope.showTaxesFor = "";
 
+		// Some cropper options.
+		vm.imageUrl = 'assets/images/backgrounds/cloudlock.png';
+		vm.showControls = false;
+		vm.fit = false;
+
+		vm.myButtonLabels = {
+			rotateLeft: ' <md-icon md-font-icon="icon-rotate-right"></md-icon> ',
+			rotateRight: ' (rotate right) ',
+			zoomIn: ' (zoomIn) ',
+			zoomOut: ' (zoomOut) ',
+			fit: ' (fit) ',
+			crop: ' [crop] '
+		};
+
+		vm.updateResultImage = function(base64) {
+			vm.resultImage = base64;
+			$scope.$apply(); // Apply the changes.
+		};
+
+		//Cropper API available when image is ready.
+		vm.cropperApi = function(cropperApi) {
+		 cropperApi.zoomOut(10);
+		 cropperApi.zoomIn(20);
+		 cropperApi.rotate(270);
+		 cropperApi.fit();
+		 vm.resultImage = cropperApi.crop();
+		 //cropperApi.remove();
+		 $scope.$apply(); // Apply the changes.
+		};
+
+		/**
+		 * Returns a random integer between min (inclusive) and max (inclusive)
+		 */
+		function getRandomInt(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+
 		$scope.setTaxesFor = function (code, group, index) {
 			$scope.showTaxesFor = code;
 		}
@@ -667,7 +704,6 @@
 			isTemplateDet=true;
 			//
 			$scope.template.companyDet=data;
-			$scope.footerDet.footersDet=data;
 			$scope.template.companyName=data[0].RecordFieldData;
 			$scope.template.companyAddress=data[1].RecordFieldData;
 			$scope.template.companyPhone=data[2].RecordFieldData;

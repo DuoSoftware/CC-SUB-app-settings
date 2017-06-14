@@ -1254,9 +1254,9 @@
                     <md-content>
 
                         <!--start online payments-->
-                        <md-card flex="30" class="payment-card" ng-repeat="gateway in currentGateways">
-                            <div layout="row" layout-align="center center">
-                                <md-input-container style="margin: 0;">
+                        <div flex class="payment-card" layout="column" ng-repeat="gateway in currentGateways">
+                            <div layout="row" layout-align="start center" flex>
+                                <md-input-container style="margin: 0;" flex>
                                     <div class="online_{{gateway.paymentGateway | lowercase}}" ng-class="{'online_disabled': !gateway.isConnected}"></div>
                                     <!--<div>{{gateway.paymentGateway}}</div>-->
                                 </md-input-container>
@@ -1322,11 +1322,31 @@
                                 </md-input-container>
 
                             </div>
-                        </md-card>
+                            <md-divider class="mt-10" ng-if="$index != currentGateways.length-1"></md-divider>
+                        </div>
                         <!--end payment gateways-->
 
                     </md-content>
                 </md-tab>
+                <!--<md-tab label="Test" layout="column" layout-align="center center">-->
+                    <!--<md-content style="width:300px">-->
+                        <!--<image-cropper image-url="{{vm.imageUrl}}"-->
+                                       <!--width="200"-->
+                                       <!--height="300"-->
+                                       <!--show-controls="true"-->
+                                       <!--fit-on-init="true"-->
+                                       <!--center-on-init="true"-->
+                                       <!--api="vm.cropperApi"-->
+                                       <!--crop-callback="vm.updateResultImage"-->
+                                       <!--check-cross-origin="false"-->
+                                       <!--zoom-step="0.1"-->
+                                       <!--action-labels="vm.myButtonLabels"-->
+                        <!--&gt;</image-cropper>-->
+                        <!--<div class="result">-->
+                            <!--<img src="{{vm.resultImage}}" alt="">-->
+                        <!--</div>-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
             </md-tabs>
             <div ng-if="mainNavSelected == 0" ng-init="submitted=false" layout="row" layout-align="space-between center" class="md-whiteframe-8dp bottom-fixed-bar">
                 <div layout="row"></div>
