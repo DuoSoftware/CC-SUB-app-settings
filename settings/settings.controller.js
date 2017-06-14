@@ -6849,6 +6849,8 @@
 		}
 
 		$scope.disconnectWithGateway= function (gateway,key) {
+			$scope.defaultGateway == gateway ? $scope.defaultGateway = 'testGateway' : null;
+
 			if(gateway === 'stripe'){
 				$scope.disconnectWithStripe();
 			}
@@ -6859,7 +6861,6 @@
 			}else if(gateway === 'authorizednet'){
 				$scope.disconnectWithAuthorize(key);
 			}
-			$scope.defaultGateway == gateway ? $scope.defaultGateway = 'testGateway' : null;
 		}
 
 
