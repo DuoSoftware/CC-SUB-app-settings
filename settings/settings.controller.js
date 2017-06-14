@@ -6859,6 +6859,7 @@
 			}else if(gateway === 'authorizednet'){
 				$scope.disconnectWithAuthorize(key);
 			}
+			$scope.defaultGateway == gateway ? $scope.defaultGateway = 'testGateway' : null;
 		}
 
 
