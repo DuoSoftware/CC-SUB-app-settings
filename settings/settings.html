@@ -315,48 +315,48 @@
                         <div class="content-wrapper">
                             <div layout="row">
                                 <form name="vm.planType" ng-submit="submitPlan()" flex>
-                                    <md-card flex class="input-block-gen">
-                                        <md-card-title>
-                                            <div layout="row" layout-align="space-between center" flex>
-                                                <div layout="row">
-                                                    <md-icon md-font-icon="icon-map"></md-icon> <h3>Plan types</h3>
-                                                </div>
-                                                <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addPlanDialog()"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
-                                            </div>
-                                        </md-card-title>
-                                        <div class="list-header" layout="row">
-                                            <div flex layout-align="center start">Plan type</div>
-                                            <div flex="10" layout="row" layout-align="end center">Actions</div>
-                                        </div>
-                                        <md-card-content style="padding: 0">
-                                            <div class="preloader" ng-if="!isPlanTypeLoaded">
-                                                <md-progress-circular></md-progress-circular>
-                                            </div>
-                                            <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="planTypeList.length == 0">
-                                                <span><md-icon md-font-icon="icon-information-outline"></md-icon> No plan type has been added yet</span>
-                                            </div>
-                                            <div flex class="carded-dashboard-list">
-                                                <div layout="row" class="action-row" ng-repeat="type in planTypeList" ng-click="null" layout-align="start center">
-                                                    <span flex>{{type.RecordFieldData}}</span>
-                                                    <span flex="10" style="max-width: 150px" layout="row" layout-align="end center">
-                                                  <md-button class="md-icon-button" aria-label="Edit" ng-click="editPlanDialog(type)">
-                                                    <md-icon md-font-icon="icon-pencil"></md-icon>
-                                                    <md-tooltip>Edit</md-tooltip>
-                                                  </md-button>
-                                                  <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deletePlan(type,$index)" show-gt-sm>
-                                                    <md-icon md-font-icon="icon-close-circle"></md-icon>
-                                                    <md-tooltip>Delete</md-tooltip>
-                                                  </md-button>
-                                                </span>
-                                                </div>
-                                            </div>
-                                        </md-card-content>
-                                        <!--<md-card-actions>-->
-                                        <!--<div layout="row" class="plan_footer" layout-align="end center">-->
-                                        <!--<md-button class="md-icon-button md-accent mr-5" ng-click="addPlanDialog()"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add plan</md-tooltip> </md-button>-->
+                                    <!--<md-card flex class="input-block-gen">-->
+                                        <!--<md-card-title>-->
+                                            <!--<div layout="row" layout-align="space-between center" flex>-->
+                                                <!--<div layout="row">-->
+                                                    <!--<md-icon md-font-icon="icon-map"></md-icon> <h3>Plan types</h3>-->
+                                                <!--</div>-->
+                                                <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addPlanDialog()"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                                            <!--</div>-->
+                                        <!--</md-card-title>-->
+                                        <!--<div class="list-header" layout="row">-->
+                                            <!--<div flex layout-align="center start">Plan type</div>-->
+                                            <!--<div flex="10" layout="row" layout-align="end center">Actions</div>-->
                                         <!--</div>-->
-                                        <!--</md-card-actions>-->
-                                    </md-card>
+                                        <!--<md-card-content style="padding: 0">-->
+                                            <!--<div class="preloader" ng-if="!isPlanTypeLoaded">-->
+                                                <!--<md-progress-circular></md-progress-circular>-->
+                                            <!--</div>-->
+                                            <!--<div layout="row" layout-align="center center" class="msg-empty-list" ng-if="planTypeList.length == 0">-->
+                                                <!--<span><md-icon md-font-icon="icon-information-outline"></md-icon> No plan type has been added yet</span>-->
+                                            <!--</div>-->
+                                            <!--<div flex class="carded-dashboard-list">-->
+                                                <!--<div layout="row" class="action-row" ng-repeat="type in planTypeList" ng-click="null" layout-align="start center">-->
+                                                    <!--<span flex>{{type.RecordFieldData}}</span>-->
+                                                    <!--<span flex="10" style="max-width: 150px" layout="row" layout-align="end center">-->
+                                                  <!--<md-button class="md-icon-button" aria-label="Edit" ng-click="editPlanDialog(type)">-->
+                                                    <!--<md-icon md-font-icon="icon-pencil"></md-icon>-->
+                                                    <!--<md-tooltip>Edit</md-tooltip>-->
+                                                  <!--</md-button>-->
+                                                  <!--<md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deletePlan(type,$index)" show-gt-sm>-->
+                                                    <!--<md-icon md-font-icon="icon-close-circle"></md-icon>-->
+                                                    <!--<md-tooltip>Delete</md-tooltip>-->
+                                                  <!--</md-button>-->
+                                                <!--</span>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</md-card-content>-->
+                                        <!--&lt;!&ndash;<md-card-actions>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<div layout="row" class="plan_footer" layout-align="end center">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<md-button class="md-icon-button md-accent mr-5" ng-click="addPlanDialog()"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add plan</md-tooltip> </md-button>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</md-card-actions>&ndash;&gt;-->
+                                    <!--</md-card>-->
                                 </form>
                             </div>
                         </div>
@@ -1283,7 +1283,7 @@
                                             </md-menu-item>
                                             <md-divider></md-divider>
                                             <md-menu-item>
-                                                <md-button ng-disabled="gateway.isConnected" ng-click="proceedWithGateway(gateway)">
+                                                <md-button ng-disabled="gateway.isConnected" ng-click="proceedWithGateway(gateway.paymentGateway)">
                                                     <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                     Register
                                                 </md-button>
