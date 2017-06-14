@@ -661,12 +661,12 @@
 		//  }
 		//}
 		var isTemplateDet=false;
-		$scope.template.companyDet=data;
 		$scope.template.companyLogo=[];
 		$scope.template.croppedLogo="";
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
 			isTemplateDet=true;
 			//
+			$scope.template.companyDet=data;
 			$scope.footerDet.footersDet=data;
 			$scope.template.companyName=data[0].RecordFieldData;
 			$scope.template.companyAddress=data[1].RecordFieldData;
