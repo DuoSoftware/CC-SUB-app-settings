@@ -10,8 +10,7 @@
 	/////////////////////////////////
 	angular
 		.module('app.settings')
-		.controller('settingscontroller', settingscontroller)
-		.directive('fileDropzone', fileDropzone);
+		.controller('settingscontroller', settingscontroller);
 
 	/** @ngInject */
 	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
@@ -65,12 +64,12 @@
 		vm.fit = false;
 
 		vm.myButtonLabels = {
-			rotateLeft: '',
-			rotateRight: '',
-			zoomIn: '<md-icon class="md-default md-accent md-font icon-magnify-plus"></md-icon>',
-			zoomOut: '<md-icon class="md-default md-accent md-font icon-magnify-minus"></md-icon>',
-			fit: '<md-icon class="md-default md-accent icon-fullscreen"></md-icon>',
-			crop: ''
+			rotateLeft: ' <md-icon md-font-icon="icon-rotate-right"></md-icon> ',
+			rotateRight: ' (rotate right) ',
+			zoomIn: ' (zoomIn) ',
+			zoomOut: ' (zoomOut) ',
+			fit: ' (fit) ',
+			crop: ' [crop] '
 		};
 
 		vm.updateResultImage = function(base64) {
@@ -80,12 +79,13 @@
 
 		//Cropper API available when image is ready.
 		vm.cropperApi = function(cropperApi) {
-			cropperApi.zoomOut(1.01);
-			cropperApi.zoomIn(1.01);
-			cropperApi.fit();
-			vm.resultImage = cropperApi.crop();
-			//cropperApi.remove();
-			$scope.$apply(); // Apply the changes.
+		 cropperApi.zoomOut(10);
+		 cropperApi.zoomIn(20);
+		 cropperApi.rotate(270);
+		 cropperApi.fit();
+		 vm.resultImage = cropperApi.crop();
+		 //cropperApi.remove();
+		 $scope.$apply(); // Apply the changes.
 		};
 
 		/**
@@ -522,7 +522,7 @@
 			$scope.baseCurrencyDet=data[0];
 			$scope.general.baseCurrency=data[0].RecordFieldData;
 
-			$scope.loadOnlinePaymentRegistration(); // load gateways
+      $scope.loadOnlinePaymentRegistration(); // load gateways
 
 			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
 			$scope.baseCurrency=data[0].RecordFieldData;
@@ -582,7 +582,7 @@
 			isFrequentCurrencyName=false;
 			$scope.isAllGenLoaded=false;
 
-			$scope.loadOnlinePaymentRegistration();
+      $scope.loadOnlinePaymentRegistration();
 		})
 
 
@@ -7226,78 +7226,4 @@
 		 Intro End
 		 */
 	}
-
-	function fileDropzone()
-	{
-		return {
-			restrict: 'A',
-			scope: {
-				file: '=',
-				fileName: '='
-			},
-			link: function(scope, element, attrs) {
-				var checkSize,
-					isTypeValid,
-					processDragOverOrEnter,
-					validMimeTypes;
-
-				processDragOverOrEnter = function (event) {
-					if (event != null) {
-						event.preventDefault();
-					}
-					event.dataTransfer.effectAllowed = 'copy';
-					return false;
-				};
-
-				validMimeTypes = attrs.fileDropzone;
-
-				checkSize = function(size) {
-					var _ref;
-					if (((_ref = attrs.maxFileSize) === (void 0) || _ref === '') || (size / 1024) / 1024 < attrs.maxFileSize) {
-						return true;
-					} else {
-						alert("File must be smaller than " + attrs.maxFileSize + " MB");
-						return false;
-					}
-				};
-
-				isTypeValid = function(type) {
-					if ((validMimeTypes === (void 0) || validMimeTypes === '') || validMimeTypes.indexOf(type) > -1) {
-						return true;
-					} else {
-						alert("Invalid file type.  File must be one of following types " + validMimeTypes);
-						return false;
-					}
-				};
-
-				element.bind('dragover', processDragOverOrEnter);
-				element.bind('dragenter', processDragOverOrEnter);
-
-				return element.bind('drop', function(event) {
-					var file, name, reader, size, type;
-					if (event != null) {
-						event.preventDefault();
-					}
-					reader = new FileReader();
-					reader.onload = function(evt) {
-						if (checkSize(size) && isTypeValid(type)) {
-							return scope.$apply(function() {
-								scope.file = evt.target.result;
-								if (angular.isString(scope.fileName)) {
-									return scope.fileName = name;
-								}
-							});
-						}
-					};
-					file = event.dataTransfer.files[0];
-					name = file.name;
-					type = file.type;
-					size = file.size;
-					reader.readAsDataURL(file);
-					return false;
-				});
-			}
-		};
-	}
-
 })();
