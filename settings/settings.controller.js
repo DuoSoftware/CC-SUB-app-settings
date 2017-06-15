@@ -1768,7 +1768,7 @@
 
 		var skipPlanChangeFee=0;
 		var takePlanChangeFee=100;
-		$scope.loadingPlanChangeFee = true;
+		$scope.loadingPlanChangeFee = false;
 		$scope.planChangeFeeList=[];
 
 		var skipPlanKeyAttributes=0;
