@@ -1901,7 +1901,8 @@
 
 			}).error(function(data)
 			{
-				$scope.planChangeFeeList = false;
+				$scope.loadingPlanChangeFee = false;
+				$scope.planChangeFeeList = [];
 			})
 
 			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
@@ -1978,7 +1979,8 @@
 
 			}).error(function(data)
 			{
-				$scope.planChangeFeeList = false;
+				//$scope.planChangeFeeList = false;
+				$scope.loadingPlanChangeFee = false;
 			})
 		}
 
