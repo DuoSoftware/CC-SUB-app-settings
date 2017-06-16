@@ -10,7 +10,58 @@
 	/////////////////////////////////
 	angular
 		.module('app.settings')
-		.controller('settingscontroller', settingscontroller);
+		.controller('settingscontroller', settingscontroller)
+		.directive('fileDropzone', fileDropzone)
+		.directive('imageResize', function($q) {
+			return {
+				restrict: 'A',
+				scope: {
+					percent: '@imageResizePercent',
+					src: '@',
+					id: '@'
+				},
+				link: function (scope, element, attr) {
+					var canvas;
+
+					// Creates a new image object from the src
+					// Uses the deferred pattern
+					var createImage = function (src) {
+						var deferred = $q.defer();
+						var img = new Image();
+
+						img.onload = function() {
+							deferred.resolve(img);
+						};
+						img.src = src;
+
+						return deferred.promise;
+					};
+
+					// Resize image
+					var resize = function (img) {
+						canvas = document.getElementById(scope.id);
+						var ctx = canvas.getContext("2d");
+
+						var newHeight = (img.height * scope.percent) / 100;
+						var newWidth = (img.width * scope.percent) / 100;
+
+						canvas.width = newWidth;
+						canvas.height = newHeight;
+						ctx.drawImage(img, 0, 0, newHeight, newWidth);
+					};
+
+					// Create an Image, when loaded pass it on to the resizer
+					var startResize = function () {
+						createImage(scope.src)
+							.then(resize, function () {console.log('error')});
+					};
+
+					if (scope.percent !== 100) {
+						startResize();
+					}
+				}
+			}
+		});
 
 	/** @ngInject */
 	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
@@ -57,36 +108,6 @@
 
 		//////////
 		$scope.showTaxesFor = "";
-
-		// Some cropper options.
-		vm.imageUrl = 'assets/images/backgrounds/cloudlock.png';
-		vm.showControls = false;
-		vm.fit = false;
-
-		vm.myButtonLabels = {
-			rotateLeft: ' <md-icon md-font-icon="icon-rotate-right"></md-icon> ',
-			rotateRight: ' (rotate right) ',
-			zoomIn: ' (zoomIn) ',
-			zoomOut: ' (zoomOut) ',
-			fit: ' (fit) ',
-			crop: ' [crop] '
-		};
-
-		vm.updateResultImage = function(base64) {
-			vm.resultImage = base64;
-			$scope.$apply(); // Apply the changes.
-		};
-
-		//Cropper API available when image is ready.
-		vm.cropperApi = function(cropperApi) {
-		 cropperApi.zoomOut(10);
-		 cropperApi.zoomIn(20);
-		 cropperApi.rotate(270);
-		 cropperApi.fit();
-		 vm.resultImage = cropperApi.crop();
-		 //cropperApi.remove();
-		 $scope.$apply(); // Apply the changes.
-		};
 
 		/**
 		 * Returns a random integer between min (inclusive) and max (inclusive)
@@ -522,7 +543,7 @@
 			$scope.baseCurrencyDet=data[0];
 			$scope.general.baseCurrency=data[0].RecordFieldData;
 
-      $scope.loadOnlinePaymentRegistration(); // load gateways
+			$scope.loadOnlinePaymentRegistration(); // load gateways
 
 			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
 			$scope.baseCurrency=data[0].RecordFieldData;
@@ -582,7 +603,7 @@
 			isFrequentCurrencyName=false;
 			$scope.isAllGenLoaded=false;
 
-      $scope.loadOnlinePaymentRegistration();
+			$scope.loadOnlinePaymentRegistration();
 		})
 
 
@@ -1033,19 +1054,91 @@
 		var files = [];
 
 		$scope.triggerImgInput = function () {
+			vm.addedImage = false;
+
 			angular.element(document.querySelector('#productImageInput')).trigger('click');
 			angular.element(document.querySelector('#productImageInput')).on('change', function () {
 				files = this.files;
+
+				if (this.files && this.files[0]) {
+					var FR= new FileReader();
+
+					FR.readAsDataURL( this.files[0] );
+					FR.addEventListener("load", function(e) {
+						$timeout(function () {
+							vm.addedImage = e.target.result;
+						},0);
+					});
+				}
 
 				if(files.length > 0) {
 					$scope.productImgChanged = true;
 					var splitIndex=files[0].name.lastIndexOf('.');
 					$scope.productImgFileName = files[0].name.substr(0,splitIndex);
-					$scope.productImgFileType = files[0].type.split("/")[1];
-					if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
+					// $scope.productImgFileType = files[0].type.split("/")[1];
+					$scope.productImgFileType = 'jpg';
+					// if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
 				}
 			});
 		}
+
+		//Image Uploader 15_06_2017
+		vm.showControls = false;
+		vm.fit = false;
+		$scope.editImageOn = false;
+
+		$scope.editCompanyLogoInit = function () {
+			$timeout(function(){
+				$scope.editImageOn = true;
+				//$scope.cropper.croppedImage ? vm.addedImage = $scope.cropper.croppedImage : vm.addedImage=false;
+			});
+		};
+
+		$scope.editCompanyCancel = function () {
+			$timeout(function(){
+				$scope.editImageOn = false;
+				vm.addedImage = false;
+			});
+		};
+
+		$scope.retryImageUpload = function () {
+			$timeout(function(){
+				$scope.editImageOn = false;
+				$scope.editImageOn = true;
+				vm.addedImage = false;
+				vm.resultImage = false;
+			});
+		};
+
+		vm.myButtonLabels = {
+			rotateLeft: '',
+			rotateRight: '',
+			zoomIn: '<md-icon class="md-default md-accent md-font icon-magnify-plus"></md-icon>',
+			zoomOut: '<md-icon class="md-default md-accent md-font icon-magnify-minus"></md-icon>',
+			fit: '<md-icon class="md-default md-accent icon-image-filter-center-focus"></md-icon>',
+			crop: ''
+		};
+
+		vm.updateResultImage = function(base64) {
+			vm.resultImage = base64;
+			$scope.cropper.croppedImage = vm.resultImage;
+			$scope.$apply();
+		};
+
+		vm.doneImageCropping = function(cropperApi) {
+			// angular.element('#imageCropElement').trigger('Cropped');
+			$scope.editCompanyCancel();
+		};
+
+		vm.cropperApi = function(cropperApi) {
+			cropperApi.zoomOut(1.01);
+			cropperApi.zoomIn(1.01);
+			cropperApi.fit();
+			$scope.cropper.croppedImage = cropperApi.crop();
+			//cropperApi.remove();
+			$scope.$apply();
+		};
+		//Image Uploader 15_06_2017
 
 		//Image Uploader===================================
 
@@ -7226,4 +7319,78 @@
 		 Intro End
 		 */
 	}
+
+	function fileDropzone()
+	{
+		return {
+			restrict: 'A',
+			scope: {
+				file: '=',
+				fileName: '='
+			},
+			link: function(scope, element, attrs) {
+				var checkSize,
+					isTypeValid,
+					processDragOverOrEnter,
+					validMimeTypes;
+
+				processDragOverOrEnter = function (event) {
+					if (event != null) {
+						event.preventDefault();
+					}
+					event.dataTransfer.effectAllowed = 'copy';
+					return false;
+				};
+
+				validMimeTypes = attrs.fileDropzone;
+
+				checkSize = function(size) {
+					var _ref;
+					if (((_ref = attrs.maxFileSize) === (void 0) || _ref === '') || (size / 1024) / 1024 < attrs.maxFileSize) {
+						return true;
+					} else {
+						alert("File must be smaller than " + attrs.maxFileSize + " MB");
+						return false;
+					}
+				};
+
+				isTypeValid = function(type) {
+					if ((validMimeTypes === (void 0) || validMimeTypes === '') || validMimeTypes.indexOf(type) > -1) {
+						return true;
+					} else {
+						alert("Invalid file type.  File must be one of following types " + validMimeTypes);
+						return false;
+					}
+				};
+
+				element.bind('dragover', processDragOverOrEnter);
+				element.bind('dragenter', processDragOverOrEnter);
+
+				return element.bind('drop', function(event) {
+					var file, name, reader, size, type;
+					if (event != null) {
+						event.preventDefault();
+					}
+					reader = new FileReader();
+					reader.onload = function(evt) {
+						if (checkSize(size) && isTypeValid(type)) {
+							return scope.$apply(function() {
+								scope.file = evt.target.result;
+								if (angular.isString(scope.fileName)) {
+									return scope.fileName = name;
+								}
+							});
+						}
+					};
+					file = event.dataTransfer.files[0];
+					name = file.name;
+					type = file.type;
+					size = file.size;
+					reader.readAsDataURL(file);
+					return false;
+				});
+			}
+		};
+	}
+
 })();

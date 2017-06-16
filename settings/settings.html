@@ -165,90 +165,178 @@
                                             </md-icon>
                                         </div>
                                         <div class="issuer gen-template" layout="row" layout-align="center center">
-                                            <table>
-                                                <tr>
-                                                    <td class="pv-0 pr-20">
-                                                        <div class="content-block-wrapper" flex>
-                                                            <div layout="row" class="content-block">
-                                                                <div flex>
-                                                                    <div layout="column" layout-align="center center" class="product-img-cont">
-                                                                        <!--ng-if="cropper.croppedImage==null"-->
-                                                                        <div layout="column" layout-align="center center" class="img-up-invitation" ng-if="cropper.sourceImage==null">
-                                                                            <md-icon md-font-icon="icon-image-filter"></md-icon>
-                                                                            <span>Browse a Company Logo</span>
-                                                                            <span class="img-size-msg">[Maximum size : 180px X 180px]</span>
-                                                                        </div>
-                                                                        <canvas flex height="242" width="200" id="canvas" image-cropper image="cropper.sourceImage" cropped-image="cropper.croppedImage" crop-width="180" crop-height="180" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+                                            <!--<table>-->
+                                                <!--<tr>-->
+                                                    <!--<td class="pv-0 pr-20">-->
+                                                        <!--<div class="content-block-wrapper" flex>-->
+                                                            <!--<div layout="row" class="content-block">-->
+                                                                <!--<div flex>-->
+                                                                    <!--<div layout="column" layout-align="center center" class="product-img-cont">-->
+                                                                        <!--&lt;!&ndash;ng-if="cropper.croppedImage==null"&ndash;&gt;-->
+                                                                        <!--<div layout="column" layout-align="center center" class="img-up-invitation" ng-if="cropper.sourceImage==null">-->
+                                                                            <!--<md-icon md-font-icon="icon-image-filter"></md-icon>-->
+                                                                            <!--<span>Browse a Company Logo</span>-->
+                                                                            <!--<span class="img-size-msg">[Maximum size : 180px X 180px]</span>-->
+                                                                        <!--</div>-->
+                                                                        <!--<canvas flex height="242" width="200" id="canvas" image-cropper image="cropper.sourceImage" cropped-image="cropper.croppedImage" crop-width="180" crop-height="180" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>-->
 
-                                                                        <div class="input-partial">
-                                                                            <md-button class="md-raised md-accent" ng-click="triggerImgInput($event)">Browse</md-button>
-                                                                            <input type="file" id="productImageInput" img-cropper-fileread image="cropper.sourceImage" style="display:none" />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                                        <!--<div class="input-partial">-->
+                                                                            <!--<md-button class="md-raised md-accent" ng-click="triggerImgInput($event)">Browse</md-button>-->
+                                                                            <!--<input type="file" id="productImageInput" img-cropper-fileread image="cropper.sourceImage" style="display:none" />-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
+                                                                <!--</div>-->
 
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</td>-->
+                                                    <!--<td>-->
+                                                        <!--<div layout="row" layout-align="center center" class="b br-5">-->
+                                                            <!--<div>-->
+                                                                <!--<div flex layout="column" layout-align="center center" class="product-preview">-->
+                                                                    <!--<span>Company Logo preview</span>-->
+                                                                    <!--<div layout="column" layout-align="center center" class="b b-light" flex="80">-->
+                                                                        <!--<div layout="column" layout-align="center center" class="msg" ng-if="cropper.croppedImage==null">-->
+                                                                            <!--<md-icon md-font-icon="icon-information"></md-icon> No image is selected yet-->
+                                                                        <!--</div>-->
+                                                                        <!--<div ng-show="cropper.croppedImage!=null">-->
+                                                                            <!--<img ng-src="{{cropper.croppedImage}}" />-->
+                                                                        <!--</div>-->
+                                                                    <!--</div>-->
+                                                                    <!--<label ng-show="cropper.croppedImage!=null" class="img-size-msg" style="margin-left: 10px">[Image size : 180px X 180px]</label>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                            <!--<div class="info p-20" flex>-->
+                                                                <!--<div class="title">-->
+                                                                    <!--<md-input-container class="md-block mb-0" flex>-->
+                                                                        <!--<label>Company Name</label>-->
+                                                                        <!--<input name="companyName" type="" ng-model="template.companyName" ng-maxlength="30">-->
+                                                                        <!--<div ng-messages="vm.generalForm.companyName.$error">-->
+                                                                            <!--<div ng-message="maxlength">Company Name has to be less than 30 characters long</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</md-input-container>-->
+                                                                <!--</div>-->
+                                                                <!--<div class="address" layout="row">-->
+                                                                    <!--<md-input-container class="md-block mb-0" flex>-->
+                                                                        <!--<label>Address</label>-->
+                                                                        <!--<input name="companyAddr" type="" ng-model="template.companyAddress" ng-maxlength="100">-->
+                                                                        <!--<div ng-messages="vm.generalForm.companyAddr.$error">-->
+                                                                            <!--<div ng-message="maxlength">Company Address has to be less than 100 characters long</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</md-input-container>-->
+                                                                <!--</div>-->
+                                                                <!--<div class="title">-->
+                                                                    <!--<md-input-container class="md-block mb-0" flex>-->
+                                                                        <!--<label>Phone</label>-->
+                                                                        <!--<input name="companyPhone" type="" ng-model="template.companyPhone" ng-maxlength="15">-->
+                                                                        <!--<div ng-messages="vm.generalForm.companyPhone.$error">-->
+                                                                            <!--<div ng-message="maxlength">Phone Number has to be less than 15 characters long</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</md-input-container>-->
+                                                                <!--</div>-->
+                                                                <!--<div class="title">-->
+                                                                    <!--<md-input-container class="md-block mb-0" flex>-->
+                                                                        <!--<label>Email</label>-->
+                                                                        <!--<input name="companyEmail" type="" ng-model="template.companyEmail" ng-pattern="/^.+@.+\..+$/" ng-maxlength="30">-->
+                                                                        <!--<div ng-messages="vm.generalForm.companyEmail.$error">-->
+                                                                            <!--<div ng-message="maxlength">Company Email has to be less than 30 characters long</div>-->
+                                                                            <!--<div ng-message="pattern">Company Email is invalid</div>-->
+                                                                        <!--</div>-->
+                                                                    <!--</md-input-container>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
+                                                        <!--</div>-->
+                                                    <!--</td>-->
+                                                <!--</tr>-->
+                                            <!--</table>-->
+                                            <div layout="row" layout-align="center center" flex>
+                                                <div class="w-280 p-40 h-375 pos-rel" ng-class="{'md-whiteframe-2dp':editImageOn}" layout="column">
+                                                    <div class="text-right close-logo" ng-if="editImageOn">
+                                                        <md-button class="md-icon-button" ng-click="editCompanyCancel()"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
+                                                    </div>
+                                                    <div flex layout="column" layout-align="center center" class="product-preview" ng-if="!editImageOn" ng-click="editCompanyLogoInit()">
+                                                        <span class="op-5">Company Logo preview</span>
+                                                        <div layout="column" layout-align="center center" class="b b-light pos-rel">
+                                                            <div class="selected animate-fade-in-out">
+                                                                <md-icon md-font-icon="icon-camera"></md-icon>
+                                                            </div>
+                                                            <!--<div layout="column" layout-align="center center" class="msg" ng-if="cropper.croppedImage==null">-->
+                                                                <!--<md-icon md-font-icon="icon-information"></md-icon> No image is selected yet-->
+                                                            <!--</div>-->
+                                                            <div ng-show="cropper.croppedImage!=null">
+                                                                <img ng-src="{{cropper.croppedImage}}" />
                                                             </div>
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                        <div layout="row" layout-align="center center" class="b br-5">
-                                                            <div>
-                                                                <div flex layout="column" layout-align="center center" class="product-preview">
-                                                                    <span>Company Logo preview</span>
-                                                                    <div layout="column" layout-align="center center" class="b b-light" flex="80">
-                                                                        <div layout="column" layout-align="center center" class="msg" ng-if="cropper.croppedImage==null">
-                                                                            <md-icon md-font-icon="icon-information"></md-icon> No image is selected yet
-                                                                        </div>
-                                                                        <div ng-show="cropper.croppedImage!=null">
-                                                                            <img ng-src="{{cropper.croppedImage}}" />
-                                                                        </div>
-                                                                    </div>
-                                                                    <label ng-show="cropper.croppedImage!=null" class="img-size-msg" style="margin-left: 10px">[Image size : 180px X 180px]</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="info p-20" flex>
-                                                                <div class="title">
-                                                                    <md-input-container class="md-block mb-0" flex>
-                                                                        <label>Company Name</label>
-                                                                        <input name="companyName" type="" ng-model="template.companyName" ng-maxlength="30">
-                                                                        <div ng-messages="vm.generalForm.companyName.$error">
-                                                                            <div ng-message="maxlength">Company Name has to be less than 30 characters long</div>
-                                                                        </div>
-                                                                    </md-input-container>
-                                                                </div>
-                                                                <div class="address" layout="row">
-                                                                    <md-input-container class="md-block mb-0" flex>
-                                                                        <label>Address</label>
-                                                                        <input name="companyAddr" type="" ng-model="template.companyAddress" ng-maxlength="100">
-                                                                        <div ng-messages="vm.generalForm.companyAddr.$error">
-                                                                            <div ng-message="maxlength">Company Address has to be less than 100 characters long</div>
-                                                                        </div>
-                                                                    </md-input-container>
-                                                                </div>
-                                                                <div class="title">
-                                                                    <md-input-container class="md-block mb-0" flex>
-                                                                        <label>Phone</label>
-                                                                        <input name="companyPhone" type="" ng-model="template.companyPhone" ng-maxlength="15">
-                                                                        <div ng-messages="vm.generalForm.companyPhone.$error">
-                                                                            <div ng-message="maxlength">Phone Number has to be less than 15 characters long</div>
-                                                                        </div>
-                                                                    </md-input-container>
-                                                                </div>
-                                                                <div class="title">
-                                                                    <md-input-container class="md-block mb-0" flex>
-                                                                        <label>Email</label>
-                                                                        <input name="companyEmail" type="" ng-model="template.companyEmail" ng-pattern="/^.+@.+\..+$/" ng-maxlength="30">
-                                                                        <div ng-messages="vm.generalForm.companyEmail.$error">
-                                                                            <div ng-message="maxlength">Company Email has to be less than 30 characters long</div>
-                                                                            <div ng-message="pattern">Company Email is invalid</div>
-                                                                        </div>
-                                                                    </md-input-container>
-                                                                </div>
-                                                            </div>
+                                                        <label ng-show="cropper.croppedImage!=null" class="img-size-msg" style="margin-left: 10px">[Image size : 180px X 180px]</label>
+                                                    </div>
+                                                    <div ng-if="editImageOn" flex layout="column" layout-align="center center" class="company-logo-preview">
+                                                        <div layout="column" layout-align="center center" class="img-up-invitation animate-fade-in-out" ng-if="!vm.addedImage" flex>
+                                                            <md-icon md-font-icon="icon-image-filter" flex></md-icon>
+                                                            <h3 class="font-accent mb-10">Drag and Drop</h3>
+                                                            <div><i>or</i></div>
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                                        <image-cropper ng-if="vm.addedImage" id="imageCropElement" class="animate-fade-in-out"
+                                                                       image-url="{{vm.addedImage}}"
+                                                                       width="180"
+                                                                       height="180"
+                                                                       show-controls="true"
+                                                                       fit-on-init="true"
+                                                                       center-on-init="true"
+                                                                       api="vm.cropperApi"
+                                                                       crop-callback="vm.updateResultImage"
+                                                                       cropped-base="vm.croppedBase64"
+                                                                       check-cross-origin="false"
+                                                                       action-labels="vm.myButtonLabels"
+                                                        ></image-cropper>
+                                                        <md-button ng-if="!vm.addedImage" class="md-raised md-accent mt-10" ng-click="triggerImgInput()">Browse</md-button>
+                                                        <div layout="row" ng-if="vm.addedImage">
+                                                            <md-button class="md-icon-button mt-10" ng-click="retryImageUpload()"><md-icon md-font-icon="icon-undo"></md-icon></md-button>
+                                                            <md-button class="md-icon-button md-accent mt-10" ng-click="vm.doneImageCropping()"><md-icon md-font-icon="icon-check-circle"></md-icon></md-button>
+                                                        </div>
+                                                        <input type="file" id="productImageInput" image="cropper.sourceImage" style="display:none" />
+                                                        <!--<div class="img-size-msg">[Maximum size : 180px X 180px]</div>-->
+                                                    </div>
+                                                </div>
+                                                <div class="info p-20" flex>
+                                                    <div class="title">
+                                                        <md-input-container class="md-block mb-0" flex>
+                                                            <label>Company Name</label>
+                                                            <input name="companyName" type="" ng-model="template.companyName" ng-maxlength="30">
+                                                            <div ng-messages="vm.generalForm.companyName.$error">
+                                                                <div ng-message="maxlength">Company Name has to be less than 30 characters long</div>
+                                                            </div>
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="address" layout="row">
+                                                        <md-input-container class="md-block mb-0" flex>
+                                                            <label>Address</label>
+                                                            <input name="companyAddr" type="" ng-model="template.companyAddress" ng-maxlength="100">
+                                                            <div ng-messages="vm.generalForm.companyAddr.$error">
+                                                                <div ng-message="maxlength">Company Address has to be less than 100 characters long</div>
+                                                            </div>
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="title">
+                                                        <md-input-container class="md-block mb-0" flex>
+                                                            <label>Phone</label>
+                                                            <input name="companyPhone" type="" ng-model="template.companyPhone" ng-maxlength="15">
+                                                            <div ng-messages="vm.generalForm.companyPhone.$error">
+                                                                <div ng-message="maxlength">Phone Number has to be less than 15 characters long</div>
+                                                            </div>
+                                                        </md-input-container>
+                                                    </div>
+                                                    <div class="title">
+                                                        <md-input-container class="md-block mb-0" flex>
+                                                            <label>Email</label>
+                                                            <input name="companyEmail" type="" ng-model="template.companyEmail" ng-pattern="/^.+@.+\..+$/" ng-maxlength="30">
+                                                            <div ng-messages="vm.generalForm.companyEmail.$error">
+                                                                <div ng-message="maxlength">Company Email has to be less than 30 characters long</div>
+                                                                <div ng-message="pattern">Company Email is invalid</div>
+                                                            </div>
+                                                        </md-input-container>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1331,6 +1419,31 @@
 
                     </md-content>
                 </md-tab>
+                <!--<md-tab label="Test" layout="column" layout-align="start start">-->
+                    <!--<md-content>-->
+                        <!--<div style="width: 200px;">-->
+                            <!--<image-cropper image-url="{{vm.imageUrl}}"-->
+                                           <!--width="640"-->
+                                           <!--height="480"-->
+                                           <!--show-controls="true"-->
+                                           <!--fit-on-init="true"-->
+                                           <!--center-on-init="true"-->
+                                           <!--api="vm.cropperApi"-->
+                                           <!--crop-callback="vm.updateResultImage"-->
+                                           <!--check-cross-origin="false"-->
+                                           <!--action-labels="vm.myButtonLabels"-->
+                            <!--&gt;</image-cropper>-->
+                        <!--</div>-->
+                        <!--<div class="dropzone" file-dropzone="[image/png, image/jpeg, image/gif]"-->
+                             <!--file="image" file-name="imageFileName" data-max-file-size="3">-->
+                            <!--<span>Drop Image Here</span>-->
+                        <!--</div>-->
+                        <!--<div class="image-container">-->
+                            <!--<img ng-src={{image}} />-->
+                            <!--<span class="file-name">{{imageFileName}}</span>-->
+                        <!--</div>-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
                 <!--<md-tab label="Test" layout="column" layout-align="center center">-->
                 <!--<md-content style="width:300px">-->
                 <!--<image-cropper image-url="{{vm.imageUrl}}"-->
