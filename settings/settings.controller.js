@@ -10,7 +10,114 @@
 	/////////////////////////////////
 	angular
 		.module('app.settings')
-		.controller('settingscontroller', settingscontroller);
+		.controller('settingscontroller', settingscontroller)
+		.directive('imageResize', function($q) {
+			return {
+				restrict: 'A',
+				scope: {
+					percent: '@imageResizePercent',
+					src: '@',
+					id: '@'
+				},
+				link: function (scope, element, attr) {
+					var canvas;
+
+					// Creates a new image object from the src
+					// Uses the deferred pattern
+					var createImage = function (src) {
+						var deferred = $q.defer();
+						var img = new Image();
+
+						img.onload = function() {
+							deferred.resolve(img);
+						};
+						img.src = src;
+
+						return deferred.promise;
+					};
+
+					// Resize image
+					var resize = function (img) {
+						canvas = document.getElementById(scope.id);
+						var ctx = canvas.getContext("2d");
+
+						var newHeight = (img.height * scope.percent) / 100;
+						var newWidth = (img.width * scope.percent) / 100;
+
+						canvas.width = newWidth;
+						canvas.height = newHeight;
+						ctx.drawImage(img, 0, 0, newHeight, newWidth);
+					};
+
+					// Create an Image, when loaded pass it on to the resizer
+					var startResize = function () {
+						createImage(scope.src)
+							.then(resize, function () {console.log('error')});
+					};
+
+					if (scope.percent !== 100) {
+						startResize();
+					}
+				}
+			}
+		})
+		.directive('dragAndDrop', function() {
+			return {
+				restrict: 'A',
+				link: function ($scope, elem, attr) {
+					elem.bind('dragover', function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+						$scope.divClass = true;
+						//debugger;
+						// e.dataTransfer.dropEffect = 'copy';
+					});
+					elem.bind('dragenter', function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+						$scope.$apply(function () {
+							$scope.divClass = true;
+						});
+					});
+					elem.bind('dragleave', function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+						$scope.$apply(function () {
+							$scope.divClass = '';
+						});
+					});
+					elem.bind('drop', function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+
+						var files = e.originalEvent.dataTransfer.files;
+
+						if (files && files[0]) {
+							var FR= new FileReader();
+
+							FR.readAsDataURL( files[0] );
+							FR.addEventListener("load", function(e) {
+								// $timeout(function () {
+								$scope.addedImage = e.target.result;
+								$scope.$apply();
+								$scope.divClass = false;
+								// },0);
+							});
+						}
+
+						if(files.length > 0) {
+							$scope.productImgChanged = true;
+							var splitIndex=files[0].name.lastIndexOf('.');
+							$scope.productImgFileName = files[0].name.substr(0,splitIndex);
+							// $scope.productImgFileType = files[0].type.split("/")[1];
+							$scope.productImgFileType = 'jpg';
+							// if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
+						}
+
+					});
+				}
+			}
+		});
 
 	/** @ngInject */
 	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
@@ -57,36 +164,6 @@
 
 		//////////
 		$scope.showTaxesFor = "";
-
-		// Some cropper options.
-		vm.imageUrl = 'assets/images/backgrounds/cloudlock.png';
-		vm.showControls = false;
-		vm.fit = false;
-
-		vm.myButtonLabels = {
-			rotateLeft: ' <md-icon md-font-icon="icon-rotate-right"></md-icon> ',
-			rotateRight: ' (rotate right) ',
-			zoomIn: ' (zoomIn) ',
-			zoomOut: ' (zoomOut) ',
-			fit: ' (fit) ',
-			crop: ' [crop] '
-		};
-
-		vm.updateResultImage = function(base64) {
-			vm.resultImage = base64;
-			$scope.$apply(); // Apply the changes.
-		};
-
-		//Cropper API available when image is ready.
-		vm.cropperApi = function(cropperApi) {
-		 cropperApi.zoomOut(10);
-		 cropperApi.zoomIn(20);
-		 cropperApi.rotate(270);
-		 cropperApi.fit();
-		 vm.resultImage = cropperApi.crop();
-		 //cropperApi.remove();
-		 $scope.$apply(); // Apply the changes.
-		};
 
 		/**
 		 * Returns a random integer between min (inclusive) and max (inclusive)
@@ -522,7 +599,7 @@
 			$scope.baseCurrencyDet=data[0];
 			$scope.general.baseCurrency=data[0].RecordFieldData;
 
-      $scope.loadOnlinePaymentRegistration(); // load gateways
+			$scope.loadOnlinePaymentRegistration(); // load gateways
 
 			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
 			$scope.baseCurrency=data[0].RecordFieldData;
@@ -582,7 +659,7 @@
 			isFrequentCurrencyName=false;
 			$scope.isAllGenLoaded=false;
 
-      $scope.loadOnlinePaymentRegistration();
+			$scope.loadOnlinePaymentRegistration();
 		})
 
 
@@ -1033,19 +1110,106 @@
 		var files = [];
 
 		$scope.triggerImgInput = function () {
+			$scope.addedImage = false;
+
 			angular.element(document.querySelector('#productImageInput')).trigger('click');
 			angular.element(document.querySelector('#productImageInput')).on('change', function () {
 				files = this.files;
+
+				if (this.files && this.files[0]) {
+					var FR= new FileReader();
+
+					FR.readAsDataURL( this.files[0] );
+					FR.addEventListener("load", function(e) {
+						$timeout(function () {
+							$scope.addedImage = e.target.result;
+						},0);
+					});
+				}
 
 				if(files.length > 0) {
 					$scope.productImgChanged = true;
 					var splitIndex=files[0].name.lastIndexOf('.');
 					$scope.productImgFileName = files[0].name.substr(0,splitIndex);
-					$scope.productImgFileType = files[0].type.split("/")[1];
-					if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
+					// $scope.productImgFileType = files[0].type.split("/")[1];
+					$scope.productImgFileType = 'jpg';
+					// if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
 				}
 			});
 		}
+
+		$scope.$watch(function () {
+			angular.element('#dragZone').bind('dragover', function(e){
+				console.log('Over');
+			})
+		});
+
+		// Drag & Drop image #########################################################
+
+		// Drag & Drop image #########################################################
+
+		//Image Uploader 15_06_2017
+		vm.showControls = false;
+		vm.fit = false;
+		$scope.editImageOn = false;
+
+		$scope.editCompanyLogoInit = function () {
+			$scope.tempCompanyLogo = angular.copy($scope.cropper.croppedImage);
+			$timeout(function(){
+				$scope.editImageOn = true;
+				//$scope.cropper.croppedImage ? $scope.addedImage = $scope.cropper.croppedImage : $scope.addedImage=false;
+			});
+		};
+
+		$scope.editCompanyCancel = function () {
+			$scope.cropper.croppedImage = $scope.tempCompanyLogo;
+			$timeout(function(){
+				$scope.editImageOn = false;
+				$scope.addedImage = false;
+			});
+		};
+
+		$scope.retryImageUpload = function () {
+			$timeout(function(){
+				$scope.editImageOn = false;
+				$scope.editImageOn = true;
+				$scope.addedImage = false;
+				$scope.cropper.croppedImage = $scope.tempCompanyLogo;
+			});
+		};
+
+		vm.myButtonLabels = {
+			rotateLeft: '',
+			rotateRight: '',
+			zoomIn: '<i class="material-icons">zoom_in</i>',
+			zoomOut: '<i class="material-icons">zoom_out</i>',
+			fit: '<i class="material-icons">filter_center_focus</i>',
+			crop: ''
+		};
+
+		vm.updateResultImage = function(base64) {
+			vm.resultImage = base64;
+			$scope.cropper.croppedImage = vm.resultImage;
+			$scope.$apply();
+		};
+
+		vm.doneImageCropping = function(cropperApi) {
+			// angular.element('#imageCropElement').trigger('Cropped');
+			$timeout(function(){
+				$scope.editImageOn = false;
+				$scope.addedImage = false;
+			});
+		};
+
+		vm.cropperApi = function(cropperApi) {
+			cropperApi.zoomOut(1.01);
+			cropperApi.zoomIn(1.01);
+			cropperApi.fit();
+			$scope.cropper.croppedImage = cropperApi.crop();
+			//cropperApi.remove();
+			$scope.$apply();
+		};
+		//Image Uploader 15_06_2017
 
 		//Image Uploader===================================
 
@@ -7226,4 +7390,5 @@
 		 Intro End
 		 */
 	}
+
 })();
