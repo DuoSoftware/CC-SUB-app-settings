@@ -11,7 +11,6 @@
 	angular
 		.module('app.settings')
 		.controller('settingscontroller', settingscontroller)
-		.directive('fileDropzone', fileDropzone)
 		.directive('imageResize', function($q) {
 			return {
 				restrict: 'A',
@@ -59,6 +58,63 @@
 					if (scope.percent !== 100) {
 						startResize();
 					}
+				}
+			}
+		})
+		.directive('dragAndDrop', function() {
+			return {
+				restrict: 'A',
+				link: function ($scope, elem, attr) {
+					elem.bind('dragover', function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+						$scope.divClass = true;
+						//debugger;
+						// e.dataTransfer.dropEffect = 'copy';
+					});
+					elem.bind('dragenter', function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+						$scope.$apply(function () {
+							$scope.divClass = true;
+						});
+					});
+					elem.bind('dragleave', function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+						$scope.$apply(function () {
+							$scope.divClass = '';
+						});
+					});
+					elem.bind('drop', function (e) {
+						e.stopPropagation();
+						e.preventDefault();
+
+						var files = e.originalEvent.dataTransfer.files;
+
+						if (files && files[0]) {
+							var FR= new FileReader();
+
+							FR.readAsDataURL( files[0] );
+							FR.addEventListener("load", function(e) {
+								// $timeout(function () {
+								$scope.addedImage = e.target.result;
+								$scope.$apply();
+								$scope.divClass = false;
+								// },0);
+							});
+						}
+
+						if(files.length > 0) {
+							$scope.productImgChanged = true;
+							var splitIndex=files[0].name.lastIndexOf('.');
+							$scope.productImgFileName = files[0].name.substr(0,splitIndex);
+							// $scope.productImgFileType = files[0].type.split("/")[1];
+							$scope.productImgFileType = 'jpg';
+							// if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
+						}
+
+					});
 				}
 			}
 		});
@@ -1054,7 +1110,7 @@
 		var files = [];
 
 		$scope.triggerImgInput = function () {
-			vm.addedImage = false;
+			$scope.addedImage = false;
 
 			angular.element(document.querySelector('#productImageInput')).trigger('click');
 			angular.element(document.querySelector('#productImageInput')).on('change', function () {
@@ -1066,7 +1122,7 @@
 					FR.readAsDataURL( this.files[0] );
 					FR.addEventListener("load", function(e) {
 						$timeout(function () {
-							vm.addedImage = e.target.result;
+							$scope.addedImage = e.target.result;
 						},0);
 					});
 				}
@@ -1082,22 +1138,34 @@
 			});
 		}
 
+		$scope.$watch(function () {
+			angular.element('#dragZone').bind('dragover', function(e){
+				console.log('Over');
+			})
+		});
+
+		// Drag & Drop image #########################################################
+
+		// Drag & Drop image #########################################################
+
 		//Image Uploader 15_06_2017
 		vm.showControls = false;
 		vm.fit = false;
 		$scope.editImageOn = false;
 
 		$scope.editCompanyLogoInit = function () {
+			$scope.tempCompanyLogo = angular.copy($scope.cropper.croppedImage);
 			$timeout(function(){
 				$scope.editImageOn = true;
-				//$scope.cropper.croppedImage ? vm.addedImage = $scope.cropper.croppedImage : vm.addedImage=false;
+				//$scope.cropper.croppedImage ? $scope.addedImage = $scope.cropper.croppedImage : $scope.addedImage=false;
 			});
 		};
 
 		$scope.editCompanyCancel = function () {
+			$scope.cropper.croppedImage = $scope.tempCompanyLogo;
 			$timeout(function(){
 				$scope.editImageOn = false;
-				vm.addedImage = false;
+				$scope.addedImage = false;
 			});
 		};
 
@@ -1105,17 +1173,17 @@
 			$timeout(function(){
 				$scope.editImageOn = false;
 				$scope.editImageOn = true;
-				vm.addedImage = false;
-				vm.resultImage = false;
+				$scope.addedImage = false;
+				$scope.cropper.croppedImage = $scope.tempCompanyLogo;
 			});
 		};
 
 		vm.myButtonLabels = {
 			rotateLeft: '',
 			rotateRight: '',
-			zoomIn: '<md-icon class="md-default md-accent md-font icon-magnify-plus"></md-icon>',
-			zoomOut: '<md-icon class="md-default md-accent md-font icon-magnify-minus"></md-icon>',
-			fit: '<md-icon class="md-default md-accent icon-image-filter-center-focus"></md-icon>',
+			zoomIn: '<i class="material-icons">zoom_in</i>',
+			zoomOut: '<i class="material-icons">zoom_out</i>',
+			fit: '<i class="material-icons">filter_center_focus</i>',
 			crop: ''
 		};
 
@@ -1127,7 +1195,10 @@
 
 		vm.doneImageCropping = function(cropperApi) {
 			// angular.element('#imageCropElement').trigger('Cropped');
-			$scope.editCompanyCancel();
+			$timeout(function(){
+				$scope.editImageOn = false;
+				$scope.addedImage = false;
+			});
 		};
 
 		vm.cropperApi = function(cropperApi) {
@@ -7318,79 +7389,6 @@
 		/*
 		 Intro End
 		 */
-	}
-
-	function fileDropzone()
-	{
-		return {
-			restrict: 'A',
-			scope: {
-				file: '=',
-				fileName: '='
-			},
-			link: function(scope, element, attrs) {
-				var checkSize,
-					isTypeValid,
-					processDragOverOrEnter,
-					validMimeTypes;
-
-				processDragOverOrEnter = function (event) {
-					if (event != null) {
-						event.preventDefault();
-					}
-					event.dataTransfer.effectAllowed = 'copy';
-					return false;
-				};
-
-				validMimeTypes = attrs.fileDropzone;
-
-				checkSize = function(size) {
-					var _ref;
-					if (((_ref = attrs.maxFileSize) === (void 0) || _ref === '') || (size / 1024) / 1024 < attrs.maxFileSize) {
-						return true;
-					} else {
-						alert("File must be smaller than " + attrs.maxFileSize + " MB");
-						return false;
-					}
-				};
-
-				isTypeValid = function(type) {
-					if ((validMimeTypes === (void 0) || validMimeTypes === '') || validMimeTypes.indexOf(type) > -1) {
-						return true;
-					} else {
-						alert("Invalid file type.  File must be one of following types " + validMimeTypes);
-						return false;
-					}
-				};
-
-				element.bind('dragover', processDragOverOrEnter);
-				element.bind('dragenter', processDragOverOrEnter);
-
-				return element.bind('drop', function(event) {
-					var file, name, reader, size, type;
-					if (event != null) {
-						event.preventDefault();
-					}
-					reader = new FileReader();
-					reader.onload = function(evt) {
-						if (checkSize(size) && isTypeValid(type)) {
-							return scope.$apply(function() {
-								scope.file = evt.target.result;
-								if (angular.isString(scope.fileName)) {
-									return scope.fileName = name;
-								}
-							});
-						}
-					};
-					file = event.dataTransfer.files[0];
-					name = file.name;
-					type = file.type;
-					size = file.size;
-					reader.readAsDataURL(file);
-					return false;
-				});
-			}
-		};
 	}
 
 })();
