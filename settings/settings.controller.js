@@ -1112,7 +1112,7 @@
 
 		$scope.cropper = {};
 		$scope.cropper.sourceImage = null;
-		$scope.cropper.croppedImage = null;
+		$scope.cropper.croppedImage = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
 		$scope.bounds = {};
 		$scope.bounds.left = 0;
 		$scope.bounds.right = 0;
