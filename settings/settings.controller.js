@@ -2561,7 +2561,6 @@
 							isSelected:false
 						});
 					}
-					$scope.loadingEmailTemplates = false;
 
 					$scope.getDefaultEmailTemplate();
 
@@ -2585,6 +2584,8 @@
 
 			}).error(function (data) {
 				$scope.defaultEmailTemplate = "";
+				$scope.loadingEmailTemplates = false;
+				if(data == '204')vm.emailTemplateList[0].isSelected = true;
 			})
 		}
 
@@ -3909,6 +3910,7 @@
 					vm.emailTemplateList[i].isSelected=true;
 				}
 			}
+			$scope.loadingEmailTemplates = false;
 		}
 
 		$scope.templateToEnlarge = "";
