@@ -586,6 +586,7 @@
 		$scope.allGenLoaded = false;
 		var tempCurrencyCodes;
 		var tempCurrencyNames;
+		$scope.gen1Loading = false;
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_GeneralAttributes").success(function(data) {
 			isBaseCurrency=true;
 			isCurrencyFormat=true;
@@ -648,6 +649,7 @@
 				}
 			}
 			//$scope.isAllGenLoaded.push("ok");
+			$scope.gen1Loading = false;
 
 		}).error(function(data) {
 			isBaseCurrency=false;
@@ -658,7 +660,7 @@
 			isFrequentCurrency=false;
 			isFrequentCurrencyName=false;
 			$scope.isAllGenLoaded=false;
-
+			$scope.gen1Loading = false;
 			$scope.loadOnlinePaymentRegistration();
 		})
 
@@ -777,6 +779,7 @@
 		var isTemplateDet=false;
 		$scope.template.companyLogo=[];
 		$scope.template.croppedLogo="";
+		$scope.gen2Loading = false;
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
 			isTemplateDet=true;
 			//
@@ -799,15 +802,24 @@
 				//}, function errorCallback(response) {
 				//
 				//});
+				if($scope.template.croppedLogo.split('/')[$scope.template.croppedLogo.split('/').length-1].split('.')[0] == 'dummy_logo'){
+					$timeout(function(){
+						$scope.editImageOn = true;
+					},0);
+				}
 				$scope.cropper.croppedImage=$scope.template.croppedLogo;
 				$rootScope.companyLogoPublic=$scope.template.croppedLogo;
+				$scope.gen2Loading = true;
 			}
-			else
-				vm.isEditable=false;
+			else{
+				$scope.gen2Loading = false;
+				$scope.gen2Loading = true;
+			}
 			//vm.previewLayout = 'row';
 			$scope.template.GURecID=data[0].GuRecID;
 		}).error(function(data) {
 			isDateFormat=false;
+			$scope.gen2Loading = true;
 		})
 
 
@@ -6901,11 +6913,13 @@
 
 				}
 
+				$scope.gen1Loading = true;
 			}).error(function(data) {
 				//console.log( data);
 
 				$scope.currentGateways = [];
 
+				$scope.gen1Loading = true;
 			});
 
 
