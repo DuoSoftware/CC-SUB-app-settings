@@ -649,7 +649,7 @@
 				}
 			}
 			//$scope.isAllGenLoaded.push("ok");
-			$scope.gen1Loading = false;
+			$scope.gen1Loading = true;
 
 		}).error(function(data) {
 			isBaseCurrency=false;
@@ -660,7 +660,7 @@
 			isFrequentCurrency=false;
 			isFrequentCurrencyName=false;
 			$scope.isAllGenLoaded=false;
-			$scope.gen1Loading = false;
+			$scope.gen1Loading = true;
 			$scope.loadOnlinePaymentRegistration();
 		})
 
@@ -812,7 +812,9 @@
 				$scope.gen2Loading = true;
 			}
 			else{
-				$scope.gen2Loading = false;
+				$timeout(function(){
+					$scope.editImageOn = true;
+				},0);
 				$scope.gen2Loading = true;
 			}
 			//vm.previewLayout = 'row';
