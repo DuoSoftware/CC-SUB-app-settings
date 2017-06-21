@@ -586,6 +586,7 @@
 		$scope.allGenLoaded = false;
 		var tempCurrencyCodes;
 		var tempCurrencyNames;
+		$scope.gen1Loading = false;
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_GeneralAttributes").success(function(data) {
 			isBaseCurrency=true;
 			isCurrencyFormat=true;
@@ -648,6 +649,7 @@
 				}
 			}
 			//$scope.isAllGenLoaded.push("ok");
+			$scope.gen1Loading = true;
 
 		}).error(function(data) {
 			isBaseCurrency=false;
@@ -658,7 +660,7 @@
 			isFrequentCurrency=false;
 			isFrequentCurrencyName=false;
 			$scope.isAllGenLoaded=false;
-
+			$scope.gen1Loading = true;
 			$scope.loadOnlinePaymentRegistration();
 		})
 
@@ -777,6 +779,7 @@
 		var isTemplateDet=false;
 		$scope.template.companyLogo=[];
 		$scope.template.croppedLogo="";
+		$scope.gen2Loading = false;
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
 			isTemplateDet=true;
 			//
@@ -799,15 +802,26 @@
 				//}, function errorCallback(response) {
 				//
 				//});
+				if($scope.template.croppedLogo.split('/')[$scope.template.croppedLogo.split('/').length-1].split('.')[0] == 'dummy_logo'){
+					$timeout(function(){
+						$scope.editImageOn = true;
+					},0);
+				}
 				$scope.cropper.croppedImage=$scope.template.croppedLogo;
 				$rootScope.companyLogoPublic=$scope.template.croppedLogo;
+				$scope.gen2Loading = true;
 			}
-			else
-				vm.isEditable=false;
+			else{
+				$timeout(function(){
+					$scope.editImageOn = true;
+				},0);
+				$scope.gen2Loading = true;
+			}
 			//vm.previewLayout = 'row';
 			$scope.template.GURecID=data[0].GuRecID;
 		}).error(function(data) {
 			isDateFormat=false;
+			$scope.gen2Loading = true;
 		})
 
 
@@ -1098,7 +1112,7 @@
 
 		$scope.cropper = {};
 		$scope.cropper.sourceImage = null;
-		$scope.cropper.croppedImage = null;
+		$scope.cropper.croppedImage = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
 		$scope.bounds = {};
 		$scope.bounds.left = 0;
 		$scope.bounds.right = 0;
@@ -2547,7 +2561,6 @@
 							isSelected:false
 						});
 					}
-					$scope.loadingEmailTemplates = false;
 
 					$scope.getDefaultEmailTemplate();
 
@@ -2571,6 +2584,8 @@
 
 			}).error(function (data) {
 				$scope.defaultEmailTemplate = "";
+				$scope.loadingEmailTemplates = false;
+				if(data == '204')vm.emailTemplateList[0].isSelected = true;
 			})
 		}
 
@@ -3895,6 +3910,7 @@
 					vm.emailTemplateList[i].isSelected=true;
 				}
 			}
+			$scope.loadingEmailTemplates = false;
 		}
 
 		$scope.templateToEnlarge = "";
@@ -6901,11 +6917,13 @@
 
 				}
 
+				$scope.gen1Loading = true;
 			}).error(function(data) {
 				//console.log( data);
 
 				$scope.currentGateways = [];
 
+				$scope.gen1Loading = true;
 			});
 
 
