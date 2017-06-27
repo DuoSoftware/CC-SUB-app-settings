@@ -33,17 +33,17 @@
                     <form name="authorizeForm" ng-submit="submitauthorizeRegistration()" flex novalidate>
                         <div layout="column" layout-align="space-between start" fill-height>
                             <md-input-container fill-width class="mb-0">
-                                <label>Security Key</label>
-                                <input type="text" name="servicekey" required ng-model="authorize.skey"/>
-                                <div ng-messages="authorizeForm.servicekey.$error">
+                                <label>Public Key</label>
+                                <input type="text" name="publickey" required ng-model="authorize.pkey"/>
+                                <div ng-messages="authorizeForm.publickey.$error">
                                     <div ng-message="required"></div>
                                 </div>
                             </md-input-container>
 
                             <md-input-container fill-width class="mb-0">
                                 <label>Transaction key</label>
-                                <input type="text" name="publickey" required ng-model="authorize.pkey"/>
-                                <div ng-messages="authorizeForm.publickey.$error">
+                                <input type="text" name="servicekey" required ng-model="authorize.skey"/>
+                                <div ng-messages="authorizeForm.servicekey.$error">
                                     <div ng-message="required"></div>
                                 </div>
                             </md-input-container>
