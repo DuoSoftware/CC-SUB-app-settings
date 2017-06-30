@@ -1981,19 +1981,19 @@
 			//  $rootScope.isBrandLoaded=false;
 			//})
 			//
-			//$charge.uom().getAllUOM('Product_123').success(function(data) {
-			//  $scope.UOMs=[];
-			//  //
+			$charge.uom().getAllUOM('Plan_123').success(function(data) {
+			  $scope.UOMs=[];
+			  //
+			  console.log(data);
+			  for(var i=0;i<data.length;i++)
+			  {
+			    //
+			    $scope.UOMs.push(data[i]);
+			    //
+			  }
+			}).error(function(data) {
 			//  console.log(data);
-			//  for(var i=0;i<data.length;i++)
-			//  {
-			//    //
-			//    $scope.UOMs.push(data[i][0]);
-			//    //
-			//  }
-			//}).error(function(data) {
-			//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  console.log(data);
-			//})
+			})
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 				var length = data.length;
@@ -3200,13 +3200,13 @@
 
 					if (data.count > 0) {
 						notifications.toast("UOM has been updated.", "success");
-						$charge.uom().getAllUOM('Product_123').success(function (data) {
+						$charge.uom().getAllUOM('Plan_123').success(function (data) {
 							$scope.UOMs = [];
 							//
 							//console.log(data);
 							for (var i = 0; i < data.length; i++) {
 								//
-								$scope.UOMs.push(data[i][0]);
+								$scope.UOMs.push(data[i]);
 								//
 							}
 
@@ -3249,7 +3249,7 @@
 
 		$scope.addUomDisabled = false;
 		$scope.addUOM= function () {
-			var ev = $scope.product.uom;
+			var ev = $scope.plan.uom;
 			$scope.addUomDisabled = true;
 
 			if (ev != null && ev != "") {
@@ -3258,7 +3258,7 @@
 					for (var i = 0; i < $scope.UOMs.length; i++) {
 						if ($scope.UOMs[i].UOMCode == ev) {
 							notifications.toast("UOM Code is already exist.", "error");
-							$scope.product.uom = "";
+							$scope.plan.uom = "";
 							$scope.addUomDisabled = false;
 							isDuplicate = true;
 							break;
@@ -3273,7 +3273,7 @@
 						"CommitStatus": "Active",
 						"UOMCode": ev,
 						"uomApplicationMapperDetail": [{
-							"GUApplicationID": "Product_123"
+							"GUApplicationID": "Plan_123"
 						}],
 						"uomConversionDetails": [{
 							"FromUOMCode": ev,
@@ -3284,16 +3284,16 @@
 					}
 					$charge.uom().store(req).success(function (data) {
 						notifications.toast("UOM has been added.", "success");
-						$charge.uom().getAllUOM('Product_123').success(function (data) {
+						$charge.uom().getAllUOM('Plan_123').success(function (data) {
 							$scope.UOMs = [];
 							//
 							//console.log(data);
 							for (var i = 0; i < data.length; i++) {
 								//
-								$scope.UOMs.push(data[i][0]);
+								$scope.UOMs.push(data[i]);
 								//
 							}
-							$scope.product.uom = "";
+							$scope.plan.uom = "";
 							$scope.addUomDisabled = false;
 							//$mdDialog.hide($scope.UOMs);
 						}).error(function (data) {
@@ -3604,7 +3604,7 @@
 			}
 			else
 			{
-				notifications.toast("Type is already exist" , "error");
+				notifications.toast("Type already exist" , "error");
 				$scope.updateUomDisabled = false;
 				$scope.updateUomEnable = false;
 				$scope.editUnit.RecordFieldData = $scope.displayUOMCode;
@@ -4238,13 +4238,32 @@
 			})
 		}
 
+    $scope.showDeleteUOMConfirm = function(ev,uom,index) {
+      // Appending dialog to document.body to cover sidenav in docs app
+      var confirm = $mdDialog.confirm()
+        .title('Would you like to delete this UOM?')
+        .textContent('You cannot revert this action again for a active UOM!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Please do it!')
+        .cancel('No!');
+
+      $mdDialog.show(confirm).then(function() {
+        $scope.deleteUOM(uom,index);
+      }, function() {
+
+      });
+    };
+
 		$scope.deleteUOM= function (ev,index) {
 			//
 			$charge.uom().delete(ev.GUUOMID).success(function(data) {
 				//
 				$scope.UOMs.splice(index,1);
+        notifications.toast("UOM has been deleted successfully", "success");
 			}).error(function(data) {
 				//console.log(data);
+        notifications.toast("UOM deleting Failed", "error");
 			})
 		}
 
