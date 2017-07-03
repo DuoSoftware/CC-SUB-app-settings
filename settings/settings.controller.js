@@ -821,7 +821,6 @@
 				//
 				//});
 				if($scope.template.croppedLogo.split('/')[$scope.template.croppedLogo.split('/').length-1].split('.')[0] == 'dummy_logo'){
-					$scope.exportDummyLogo();
 					$timeout(function(){
 						$scope.tempCompanyLogo = $scope.template.croppedLogo;
 						$scope.editImageOn = true;
@@ -842,7 +841,7 @@
 			//vm.previewLayout = 'row';
 			$scope.template.GURecID=data[0].GuRecID;
 		}).error(function(data) {
-
+			$scope.exportDummyLogo();
 			$timeout(function(){
 				$scope.editImageOn = true;
 			},0);
