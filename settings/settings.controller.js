@@ -788,7 +788,9 @@
 			img.setAttribute('crossOrigin', 'anonymous');
 			img.onload = function() {
 				ctx.drawImage(img, 0, 0);
-				$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/png", "");
+				$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/jpeg", "");
+				$scope.productImgFileName = 'dummy_logo';
+				$scope.productImgFileType = 'jpg';
 				$scope.tempCompanyLogo = $scope.cropper.croppedImage;
 			}
 			img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
