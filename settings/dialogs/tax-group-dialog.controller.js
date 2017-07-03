@@ -41,6 +41,7 @@
 		$scope.taxGrpHeader={};
 		$scope.taxgrpdetails=[];
 		$scope.taxGroupList=taxGroupList;
+		$scope.isTaxGrpInfoLoaded = true;
 
 		//$scope.childTaxesDisplay = childTaxesDisplay;
 

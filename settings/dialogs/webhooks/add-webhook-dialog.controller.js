@@ -6,51 +6,133 @@
 // 		.controller('AddWebhookController', addWebhookController);
 //
 // 	/** @ngInject */
-// 	function addWebhookController(notifications,$charge,$mdDialog, $scope,webHooks,webhook,webhookEventList,webhookTypeChange,webhookSubmitted,enabledEditWH,tempUsedEventsList,skipAllWebhooks,loadWebhookListPaging)
+// 	function addWebhookController(notifications,$charge,$mdDialog, $scope,webhook,isEditOn, $timeout, tempUsedEventsList, loadWebhookListPaging)
 // 	{
 // 		var vm=this;
-//
-// 		// $scope.submitWebhook = submitWebhook;
-// 		$scope.webhookTypeChange = webhookTypeChange;
-// 		vm.webhookSubmitted = webhookSubmitted;
-// 		vm.webHooks = webHooks;
-// 		vm.webhookEventList = webhookEventList;
-// 		$scope.webhook = webhook;
-// 		$scope.enabledEditWH = enabledEditWH;
-// 		// $scope.resetWebhook = resetWebhook;
-// 		$scope.skipAllWebhooks = skipAllWebhooks;
-// 		$scope.tempUsedEventsList = tempUsedEventsList;
+// 		vm.webhookEventList=[];
+// 		$scope.loadingEventsWH = true;
+// 		vm.webhook = webhook;
+// 		vm.enabledEditWH = isEditOn;
+// 		var skipAllEventsWH=0;
+// 		var takeAllEventsWH=100;
+// 		var tempUsedEventsList=tempUsedEventsList;
 // 		$scope.loadWebhookListPaging = loadWebhookListPaging;
-// 		$scope.tempUsedEventsList = tempUsedEventsList;
 //
-// 		$scope.closeDialog = function () {
-// 			$scope.webhook={};
-// 			$scope.webhook.type="custom";
-// 			$scope.webhook.mode="Live";
-// 			$scope.webhookTypeChange("custom");
+// 		$charge.webhook().allEvents(skipAllEventsWH,takeAllEventsWH,'asc').success(function (data) {
+// 			//console.log(data);
+// 			//
+// 			if($scope.loadingEventsWH)
+// 			{
+// 				skipAllEventsWH += takeAllEventsWH;
 //
-// 			vm.webhookList=[];
-// 			skipAllWebhooks=0;
-// 			tempUsedEventsList=[];
-// 			$scope.resetWebhook();
+// 				for (var i = 0; i < data.length; i++) {
+// 					data[i].isAlreadyUsed=false;
+// 					vm.webhookEventList.push(data[i]);
+// 				}
+// 				$scope.loadingEventsWH = false;
+//
+// 				// if(tempUsedEventsList.length!=0 && !$scope.loadingWebhooks)
+// 				// {
+// 				// 	$scope.checkAlreadyUsedEvents();
+// 				// }
+// 				if(vm.webhookEventList.length!=0)
+// 				{
+// 					$scope.checkAlreadyUsedEvents();
+// 				}
+// 			}
+// 		}).error(function (data) {
+// 			//console.log(data);
+// 			vm.webhookEventList=[];
+// 			$scope.loadingEventsWH = false;
+// 		})
+//
+// 		// $scope.loadWebhookListPaging= function () {
+// 		// 	$scope.loadingWebhooks = true;
+// 		// 	$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
+// 		// 		//console.log(data);
+// 		// 		//
+// 		// 		if($scope.loadingWebhooks)
+// 		// 		{
+// 		// 			skipAllWebhooks += takeAllWebhooks;
+// 		//
+// 		// 			for (var i = 0; i < data.length; i++) {
+// 		// 				data[i].showEvents=false;
+// 		// 				if(data[i].eventCodes!="" && data[i].eventCodes!=null && data[i].eventCodes!="null")
+// 		// 				{
+// 		// 					data[i].eventCodes=JSON.parse(data[i].eventCodes);
+// 		// 					for (var j = 0; j < data[i].eventCodes.length; j++) {
+// 		// 						tempUsedEventsList.push(data[i].eventCodes[j]);
+// 		// 					}
+// 		// 				}
+// 		// 				vm.webhookList.push(data[i]);
+// 		//
+// 		// 			}
+// 		//
+// 		// 			$scope.loadingWebhooks = false;
+// 		// 			if(data.length<takeAllWebhooks){
+// 		// 				if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH)
+// 		// 				{
+// 		// 					$scope.checkAlreadyUsedEvents();
+// 		// 				}
+// 		// 			}
+// 		// 			else{
+// 		// 				$scope.loadWebhookListPaging();
+// 		// 			}
+// 		// 		}
+// 		// 	}).error(function (data) {
+// 		// 		//console.log(data);
+// 		// 		$scope.loadingWebhooks = false;
+// 		// 		if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH && tempUsedEventsList.length!=0)
+// 		// 		{
+// 		// 			$scope.checkAlreadyUsedEvents();
+// 		// 		}
+// 		// 	})
+// 		// }
+//
+// 		$scope.checkAlreadyUsedEvents= function () {
+// 			for (var i = 0; i < vm.webhookEventList.length; i++) {
+// 				vm.webhookEventList[i].isAlreadyUsed=false;
+// 				var tempEvent=vm.webhookEventList[i].eventType;
+// 				for (var j = 0; j < tempUsedEventsList.length; j++) {
+// 					if(tempEvent==tempUsedEventsList[j])
+// 					{
+// 						vm.webhookEventList[i].isAlreadyUsed=true;
+// 					}
+// 				}
+// 			}
+// 		}
+//
+// 		vm.closeDialog = function () {
+// 			// vm.webhook={};
+// 			// vm.webhook.type="custom";
+// 			// vm.webhook.mode="Live";
+// 			// vm.webhookTypeChange("custom");
+// 			//
+// 			// vm.webhookList=[];
+// 			// skipAllWebhooks=0;
+// 			// tempUsedEventsList=[];
 // 			$mdDialog.hide();
+// 			$scope.resetWebhook();
+// 			vm.enabledEditWH=false;
 // 		};
 //
 // 		$scope.resetWebhook= function () {
-// 			$scope.webhook={};
-// 			$scope.webhook.type="custom";
-// 			$scope.webhook.mode="Live";
-// 			$scope.webhookTypeChange("custom");
+// 			vm.webhook={};
+// 			vm.webhook.type="custom";
+// 			vm.webhook.mode="Live";
+// 			// vm.webhookTypeChange("custom");
 //
-// 			vm.webhookList=[];
-// 			skipAllWebhooks=0;
+// 			$timeout(function(){
+// 				vm.webhookList=[];
+// 			});
+// 			// skipAllWebhooks=0;
 // 			tempUsedEventsList=[];
 // 			$scope.loadWebhookListPaging();
 //
-// 			$scope.enabledEditWH=false;
+// 			vm.enabledEditWH=false;
 // 		};
 //
-// 		$scope.submitWebhook= function (editing) {
+// 		vm.submitWebhook= function (editing) {
 // 			if(!editing)
 // 			{
 // 				if (vm.webHooks.$valid == true) {
@@ -58,8 +140,8 @@
 //
 // 					var webhookObj={};
 // 					var tempEventsSelected=false;
-// 					webhookObj.endPoint=$scope.webhook.endPoint;
-// 					webhookObj.type=$scope.webhook.type;
+// 					webhookObj.endPoint=vm.webhook.endPoint;
+// 					webhookObj.type=vm.webhook.type;
 // 					webhookObj.createdDate=new Date();
 // 					webhookObj.isEnabled=true;
 // 					webhookObj.eventCodes=[];
@@ -75,18 +157,18 @@
 // 					if(tempEventsSelected)
 // 					{
 // 						$charge.webhook().createWH(webhookObj).success(function (data) {
-// 							console.log(data);
-// 							// debugger;
+// 							//console.log(data);
+// 							//
 // 							if(data.error=="00000")
 // 							{
 // 								notifications.toast("Webhook Created Successfully", "success");
-// 								$scope.webhook={};
-// 								$scope.webhook.type="custom";
-// 								$scope.webhook.mode="Live";
-// 								$scope.webhookTypeChange("custom");
+// 								vm.webhook={};
+// 								vm.webhook.type="custom";
+// 								vm.webhook.mode="Live";
+// 								vm.webhookTypeChange("custom");
 //
 // 								vm.webhookList=[];
-// 								skipAllWebhooks=0;
+// 								// skipAllWebhooks=0;
 // 								tempUsedEventsList=[];
 // 								$mdDialog.hide();
 // 								$scope.loadWebhookListPaging();
@@ -99,7 +181,7 @@
 // 							vm.webhookSubmitted = false;
 // 						}).error(function (data) {
 // 							$mdDialog.hide();
-// 							console.log(data);
+// 							//console.log(data);
 // 							vm.webhookSubmitted = false;
 // 						})
 // 					}
@@ -118,9 +200,9 @@
 //
 // 					var webhookObj={};
 // 					var tempEventsSelected=false;
-// 					webhookObj.guWebhookId=$scope.webhook.guWebhookId;
-// 					webhookObj.endPoint=$scope.webhook.endPoint;
-// 					webhookObj.type=$scope.webhook.type;
+// 					webhookObj.guWebhookId=vm.webhook.guWebhookId;
+// 					webhookObj.endPoint=vm.webhook.endPoint;
+// 					webhookObj.type=vm.webhook.type;
 // 					webhookObj.createdDate=new Date();
 // 					webhookObj.isEnabled=true;
 // 					webhookObj.eventCodes=[];
@@ -136,8 +218,8 @@
 // 					if(tempEventsSelected)
 // 					{
 // 						$charge.webhook().updateWH(webhookObj).success(function (data) {
-// 							console.log(data);
-// 							// debugger;
+// 							//console.log(data);
+// 							//
 // 							if(data.error=="00000")
 // 							{
 // 								notifications.toast("Webhook Updated Successfully", "success");
@@ -152,7 +234,7 @@
 // 							vm.webhookSubmitted = false;
 // 						}).error(function (data) {
 // 							$mdDialog.hide();
-// 							console.log(data);
+// 							//console.log(data);
 // 							vm.webhookSubmitted = false;
 // 						})
 // 					}
@@ -164,6 +246,57 @@
 //
 // 				}
 // 			}
+// 		}
+//
+// 		vm.webhookTypeChange= function (type) {
+// 			for (var i = 0; i < vm.webhookEventList.length; i++) {
+// 				if(type=="all")
+// 				{
+// 					if(!vm.webhookEventList[i].isAlreadyUsed)
+// 					{
+// 						vm.webhookEventList[i].isSelected=true;
+// 						vm.webhookEventList[i].isDisabled=true;
+// 					}
+// 				}
+// 				else if(type=="custom")
+// 				{
+// 					vm.webhookEventList[i].isSelected=false;
+// 					vm.webhookEventList[i].isDisabled=false;
+// 				}
+// 			}
+// 		}
+//
+// 		$scope.resetWebhook= function () {
+// 			$scope.webhook={};
+// 			$scope.webhook.type="custom";
+// 			$scope.webhook.mode="Live";
+// 			// vm.webhookTypeChange("custom");
+//
+// 			vm.webhookList=[];
+// 			// skipAllWebhooks=0;
+// 			tempUsedEventsList=[];
+// 			$scope.loadWebhookListPaging();
+//
+// 			$scope.enabledEditWH=false;
+// 		}
+//
+// 		$scope.setEventListForWebhookEdit = function (webhook) {
+// 			$scope.loadingEventsWH = false;
+// 			for (var i = 0; i < webhook.eventCodes.length; i++) {
+// 				var eventCode=webhook.eventCodes[i];
+// 				for (var j = 0; j < vm.webhookEventList.length; j++) {
+// 					if(eventCode==vm.webhookEventList[j].eventType)
+// 					{
+// 						vm.webhookEventList[j].isSelected=true;
+// 						vm.webhookEventList[j].isAlreadyUsed=false;
+// 						if(j == vm.webhookEventList.length-1)$scope.loadingEventsWH = true;
+// 					}
+// 				}
+// 			}
+// 		}
+//
+// 		if(isEditOn) {
+// 			$scope.setEventListForWebhookEdit(vm.webhook);
 // 		}
 //
 // 	}

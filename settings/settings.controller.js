@@ -52,7 +52,9 @@
 					// Create an Image, when loaded pass it on to the resizer
 					var startResize = function () {
 						createImage(scope.src)
-							.then(resize, function () {console.log('error')});
+							.then(resize, function () {
+								// console.log('error')
+							});
 					};
 
 					if (scope.percent !== 100) {
@@ -776,6 +778,24 @@
 		//    $scope.initSiteTour();
 		//  }
 		//}
+
+		$scope.exportDummyLogo = function () {
+			var canvas = document.createElement('canvas');
+			var ctx = canvas.getContext('2d');
+			ctx.canvas.width = 180;
+			ctx.canvas.height = 180;
+			var img = new Image();
+			img.setAttribute('crossOrigin', 'anonymous');
+			img.onload = function() {
+				ctx.drawImage(img, 0, 0);
+				$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/jpeg", "");
+				$scope.productImgFileName = 'dummy_logo';
+				$scope.productImgFileType = 'jpg';
+				$scope.tempCompanyLogo = $scope.cropper.croppedImage;
+			}
+			img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
+		};
+
 		var isTemplateDet=false;
 		$scope.template.companyLogo=[];
 		$scope.template.croppedLogo="";
@@ -804,6 +824,7 @@
 				//});
 				if($scope.template.croppedLogo.split('/')[$scope.template.croppedLogo.split('/').length-1].split('.')[0] == 'dummy_logo'){
 					$timeout(function(){
+						$scope.tempCompanyLogo = $scope.template.croppedLogo;
 						$scope.editImageOn = true;
 					},0);
 				}
@@ -812,7 +833,9 @@
 				$scope.gen2Loading = true;
 			}
 			else{
+				$scope.exportDummyLogo();
 				$timeout(function(){
+					$scope.tempCompanyLogo = $scope.template.croppedLogo;
 					$scope.editImageOn = true;
 				},0);
 				$scope.gen2Loading = true;
@@ -820,6 +843,10 @@
 			//vm.previewLayout = 'row';
 			$scope.template.GURecID=data[0].GuRecID;
 		}).error(function(data) {
+			$scope.exportDummyLogo();
+			$timeout(function(){
+				$scope.editImageOn = true;
+			},0);
 			isDateFormat=false;
 			$scope.gen2Loading = true;
 		})
@@ -1123,6 +1150,21 @@
 		$scope.productImgChanged = false;
 		var files = [];
 
+		// (function () {
+		// 	var canvas = document.createElement('canvas');
+		// 	var ctx = canvas.getContext('2d');
+		// 	ctx.canvas.width = 180;
+		// 	ctx.canvas.height = 180;
+		// 	var img = new Image();
+		// 	img.setAttribute('crossOrigin', 'anonymous');
+		// 	img.onload = function() {
+		// 		ctx.drawImage(img, 0, 0);
+		// 		$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/png", "");
+		// 		$scope.tempCompanyLogo = $scope.cropper.croppedImage;
+		// 	}
+		// 	img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
+		// })();
+
 		$scope.triggerImgInput = function () {
 			$scope.addedImage = false;
 
@@ -1154,7 +1196,7 @@
 
 		$scope.$watch(function () {
 			angular.element('#dragZone').bind('dragover', function(e){
-				console.log('Over');
+				// console.log('Over');
 			})
 		});
 
@@ -1983,8 +2025,7 @@
 			//
 			$charge.uom().getAllUOM('Plan_123').success(function(data) {
 			  $scope.UOMs=[];
-			  //
-			  console.log(data);
+			  //console.log(data);
 			  for(var i=0;i<data.length;i++)
 			  {
 			    //
@@ -2171,7 +2212,7 @@
 		var takeAllWebhooks=100;
 		$scope.loadingEventsWH = true;
 		$scope.loadingWebhooks = true;
-		var tempUsedEventsList=[];
+		vm.tempUsedEventsList=[];
 
 		vm.webhookHistoryList=[];
 		var skipAllWebhookHistory=0;
@@ -2186,7 +2227,7 @@
 			$scope.loadingEventsWH = true;
 			$scope.loadingWebhooks = true;
 
-			tempUsedEventsList=[];
+			vm.tempUsedEventsList=[];
 
 			$charge.webhook().allEvents(skipAllEventsWH,takeAllEventsWH,'asc').success(function (data) {
 				//console.log(data);
@@ -2201,7 +2242,7 @@
 					}
 					$scope.loadingEventsWH = false;
 
-					if(tempUsedEventsList.length!=0 && !$scope.loadingWebhooks)
+					if(vm.tempUsedEventsList.length!=0 && !$scope.loadingWebhooks)
 					{
 						$scope.checkAlreadyUsedEvents();
 					}
@@ -2228,7 +2269,7 @@
 						{
 							data[i].eventCodes=JSON.parse(data[i].eventCodes);
 							for (var j = 0; j < data[i].eventCodes.length; j++) {
-								tempUsedEventsList.push(data[i].eventCodes[j]);
+								vm.tempUsedEventsList.push(data[i].eventCodes[j]);
 							}
 						}
 						vm.webhookList.push(data[i]);
@@ -2288,7 +2329,6 @@
 			$scope.loadingWebhooks = true;
 			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
 				//console.log(data);
-				//
 				if($scope.loadingWebhooks)
 				{
 					skipAllWebhooks += takeAllWebhooks;
@@ -2299,7 +2339,7 @@
 						{
 							data[i].eventCodes=JSON.parse(data[i].eventCodes);
 							for (var j = 0; j < data[i].eventCodes.length; j++) {
-								tempUsedEventsList.push(data[i].eventCodes[j]);
+								vm.tempUsedEventsList.push(data[i].eventCodes[j]);
 							}
 						}
 						vm.webhookList.push(data[i]);
@@ -2313,14 +2353,11 @@
 							$scope.checkAlreadyUsedEvents();
 						}
 					}
-					else{
-						$scope.loadWebhookListPaging();
-					}
 				}
 			}).error(function (data) {
 				//console.log(data);
 				$scope.loadingWebhooks = false;
-				if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH && tempUsedEventsList.length!=0)
+				if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH && vm.tempUsedEventsList.length!=0)
 				{
 					$scope.checkAlreadyUsedEvents();
 				}
@@ -2331,14 +2368,14 @@
 			for (var i = 0; i < vm.webhookEventList.length; i++) {
 				vm.webhookEventList[i].isAlreadyUsed=false;
 				var tempEvent=vm.webhookEventList[i].eventType;
-				for (var j = 0; j < tempUsedEventsList.length; j++) {
-					if(tempEvent==tempUsedEventsList[j])
+				for (var j = 0; j < vm.tempUsedEventsList.length; j++) {
+					if(tempEvent==vm.tempUsedEventsList[j])
 					{
 						vm.webhookEventList[i].isAlreadyUsed=true;
 					}
 				}
 			}
-		}
+		};
 
 		$scope.loadWebhookHistoryListPaging= function () {
 			$scope.loadingWebhookHistory = true;
@@ -2370,14 +2407,20 @@
 		}
 
 		vm.closeDialog = function () {
-			// vm.webhook={};
-			// vm.webhook.type="custom";
-			// vm.webhook.mode="Live";
-			// $scope.webhookTypeChange("custom");
+			for (var j = 0; j < vm.webhookEventList.length; j++) {
+				vm.webhookEventList[i].isSelected=false;
+			}
+			$timeout(function () {
+				vm.webhook={};
+				vm.webhook.type=false;
+				vm.webhook.mode="Live";
+			});
+			// vm.webhookTypeChange("custom");
 			//
 			// vm.webhookList=[];
 			// skipAllWebhooks=0;
-			// tempUsedEventsList=[];
+			// vm.tempUsedEventsList=[];
+
 			$mdDialog.hide();
 			vm.enabledEditWH=false;
 		};
@@ -2386,11 +2429,11 @@
 			vm.webhook={};
 			vm.webhook.type="custom";
 			vm.webhook.mode="Live";
-			$scope.webhookTypeChange("custom");
+			vm.webhookTypeChange(true);
 
 			vm.webhookList=[];
 			skipAllWebhooks=0;
-			tempUsedEventsList=[];
+			vm.tempUsedEventsList=[];
 			$scope.loadWebhookListPaging();
 
 			vm.enabledEditWH=false;
@@ -2429,11 +2472,11 @@
 								vm.webhook={};
 								vm.webhook.type="custom";
 								vm.webhook.mode="Live";
-								$scope.webhookTypeChange("custom");
+								vm.webhookTypeChange("custom");
 
 								vm.webhookList=[];
 								skipAllWebhooks=0;
-								tempUsedEventsList=[];
+								vm.tempUsedEventsList=[];
 								$mdDialog.hide();
 								$scope.loadWebhookListPaging();
 							}
@@ -2513,8 +2556,20 @@
 		}
 
 		$scope.addWebhookDialog = function(isEdit) {
-			if(isEdit){
-				vm.enabledEditWH = true;
+			// if(isEdit){
+			// 	vm.enabledEditWH = true;
+			// }
+			vm.webhook.type = false;
+			for (var i = 0; i < vm.webhookEventList.length; i++) {
+				vm.webhookEventList[i].isAlreadyUsed=false;
+				if(!isEdit)vm.webhookEventList[i].isSelected=false;
+				var tempEvent=vm.webhookEventList[i].eventType;
+				for (var j = 0; j < vm.tempUsedEventsList.length; j++) {
+					if(tempEvent==vm.tempUsedEventsList[j] && !vm.webhookEventList[i].isSelected)
+					{
+						vm.webhookEventList[i].isAlreadyUsed=true;
+					}
+				}
 			}
 			$mdDialog.show({
 				controller: function () {
@@ -2526,8 +2581,8 @@
 				// locals:{
 				// 	// submitWebhook:$scope.submitWebhook,
 				// 	skipAllWebhooks:$scope.skipAllWebhooks,
-				// 	tempUsedEventsList:$scope.tempUsedEventsList,
-				// 	webhookTypeChange:$scope.webhookTypeChange,
+				// 	vm.tempUsedEventsList:$scope.vm.tempUsedEventsList,
+				// 	webhookTypeChange:vm.webhookTypeChange,
 				// 	webhookSubmitted:vm.webhookSubmitted,
 				// 	webhookEventList:vm.webhookEventList,
 				// 	webHooks:vm.webHooks,
@@ -2536,6 +2591,44 @@
 				// 	// resetWebhook:$scope.resetWebhook,
 				// 	loadWebhookListPaging: $scope.loadWebhookListPaging
 				// }
+			});
+		};
+
+		vm.enabledEditWH=false;
+		$scope.editWebhook= function (webhook) {
+			//$scope.resetWebhook();
+			// vm.webhookTypeChange("custom");
+			// $scope.checkAlreadyUsedEvents();
+			vm.enabledEditWH=true;
+			vm.webhook.guWebhookId=webhook.guWebhookId;
+			vm.webhook.endPoint=webhook.endPoint;
+			vm.webhook.type=webhook.type;
+			for (var a = 0; a < vm.webhookEventList.length; a++) {
+				vm.webhookEventList[a].isAlreadyUsed=false;
+				vm.webhookEventList[a].isSelected=false;
+				for (var b = 0; b < vm.tempUsedEventsList.length; b++) {
+					if(vm.webhookEventList[a].eventType==vm.tempUsedEventsList[b])
+					{
+						vm.webhookEventList[a].isAlreadyUsed=true;
+					}
+				}
+			}
+			for (var i = 0; i < webhook.eventCodes.length; i++) {
+				for (var j = 0; j < vm.webhookEventList.length; j++) {
+					if(webhook.eventCodes[i]==vm.webhookEventList[j].eventType)
+					{
+						vm.webhookEventList[j].isSelected=true;
+						vm.webhookEventList[j].isAlreadyUsed=false;
+					}
+				}
+			}
+			$mdDialog.show({
+				controller: function () {
+					return vm;
+				},
+				controllerAs: 'vm',
+				templateUrl: 'app/main/settings/dialogs/webhooks/prompt-add-webhook.html',
+				clickOutsideToClose:false
 			});
 		};
 
@@ -3787,24 +3880,6 @@
 
 		}
 
-		$scope.webhookTypeChange= function (type) {
-			for (var i = 0; i < vm.webhookEventList.length; i++) {
-				if(type=="all")
-				{
-					if(!vm.webhookEventList[i].isAlreadyUsed)
-					{
-						vm.webhookEventList[i].isSelected=true;
-						vm.webhookEventList[i].isDisabled=true;
-					}
-				}
-				else if(type=="custom")
-				{
-					vm.webhookEventList[i].isSelected=false;
-					vm.webhookEventList[i].isDisabled=false;
-				}
-			}
-		}
-
 		$scope.tempSelectedWebhook=[];
 		$scope.webhookItemViewToggle= function (event) {
 			if($scope.tempSelectedWebhook!=[] && $scope.tempSelectedWebhook!=event)
@@ -3826,29 +3901,6 @@
 
 		vm.webhook={};
 		vm.webhookSubmitted = false;
-
-		vm.enabledEditWH=false;
-
-		$scope.editWebhook= function (webhook) {
-			//$scope.resetWebhook();
-			$scope.webhookTypeChange("custom");
-			$scope.checkAlreadyUsedEvents();
-			vm.enabledEditWH=true;
-			vm.webhook.guWebhookId=webhook.guWebhookId;
-			vm.webhook.endPoint=webhook.endPoint;
-			vm.webhook.type=webhook.type;
-			for (var i = 0; i < webhook.eventCodes.length; i++) {
-				var eventCode=webhook.eventCodes[i];
-				for (var j = 0; j < vm.webhookEventList.length; j++) {
-					if(eventCode==vm.webhookEventList[j].eventType)
-					{
-						vm.webhookEventList[j].isSelected=true;
-						vm.webhookEventList[j].isAlreadyUsed=false;
-					}
-				}
-			}
-			$scope.addWebhookDialog(true);
-		}
 
 		$scope.showDeleteWebhookConfirm = function(ev,webhook) {
 			// Appending dialog to document.body to cover sidenav in docs app
@@ -3885,15 +3937,33 @@
 			})
 		}
 
+		vm.webhookTypeChange = function (type) {
+			for (var i = 0; i < vm.webhookEventList.length; i++) {
+				if(type==true)
+				{
+					if(!vm.webhookEventList[i].isAlreadyUsed)
+					{
+						vm.webhookEventList[i].isSelected=true;
+						vm.webhookEventList[i].isDisabled=false;
+					}
+				}
+				else if(type==false)
+				{
+					vm.webhookEventList[i].isSelected=false;
+					vm.webhookEventList[i].isDisabled=false;
+				}
+			}
+		};
+
 		// $scope.resetWebhook= function () {
 		// 	$scope.webhook={};
 		// 	$scope.webhook.type="custom";
 		// 	$scope.webhook.mode="Live";
-		// 	$scope.webhookTypeChange("custom");
+		// 	vm.webhookTypeChange("custom");
 		//
 		// 	vm.webhookList=[];
 		// 	skipAllWebhooks=0;
-		// 	tempUsedEventsList=[];
+		// 	vm.tempUsedEventsList=[];
 		// 	$scope.loadWebhookListPaging();
 		//
 		// 	$scope.enabledEditWH=false;
@@ -5835,6 +5905,7 @@
 
 		$scope.loadPaymentAttributes= function () {
 			$scope.remindersInPaymentLoaded = false;
+			$scope.invoiceReminders=[];
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function(data) {
 				var length=data.length;
 				for(var i=0;i<length;i++)
@@ -6759,6 +6830,7 @@
 					{
 						notifications.toast("You have successfully disconnected with stripe", "Success");
 						$scope.isRegisteredWithStripe = false;
+						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
 					}else{
 						notifications.toast("There is a problem, Please try again", "Error");
@@ -6769,7 +6841,11 @@
 				}).error(function (data) {
 					//console.log(data);
 					$scope.isRegButtonsShow= false;
-					notifications.toast("There is a problem, Please try again", "Error");
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
 
 				});
 
@@ -6803,6 +6879,7 @@
 					if(dataa.status)
 					{
 						notifications.toast("You have successfully disconnected with braintree", "Success");
+						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
 					}else{
 						notifications.toast("There is a problem, Please try again", "Error");
@@ -6813,7 +6890,11 @@
 				}).error(function (data) {
 					//console.log(data);
 					$scope.isRegButtonsShow= false;
-					notifications.toast("There is a problem, Please try again", "Error");
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
 
 				});
 
@@ -6846,6 +6927,7 @@
 					if(dataa.status)
 					{
 						notifications.toast("You have successfully disconnected with worldpay", "Success");
+						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
 					}else{
 						notifications.toast("There is a problem, Please try again", "Error");
@@ -6856,7 +6938,11 @@
 				}).error(function (data) {
 					//console.log(data);
 					$scope.isRegButtonsShow= false;
-					notifications.toast("There is a problem, Please try again", "Error");
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
 
 				});
 
@@ -6887,6 +6973,7 @@
 					if(dataa.status)
 					{
 						notifications.toast("You have successfully disconnected with AuthorizedNet", "Success");
+						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
 					}else{
 						notifications.toast("There is a problem, Please try again", "Error");
@@ -6897,7 +6984,11 @@
 				}).error(function (data) {
 					//console.log(data);
 					$scope.isRegButtonsShow= false;
-					notifications.toast("There is a problem, Please try again", "Error");
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
 
 				});
 
@@ -7050,7 +7141,7 @@
 		}
 
 		$scope.disconnectWithGateway= function (gateway,key) {
-			$scope.defaultGateway == gateway ? $scope.defaultGateway = 'testGateway' : null;
+			// $scope.defaultGateway == gateway ? $scope.defaultGateway = 'testGateway' : null;
 
 			if(gateway === 'stripe'){
 				$scope.disconnectWithStripe();
