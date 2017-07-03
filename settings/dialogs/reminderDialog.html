@@ -16,7 +16,7 @@
 
         <md-input-container class="md-block" flex="25">
           <label>Day(s)</label>
-          <input ng-disabled="invoiceReminder.chkDisabled" name="ReminderDays" ng-model="invoiceReminder.ReminderDays" ng-pattern="/^-?[0-9][^\.]*$/" type="number" min="0" ng-required="true">
+          <input ng-disabled="invoiceReminder.chkDisabled || invoiceReminder.ReminderType == 'OnDueDate'" name="ReminderDays" ng-model="invoiceReminder.ReminderDays" ng-pattern="/^-?[0-9][^\.]*$/" type="number" min="0" ng-required="true">
           <div ng-messages="vm.reminderForm.ReminderDays.$error">
             <div ng-message="pattern">Invalid Day(s)</div>
             <div ng-message="required">Day(s) required.</div>
