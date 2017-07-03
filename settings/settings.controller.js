@@ -778,6 +778,22 @@
 		//    $scope.initSiteTour();
 		//  }
 		//}
+
+		$scope.exportDummyLogo = function () {
+			var canvas = document.createElement('canvas');
+			var ctx = canvas.getContext('2d');
+			ctx.canvas.width = 180;
+			ctx.canvas.height = 180;
+			var img = new Image();
+			img.setAttribute('crossOrigin', 'anonymous');
+			img.onload = function() {
+				ctx.drawImage(img, 0, 0);
+				$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/png", "");
+				$scope.tempCompanyLogo = $scope.cropper.croppedImage;
+			}
+			img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
+		};
+
 		var isTemplateDet=false;
 		$scope.template.companyLogo=[];
 		$scope.template.croppedLogo="";
@@ -805,6 +821,7 @@
 				//
 				//});
 				if($scope.template.croppedLogo.split('/')[$scope.template.croppedLogo.split('/').length-1].split('.')[0] == 'dummy_logo'){
+					$scope.exportDummyLogo();
 					$timeout(function(){
 						$scope.tempCompanyLogo = $scope.template.croppedLogo;
 						$scope.editImageOn = true;
@@ -815,19 +832,9 @@
 				$scope.gen2Loading = true;
 			}
 			else{
-				var canvas = document.createElement('canvas');
-				var ctx = canvas.getContext('2d');
-				ctx.canvas.width = 180;
-				ctx.canvas.height = 180;
-				var img = new Image();
-				img.setAttribute('crossOrigin', 'anonymous');
-				img.onload = function() {
-					ctx.drawImage(img, 0, 0);
-					$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/png", "");
-					$scope.tempCompanyLogo = $scope.cropper.croppedImage;
-				}
-				img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
+				$scope.exportDummyLogo();
 				$timeout(function(){
+					$scope.tempCompanyLogo = $scope.template.croppedLogo;
 					$scope.editImageOn = true;
 				},0);
 				$scope.gen2Loading = true;
@@ -835,6 +842,10 @@
 			//vm.previewLayout = 'row';
 			$scope.template.GURecID=data[0].GuRecID;
 		}).error(function(data) {
+
+			$timeout(function(){
+				$scope.editImageOn = true;
+			},0);
 			isDateFormat=false;
 			$scope.gen2Loading = true;
 		})
