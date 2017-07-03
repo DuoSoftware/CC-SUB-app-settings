@@ -805,6 +805,19 @@
 				//
 				//});
 				if($scope.template.croppedLogo.split('/')[$scope.template.croppedLogo.split('/').length-1].split('.')[0] == 'dummy_logo'){
+					var canvas = document.createElement('canvas');
+					var ctx = canvas.getContext('2d');
+					ctx.canvas.width = 180;
+					ctx.canvas.height = 180;
+					var img = new Image();
+					img.setAttribute('crossOrigin', 'anonymous');
+					img.onload = function() {
+						ctx.drawImage(img, 0, 0);
+						$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/png", "");
+						$scope.tempCompanyLogo = $scope.cropper.croppedImage;
+					}
+					img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
+
 					$timeout(function(){
 						$scope.editImageOn = true;
 					},0);
@@ -1124,6 +1137,21 @@
 		$scope.productImgSrc = "";
 		$scope.productImgChanged = false;
 		var files = [];
+
+		// (function () {
+		// 	var canvas = document.createElement('canvas');
+		// 	var ctx = canvas.getContext('2d');
+		// 	ctx.canvas.width = 180;
+		// 	ctx.canvas.height = 180;
+		// 	var img = new Image();
+		// 	img.setAttribute('crossOrigin', 'anonymous');
+		// 	img.onload = function() {
+		// 		ctx.drawImage(img, 0, 0);
+		// 		$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/png", "");
+		// 		$scope.tempCompanyLogo = $scope.cropper.croppedImage;
+		// 	}
+		// 	img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
+		// })();
 
 		$scope.triggerImgInput = function () {
 			$scope.addedImage = false;
