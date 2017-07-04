@@ -31,10 +31,13 @@
             notifications.toast("authorize registration failed ", "error");
           }
 
-        }).error(function (response) {
+        }).error(function (data) {
 
-          // console.log(response);
-          notifications.toast("authorize registration failed", "error");
+          var error = "There is a problem, Please try again";
+          if(angular.isDefined(data["error"])){
+            error = data["error"]+". Please try again";
+          }
+          notifications.toast(error, "Error");
         });
       }
     }
