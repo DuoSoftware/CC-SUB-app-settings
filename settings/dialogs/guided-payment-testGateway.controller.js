@@ -43,6 +43,7 @@
 		  $scope.copyStarted = true;
 		  window.getSelection().empty();
 		  var copyField = document.getElementById(elem);
+		  copyField.innerText = copyField.innerText.replace(/\s+/g, '');
 		  var range = document.createRange();
 		  range.selectNode(copyField);
 		  window.getSelection().addRange(range);

@@ -458,14 +458,14 @@
                         <!--</div>-->
                         <div class="content-wrapper">
                             <div layout="row">
-                                <form name="vm.planChangeFeeForm" ng-submit="submitPlanChangeFee()" flex>
+                                <form name="vm.planChangeFeeForm" id="planChangeFeeForm" ng-submit="submitPlanChangeFee()" flex novalidate>
                                     <md-card flex class="input-block-gen">
                                         <md-card-title>
                                             <div layout="row" layout-align="space-between center" flex>
                                                 <div layout="row" layout-align="start center">
                                                     <md-icon md-font-icon="icon-map"></md-icon> <h3>Plan change fee</h3>
                                                 </div>
-                                                <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="planChangeView = true"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                                <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="openPlanChangeView(true)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                             </div>
                                         </md-card-title>
                                         <div layout="column" class="slider-popup animate-slide-down" md-whiteframe="4dp" ng-show="planChangeView">
@@ -491,13 +491,18 @@
                                                         </md-select>
                                                     </md-input-container>
                                                     <div flex="5"></div>
-                                                    <md-input-container class="md-block rel" flex="30">
-                                                        <label>Change Fee</label>
-                                                        <input name="planFee" type="number" ng-required="true" ng-model="changePlanFee.fee" ng-maxlength="15">
-                                                        <div ng-messages="vm.planChangeFeeForm.planFee.$error">
-                                                            <div ng-message="maxlength">Change Fee has to be less than 15 characters long</div>
+                                                    <div layout="row" flex="30">
+                                                        <div flex="5" layout="column" id="billingFrqCurrency" layout-align="center start">
+                                                            {{0| isoCurrency: BaseCurrencyPlanChangeFee:0}}
                                                         </div>
-                                                    </md-input-container>
+                                                        <md-input-container class="md-block rel" flex>
+                                                            <label>Change Fee</label>
+                                                            <input name="planFee" type="number" ng-required="true" ng-model="changePlanFee.fee" ng-maxlength="15">
+                                                            <div ng-messages="vm.planChangeFeeForm.planFee.$error">
+                                                                <div ng-message="maxlength">Change must be between  1-15 digits</div>
+                                                            </div>
+                                                        </md-input-container>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <md-divider></md-divider>
@@ -539,7 +544,10 @@
                                                     <div ng-if="item.editItem" flex="5"></div>
                                                     <span ng-if="!item.editItem" flex class="text-right">{{item.fee | isoCurrency : BaseCurrencyPlanChangeFee}}</span>
                                                     <span flex="20" ng-if="!item.editItem"></span>
-                                                    <span ng-if="item.editItem" flex="30">
+                                                    <span ng-if="item.editItem" flex="30" layout="row">
+                                                        <div flex="5" layout="column" id="billingFrqCurrencyEdit" layout-align="center start" class="pb-0">
+                                                            {{0| isoCurrency: BaseCurrencyPlanChangeFee:0}}
+                                                        </div>
                                                         <md-input-container class="mb-0" flex>
                                                             <input name="planFee" type="number" class="text-right" ng-required="true" ng-model="item.fee" ng-maxlength="15">
                                                         </md-input-container>
@@ -550,9 +558,7 @@
                                                         <md-icon md-font-icon="icon-pencil"></md-icon>
                                                         <md-tooltip>Edit</md-tooltip>
                                                       </md-button>
-                                                      <md-button class="md-icon-button" aria-label="Edit" ng-disabled="planChangeFeeUpdateSubmitted" ng-click="updatingPlanChangeFee(item,$index)" ng-if="item.editItem">
-                                                        <md-icon md-font-icon="icon-floppy" class="md-accent"></md-icon>
-                                                        <md-tooltip>Update</md-tooltip>
+                                                      <md-button ng-disabled="planChangeFeeUpdateSubmitted" class="md-raised md-accent button-xs" ng-click="updatingPlanChangeFee(item,$index)" ng-if="item.editItem">Save
                                                       </md-button>
                                                       <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditPlanChangeFee(item)" ng-if="item.editItem">
                                                         <md-icon md-font-icon="icon-close"></md-icon>
