@@ -112,7 +112,7 @@
 							var splitIndex=files[0].name.lastIndexOf('.');
 							$scope.productImgFileName = files[0].name.substr(0,splitIndex);
 							// $scope.productImgFileType = files[0].type.split("/")[1];
-							$scope.productImgFileType = 'jpeg';
+							$scope.productImgFileType = 'jpg';
 							// if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
 						}
 
@@ -807,7 +807,7 @@
 				ctx.drawImage(img, 0, 0);
 				$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/jpeg", "");
 				$scope.productImgFileName = 'dummy_logo';
-				$scope.productImgFileType = 'jpeg';
+				$scope.productImgFileType = 'jpg';
 				$scope.tempCompanyLogo = $scope.cropper.croppedImage;
 			}
 			img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
@@ -1205,7 +1205,7 @@
 					var splitIndex=files[0].name.lastIndexOf('.');
 					$scope.productImgFileName = files[0].name.substr(0,splitIndex);
 					// $scope.productImgFileType = files[0].type.split("/")[1];
-					$scope.productImgFileType = 'jpeg';
+					$scope.productImgFileType = 'jpg';
 					// if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
 				}
 			});
