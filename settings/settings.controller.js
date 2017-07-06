@@ -318,10 +318,16 @@
 		$scope.$watch(function () {
 			var elem = document.querySelector('#billingFrqCurrency');
 			var elem2 = document.querySelector('#billingFrqCurrencyEdit');
-			if(elem != null && elem2 != null){
-				if(elem.innerText == "$0" || elem2.innerText == "$0"){
-					var innerCurr = elem.innerText.split('0')[0] = elem2.innerText.split('0')[0];
-					elem.innerText = elem2.innerText = innerCurr;
+			if(elem != null){
+				if(elem.innerText == "$0"){
+					var innerCurr = elem.innerText.split('0')[0];
+					elem.innerText = innerCurr;
+				}
+			}
+			if(elem2 != null){
+				if(elem2.innerText == "$0"){
+					var innerCurr = elem2.innerText.split('0')[0];
+					elem2.innerText = innerCurr;
 				}
 			}
 		});
