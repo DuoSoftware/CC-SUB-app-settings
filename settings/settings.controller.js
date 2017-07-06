@@ -315,6 +315,23 @@
 			vm.dynamicHeight = current;
 		});
 
+		$scope.$watch(function () {
+			var elem = document.querySelector('#billingFrqCurrency');
+			var elem2 = document.querySelector('#billingFrqCurrencyEdit');
+			if(elem != null){
+				if(elem.innerText == "$0"){
+					var innerCurr = elem.innerText.split('0')[0];
+					elem.innerText = innerCurr;
+				}
+			}
+			if(elem2 != null){
+				if(elem2.innerText == "$0"){
+					var innerCurr = elem2.innerText.split('0')[0];
+					elem2.innerText = innerCurr;
+				}
+			}
+		});
+
 		/**
 		 * Close read pane
 		 */
@@ -3717,58 +3734,70 @@
 
 		$scope.changePlanFee={};
 
+		$scope.openPlanChangeView = function () {
+			vm.planChangeFeeForm.$setPristine();
+			vm.planChangeFeeForm.$setUntouched();
+			$scope.planChangeView = true;
+		}
+
 		$scope.submitPlanChangeFee= function () {
 
-			$scope.planChangeFeeSubmitted=true;
+			if(vm.planChangeFeeForm.$valid){
+				$scope.planChangeFeeSubmitted=true;
 
-			$scope.changePlanFee.currency=$scope.BaseCurrencyPlanChangeFee;
-			$scope.changePlanFee.rate=$scope.currencyRate;
+				$scope.changePlanFee.currency=$scope.BaseCurrencyPlanChangeFee;
+				$scope.changePlanFee.rate=$scope.currencyRate;
 
-			var planChangeFeeDuplicate=false;
+				var planChangeFeeDuplicate=false;
 
-			for(var i = 0; i < $scope.planChangeFeeList.length; i++)
-			{
-				if($scope.planChangeFeeList[i].planFrom==$scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo==$scope.changePlanFee.planTo)
+				for(var i = 0; i < $scope.planChangeFeeList.length; i++)
 				{
-					planChangeFeeDuplicate=true;
-					break;
-				}
-			}
-
-			if(!planChangeFeeDuplicate)
-			{
-				$charge.plan().createPlanChangeFee($scope.changePlanFee).success(function(data)
-				{
-					if(data.response=="succeeded")
+					if($scope.planChangeFeeList[i].planFrom==$scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo==$scope.changePlanFee.planTo)
 					{
-						notifications.toast("Successfully plan change fee created","success");
-						$scope.planChangeFeeSubmitted=false;
-						$scope.changePlanFee={};
-
-						skipPlanChangeFee=0;
-						$scope.planChangeFeeList=[];
-						$scope.loadPlanChangeFeePaging();
-						$scope.planChangeView=false;
+						planChangeFeeDuplicate=true;
+						break;
 					}
-					else
+				}
+
+				if(!planChangeFeeDuplicate)
+				{
+					$charge.plan().createPlanChangeFee($scope.changePlanFee).success(function(data)
+					{
+						if(data.response=="succeeded")
+						{
+							notifications.toast("Successfully plan change fee created","success");
+							$scope.planChangeFeeSubmitted=false;
+							$scope.changePlanFee={};
+
+							skipPlanChangeFee=0;
+							$scope.planChangeFeeList=[];
+							$scope.loadPlanChangeFeePaging();
+							vm.planChangeFeeForm.$setPristine();
+							vm.planChangeFeeForm.$setUntouched();
+							$scope.planChangeView=false;
+						}
+						else
+						{
+							notifications.toast("Plan change fee creation failed","error");
+							$scope.planChangeFeeSubmitted=false;
+							$scope.planChangeView=false;
+						}
+					}).error(function(data)
 					{
 						notifications.toast("Plan change fee creation failed","error");
 						$scope.planChangeFeeSubmitted=false;
 						$scope.planChangeView=false;
-					}
-				}).error(function(data)
+					})
+				}
+				else
 				{
-					notifications.toast("Plan change fee creation failed","error");
+					notifications.toast("Duplicate Change Plans","error");
 					$scope.planChangeFeeSubmitted=false;
-					$scope.planChangeView=false;
-				})
-			}
-			else
-			{
-				notifications.toast("Duplicate Change Plans","error");
-				$scope.planChangeFeeSubmitted=false;
-				$scope.changePlanFee.planFrom="";
-				$scope.changePlanFee.planTo="";
+					$scope.changePlanFee.planFrom="";
+					$scope.changePlanFee.planTo="";
+				}
+			}else{
+				angular.element('#planChangeFeeForm').find('.ng-invalid:visible:first').focus();
 			}
 		}
 
@@ -6165,8 +6194,9 @@
 		$scope.taxGroupList=[];
 		$scope.slabRates=[];
 
-		$scope.isIndTaxLoaded = false;
+		$scope.isIndTaxLoaded = true;
 		$scope.loadIndividualTaxes= function () {
+			$scope.isIndTaxLoaded = false;
 			$charge.tax().all(skip,take,"asc").success(function(data) {
 				//
 				skip += take;
@@ -6184,16 +6214,20 @@
 
 					}
 					//$scope.more();
-					$scope.isIndTaxLoaded = true;
+					$timeout(function () {
+						$scope.isIndTaxLoaded = true;
+					});
 					$scope.loading = false;
-					$scope.isSpinnerShown=false;
+					// $scope.isSpinnerShown=false;
 					//}
 				}
 			}).error(function(data) {
 				//console.log(data);
 				response=data;
-				$scope.isIndTaxLoaded = true;
-				$scope.isSpinnerShown=false;
+				$timeout(function () {
+					$scope.isIndTaxLoaded = true;
+				});
+				// $scope.isSpinnerShown=false;
 			})
 		}
 
@@ -6212,14 +6246,14 @@
 					//$scope.more();
 					$scope.isGrpTaxLoaded = true;
 					$scope.loading = false;
-					$scope.isSpinnerShown=false;
+					// $scope.isSpinnerShown=false;
 					//}
 				}
 			}).error(function(data) {
 				//console.log(data);
 				$scope.isGrpTaxLoaded = true;
 				response=data;
-				$scope.isSpinnerShown=false;
+				// $scope.isSpinnerShown=false;
 			})
 		}
 
@@ -6588,14 +6622,25 @@
 		//}
 
 		$scope.deleteTax= function (ev,index) {
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to delete this tax?')
+				.textContent('You cannot revert a tax once you delete it!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Yes')
+				.cancel('No');
 
-			$charge.tax().deleteTax(ev.taxid).success(function(data) {
+			$mdDialog.show(confirm).then(function() {
+				$charge.tax().deleteTax(ev.taxid).success(function(data) {
 
-				notifications.toast("Tax has been deleted.", "success");
-				$scope.fixedRates.splice(index,1);
-			}).error(function(data) {
-				notifications.toast(data.error, "error");
-			})
+					notifications.toast("Tax has been deleted.", "success");
+					$scope.fixedRates.splice(index,1);
+				}).error(function(data) {
+					notifications.toast(data.error, "error");
+				})
+			}, function() {
+
+			});
 		}
 		$scope.addTaxGroup=function(ev)
 		{
@@ -6660,13 +6705,25 @@
 		//}
 
 		$scope.deleteTaxGrp= function (ev,index) {
-			$charge.tax().deleteTaxGrp(ev.taxgroupid).success(function(data) {
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to delete this tax group?')
+				.textContent('You cannot revert a tax once you delete it!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Yes')
+				.cancel('No');
 
-				notifications.toast("Tax Group has been deleted.", "success");
-				$scope.taxGroupList.splice(index,1);
-			}).error(function(data) {
-				notifications.toast(data.error, "error");
-			})
+			$mdDialog.show(confirm).then(function() {
+				$charge.tax().deleteTaxGrp(ev.taxgroupid).success(function(data) {
+
+					notifications.toast("Tax Group has been deleted.", "success");
+					$scope.taxGroupList.splice(index,1);
+				}).error(function(data) {
+					notifications.toast(data.error, "error");
+				})
+			}, function() {
+
+			});
 		}
 
 		//Site Tour Extraction
