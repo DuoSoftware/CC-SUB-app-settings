@@ -1286,6 +1286,23 @@
 
 		//Image Uploader===================================
 
+    $scope.saveGeneralCheck = function() {
+      $scope.generalSubmit=true;
+      $charge.tenant().checkTenantReady().success(function (data) {
+        if(data.status)
+        {
+          $scope.generalSubmit=false;
+          $scope.saveGeneral();
+        }
+        else
+        {
+          $scope.saveGeneralCheck();
+        }
+      }).error(function (data) {
+        notifications.toast("Error occured while Checking DB", "error");
+        $scope.generalSubmit = false;
+      });
+    }
 
 		$scope.generalSubmit=false;
 		$scope.imgWidth = "";
