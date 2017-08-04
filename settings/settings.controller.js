@@ -1476,6 +1476,7 @@
 										notifications.toast("General records has been saved.", "success");
 										$scope.generalSubmit = false;
 										$state.go($state.current, {}, {reload: true});
+										$rootScope.$broadcast('base_available');
 										$rootScope.firstLoginDitected = false;
 									}).error(function (data) {
 										notifications.toast("Error occured while saving company profile.", "error");
@@ -1613,7 +1614,7 @@
 									$scope.generalSubmit = false;
 									$state.go($state.current, {}, {reload: true});
 									$rootScope.firstLoginDitected = false;
-
+									$rootScope.$broadcast('base_available');
 									// $charge.settingsapp().deleteGeneralData().success(function (data) {
 									// 	console.log("Settings Rollback..");
 									// }).error(function (data) {
