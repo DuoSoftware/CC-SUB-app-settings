@@ -101,7 +101,7 @@
                                                          md-search-text="vm.searchText"
                                                          md-items="item in querySearch(vm.searchText)"
                                                          md-item-text="item.code"
-                                                         md-floating-label="Base Currency"
+                                                         md-floating-label="Currency"
                                                          md-min-length="">
                                             <md-item-template>
                                                 <span md-highlight-text="vm.searchText" ng-mouseover="tooltip=true">{{item.code}} - {{item.name}}</span>
@@ -115,7 +115,7 @@
 
                                         <div layout="row" layout-align="start center" flex="30" class="state-capsule">
                                             <div layout="row">
-                                                <span>Current base currency</span>
+                                                <span>Current currency</span>
                                                 <span>{{UIbaseCurrency}}</span>
                                             </div>
                                         </div>
