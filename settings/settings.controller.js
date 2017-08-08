@@ -7090,7 +7090,7 @@
 
 					for (i = 0; i < $scope.currentGateways.length; i++) {
 
-						if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
+						if (data.data.connectedGatways != null && angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
 							$scope.currentGateways[i].isConnected = true;
 							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
 						}
