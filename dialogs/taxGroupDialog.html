@@ -1,0 +1,115 @@
+<!--<md-dialog style="max-height: 400px;">-->
+<!--<form name="vm.taxGrpForm" ng-submit="submitTaxGrp(isUpdateGrp,taxGrpHeader)" id="taxGroupForm">-->
+
+<!--<md-card-header style="background-color: whitesmoke">-->
+<!--<div layout="row" layout-align="center center">-->
+<!--<md-input-container class="md-block no-bottom" flex style="margin:18px 0 0 15px;" ng-if="!childTaxesDisplay">-->
+<!--<label>Group Name</label>-->
+<!--<input name="taxGrpName" ng-required="true" ng-model="taxGrpHeader.taxgroupcode" ng-maxlength="20">-->
+<!--<div ng-messages="vm.taxGrpForm.taxGrpName.$error">-->
+<!--<div ng-message="required">Group Name is required.</div>-->
+<!--<div ng-message="maxlength">Group Name has to be less than 20 characters long</div>-->
+<!--</div>-->
+<!--</md-input-container>-->
+<!--<div style="padding: 5px 20px;" ng-if="childTaxesDisplay">-->
+<!--<h3>Taxes in {{taxGrpHeader.taxgroupcode}}</h3>-->
+<!--</div>-->
+<!--<div flex ng-if="childTaxesDisplay"></div>-->
+<!--<div flex="5"></div>-->
+<!--<md-button class="md-icon-button">-->
+<!--<md-icon md-font-icon="icon-close" ng-click="closeDialog()"></md-icon>-->
+<!--<md-tooltip>Cancel</md-tooltip>-->
+<!--</md-button>-->
+<!--</div>-->
+<!--</md-card-header>-->
+
+<!--<md-content style="padding: 0px;background-color: #ffffff" ms-scroll ng-if="!childTaxesDisplay">-->
+<!--<div style="padding: 10px;">-->
+<!--<md-content style="width: 400px;background: transparent;" ms-scroll>-->
+<!--<md-list-item layout="row" ng-repeat="fixedRate in fixedRates">-->
+<!--<md-checkbox ng-change="addGroupRow(fixedRate,fixedRate.taxState,$index)" ng-model="fixedRate.taxState" ng-true-value="true" ng-false-value="false" aria-label="{{fixedRate.taxcode}}" class="md-primary"></md-checkbox>-->
+<!--<span>{{fixedRate.taxcode}}</span>-->
+<!--</md-list-item>-->
+<!--</md-content>-->
+<!--</div>-->
+<!--</md-content>-->
+
+<!--<md-content ng-if="childTaxesDisplay" ms-scroll>-->
+<!--<div style="padding: 10px;">-->
+<!--<md-content style="width: 400px;background: transparent;" ms-scroll>-->
+<!--<md-list-item layout="row" ng-repeat="taxcode in taxesInGroup">-->
+<!--<md-checkbox class="md-primary" ng-checked="true"></md-checkbox><span>{{taxcode}}</span>-->
+<!--</md-list-item>-->
+<!--</md-content>-->
+<!--</div>-->
+<!--</md-content>-->
+
+<!--<md-dialog-actions layout="row" style="background-color: whitesmoke">-->
+<!--<div flex></div>-->
+<!--<div ng-init="submitted=false" ng-if="!childTaxesDisplay">-->
+<!--<md-button ng-click="clearTaxGrpFields();">Reset</md-button>-->
+<!--<md-button ng-disabled="vm.taxGrpSubmit" type="submit" class="md-raised md-warn">Save</md-button>-->
+<!--</div>-->
+<!--</md-dialog-actions>-->
+
+<!--</form>-->
+<!--</md-dialog>-->
+
+<md-dialog class="prompt-dialog" style="width: 600px;overflow: hidden;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-percent"></md-icon> <h3>{{isUpdateGrp ? 'Edit '+taxGrpHeader.taxgroupcode : 'New tax group'}}</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <form name="vm.taxGrpForm" ng-submit="submitTaxGrp(isUpdateGrp,taxGrpHeader)" id="taxGroupForm" novalidate style="overflow: hidden;">
+        <div class="preloader" ng-if="!groupInfoLoaded && isUpdateGrp">
+            <md-progress-circular></md-progress-circular>
+        </div>
+        <div md-whiteframe="2dp" style="z-index: 1">
+            <div class="ph-16">
+                <div layout="row" flex>
+                    <md-input-container class="md-block mb-0" flex ng-if="!childTaxesDisplay">
+                        <label>Group Name</label>
+                        <input name="taxGrpName" ng-required="true" ng-model="taxGrpHeader.taxgroupcode" ng-maxlength="20">
+                        <div ng-messages="vm.taxGrpForm.taxGrpName.$error">
+                            <div ng-message="required">Group Name is required.</div>
+                            <div ng-message="maxlength">Group Name has to be less than 20 characters long</div>
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+
+        <md-content class="p-16" ms-scroll ng-if="!childTaxesDisplay" style="max-height: 300px;">
+            <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="fixedRates.length == 0">
+                <span><md-icon md-font-icon="icon-information-outline"></md-icon> No individual tax has added yet</span>
+            </div>
+            <div layout="row" layout-align="start center" class="pv-10" ng-repeat="fixedRate in fixedRates" ng-click="null">
+                <md-checkbox ng-change="addGroupRow(fixedRate,fixedRate.taxState,$index)" ng-model="fixedRate.taxState" ng-true-value="true" ng-false-value="false" aria-label="{{fixedRate.taxcode}}" class="md-primary mb-0">{{fixedRate.taxcode}}</md-checkbox>
+            </div>
+        </md-content>
+        <md-content class="ph-16" ms-scroll ng-if="childTaxesDisplay">
+            <div layout="row" layout-align="start center" class="pv-10" ng-repeat="taxcode in taxesInGroup" ng-click="null">
+                <md-checkbox class="md-primary" ng-checked="true">{{taxcode}}</md-checkbox>
+            </div>
+        </md-content>
+
+        <md-divider></md-divider>
+        <md-divider></md-divider>
+        <md-dialog-actions layout="row" class="light-gray">
+            <div ng-init="submitted=false" ng-if="!childTaxesDisplay">
+                <md-progress-circular class="gen-save-indicator" ng-if="vm.taxGrpSubmit"></md-progress-circular>
+                <md-button ng-click="clearTaxGrpFields();">Reset</md-button>
+                <md-button ng-disabled="vm.taxGrpSubmit" type="submit" class="md-raised md-accent">Save</md-button>
+            </div>
+        </md-dialog-actions>
+    </form>
+
+</md-dialog>
+

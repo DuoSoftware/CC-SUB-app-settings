@@ -1,0 +1,519 @@
+<!--<md-dialog class="compose-dialog" aria-label="New Message">-->
+    <!--<md-toolbar class="md-accent md-hue-2">-->
+      <!--<div class="md-toolbar-tools" layout="row" layout-align="space-between center">-->
+        <!--<span class="title">Get CloudCharge started!</span>-->
+        <!--<md-button class="md-icon-button" ng-click="closeDialog()"><md-icon md-font-icon="icon-close"></md-icon></md-button>-->
+      <!--</div>-->
+    <!--</md-toolbar>-->
+
+    <!--<md-dialog-content ms-scroll style="padding-top: 0">-->
+      <!--<div layout="column" layout-align="center center" ng-if="tourStepActive == 1">-->
+        <!--<p>Locate & type your desired <b>Base Currency</b> on the field.</p>-->
+        <!--<img src="app/main/settings/images/settings-tour-1.jpg" alt=""/>-->
+      <!--</div>-->
+
+      <!--<div layout="column" layout-align="center center" ng-if="tourStepActive == 2">-->
+        <!--<p><b>Select</b> a given option from the menu that suites mostly to your desired <b>Base Currency.</b></p>-->
+        <!--<img src="app/main/settings/images/settings-tour-2.jpg" alt=""/>-->
+      <!--</div>-->
+
+      <!--<div layout="column" layout-align="center center" ng-if="tourStepActive == 3">-->
+        <!--<p>Check whether the <b>Current Base Currency</b> field sets to your selected currency.</p>-->
+        <!--<img src="app/main/settings/images/settings-tour-3.jpg" alt=""/>-->
+      <!--</div>-->
+
+      <!--<div layout="column" layout-align="center center" ng-if="tourStepActive == 4">-->
+        <!--<p>Click on <b>Save</b> to save your settings.</p>-->
+        <!--<img src="app/main/settings/images/settings-tour-4.jpg" alt=""/>-->
+      <!--</div>-->
+
+    <!--</md-dialog-content>-->
+
+    <!--<md-dialog-actions layout="column" layout-align="center center">-->
+      <!--<div layout="row" class="rel" style="margin-bottom: 20px">-->
+        <!--<span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 1}" layout-align="center center"><div>1</div></span>-->
+        <!--<span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 2}" layout-align="center center"><div>2</div></span>-->
+        <!--<span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 3}" layout-align="center center"><div>3</div></span>-->
+        <!--<span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 4}" layout-align="center center"><div>4</div></span>-->
+        <!--<div class="dotter-hr"></div>-->
+      <!--</div>-->
+      <!--<div layout="row" layout-align="center center" flex>-->
+        <!--<md-button class="md-primary" ng-click="siteTourPrev()"><md-icon md-font-icon="icon-chevron-left"></md-icon> Previous</md-button>-->
+        <!--<md-button class="md-primary" ng-click="siteTourNext()">Next<md-icon md-font-icon="icon-chevron-right"></md-icon></md-button>-->
+      <!--</div>-->
+    <!--</md-dialog-actions>-->
+  <!--</form>-->
+<!--</md-dialog>-->
+
+<md-dialog class="compose-dialog" aria-label="New Message" ng-class="{'cust-height':tourStepActive == 1}">
+    <md-toolbar class="md-accent md-hue-2">
+      <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <span class="title">Get CloudCharge started!</span>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content ms-scroll style="padding-top: 0;background-color: #fff">
+      <form name="vm.generalForm" ng-submit="saveGeneralSite()" id="generalFormSite">
+
+        <div layout="column" layout-align="center center" ng-if="tourStepActive == 1">
+          <p>Add <b>Company Details</b>.</p>
+          <div class="issuer-dialog gen-template" layout="row" layout-align="center center">
+            <!--<div class="logo" layout="column" layout-align="end center" ng-hide >-->
+              <!--&lt;!&ndash;Edit profile setup&ndash;&gt;-->
+              <!--<div class="editable-img" md-whiteframe="2dp" ng-show="vm.isEditable">-->
+                <!--<img ng-src="{{template.companyLogoPreview}}" alt="" />-->
+              <!--</div>-->
+              <!--<span flex class="letter-logo" layout="column" ng-model="template.Preview" layout-align="center center" ng-hide="isPreview || vm.isEditable">{{template.companyName | limitTo:1}}</span>-->
+              <!--<div class="logo-upload" layout="column" layout-align="end center">-->
+                <!--<div layout="row" layout-align="center center" style="color: #ccc;" ng-hide="isPreview">-->
+                  <!--<span ng-if="vm.isEditable==false">or add a logo </br>(Maximum size : 180px X 180px)</span>-->
+                  <!--<span ng-if="vm.isEditable">browse a new logo </br>(Maximum size : 180px X 180px)</span>-->
+                <!--</div>-->
+                <!--<md-divider></md-divider>-->
+                <!--<lf-ng-md-file-input is-editable="vm.isEditable" lf-files="template.companyLogo" lf-on-file-click="onFileClick" lf-remove-label="Delete" preview></lf-ng-md-file-input>-->
+              <!--</div>-->
+
+            <!--</div>-->
+
+            <!--<div class="info" flex>-->
+              <!--<div class="title">-->
+                <!--<md-input-container class="md-block no-bottom" flex>-->
+                  <!--<label>Company Name</label>-->
+                  <!--<input name="companyName" type="" ng-model="template.companyName" ng-maxlength="30">-->
+                  <!--<div ng-messages="vm.generalForm.companyName.$error">-->
+                    <!--<div ng-message="maxlength">Company Name has to be less than 30 characters long</div>-->
+                  <!--</div>-->
+                <!--</md-input-container>-->
+              <!--</div>-->
+              <!--<div class="address" layout="row">-->
+                <!--<md-input-container class="md-block no-bottom top" flex>-->
+                  <!--<label>Address</label>-->
+                  <!--<input name="companyAddr" type="" ng-model="template.companyAddress" ng-maxlength="100">-->
+                  <!--<div ng-messages="vm.generalForm.companyAddr.$error">-->
+                    <!--<div ng-message="maxlength">Company Address has to be less than 100 characters long</div>-->
+                  <!--</div>-->
+                <!--</md-input-container>-->
+              <!--</div>-->
+              <!--<div class="title">-->
+                <!--<md-input-container class="md-block no-bottom top" flex>-->
+                  <!--<label>Phone</label>-->
+                  <!--<input name="companyPhone" type="" ng-model="template.companyPhone" ng-maxlength="15">-->
+                  <!--<div ng-messages="vm.generalForm.companyPhone.$error">-->
+                    <!--<div ng-message="maxlength">Phone Number has to be less than 15 characters long</div>-->
+                  <!--</div>-->
+                <!--</md-input-container>-->
+              <!--</div>-->
+              <!--<div class="title">-->
+                <!--<md-input-container class="md-block no-bottom top" flex>-->
+                  <!--<label>Email</label>-->
+                  <!--<input name="companyEmail" type="" ng-model="template.companyEmail" ng-pattern="/^.+@.+\..+$/" ng-maxlength="30">-->
+                  <!--<div ng-messages="vm.generalForm.companyEmail.$error">-->
+                    <!--<div ng-message="maxlength">Company Email has to be less than 30 characters long</div>-->
+                    <!--<div ng-message="pattern">Company Email is invalid</div>-->
+                  <!--</div>-->
+                <!--</md-input-container>-->
+              <!--</div>-->
+            <!--</div>-->
+            <table>
+              <tr>
+                <td>
+                  <div class="content-block-wrapper" flex>
+                    <div layout="row" class="content-block">
+                      <!--<lf-ng-md-file-input lf-files="content.files" lf-on-file-click="onFileClick" lf-remove-label="Delete" lf-drag-and-drop-label="Drag and Drop here! (Maximum size : 300px X 300px)" drag preview flex class="drag-n-drop"></lf-ng-md-file-input>-->
+
+                      <div flex>
+                        <div layout="column" layout-align="center center" class="product-img-cont" style="width: 260px;">
+                          <div layout="column" layout-align="center center" class="img-up-invitation" ng-if="cropper.croppedImage==null">
+                            <md-icon md-font-icon="icon-image-filter"></md-icon>
+                            <span>Browse a Company Logo</span>
+                            <span class="img-size-msg">[Maximum size : 180px X 180px]</span>
+                          </div>
+                          <canvas flex height="242" width="200" id="canvas" image-cropper image="cropper.sourceImage" cropped-image="cropper.croppedImage" crop-width="180" crop-height="180" keep-aspect="true" touch-radius="30" crop-area-bounds="bounds"></canvas>
+
+                          <div class="input-partial">
+                            <md-button class="md-raised md-accent" ng-click="triggerImgInput($event)">Browse</md-button>
+                            <input type="file" id="productImageInput" img-cropper-fileread image="cropper.sourceImage" style="display:none" />
+                          </div>
+                        </div>
+                      </div>
+                      <div flex="5"></div>
+
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div layout="row" layout-align="center center" md-whiteframe="2dp" style="height: 330px">
+                    <div>
+                      <div flex layout="column" layout-align="center center" class="product-preview">
+                        <span>Company Logo preview</span>
+                        <div layout="column" layout-align="center center" md-whiteframe flex="80">
+                          <div layout="column" layout-align="center center" class="msg" ng-if="cropper.croppedImage==null">
+                            <md-icon md-font-icon="icon-information-outline"></md-icon> No image is selected yet
+                          </div>
+                          <div ng-show="cropper.croppedImage!=null">
+                            <img ng-src="{{cropper.croppedImage}}" />
+                          </div>
+                        </div>
+                        <label ng-show="cropper.croppedImage!=null" class="img-size-msg" style="margin-left: 10px">[Image size : 180px X 180px]</label>
+                      </div>
+                    </div>
+                    <div class="info" flex>
+                      <div class="title">
+                        <md-input-container class="md-block no-bottom" flex>
+                          <label>Company Name</label>
+                          <input name="companyName" type="" ng-model="template.companyName" ng-maxlength="30">
+                          <div ng-messages="vm.generalForm.companyName.$error">
+                            <div ng-message="maxlength">Company Name has to be less than 30 characters long</div>
+                          </div>
+                        </md-input-container>
+                      </div>
+                      <div class="address" layout="row">
+                        <md-input-container class="md-block no-bottom top" flex>
+                          <label>Address</label>
+                          <input name="companyAddr" type="" ng-model="template.companyAddress" ng-maxlength="100">
+                          <div ng-messages="vm.generalForm.companyAddr.$error">
+                            <div ng-message="maxlength">Company Address has to be less than 100 characters long</div>
+                          </div>
+                        </md-input-container>
+                      </div>
+                      <div class="title">
+                        <md-input-container class="md-block no-bottom top" flex>
+                          <label>Phone</label>
+                          <input name="companyPhone" type="" ng-model="template.companyPhone" ng-maxlength="15">
+                          <div ng-messages="vm.generalForm.companyPhone.$error">
+                            <div ng-message="maxlength">Phone Number has to be less than 15 characters long</div>
+                          </div>
+                        </md-input-container>
+                      </div>
+                      <div class="title">
+                        <md-input-container class="md-block no-bottom top" flex>
+                          <label>Email</label>
+                          <input name="companyEmail" type="" ng-model="template.companyEmail" ng-pattern="/^.+@.+\..+$/" ng-maxlength="30">
+                          <div ng-messages="vm.generalForm.companyEmail.$error">
+                            <div ng-message="maxlength">Company Email has to be less than 30 characters long</div>
+                            <div ng-message="pattern">Company Email is invalid</div>
+                          </div>
+                        </md-input-container>
+                      </div>
+                      <!--<div class="title">-->
+                      <!--<md-input-container class="md-block no-bottom top" flex>-->
+                      <!--<label>Web</label>-->
+                      <!--<input type="" ng-model="">-->
+                      <!--</md-input-container>-->
+                      <!--</div>-->
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div layout="column" layout-align="center center" ng-if="tourStepActive == 2">
+          <p><b>Type</b> and <b>Select</b> a given option from the menu that suites mostly to your desired <b>Base Currency.</b></p>
+          <div layout="row" layout-align="center center">
+            <div layout="row">
+              <md-input-container flex>
+              <md-autocomplete md-select-on-match
+                               ng-keypress="enter($event)"
+                               ng-disabled="vm.isDisabled"
+                               md-input-name="autocompleteField"
+                               md-no-cache="vm.noCache"
+                               md-selected-item="selectedItem"
+                               md-selected-item-change="setBaseCurrency(item)"
+                               md-search-text-change="setBaseCurrency(item)"
+                               md-search-text="vm.searchText"
+                               md-items="item in querySearch(vm.searchText)"
+                               md-item-text="item.code"
+                               md-floating-label="Base Currency"
+                               md-min-length="">
+                <md-item-template>
+                  <span md-highlight-text="vm.searchText" ng-mouseover="tooltip=true">{{item.code}} - {{item.name}}</span>
+                </md-item-template>
+              </md-autocomplete>
+            </md-input-container>
+            </div>
+
+            <div flex="5"><!--Spacer --></div>
+
+            <div layout="row">
+              <md-input-container flex>
+                <label>Decimal Point</label>
+                <input name="decimalPoint" type="number" min="0" ng-pattern="/^-?[0-9][^\.]*$/" max="4" ng-model="general.decimalPoint">
+                <div ng-messages="vm.generalForm.decimalPoint.$error">
+                  <div ng-message="pattern">Decimal Point is invalid</div>
+                  <div ng-message="max">Please enter a less value.</div>
+                </div>
+              </md-input-container>
+            </div>
+          </div>
+          <!--<div id="current_currencies" layout="row" class="content-block" style="width: 100%;">-->
+            <!--<md-card flex="50">-->
+              <!--<md-card-header>-->
+                <!--<md-card-header-text>-->
+                  <!--<span class="heading-lev3 top">All Currencies</span>-->
+                <!--</md-card-header-text>-->
+              <!--</md-card-header>-->
+
+              <!--<md-divider></md-divider>-->
+
+              <!--<md-card-content class="full" style="background: #FFF;height: 100%;">-->
+                <!--<md-input-container class="full" class="autocomp-inset" style="width: 100%;">-->
+                  <!--<md-autocomplete flex-->
+                                   <!--md-select-on-match-->
+                                   <!--ng-keypress="enter($event)"-->
+                                   <!--ng-disabled="vm.isDisabled"-->
+                                   <!--md-input-name="autocompleteField1"-->
+                                   <!--md-no-cache="vm.noCache"-->
+                                   <!--md-selected-item="vm.selectedCurrency"-->
+                                   <!--md-selected-item-change="addCurrencyInit(item)"-->
+                                   <!--md-search-text-change="addCurrencyInit(item)"-->
+                                   <!--md-search-text="vm.searchCurrency"-->
+                                   <!--md-items="item in queryCurrency(vm.searchCurrency)"-->
+                                   <!--md-item-text="item.code"-->
+                                   <!--md-floating-label="Currencies"-->
+                                   <!--md-min-length="">-->
+                    <!--<md-item-template>-->
+                      <!--<span md-highlight-text="vm.searchText" ng-mouseover="tooltip=true">{{item.code}} - {{item.name}}</span>-->
+                      <!--&lt;!&ndash;<md-tooltip md-direction="right" md-visible="tooltip">{{item.name}}</md-tooltip>&ndash;&gt;-->
+                    <!--</md-item-template>-->
+                  <!--</md-autocomplete>-->
+                <!--</md-input-container>-->
+
+              <!--</md-card-content>-->
+            <!--</md-card>-->
+            <!--<div flex="5" class="curr-aro-wrap">-->
+              <!--<md-icon md-font-icon="icon-arrow-right" class="add-currency-aro"></md-icon>-->
+            <!--</div>-->
+            <!--<md-card flex="50">-->
+              <!--<md-card-header>-->
+                <!--<md-card-header-text>-->
+                  <!--<span class="heading-lev3 top">Added Currencies</span>-->
+                <!--</md-card-header-text>-->
+              <!--</md-card-header>-->
+
+              <!--<md-divider></md-divider>-->
+              <!--<div class="list-header" layout="row" layout-align="center center" style="max-height: 30px;">-->
+                <!--<span flex>Currency</span>-->
+                <!--<span flex="20">Action</span>-->
+              <!--</div>-->
+
+              <!--<md-card-content style="padding: 5px;background: #fff;height: 100%;">-->
+                <!--<div layout="row">-->
+                  <!--<div class="content-block"  flex>-->
+                    <!--<md-list flex class="carded-dashboard-list" style="padding: 10px;">-->
+                      <!--<md-list-item layout="row" ng-repeat="currency in userCurrencies">-->
+                        <!--<span flex>{{currency.code}} - {{currency.name}}</span>-->
+                                <!--<span flex="10">-->
+                                  <!--<md-button class="md-icon-button" aria-label="Delete" ng-click="deletePreferred(currency,$index)" show-gt-sm>-->
+                                    <!--<md-icon md-font-icon="icon-delete"></md-icon>-->
+                                    <!--<md-tooltip><span>Delete</span></md-tooltip>-->
+                                  <!--</md-button>-->
+                                <!--</span>-->
+                      <!--</md-list-item>-->
+                    <!--</md-list>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</md-card-content>-->
+            <!--</md-card>-->
+          <!--</div>-->
+          <!--<div layout="row" style="width: 100%;">-->
+            <!--<div class="inv-read-footer" flex>-->
+              <!--<md-input-container flex class="full no-bottom">-->
+                <!--<label>Greeting</label>-->
+                <!--<input name="greeting" type="text" ng-model="footerDet.greeting" ng-maxlength="140"/>-->
+                <!--<div ng-messages="vm.generalForm.greeting.$error">-->
+                  <!--<div ng-message="maxlength">Greeting has to be less than 140 characters long</div>-->
+                <!--</div>-->
+              <!--</md-input-container>-->
+              <!--<div layout="row">-->
+                <!--&lt;!&ndash;<div class="logo md-accent-bg" layout="row" layout-align="center center">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div>{{template.companyName | limitTo:1}}</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--<div class="small-note" flex>-->
+                  <!--<md-input-container flex class="full top no-bottom">-->
+                    <!--<label>Terms & Conditions</label>-->
+                    <!--<input name="disclaimer" type="text" ng-model="footerDet.disclaimer" ng-maxlength="140"/>-->
+                    <!--<div ng-messages="vm.generalForm.disclaimer.$error">-->
+                      <!--<div ng-message="maxlength">Disclaimer has to be less than 140 characters long</div>-->
+                    <!--</div>-->
+                  <!--</md-input-container>-->
+                  <!--&lt;!&ndash;<md-input-container flex class="full top">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<input type="text"/>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+
+        <div layout="column" layout-align="center center" ng-if="tourStepActive == 3">
+          <p>Add <b>Invoice</b> prefixes.</p>
+          <!--<md-input-container flex>-->
+            <!--<label>Decimal Point</label>-->
+            <!--<input name="decimalPoint" type="number" min="0" ng-pattern="/^-?[0-9][^\.]*$/" ng-model="general.decimalPoint">-->
+            <!--<div ng-messages="vm.generalForm.decimalPoint.$error">-->
+              <!--<div ng-message="pattern">Decimal Point is invalid</div>-->
+            <!--</div>-->
+          <!--</md-input-container>-->
+          <div layout="row">
+            <div id="invoice_prefix" class="content-block" flex>
+              <div layout="row" class="sample-row">
+                <md-input-container class="md-block bottom" flex-gt-sm>
+                  <label>Invoice Prefix</label>
+                  <input name="invoicePrefix" type="" ng-model="invoice.invoicePrefix" ng-maxlength="4">
+                  <div ng-messages="vm.generalForm.invoicePrefix.$error">
+                    <div ng-message="maxlength">Invoice Prefix has to be less than 4 characters long</div>
+                  </div>
+                </md-input-container>
+              </div>
+            </div>
+            <div flex="5">
+              <!--Spacer -->
+            </div>
+            <div id="minimum_length" class="content-block" flex>
+              <div layout="row" class="sample-row">
+                <md-input-container class="md-block bottom" flex-gt-sm>
+                  <label>Minimum Length (After Prefix)</label>
+                  <input name="invoiceMinLength" ng-pattern="/^-?[0-9][^\.]*$/" type="number" max="8" ng-model="invoice.prefixLength" min="0">
+                  <div ng-messages="vm.generalForm.invoiceMinLength.$error">
+                    <div ng-message="pattern">Minimum Length is invalid</div>
+                    <div ng-message="max">Please enter a less value.</div>
+                  </div>
+                </md-input-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--<div layout="column" layout-align="center center" ng-if="tourStepActive == 4">-->
+          <!--<p>Add <b>Currencies</b>.</p>-->
+          <!--<div id="current_currencies" layout="row" class="content-block" style="width: 100%;">-->
+            <!--<md-card flex="50">-->
+              <!--<md-card-header>-->
+                <!--<md-card-header-text>-->
+                  <!--<span class="heading-lev3 top">All Currencies</span>-->
+                <!--</md-card-header-text>-->
+              <!--</md-card-header>-->
+
+              <!--<md-divider></md-divider>-->
+
+              <!--<md-card-content class="full" style="background: #FFF;height: 100%;">-->
+                <!--<md-input-container class="full" class="autocomp-inset" style="width: 100%;">-->
+                  <!--<md-autocomplete flex-->
+                                   <!--md-select-on-match-->
+                                   <!--ng-keypress="enter($event)"-->
+                                   <!--ng-disabled="vm.isDisabled"-->
+                                   <!--md-input-name="autocompleteField1"-->
+                                   <!--md-no-cache="vm.noCache"-->
+                                   <!--md-selected-item="vm.selectedCurrency"-->
+                                   <!--md-selected-item-change="addCurrencyInit(item)"-->
+                                   <!--md-search-text-change="addCurrencyInit(item)"-->
+                                   <!--md-search-text="vm.searchCurrency"-->
+                                   <!--md-items="item in queryCurrency(vm.searchCurrency)"-->
+                                   <!--md-item-text="item.code"-->
+                                   <!--md-floating-label="Currencies"-->
+                                   <!--md-min-length="">-->
+                    <!--<md-item-template>-->
+                      <!--<span md-highlight-text="vm.searchText" ng-mouseover="tooltip=true">{{item.code}} - {{item.name}}</span>-->
+                      <!--&lt;!&ndash;<md-tooltip md-direction="right" md-visible="tooltip">{{item.name}}</md-tooltip>&ndash;&gt;-->
+                    <!--</md-item-template>-->
+                  <!--</md-autocomplete>-->
+                <!--</md-input-container>-->
+
+              <!--</md-card-content>-->
+            <!--</md-card>-->
+            <!--<div flex="5" class="curr-aro-wrap">-->
+              <!--<md-icon md-font-icon="icon-arrow-right" class="add-currency-aro"></md-icon>-->
+            <!--</div>-->
+            <!--<md-card flex="50">-->
+              <!--<md-card-header>-->
+                <!--<md-card-header-text>-->
+                  <!--<span class="heading-lev3 top">Added Currencies</span>-->
+                <!--</md-card-header-text>-->
+              <!--</md-card-header>-->
+
+              <!--<md-divider></md-divider>-->
+              <!--<div class="list-header" layout="row" layout-align="center center" style="max-height: 30px;">-->
+                <!--<span flex>Currency</span>-->
+                <!--<span flex="20">Action</span>-->
+              <!--</div>-->
+
+              <!--<md-card-content style="padding: 5px;background: #fff;height: 100%;">-->
+                <!--<div layout="row">-->
+                  <!--<div class="content-block"  flex>-->
+                    <!--<md-list flex class="carded-dashboard-list" style="padding: 10px;">-->
+                      <!--<md-list-item layout="row" ng-repeat="currency in userCurrencies">-->
+                        <!--<span flex>{{currency.code}} - {{currency.name}}</span>-->
+                                <!--<span flex="10">-->
+                                  <!--<md-button class="md-icon-button" aria-label="Delete" ng-click="deletePreferred(currency,$index)" show-gt-sm>-->
+                                    <!--<md-icon md-font-icon="icon-delete"></md-icon>-->
+                                    <!--<md-tooltip><span>Delete</span></md-tooltip>-->
+                                  <!--</md-button>-->
+                                <!--</span>-->
+                      <!--</md-list-item>-->
+                    <!--</md-list>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</md-card-content>-->
+            <!--</md-card>-->
+          <!--</div>-->
+        <!--</div>-->
+
+        <!--<div layout="column" layout-align="center center" ng-if="tourStepActive == 5">-->
+          <!--<p>Add <b>Footer</b>.</p>-->
+          <!--<div layout="row" style="width: 100%;">-->
+            <!--<div class="inv-read-footer" flex>-->
+              <!--<md-input-container flex class="full no-bottom">-->
+                <!--<label>Greeting</label>-->
+                <!--<input name="greeting" type="text" ng-model="footerDet.greeting" ng-maxlength="140"/>-->
+                <!--<div ng-messages="vm.generalForm.greeting.$error">-->
+                  <!--<div ng-message="maxlength">Greeting has to be less than 140 characters long</div>-->
+                <!--</div>-->
+              <!--</md-input-container>-->
+              <!--<div layout="row">-->
+                <!--&lt;!&ndash;<div class="logo md-accent-bg" layout="row" layout-align="center center">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div>{{template.companyName | limitTo:1}}</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--<div class="small-note" flex>-->
+                  <!--<md-input-container flex class="full top no-bottom">-->
+                    <!--<label>Terms & Conditions</label>-->
+                    <!--<input name="disclaimer" type="text" ng-model="footerDet.disclaimer" ng-maxlength="140"/>-->
+                    <!--<div ng-messages="vm.generalForm.disclaimer.$error">-->
+                      <!--<div ng-message="maxlength">Disclaimer has to be less than 140 characters long</div>-->
+                    <!--</div>-->
+                  <!--</md-input-container>-->
+                  <!--&lt;!&ndash;<md-input-container flex class="full top">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<input type="text"/>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</md-input-container>&ndash;&gt;-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+
+      </form>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="column" layout-align="center center">
+      <div layout="column" class="rel" style="margin-bottom: 20px">
+        <div class="step-wrap">
+          <span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 1}" ng-click="tourStepActive = 1" layout-align="center center"><div>1</div></span>
+          <span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 2}" ng-click="tourStepActive = 2" layout-align="center center"><div>2</div></span>
+          <span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 3,'step-disabled':tourSubmit}" ng-click="tourStepActive = 3" layout-align="center center"><div>3</div></span>
+          <!--<span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 4}" layout-align="center center"><div>4</div></span>-->
+          <!--<span class="step-circle" layout="column" ng-class="{'step-active':tourStepActive == 5}" layout-align="center center"><div>5</div></span>-->
+        </div>
+        <div class="dotter-hr"></div>
+      </div>
+      <div layout="row" layout-align="space-between center" flex style="width: 100%;">
+        <div>
+          <md-button ng-if="tourStepActive != 1" ng-disabled="tourStepActive == 1" class="md-primary" ng-click="siteTourPrev()"><md-icon md-font-icon="icon-chevron-left"></md-icon> Previous</md-button>
+          <md-button ng-if="tourStepActive != 3" ng-disabled="tourSubmit && tourStepActive == 2" class="md-primary" ng-click="siteTourNext()">Next<md-icon md-font-icon="icon-chevron-right"></md-icon></md-button>
+        </div>
+        <div>
+          <md-button ng-disabled="generalSubmit || tourSubmit" type="submit" class="md-raised md-warn" form="generalFormSite">Save</md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+</md-dialog>

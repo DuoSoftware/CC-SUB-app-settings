@@ -1,0 +1,33 @@
+<md-dialog style="max-height: 400px;">
+    <md-card-header style="background-color: whitesmoke">
+      <div layout="row" layout-align="center center">
+        <div>
+          <h3 style="padding-left: 20px">Taxes in {{taxGrpHeader.taxgroupcode}}</h3>
+        </div>
+        <div flex></div>
+        <md-button class="md-icon-button">
+          <md-icon md-font-icon="icon-close" ng-click="closeInfoDialog()"></md-icon>
+          <md-tooltip>Cancel</md-tooltip>
+        </md-button>
+      </div>
+    </md-card-header>
+
+    <md-content ms-scroll>
+      <div style="padding: 10px;">
+        <div layout="row" layout-align="center center" class="preloader-dot-auto-center" ng-hide="groupInfoLoaded">
+          <img src="assets/images/142.gif" alt="" style="width: 40px;"/>
+        </div>
+        <md-content style="width: 400px;background: transparent;" ms-scroll>
+          <md-list-item layout="row" ng-repeat="taxcode in taxgrpdetails">
+            <md-checkbox class="md-primary" ng-checked="true"></md-checkbox><span>{{taxcode.taxcode}}</span>
+          </md-list-item>
+        </md-content>
+      </div>
+    </md-content>
+
+    <md-dialog-actions layout="row" style="background-color: whitesmoke;padding: 10px;">
+      <div flex></div>
+    </md-dialog-actions>
+
+  </form>
+</md-dialog>

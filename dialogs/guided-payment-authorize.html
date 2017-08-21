@@ -1,0 +1,72 @@
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with Authorize</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+
+    <md-content class="p-16" ms-scroll>
+        <div layout="row">
+            <div layout="column" class="guide-portion" flex>
+                <div layout="column" style="margin-bottom: 20px">
+                    <div class="mb-10">Authorize.Net accepts..</div>
+                    <div class="2c0-cards">
+                        <img src="assets/images/authorize-accepts.png" alt=""/>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <h3 class="mb-0 fw-500"><md-icon md-font-icon="icon-information-outline"></md-icon> IMPORTANT!</h3>
+                <p>Authorize.Net users must enable Customer Information Manager (CIM) within their Authorize.Net gateway settings. Why? Since your site is in test mode,
+                  you may only use an Authorize.Net developer account (these are accounts where you log in at https://test.authorize.net). How do I obtain a developer's account?
+                </p>
+                <i class="op-5">For more information, please see our gateway help page</i>
+            </div>
+            <div class="w-20"></div>
+            <div class="form-portion" layout="column" flex="40">
+                <div md-whiteframe="3dp" flex class="p-10">
+                    <form name="authorizeForm" ng-submit="submitauthorizeRegistration()" flex novalidate>
+                        <div layout="column" layout-align="space-between start" fill-height>
+                            <md-input-container fill-width class="mb-0">
+                                <label>Public Key</label>
+                                <input type="text" name="publickey" required ng-model="authorize.pkey"/>
+                                <div ng-messages="authorizeForm.publickey.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container fill-width class="mb-0">
+                                <label>Transaction key</label>
+                                <input type="text" name="servicekey" required ng-model="authorize.skey"/>
+                                <div ng-messages="authorizeForm.servicekey.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container fill-width class="mb-0">
+                                <label>API Login ID</label>
+                                <input type="text" name="apiLoginid" required ng-model="authorize.apiLoginid"/>
+                                <div ng-messages="authorizeForm.apiLoginid.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <div flex></div>
+
+                            <div layout="row" layout-align="end center" fill-width>
+                                <!--<md-button class="md-primary" ng-click="closeDialog()">Cancel</md-button>-->
+                                <md-button class="md-raised md-accent" type="submit">Submit</md-button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </md-content>
+
+</md-dialog>
