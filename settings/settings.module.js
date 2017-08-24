@@ -1,9 +1,9 @@
 //////////////////////////////////////
 // App : Settings                   //
 // Owner : Suvethan                 //
-// Last changed date : 2017/08/03   //
-// Version : 6.1.0.25               //
-// Updated By : Gihan               //
+// Last changed date : 2017/08/24   //
+// Version : 6.1.0.26               //
+// Updated By : Kasun               //
 //////////////////////////////////////
 
 (function ()
@@ -17,7 +17,20 @@
     /** @ngInject */
     function config($stateProvider, $stickyStateProvider, $urlRouterProvider, msNavigationServiceProvider, mesentitlementProvider)
     {
-        mesentitlementProvider.setStateCheck("settings");
+        function gst(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            //debugger;
+            return null;
+        }
+        /** Check for Super admin */
+        var isSuperAdmin = gst('isSuperAdmin');
+        /** Check for Super admin - END */
 
         $stateProvider
             .state('app.settings', {
@@ -30,36 +43,42 @@
                 },
                 resolve: {
                     security: ['$q','mesentitlement','$timeout','$rootScope','$state', function($q,mesentitlement,$timeout,$rootScope,$state){
-                        var entitledStatesReturn = mesentitlement.stateDepResolver('settings');
+                        if(isSuperAdmin != 'true'){
+                            var entitledStatesReturn = mesentitlement.stateDepResolver('settings');
+                            mesentitlementProvider.setStateCheck("settings");
 
-                        if(entitledStatesReturn !== true){
-                              return $q.reject("unauthorized");
-                        }
-                        else
-                        {
-                          //debugger;
-                          $timeout(function() {
-                            //console.log('Timeout started');
-                            var firstLogin=localStorage.getItem("firstLogin");
-                            if(firstLogin==null ||firstLogin=="" || firstLogin==undefined) {
-                              $rootScope.firstLoginDitected = true;
+
+                            if(entitledStatesReturn !== true){
+                                  return $q.reject("unauthorized");
                             }
                             else
                             {
-                              $rootScope.firstLoginDitected = false;
-                              //localStorage.removeItem('firstLogin');
+                              //debugger;
+                              $timeout(function() {
+                                //console.log('Timeout started');
+                                var firstLogin=localStorage.getItem("firstLogin");
+                                if(firstLogin==null ||firstLogin=="" || firstLogin==undefined) {
+                                  $rootScope.firstLoginDitected = true;
+                                }
+                                else
+                                {
+                                  $rootScope.firstLoginDitected = false;
+                                  //localStorage.removeItem('firstLogin');
+                                }
+                              }, 50);
                             }
-                          }, 50);
                         }
                     }]
                 },
                 bodyClass: 'settings'
             });
 
-        msNavigationServiceProvider.saveItem('settings', {
-            title    : 'Settings',
-            state    : 'app.settings',
-            weight   : 12
-        });
+        if(isSuperAdmin != 'true'){
+            msNavigationServiceProvider.saveItem('settings', {
+                title    : 'Settings',
+                state    : 'app.settings',
+                weight   : 12
+            });
+        }
     }
 })();
