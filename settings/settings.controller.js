@@ -122,7 +122,7 @@
 		});
 
 	/** @ngInject */
-	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
+	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http,logHelper)
 	{
 		var vm = this;
 		vm.settingsCategoryState = "default";
@@ -889,6 +889,11 @@
 
 		}).error(function(data) {
 
+      $scope.infoJson= {};
+      $scope.infoJson.message =JSON.stringify(data);
+      $scope.infoJson.app ='settings';
+      logHelper.error( $scope.infoJson);
+
 		})
 
 
@@ -1039,12 +1044,22 @@
 					localStorage.setItem("firstLogin", $scope.general.baseCurrency);
 					//notifications.toast("General records have been updated.", "success");
 					$scope.deleteCompanyProfile();
-				}).error(function () {
+				}).error(function (data) {
 					notifications.toast("Error occured while updating General Record.", "error");
 					$scope.generalSubmit=false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				})
-			}).error(function () {
+			}).error(function (data) {
 				$scope.generalSubmit=false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -1065,10 +1080,20 @@
 					$scope.productImgChanged=false;
 					$scope.updateGeneralRecords();
 
+          $scope.infoJson= {};
+          $scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
+          $scope.infoJson.app ='settings';
+          logHelper.info( $scope.infoJson);
+
 				}).error(function (data) {
 					//console.log(data);
 					notifications.toast("Error occured while uploading Company logo.", "error");
 					$scope.generalSubmit = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -1143,10 +1168,20 @@
 				$scope.productImgChanged=false;
 				$scope.generalSubmit=false;
 				$state.go($state.current, {}, {reload: true});
-			}).error(function () {
+
+        $scope.infoJson= {};
+        $scope.infoJson.message ='General records have been updated';
+        $scope.infoJson.app ='settings';
+        logHelper.info( $scope.infoJson);
+			}).error(function (data) {
 				notifications.toast("Error occured while updating General Record.", "error");
 				$scope.template.companyLogo=[];
 				$scope.generalSubmit=false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -1301,6 +1336,11 @@
       }).error(function (data) {
         notifications.toast("Error occured while Checking DB", "error");
         $scope.generalSubmit = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
       });
     }
 
@@ -1476,16 +1516,30 @@
 										notifications.toast("General records has been saved.", "success");
 										$scope.generalSubmit = false;
 										$state.go($state.current, {}, {reload: true});
-										$rootScope.firstLoginDitected = false;
 										$rootScope.$broadcast('base_available');
+										$rootScope.firstLoginDitected = false;
+
+                    $scope.infoJson= {};
+                    $scope.infoJson.message ='General records has been saved';
+                    $scope.infoJson.app ='settings';
+                    logHelper.info( $scope.infoJson);
 									}).error(function (data) {
 										notifications.toast("Error occured while saving company profile.", "error");
 										$scope.generalSubmit = false;
+
+                    $scope.infoJson= {};
+                    $scope.infoJson.message =JSON.stringify(data);
+                    $scope.infoJson.app ='settings';
+                    logHelper.error( $scope.infoJson);
 
 										$charge.settingsapp().deleteGeneralData().success(function (data) {
 											//console.log("Settings Rollback..");
 										}).error(function (data) {
 											//console.log("Settings Rollback failed");
+                      $scope.infoJson= {};
+                      $scope.infoJson.message =JSON.stringify(data);
+                      $scope.infoJson.app ='settings';
+                      logHelper.error( $scope.infoJson);
 										});
 
 									});
@@ -1493,10 +1547,19 @@
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
 
+                  $scope.infoJson= {};
+                  $scope.infoJson.message =JSON.stringify(data);
+                  $scope.infoJson.app ='settings';
+                  logHelper.error( $scope.infoJson);
+
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
 									}).error(function (data) {
 										//console.log("Settings Rollback failed");
+                    $scope.infoJson= {};
+                    $scope.infoJson.message =JSON.stringify(data);
+                    $scope.infoJson.app ='settings';
+                    logHelper.error( $scope.infoJson);
 									});
 
 								});
@@ -1504,10 +1567,19 @@
 								//console.log(data);
 								$scope.generalSubmit = false;
 
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
+
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
 								}).error(function (data) {
 									//console.log("Settings Rollback failed");
+                  $scope.infoJson= {};
+                  $scope.infoJson.message =JSON.stringify(data);
+                  $scope.infoJson.app ='settings';
+                  logHelper.error( $scope.infoJson);
 								});
 
 							})
@@ -1615,20 +1687,32 @@
 									$state.go($state.current, {}, {reload: true});
 									$rootScope.firstLoginDitected = false;
 									$rootScope.$broadcast('base_available');
-
 									// $charge.settingsapp().deleteGeneralData().success(function (data) {
 									// 	console.log("Settings Rollback..");
 									// }).error(function (data) {
 									// 	console.log("Settings Rollback failed");
 									// });
+                  $scope.infoJson= {};
+                  $scope.infoJson.message ='General records has been saved';
+                  $scope.infoJson.app ='settings';
+                  logHelper.info( $scope.infoJson);
 								}).error(function (data) {
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
+
+                  $scope.infoJson= {};
+                  $scope.infoJson.message =JSON.stringify(data);
+                  $scope.infoJson.app ='settings';
+                  logHelper.error( $scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
 									}).error(function (data) {
 										//console.log("Settings Rollback failed");
+                    $scope.infoJson= {};
+                    $scope.infoJson.message =JSON.stringify(data);
+                    $scope.infoJson.app ='settings';
+                    logHelper.error( $scope.infoJson);
 									});
 
 								});
@@ -1636,10 +1720,19 @@
 								notifications.toast("Error occured while saving company profile.", "error");
 								$scope.generalSubmit = false;
 
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
+
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
 								}).error(function (data) {
 									//console.log("Settings Rollback failed");
+                  $scope.infoJson= {};
+                  $scope.infoJson.message =JSON.stringify(data);
+                  $scope.infoJson.app ='settings';
+                  logHelper.error( $scope.infoJson);
 								});
 
 							});
@@ -1651,10 +1744,19 @@
 						notifications.toast("Error occured while saving general records.", "error");
 						$scope.generalSubmit = false;
 
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
+
 						$charge.settingsapp().deleteGeneralData().success(function (data) {
 							//console.log("Settings Rollback..");
 						}).error(function (data) {
 							//console.log("Settings Rollback failed");
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						});
 
 					})
@@ -1770,9 +1872,19 @@
 						$scope.template.croppedLogo=data.fileUrl;
 						$scope.insertCompanyIndividual();
 
+            $scope.infoJson= {};
+            $scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
+            $scope.infoJson.app ='settings';
+            logHelper.info( $scope.infoJson);
+
 					}).error(function (data) {
 						//console.log(data);
 						$scope.generalSubmit = false;
+
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
 					})
 
 					//$uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
@@ -1807,10 +1919,15 @@
 					$scope.template.companyLogo=$scope.template.Preview;
 					$scope.insertCompanyIndividual();
 				}
-			}).error(function () {
+			}).error(function (data) {
 				notifications.toast("Error occured while updating Company Record.", "error");
 				$scope.template.companyLogo=[];
 				$scope.generalSubmit=false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -1847,9 +1964,14 @@
 				$scope.template.companyLogo=[];
 				$scope.deleteFooter();
 				//$scope.generalSubmit=false;
-			}).error(function () {
+			}).error(function (data) {
 				notifications.toast("Error occured while updating Company Record.", "error");
 				$scope.generalSubmit=false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -1892,9 +2014,14 @@
 			$charge.settingsapp().deleteCommmon($scope.footerDet.GURecID).success(function (data) {
 				//
 				$scope.insertFooterIndividual();
-			}).error(function () {
+			}).error(function (data) {
 				notifications.toast("Error occured while updating Footer Record.", "error");
 				$scope.generalSubmit=false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -1914,9 +2041,19 @@
 				notifications.toast("General records have been updated.", "success");
 				$scope.generalSubmit=false;
 				$state.go($state.current, {}, {reload: true});
-			}).error(function () {
+
+        $scope.infoJson= {};
+        $scope.infoJson.message ='General records have been updated';
+        $scope.infoJson.app ='settings';
+        logHelper.info( $scope.infoJson);
+			}).error(function (data) {
 				notifications.toast("Error occured while updating Footer Record.", "error");
 				$scope.generalSubmit=false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2070,6 +2207,10 @@
 			  }
 			}).error(function(data) {
 			//  console.log(data);
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
@@ -2090,6 +2231,11 @@
 			}).error(function (data) {
 				$rootScope.isPlanTypeLoaded=false;
 				$scope.isPlanTypeLoaded = true;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 			skipPlanKeyAttributes=0;
@@ -2123,6 +2269,11 @@
 			}).error(function(data)
 			{
 				$scope.loadingPlanKeyAttributes = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 			skipPlanChangeFee=0;
@@ -2158,6 +2309,11 @@
 			{
 				$scope.loadingPlanChangeFee = false;
 				$scope.planChangeFeeList = [];
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
@@ -2169,6 +2325,10 @@
 				//console.log(data);
 				$scope.BaseCurrencyPlanChangeFee="USD";
 				//$scope.selectedCurrency = $scope.BaseCurrency;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -2202,6 +2362,11 @@
 			}).error(function(data)
 			{
 				$scope.loadingPlanKeyAttributes = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2236,6 +2401,11 @@
 			{
 				//$scope.planChangeFeeList = false;
 				$scope.loadingPlanChangeFee = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2287,6 +2457,11 @@
 				//console.log(data);
 				vm.webhookEventList=[];
 				$scope.loadingEventsWH = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 			vm.webhookList=[];
@@ -2327,6 +2502,11 @@
 				//console.log(data);
 				vm.webhookList=[];
 				$scope.loadingWebhooks = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 
@@ -2357,6 +2537,11 @@
 				vm.webhookHistoryList=[];
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -2397,6 +2582,11 @@
 				{
 					$scope.checkAlreadyUsedEvents();
 				}
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2439,6 +2629,11 @@
 				vm.webhookHistoryList=[];
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2510,6 +2705,11 @@
 								vm.webhook.mode="Live";
 								vm.webhookTypeChange("custom");
 
+                $scope.infoJson= {};
+                $scope.infoJson.message =vm.webhook.endPoint+' Webhook Created Successfully';
+                $scope.infoJson.app ='settings';
+                logHelper.info( $scope.infoJson);
+
 								vm.webhookList=[];
 								skipAllWebhooks=0;
 								vm.tempUsedEventsList=[];
@@ -2519,6 +2719,11 @@
 							else
 							{
 								notifications.toast("Webhook Creation Failed", "error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -2526,6 +2731,11 @@
 							$mdDialog.hide();
 							//console.log(data);
 							vm.webhookSubmitted = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -2568,10 +2778,20 @@
 								notifications.toast("Webhook Updated Successfully", "success");
 								$scope.resetWebhook();
 								$mdDialog.hide();
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =vm.webhook.endPoint+' Webhook Updated Successfully';
+                $scope.infoJson.app ='settings';
+                logHelper.info( $scope.infoJson);
 							}
 							else
 							{
 								notifications.toast("Webhook Updating Failed", "error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -2579,6 +2799,11 @@
 							$mdDialog.hide();
 							//console.log(data);
 							vm.webhookSubmitted = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -2715,6 +2940,11 @@
 				$scope.defaultEmailTemplate = "";
 				$scope.loadingEmailTemplates = false;
 				if(data == '204')vm.emailTemplateList[0].isSelected = true;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -3345,6 +3575,11 @@
 						}).error(function (data) {
 							//console.log(data);
 							$scope.updateUomDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					} else {
 						$scope.editUnit = "";
@@ -3428,12 +3663,21 @@
 						}).error(function (data) {
 							//console.log(data);
 							$scope.addUomDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 						//if(data.IsSuccess) {
 						//  console.log(data);
 						//}
 					}).error(function (data) {
 						//console.log(data);
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -3518,6 +3762,11 @@
 							//console.log(data);
 							notifications.toast("Type has been added.", "success");
 							$mdDialog.hide();
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =ev+' Type has been added';
+              $scope.infoJson.app ='settings';
+              logHelper.info( $scope.infoJson);
 							//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//  $scope.stores = [];
 							//  for (var i = 0; i < data.length; i++) {
@@ -3546,16 +3795,29 @@
 								}
 								$scope.plan.plantype = "";
 							}).error(function (data) {
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							})
 
 							if (data.error=="00000") {
 								//console.log(data);
 								$scope.addUomDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							}
 						}).error(function (data) {
 							//console.log(data);
 							$scope.addUomDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}
 					else {
@@ -3590,6 +3852,11 @@
 							$rootScope.isPlanTypeLoaded = true;
 							notifications.toast("Type has been added.", "success");
 							$mdDialog.hide();
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =ev+' Type has been added';
+              $scope.infoJson.app ='settings';
+              logHelper.info( $scope.infoJson);
 							//                $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//                  $scope.stores = [];
 							//                  for (var i = 0; i < data.length; i++) {
@@ -3617,6 +3884,10 @@
 								}
 								$scope.plan.plantype = "";
 							}).error(function (data) {
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							})
 
 							if (data[0].error=="00000") {
@@ -3627,6 +3898,11 @@
 						}).error(function (data) {
 							//console.log(data);
 							$scope.addUomDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}
 				}
@@ -3679,6 +3955,11 @@
 
 					if (data.count > 0) {
 						notifications.toast("Type has been updated.", "success");
+
+            $scope.infoJson= {};
+            $scope.infoJson.message =commondata.RecordFieldData+' Type has been updated';
+            $scope.infoJson.app ='settings';
+            logHelper.info( $scope.infoJson);
 //              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 //                $scope.stores = [];
 //                for (var i = 0; i < data.length; i++) {
@@ -3715,6 +3996,11 @@
 						}).error(function (data) {
 							$scope.updateUomDisabled = false;
 							$mdDialog.hide();
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 						$scope.updateUomEnable = false;
 					}
@@ -3729,6 +4015,11 @@
 					//console.log(data);
 					$scope.updateUomDisabled = false;
 					$scope.updateUomEnable = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -3788,6 +4079,11 @@
 							$scope.planChangeFeeSubmitted=false;
 							$scope.changePlanFee={};
 
+              $scope.infoJson= {};
+              $scope.infoJson.message ='Successfully plan change fee created';
+              $scope.infoJson.app ='settings';
+              logHelper.info( $scope.infoJson);
+
 							skipPlanChangeFee=0;
 							$scope.planChangeFeeList=[];
 							$scope.loadPlanChangeFeePaging();
@@ -3806,6 +4102,11 @@
 						notifications.toast("Plan change fee creation failed","error");
 						$scope.planChangeFeeSubmitted=false;
 						$scope.planChangeView=false;
+
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
 					})
 				}
 				else
@@ -3874,6 +4175,11 @@
 						notifications.toast("Successfully Plan Change Fee Updated","success");
 						$scope.planChangeFeeUpdateSubmitted=false;
 
+            $scope.infoJson= {};
+            $scope.infoJson.message ='Successfully Plan Change Fee Updated';
+            $scope.infoJson.app ='settings';
+            logHelper.info( $scope.infoJson);
+
 						skipPlanChangeFee=0;
 						$scope.planChangeFeeList=[];
 						$scope.loadPlanChangeFeePaging();
@@ -3883,11 +4189,21 @@
 					{
 						notifications.toast("Plan Change Fee Updating Failed","error");
 						$scope.planChangeFeeUpdateSubmitted=false;
+
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
 					}
 				}).error(function(data)
 				{
 					notifications.toast("Plan Change Fee Updating Failed","error");
 					$scope.planChangeFeeUpdateSubmitted=false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -3912,6 +4228,11 @@
 				{
 					notifications.toast("Successfully Plan Change Fee Deleted","success");
 
+          $scope.infoJson= {};
+          $scope.infoJson.message ='Successfully Plan Change Fee Deleted';
+          $scope.infoJson.app ='settings';
+          logHelper.info( $scope.infoJson);
+
 					skipPlanChangeFee=0;
 					$scope.planChangeFeeList=[];
 					$scope.loadPlanChangeFeePaging();
@@ -3920,10 +4241,20 @@
 				else
 				{
 					notifications.toast("Plan Change Fee Deleting Failed","error");
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				}
 			}).error(function(data)
 			{
 				notifications.toast("Plan Change Fee Deleting Failed","error");
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -3975,13 +4306,27 @@
 				{
 					notifications.toast("Webhook has Deleted Successfully", "success");
 					$scope.resetWebhook();
+
+          $scope.infoJson= {};
+          $scope.infoJson.message ='Webhook has Deleted Successfully';
+          $scope.infoJson.app ='settings';
+          logHelper.info( $scope.infoJson);
 				}
 				else
 				{
 					notifications.toast("Webhook Deleting Failed", "error");
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				}
 			}).error(function (data) {
 				//console.log(data);
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -4086,11 +4431,21 @@
 							//console.log(data);
 							notifications.toast("Template Saving Error", "error");
 							vm.emailTemplateSubmitted=false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
 						vm.emailTemplateSubmitted=false;
+
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
 					})
 
 				}
@@ -4135,6 +4490,11 @@
 						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
 						vm.emailTemplateSubmitted=false;
+
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
 					})
 				}
 
@@ -4382,6 +4742,11 @@
 			}).error(function(data) {
 				//console.log(data);
         notifications.toast("UOM deleting Failed", "error");
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -4582,6 +4947,11 @@
 					"termDays":"30"
 				}];
 				$scope.addNewReminder(0);
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -4831,6 +5201,10 @@
 
 			}).error(function(data) {
 				//console.log(data);
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -4969,11 +5343,21 @@
 							}).error(function (data) {
 								$scope.addTermsDisabled = false;
 								isInvoiceLoaded = false;
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
 							vm.invoiceSubmit=false;
 							$scope.addTermsDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -5102,11 +5486,21 @@
 							}).error(function (data) {
 								isInvoiceLoaded = false;
 								$scope.addTermsDisabled = false;
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
 							vm.invoiceSubmit=false;
 							$scope.addTermsDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 						//}
 						//else
@@ -5316,11 +5710,21 @@
 						}).error(function (data) {
 							isInvoiceLoaded = false;
 							$scope.addTermsDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}).error(function(data) {
 						//console.log(data);
 						vm.invoiceSubmit=false;
 						$scope.addTermsDisabled = false;
+
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -5759,10 +6163,20 @@
 								//
 							}).error(function (data) {
 								isPaymentLoaded = false;
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
 							vm.paymentSubmit=false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}
 					else {
@@ -5824,10 +6238,20 @@
 								//
 							}).error(function (data) {
 								isPaymentLoaded = false;
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
 							vm.paymentSubmit=false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 						//}
 						//else {
@@ -5935,9 +6359,18 @@
 							//
 						}).error(function (data) {
 							isPaymentLoaded = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
 					})
 
 
@@ -5983,6 +6416,11 @@
 				$scope.addNewReminder(0);
 				$scope.remindersInPaymentLoaded = true;
 				isPaymentLoaded=false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 			//$scope.remindersInPaymentLoaded = false;
 			//$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
@@ -6047,6 +6485,11 @@
 				{
 					$scope.PaymentRetryUpdating=false;
 				}
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6084,6 +6527,10 @@
 
 			}).error(function(data) {
 				//console.log(data);
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6146,6 +6593,11 @@
 					//console.log(data);
 					notifications.toast("Payment Retry Configuration Saving Failed","error");
 					$scope.paymentRetrySubmitted=false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -6170,6 +6622,11 @@
 					//console.log(data);
 					notifications.toast("Payment Retry Configuration Updating Failed","error");
 					$scope.paymentRetrySubmitted=false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				})
 			}
 
@@ -6247,6 +6704,10 @@
 					$scope.isIndTaxLoaded = true;
 				});
 				// $scope.isSpinnerShown=false;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6273,6 +6734,10 @@
 				$scope.isGrpTaxLoaded = true;
 				response=data;
 				// $scope.isSpinnerShown=false;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6656,6 +7121,11 @@
 					$scope.fixedRates.splice(index,1);
 				}).error(function(data) {
 					notifications.toast(data.error, "error");
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -6739,6 +7209,11 @@
 					$scope.taxGroupList.splice(index,1);
 				}).error(function(data) {
 					notifications.toast(data.error, "error");
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -6972,6 +7447,11 @@
 					}
 					notifications.toast(error, "Error");
 
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+
 				});
 
 			}, function () {
@@ -7020,6 +7500,11 @@
 					}
 					notifications.toast(error, "Error");
 
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+
 				});
 
 			}, function () {
@@ -7066,6 +7551,11 @@
 					}
 					notifications.toast(error, "Error");
 
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+
 				});
 
 			}, function () {
@@ -7090,7 +7580,7 @@
 
 					for (i = 0; i < $scope.currentGateways.length; i++) {
 
-						if (data.data.connectedGatways != null && angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
+						if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
 							$scope.currentGateways[i].isConnected = true;
 							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
 						}
@@ -7110,6 +7600,11 @@
 				$scope.currentGateways = [];
 
 				$scope.gen1Loading = true;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			});
 
 
@@ -7151,6 +7646,11 @@
 			}).error(function(data) {
 				//console.log( data);
 				notifications.toast("There is a problem, Please try again", "Error");
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
 			});
 		}
 
