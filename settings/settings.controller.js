@@ -341,9 +341,12 @@
 			vm.sidenavActiveState = state;
 			switch(state)
 			{
-				case 'products':
-					$scope.loadProductAttributes();
+				case 'plans':
+					$scope.loadPlanAttributes();
 					break;
+        case 'products':
+          $scope.loadProductAttributes();
+          break;
 				case 'webhooks':
 					$scope.loadWebhooksAttributes();
 					break;
@@ -2159,44 +2162,9 @@
 		//  $rootScope.isBrandLoaded=false;
 		//})
 
-		var skipPlanChangeFee=0;
-		var takePlanChangeFee=100;
-		$scope.loadingPlanChangeFee = false;
-		$scope.planChangeFeeList=[];
-
-		var skipPlanKeyAttributes=0;
-		var takePlanKeyAttributes=100;
-		$scope.loadingPlanKeyAttributes = true;
-		$scope.planKeyAttributesList=[];
-
-		$scope.BaseCurrencyPlanChangeFee = "";
-		$scope.currencyRate = 1;
-
-		$scope.isPlanTypeLoaded = false;
 		$scope.loadProductAttributes= function () {
-			//$charge.settingsapp().getDuobaseValuesByTableName("CTS_CommonAttributes").success(function(data) {
-			//  $scope.categories=[];
-			//  $rootScope.isCategoryLoaded=true;
-			//  for(var i=0;i<data.length;i++)
-			//  {
-			//    $scope.categories.push(data[i]);
-			//  }
-			//
-			//  $scope.brands=[];
-			//  $rootScope.isBrandLoaded=true;
-			//  //console.log(data);
-			//  for(var i=0;i<data.length;i++)
-			//  {
-			//    //
-			//    $scope.brands.push(data[i]);
-			//  }
-			//
-			//}).error(function(data) {
-			//  $rootScope.isCategoryLoaded=false;
-			//  $rootScope.isBrandLoaded=false;
-			//})
-			//
-			$charge.uom().getAllUOM('Plan_123').success(function(data) {
+
+			$charge.uom().getAllUOM('Product_123').success(function(data) {
 			  $scope.UOMs=[];
 			  //console.log(data);
 			  for(var i=0;i<data.length;i++)
@@ -2213,125 +2181,210 @@
         logHelper.error( $scope.infoJson);
 			})
 
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
-				var length = data.length;
-				//
-				$scope.planTypeList=[];
-				$rootScope.isPlanTypeLoaded=true;
-				for (var i = 0; i < length; i++) {
-					for (var j = 0; j < data[i].length; j++) {
-						var obj = data[i][j];
-						if (obj.ColumnIndex == "0") {
-							$scope.planTypeList.push(obj);
+      $rootScope.isCategoryLoaded=false;
+      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes","Category").success(function(data) {
+        $scope.categories=[];
+        $rootScope.isCategoryLoaded=true;
+        for(var i=0;i<data.length;i++)
+        {
+          $scope.categories.push(data[i]);
+        }
+      }).error(function(data) {
+        console.log(data);
+        $rootScope.isCategoryLoaded=false;
+      })
 
-						}
-					}
-				}
-				$scope.isPlanTypeLoaded = true;
-			}).error(function (data) {
-				$rootScope.isPlanTypeLoaded=false;
-				$scope.isPlanTypeLoaded = true;
-
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-			})
-
-			skipPlanKeyAttributes=0;
-			$scope.loadingPlanKeyAttributes = true;
-			$scope.planKeyAttributesList=[];
-
-			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
-			{
-				//console.log(data);
-
-				if($scope.loadingPlanKeyAttributes)
-				{
-					skipPlanKeyAttributes += takePlanKeyAttributes;
-
-					for (var i = 0; i < data.length; i++) {
-						$scope.planKeyAttributesList.push(data[i]);
-					}
-
-					$scope.loadingPlanKeyAttributes = false;
-
-					if(data.length<takePlanKeyAttributes){
-
-					}
-					else
-					{
-						$scope.loadPlanKeyAttributesPaging();
-					}
-
-				}
-
-			}).error(function(data)
-			{
-				$scope.loadingPlanKeyAttributes = false;
-
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-			})
-
-			skipPlanChangeFee=0;
-			$scope.loadingPlanChangeFee = true;
-			$scope.planChangeFeeList=[];
-
-			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
-			{
-				//console.log(data);
-
-				if($scope.loadingPlanChangeFee)
-				{
-					skipPlanChangeFee += takePlanChangeFee;
-
-					for (var i = 0; i < data.length; i++) {
-						data[i].editItem=false;
-						$scope.planChangeFeeList.push(data[i]);
-					}
-
-					$scope.loadingPlanChangeFee = false;
-
-					if(data.length<takePlanChangeFee){
-
-					}
-					else
-					{
-						$scope.loadPlanChangeFeePaging();
-					}
-
-				}
-
-			}).error(function(data)
-			{
-				$scope.loadingPlanChangeFee = false;
-				$scope.planChangeFeeList = [];
-
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-			})
-
-			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
-				$scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
-				//console.log($scope.BaseCurrencyPlanChangeFee);
-				//$scope.selectedCurrency = $scope.BaseCurrency;
-
-			}).error(function(data) {
-				//console.log(data);
-				$scope.BaseCurrencyPlanChangeFee="USD";
-				//$scope.selectedCurrency = $scope.BaseCurrency;
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-			})
+      $rootScope.isBrandLoaded=false;
+      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes","Brand").success(function(data) {
+        $scope.brands=[];
+        $rootScope.isBrandLoaded=true;
+        //console.log(data);
+        for(var i=0;i<data.length;i++)
+        {
+          //
+          $scope.brands.push(data[i]);
+        }
+      }).error(function(data) {
+        console.log(data);
+        $rootScope.isBrandLoaded=false;
+      })
 
 		}
+
+    var skipPlanChangeFee=0;
+    var takePlanChangeFee=100;
+    $scope.loadingPlanChangeFee = false;
+    $scope.planChangeFeeList=[];
+
+    var skipPlanKeyAttributes=0;
+    var takePlanKeyAttributes=100;
+    $scope.loadingPlanKeyAttributes = true;
+    $scope.planKeyAttributesList=[];
+
+    $scope.BaseCurrencyPlanChangeFee = "";
+    $scope.currencyRate = 1;
+
+    $scope.isPlanTypeLoaded = false;
+
+    $scope.loadPlanAttributes= function () {
+      //$charge.settingsapp().getDuobaseValuesByTableName("CTS_CommonAttributes").success(function(data) {
+      //  $scope.categories=[];
+      //  $rootScope.isCategoryLoaded=true;
+      //  for(var i=0;i<data.length;i++)
+      //  {
+      //    $scope.categories.push(data[i]);
+      //  }
+      //
+      //  $scope.brands=[];
+      //  $rootScope.isBrandLoaded=true;
+      //  //console.log(data);
+      //  for(var i=0;i<data.length;i++)
+      //  {
+      //    //
+      //    $scope.brands.push(data[i]);
+      //  }
+      //
+      //}).error(function(data) {
+      //  $rootScope.isCategoryLoaded=false;
+      //  $rootScope.isBrandLoaded=false;
+      //})
+      //
+      $charge.uom().getAllUOM('Plan_123').success(function(data) {
+        $scope.UOMs=[];
+        //console.log(data);
+        for(var i=0;i<data.length;i++)
+        {
+          //
+          $scope.UOMs.push(data[i]);
+          //
+        }
+      }).error(function(data) {
+        //  console.log(data);
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+
+      $charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
+        var length = data.length;
+        //
+        $scope.planTypeList=[];
+        $rootScope.isPlanTypeLoaded=true;
+        for (var i = 0; i < length; i++) {
+          for (var j = 0; j < data[i].length; j++) {
+            var obj = data[i][j];
+            if (obj.ColumnIndex == "0") {
+              $scope.planTypeList.push(obj);
+
+            }
+          }
+        }
+        $scope.isPlanTypeLoaded = true;
+      }).error(function (data) {
+        $rootScope.isPlanTypeLoaded=false;
+        $scope.isPlanTypeLoaded = true;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+
+      skipPlanKeyAttributes=0;
+      $scope.loadingPlanKeyAttributes = true;
+      $scope.planKeyAttributesList=[];
+
+      $charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
+      {
+        //console.log(data);
+
+        if($scope.loadingPlanKeyAttributes)
+        {
+          skipPlanKeyAttributes += takePlanKeyAttributes;
+
+          for (var i = 0; i < data.length; i++) {
+            $scope.planKeyAttributesList.push(data[i]);
+          }
+
+          $scope.loadingPlanKeyAttributes = false;
+
+          if(data.length<takePlanKeyAttributes){
+
+          }
+          else
+          {
+            $scope.loadPlanKeyAttributesPaging();
+          }
+
+        }
+
+      }).error(function(data)
+      {
+        $scope.loadingPlanKeyAttributes = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+
+      skipPlanChangeFee=0;
+      $scope.loadingPlanChangeFee = true;
+      $scope.planChangeFeeList=[];
+
+      $charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
+      {
+        //console.log(data);
+
+        if($scope.loadingPlanChangeFee)
+        {
+          skipPlanChangeFee += takePlanChangeFee;
+
+          for (var i = 0; i < data.length; i++) {
+            data[i].editItem=false;
+            $scope.planChangeFeeList.push(data[i]);
+          }
+
+          $scope.loadingPlanChangeFee = false;
+
+          if(data.length<takePlanChangeFee){
+
+          }
+          else
+          {
+            $scope.loadPlanChangeFeePaging();
+          }
+
+        }
+
+      }).error(function(data)
+      {
+        $scope.loadingPlanChangeFee = false;
+        $scope.planChangeFeeList = [];
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+
+      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
+        $scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
+        //console.log($scope.BaseCurrencyPlanChangeFee);
+        //$scope.selectedCurrency = $scope.BaseCurrency;
+
+      }).error(function(data) {
+        //console.log(data);
+        $scope.BaseCurrencyPlanChangeFee="USD";
+        //$scope.selectedCurrency = $scope.BaseCurrency;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+
+    }
 
 		$scope.loadPlanKeyAttributesPaging= function () {
 			$scope.loadingPlanKeyAttributes = true;
@@ -3599,6 +3652,69 @@
 			}
 		}
 
+    $scope.updateProductUOM= function () {
+      var uom= $scope.editUnit;
+      $scope.updateUomDisabled = true;
+      var req = {
+        "GUUOMID":uom.GUUOMID,
+        "GUTranID":uom.GUTranID,
+        "CommitStatus":uom.CommitStatus,
+        "UOMCode":uom.UOMCode
+      }
+      var countUOM=0;
+      for (var i = 0; i < $scope.UOMs.length; i++) {
+        if ($scope.UOMs[i].UOMCode == uom.UOMCode) {
+          if($scope.displayUOMCode!=uom.UOMCode) {
+            countUOM++;
+          }
+        }
+      }
+
+      if(countUOM==0) {
+        $charge.uom().updateUOM(req).success(function (data) {
+
+          if (data.count > 0) {
+            notifications.toast("UOM has been updated.", "success");
+            $charge.uom().getAllUOM('Product_123').success(function (data) {
+              $scope.UOMs = [];
+              //
+              //console.log(data);
+              for (var i = 0; i < data.length; i++) {
+                //
+                $scope.UOMs.push(data[i]);
+                //
+              }
+
+              $scope.editUnit = "";
+              $scope.updateUomEnable = !$scope.updateUomEnable;
+              $scope.updateUomDisabled = false;
+            }).error(function (data) {
+              //console.log(data);
+              $scope.updateUomDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
+            })
+          } else {
+            $scope.editUnit = "";
+            $scope.updateUomEnable = !$scope.updateUomEnable;
+            $scope.updateUomDisabled = false;
+          }
+        }).error(function (data) {
+          //console.log(data);
+          $scope.updateUomDisabled = false;
+        })
+      }
+      else
+      {
+        notifications.toast("UOM is already exist" , "error");
+        $scope.updateUomDisabled = false;
+        $scope.editUnit.UOMCode = $scope.displayUOMCode;
+      }
+    }
+
 		$scope.submitUOM = function() {
 			if (vm.unitOfMeasure.$valid == true) {
 				//
@@ -3687,6 +3803,82 @@
 			}
 
 		}
+
+    $scope.addProductUOM= function () {
+      var ev = $scope.product.uom;
+      $scope.addUomDisabled = true;
+
+      if (ev != null && ev != "") {
+        var isDuplicate = false;
+        if ($scope.UOMs.length != 0) {
+          for (var i = 0; i < $scope.UOMs.length; i++) {
+            if ($scope.UOMs[i].UOMCode == ev) {
+              notifications.toast("UOM Code is already exist.", "error");
+              $scope.product.uom = "";
+              $scope.addUomDisabled = false;
+              isDuplicate = true;
+              break;
+            }
+          }
+        }
+        if (!isDuplicate) {
+          var req = {
+            "GUUOMID": "123",
+            "GUUOMTypeID": "supplier1",
+            "GUTranID": "12345",
+            "CommitStatus": "Active",
+            "UOMCode": ev,
+            "uomApplicationMapperDetail": [{
+              "GUApplicationID": "Product_123"
+            }],
+            "uomConversionDetails": [{
+              "FromUOMCode": ev,
+              "Qty": "10",
+              "ToUOMCode": ev
+            }]
+
+          }
+          $charge.uom().store(req).success(function (data) {
+            notifications.toast("UOM has been added.", "success");
+            $charge.uom().getAllUOM('Product_123').success(function (data) {
+              $scope.UOMs = [];
+              //
+              //console.log(data);
+              for (var i = 0; i < data.length; i++) {
+                //
+                $scope.UOMs.push(data[i]);
+                //
+              }
+              $scope.product.uom = "";
+              $scope.addUomDisabled = false;
+              //$mdDialog.hide($scope.UOMs);
+            }).error(function (data) {
+              //console.log(data);
+              $scope.addUomDisabled = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
+            })
+            //if(data.IsSuccess) {
+            //  console.log(data);
+            //}
+          }).error(function (data) {
+            //console.log(data);
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            logHelper.error( $scope.infoJson);
+          })
+        }
+      }
+      else{
+        notifications.toast("UOM cannot be empty", "error");
+        $scope.addUomDisabled = false;
+      }
+
+    }
 
 		$scope.submitPlan= function (state) {
 			$scope.updateUomEnable = state;
