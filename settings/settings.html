@@ -406,7 +406,7 @@
                         </form>
                     </md-content>
                 </md-tab>
-                <md-tab label="Plans" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('products')">
+                <md-tab label="Plans" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('plans')">
                     <md-content>
                         <!--<div class="content-wrapper">-->
                             <!--<div layout="row">-->
@@ -726,6 +726,232 @@
                             </div>
                         </div>
                     </md-content>
+                </md-tab>
+                <md-tab label="Products" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('products')">
+                  <md-content style="width:100%;height: 100%;background-color: #fbfdfd" ms-scroll>
+
+                    <div class="content-block-wrapper">
+                      <div layout="row">
+                        <div id="unit_measuers" class="content-block" flex>
+                          <div class="heading-lev2 top bottom" layout="row">Unit of Measures</div>
+
+                          <md-card flex>
+                            <md-card-actions layout="row" layout-align="end center" class="card-actions-top">
+                              <!--Added new row with "ADD" button-->
+                              <div layout="row" flex class="new-row">
+                                <md-input-container class="md-block" flex ng-hide="updateUomEnable">
+                                  <label></label>
+                                  <input type="text" ng-model="product.uom">
+                                </md-input-container>
+                                <md-input-container class="md-block" flex ng-show="updateUomEnable">
+                                  <label></label>
+                                  <input type="text" ng-model="editUnit.UOMCode">
+                                </md-input-container>
+
+                                <md-input-container class="md-block top block-add-btn" flex="12">
+                                  <md-button ng-click="addProductUOM(product.uom)" md-no-ink class="md-primary" style="color: #039be5;"  ng-hide="updateUomEnable">Add</md-button>
+                                  <md-button ng-click="updateProductUOM(editUnit)" md-no-ink class="md-primary" style="color: #039be5;"  ng-show="updateUomEnable">Update</md-button>
+                                </md-input-container>
+                              </div>
+                            </md-card-actions>
+
+                            <md-divider></md-divider>
+
+                            <md-content ms-scroll flex>
+                              <div class="group-ops carded-list-group" flex="95">
+                                <div layout="row" class="sample-row" ng-repeat="uom in UOMs">
+                                  <md-input-container class="md-block" flex="80">
+                                    <!--<label>Tax</label>-->
+                                    <input disabled type="" ng-model="uom.UOMCode">
+                                  </md-input-container>
+
+                                  <md-input-container flex="10">
+                                    <md-button class="md-icon-button" aria-label="Delete" ng-click="displayUom(uom)" show-gt-sm>
+                                      <md-icon md-font-icon="icon-pencil"></md-icon>
+                                      <md-tooltip><span>Edit</span></md-tooltip>
+                                    </md-button>
+                                  </md-input-container>
+
+                                  <md-input-container flex="10">
+                                    <md-button class="md-icon-button" aria-label="Delete" ng-click="deleteUOM(uom,$index)" show-gt-sm>
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Delete</span></md-tooltip>
+                                    </md-button>
+                                  </md-input-container>
+                                </div>
+
+                                <!--<div layout="row" class="new-row" md-whiteframe="1" ng-repeat="row in rows">-->
+                                <!--<md-input-container class="md-block" flex>-->
+                                <!--<label>New Tax</label>-->
+                                <!--<input type="text">-->
+                                <!--</md-input-container>-->
+
+                                <!--<md-input-container class="md-block top block-add-btn" flex="12">-->
+                                <!--<md-button ng-click="vm.removeRow()" md-no-ink class="md-warn">Remove</md-button>-->
+                                <!--</md-input-container>-->
+                                <!--</div>-->
+
+                              </div>
+                            </md-content>
+                          </md-card>
+
+                          <!--non-carded-layouts-->
+                          <!--<div class="group-ops">-->
+                          <!--<div layout="row" class="sample-row">-->
+                          <!--<md-input-container class="md-block" flex="80">-->
+                          <!--<label>Tax</label>-->
+                          <!--<input disabled type="" ng-model="row.taxDisplay">-->
+                          <!--</md-input-container>-->
+
+                          <!--<md-input-container flex="10">-->
+                          <!--<md-button class="md-icon-button" aria-label="Delete" hide show-gt-sm>-->
+                          <!--<md-icon md-font-icon="icon-delete"></md-icon>-->
+                          <!--<md-tooltip><span>Delete</span></md-tooltip>-->
+                          <!--</md-button>-->
+                          <!--</md-input-container>-->
+
+                          <!--<md-input-container flex="10">-->
+                          <!--<md-button class="md-icon-button" aria-label="Delete" hide show-gt-sm>-->
+                          <!--<md-icon md-font-icon="icon-delete"></md-icon>-->
+                          <!--<md-tooltip><span>Delete</span></md-tooltip>-->
+                          <!--</md-button>-->
+                          <!--</md-input-container>-->
+                          <!--</div>-->
+
+                          <!--&lt;!&ndash;Added new row with "ADD" button&ndash;&gt;-->
+                          <!--<div layout="row" class="new-row">-->
+                          <!--<md-input-container class="md-block" flex>-->
+                          <!--<label>New Tax</label>-->
+                          <!--<input type="text">-->
+                          <!--</md-input-container>-->
+
+                          <!--<md-input-container class="md-block top block-add-btn" flex="12">-->
+                          <!--<md-button ng-click="addNewUser($event)" md-no-ink class="md-warn">Remove</md-button>-->
+                          <!--</md-input-container>-->
+                          <!--</div>-->
+                          <!--</div>-->
+                        </div>
+
+                        <div class="content-block" flex>
+                          <div class="heading-lev2 top bottom" layout="row">Categories</div>
+
+                          <md-card flex>
+                            <md-card-actions layout="row" layout-align="end center" class="card-actions-top">
+                              <div layout="row" class="new-row" flex>
+                                <md-input-container class="md-block" flex ng-hide="updateCatEnable">
+                                  <label></label>
+                                  <input type="text" ng-model="product.category">
+                                </md-input-container>
+                                <md-input-container class="md-block" flex ng-show="updateCatEnable">
+                                  <label></label>
+                                  <input type="text" ng-model="editCategory.RecordFieldData">
+                                </md-input-container>
+
+                                <md-input-container class="md-block top block-add-btn" flex="12">
+                                  <md-button ng-click="addCat(product.category)" md-no-ink class="md-primary" style="color: #039be5;" ng-hide="updateCatEnable">Add</md-button>
+                                  <md-button ng-click="updateCat(editCategory)" md-no-ink class="md-primary" style="color: #039be5;" ng-show="updateCatEnable">Update</md-button>
+                                </md-input-container>
+                              </div>
+                            </md-card-actions>
+                            <md-divider></md-divider>
+                            <md-content ms-scroll>
+                              <div class="group-ops carded-list-group" flex="95">
+                                <div layout="row" class="sample-row" ng-repeat="category in categories">
+                                  <md-input-container class="md-block" flex="80">
+                                    <!--<label>Tax</label>-->
+                                    <input disabled type="" ng-model="category.RecordFieldData">
+                                  </md-input-container>
+
+                                  <md-input-container flex="10">
+                                    <md-button class="md-icon-button" aria-label="Delete" ng-click="displayCat(category)" show-gt-sm>
+                                      <md-icon md-font-icon="icon-pencil"></md-icon>
+                                      <md-tooltip><span>Edit</span></md-tooltip>
+                                    </md-button>
+                                  </md-input-container>
+
+                                  <md-input-container flex="10">
+                                    <md-button class="md-icon-button" aria-label="Delete" ng-click="deleteCommonData(category,$index)" show-gt-sm>
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Delete</span></md-tooltip>
+                                    </md-button>
+                                  </md-input-container>
+                                </div>
+
+                              </div>
+                            </md-content>
+                          </md-card>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="content-block-wrapper">
+                      <div layout="row">
+
+                        <div class="content-block" flex>
+                          <div class="heading-lev2 top bottom" layout="row">Brands</div>
+
+                          <md-card flex>
+                            <md-card-actions layout="row" layout-align="end center" class="card-actions-top">
+                              <div layout="row" class="new-row" flex>
+                                <md-input-container class="md-block" flex ng-hide="updateBraEnable">
+                                  <label></label>
+                                  <input type="text" ng-model="product.brand">
+                                </md-input-container>
+                                <md-input-container class="md-block" flex ng-show="updateBraEnable">
+                                  <label></label>
+                                  <input type="text" ng-model="editBrand.RecordFieldData">
+                                </md-input-container>
+
+                                <md-input-container class="md-block top block-add-btn" flex="12">
+                                  <md-button ng-click="addBrand(product.brand)" md-no-ink class="md-primary" style="color: #039be5;" ng-hide="updateBraEnable">Add</md-button>
+                                  <md-button ng-click="updateBrand(editBrand)" md-no-ink class="md-primary" style="color: #039be5;" ng-show="updateBraEnable">Update</md-button>
+                                </md-input-container>
+                              </div>
+                            </md-card-actions>
+                            <md-divider></md-divider>
+                            <md-content ms-scroll>
+                              <div class="group-ops carded-list-group" flex="95">
+                                <div layout="row" class="sample-row" ng-repeat="brand in brands" >
+                                  <md-input-container class="md-block" flex="90">
+                                    <!--<label>Tax</label>-->
+                                    <input disabled type="" ng-model="brand.RecordFieldData">
+                                  </md-input-container>
+
+                                  <md-input-container flex="5">
+                                    <md-button class="md-icon-button" aria-label="Delete" ng-click="displayBrand(brand)" show-gt-sm>
+                                      <md-icon md-font-icon="icon-pencil"></md-icon>
+                                      <md-tooltip><span>Edit</span></md-tooltip>
+                                    </md-button>
+                                  </md-input-container>
+
+                                  <md-input-container flex="5">
+                                    <md-button class="md-icon-button" aria-label="Delete" ng-click="deleteCommonData(brand,$index)" show-gt-sm>
+                                      <md-icon md-font-icon="icon-delete"></md-icon>
+                                      <md-tooltip><span>Delete</span></md-tooltip>
+                                    </md-button>
+                                  </md-input-container>
+                                </div>
+
+                              </div>
+                            </md-content>
+                          </md-card>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <!--<div ng-init="submitted=false" layout="row" layout-align="space-between center" class="md-whiteframe-8dp bottom-fixed-bar">-->
+                    <!--<div layout="row"></div>-->
+
+                    <!--<div layout="row" class="layout-row">-->
+                    <!--<md-button ng-click="clearFields();">Clear</md-button>-->
+                    <!--<md-button ng-disabled="submitted" type="submit" class="md-raised md-warn">Submit</md-button>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                  </md-content>
                 </md-tab>
                 <md-tab label="Webhooks" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('webhooks')">
                     <md-content flex fill-height layout="column">

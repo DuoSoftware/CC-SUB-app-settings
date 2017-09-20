@@ -12,11 +12,18 @@
 
         <!--<div class="item subheader">Preferences</div>-->
 
-        <md-button class="item" aria-label="label notes" ng-click="vm.settingsCategoryNavigation('products')" ng-class="{'sidenav-active': vm.sidenavActiveState == 'products'}">
+        <md-button class="item" aria-label="label notes" ng-click="vm.settingsCategoryNavigation('plans')" ng-class="{'sidenav-active': vm.sidenavActiveState == 'plans'}">
             <div layout="row" layout-align="start center">
                 <img src="app/core/app_icons/product_app_icon.png" class="sidenav-img-ico" alt=""/>
                 <span class="title">Plans</span>
             </div>
+        </md-button>
+
+        <md-button class="item" aria-label="label notes" ng-click="vm.settingsCategoryNavigation('products')" ng-class="{'sidenav-active': vm.sidenavActiveState == 'products'}">
+          <div layout="row" layout-align="start center">
+            <img src="app/core/app_icons/product_app_icon.png" class="sidenav-img-ico" alt=""/>
+            <span class="title">Products</span>
+          </div>
         </md-button>
 
         <md-button class="item" aria-label="label notes" ng-click="vm.settingsCategoryNavigation('webhooks')" ng-class="{'sidenav-active': vm.sidenavActiveState == 'webhooks'}">
