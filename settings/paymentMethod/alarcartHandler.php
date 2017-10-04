@@ -73,7 +73,7 @@ switch ($view) {
 
                        curl_setopt($ch, CURLOPT_HTTPHEADER,$head);
 
-                   //curl_setopt($ch, CURLOPT_URL, "". MAIN_DOMAIN ."/apis/authorization/priceplan/update/".json_decode($authData)->Username."/".$planId);
+                   //curl_setopt($ch, CURLOPT_URL, "". PAYMENTGATEWAY_URL ."/apis/authorization/priceplan/update/".json_decode($authData)->Username."/".$planId);
                    curl_setopt($ch, CURLOPT_URL, "http://app.cloudcharge.com:8001/auth/updateSubscription?planCode=".$planId);
 
                    // receive server response ...
@@ -97,7 +97,7 @@ switch ($view) {
 
                               $planId = str_replace("_year","",$planId);
 
-                             curl_setopt($chp, CURLOPT_URL, "". MAIN_DOMAIN ."/services/duosoftware.cloudChargeAPI/cloudChargeAPI/switchPlan?plan=".$planId);
+                             curl_setopt($chp, CURLOPT_URL, "". PAYMENTGATEWAY_URL ."/services/duosoftware.cloudChargeAPI/cloudChargeAPI/switchPlan?plan=".$planId);
 
         					// $urlss = "http://". host ."/services/duosoftware.cloudChargeAPI/cloudChargeAPI/switchPlan?plan=".$planId;
 

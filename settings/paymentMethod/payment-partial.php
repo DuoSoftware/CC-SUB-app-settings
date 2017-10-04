@@ -11,8 +11,8 @@ $CLIENT_ID = '';
  }
 
 
- //define('TOKEN_URI', ''. MAIN_DOMAIN .'/services/duosoftware.paymentgateway.service/stripe/insertAccKeys');
- define('TOKEN_URI', ''. MAIN_DOMAIN .'/services/duosoftware.paymentgateway.service/stripe/insertAccKeys');
+ //define('TOKEN_URI', ''. PAYMENTGATEWAY_URL .'/services/duosoftware.paymentgateway.service/stripe/insertAccKeys');
+ define('TOKEN_URI', ''. PAYMENTGATEWAY_URL .'/services/duosoftware.paymentgateway.service/stripe/insertAccKeys');
  define('AUTHORIZE_URI', 'https://connect.stripe.com/oauth/authorize');
    if (isset($_GET['code'])) {
      $code = $_GET['code'];
@@ -78,7 +78,7 @@ $CLIENT_ID = '';
        'scope' => 'read_write',
        'client_id' => $CLIENT_ID,
        'state' => $_SERVER['SERVER_NAME'].'@'.$_COOKIE['securityToken']
-       ,'redirect_uri'=> MAIN_DOMAIN .'/azureshell/app/main/settings/paymentMethod/payment-partial.php'
+       ,'redirect_uri'=> PAYMENTGATEWAY_URL .'/azureshell/app/main/settings/paymentMethod/payment-partial.php'
        //,'redirect_uri'=> 'http://app.cloudcharge.com/azureshell/app/main/settings/paymentMethod/payment-partial.php'
      );
 
