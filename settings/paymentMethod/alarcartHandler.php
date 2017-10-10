@@ -73,7 +73,7 @@ switch ($view) {
 
                        curl_setopt($ch, CURLOPT_HTTPHEADER,$head);
 
-                   //curl_setopt($ch, CURLOPT_URL, "". PAYMENTGATEWAY_URL ."/apis/authorization/priceplan/update/".json_decode($authData)->Username."/".$planId);
+                   //curl_setopt($ch, CURLOPT_URL, "". MAIN_DOMAIN ."/apis/authorization/priceplan/update/".json_decode($authData)->Username."/".$planId);
                    curl_setopt($ch, CURLOPT_URL, "http://app.cloudcharge.com:8001/auth/updateSubscription?planCode=".$planId);
 
                    // receive server response ...

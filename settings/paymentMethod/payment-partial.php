@@ -28,9 +28,8 @@ $CLIENT_ID = '';
 	   $req = curl_init(TOKEN_URI);
        curl_setopt($req, CURLOPT_RETURNTRANSFER, true);
        curl_setopt($req, CURLOPT_POST, true );
-	   
-      curl_setopt($req,CURLOPT_HTTPHEADER,array('idToken: '.$res[1],'domain: '.$res[0]));
-	  
+      curl_setopt($req,CURLOPT_HTTPHEADER,array('securityToken: '.$res[1]));
+      curl_setopt($req,CURLOPT_HTTPHEADER,array('idToken: '.$res[1]));
       curl_setopt($req, CURLOPT_POSTFIELDS, json_encode($token_request_body));
        curl_setopt($req, CURLOPT_SSL_VERIFYPEER, false);
        // TODO: Additional error handling
