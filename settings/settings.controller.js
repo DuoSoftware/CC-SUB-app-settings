@@ -174,6 +174,22 @@
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		}
 
+		function gst(name) {
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+			}
+			//debugger;
+			return null;
+		}
+
+		/** Get currentDomain for applications*/
+		$scope.accCategory = gst('category');
+		/** --------------------------------- */
+
 		$scope.setTaxesFor = function (code, group, index) {
 			$scope.showTaxesFor = code;
 		}
@@ -344,9 +360,9 @@
 				case 'plans':
 					$scope.loadPlanAttributes();
 					break;
-        case 'products':
-          $scope.loadProductAttributes();
-          break;
+				case 'products':
+					$scope.loadProductAttributes();
+					break;
 				case 'webhooks':
 					$scope.loadWebhooksAttributes();
 					break;
@@ -892,10 +908,10 @@
 
 		}).error(function(data) {
 
-      $scope.infoJson= {};
-      $scope.infoJson.message =JSON.stringify(data);
-      $scope.infoJson.app ='settings';
-      logHelper.error( $scope.infoJson);
+			$scope.infoJson= {};
+			$scope.infoJson.message =JSON.stringify(data);
+			$scope.infoJson.app ='settings';
+			logHelper.error( $scope.infoJson);
 
 		})
 
@@ -1051,18 +1067,18 @@
 					notifications.toast("Error occured while updating General Record.", "error");
 					$scope.generalSubmit=false;
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				})
 			}).error(function (data) {
 				$scope.generalSubmit=false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -1083,20 +1099,20 @@
 					$scope.productImgChanged=false;
 					$scope.updateGeneralRecords();
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
-          $scope.infoJson.app ='settings';
-          logHelper.info( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
+					$scope.infoJson.app ='settings';
+					logHelper.info( $scope.infoJson);
 
 				}).error(function (data) {
 					//console.log(data);
 					notifications.toast("Error occured while uploading Company logo.", "error");
 					$scope.generalSubmit = false;
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -1172,19 +1188,19 @@
 				$scope.generalSubmit=false;
 				$state.go($state.current, {}, {reload: true});
 
-        $scope.infoJson= {};
-        $scope.infoJson.message ='General records have been updated';
-        $scope.infoJson.app ='settings';
-        logHelper.info( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message ='General records have been updated';
+				$scope.infoJson.app ='settings';
+				logHelper.info( $scope.infoJson);
 			}).error(function (data) {
 				notifications.toast("Error occured while updating General Record.", "error");
 				$scope.template.companyLogo=[];
 				$scope.generalSubmit=false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -1324,28 +1340,28 @@
 
 		//Image Uploader===================================
 
-    $scope.saveGeneralCheck = function() {
-      $scope.generalSubmit=true;
-      $charge.tenant().checkTenantReady().success(function (data) {
-        if(data.status)
-        {
-          $scope.generalSubmit=false;
-          $scope.saveGeneral();
-        }
-        else
-        {
-          $scope.saveGeneralCheck();
-        }
-      }).error(function (data) {
-        notifications.toast("Error occured while Checking DB", "error");
-        $scope.generalSubmit = false;
+		$scope.saveGeneralCheck = function() {
+			$scope.generalSubmit=true;
+			$charge.tenant().checkTenantReady().success(function (data) {
+				if(data.status)
+				{
+					$scope.generalSubmit=false;
+					$scope.saveGeneral();
+				}
+				else
+				{
+					$scope.saveGeneralCheck();
+				}
+			}).error(function (data) {
+				notifications.toast("Error occured while Checking DB", "error");
+				$scope.generalSubmit = false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      });
-    }
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			});
+		}
 
 		$scope.generalSubmit=false;
 		$scope.imgWidth = "";
@@ -1522,27 +1538,27 @@
 										$rootScope.$broadcast('base_available');
 										$rootScope.firstLoginDitected = false;
 
-                    $scope.infoJson= {};
-                    $scope.infoJson.message ='General records has been saved';
-                    $scope.infoJson.app ='settings';
-                    logHelper.info( $scope.infoJson);
+										$scope.infoJson= {};
+										$scope.infoJson.message ='General records has been saved';
+										$scope.infoJson.app ='settings';
+										logHelper.info( $scope.infoJson);
 									}).error(function (data) {
 										notifications.toast("Error occured while saving company profile.", "error");
 										$scope.generalSubmit = false;
 
-                    $scope.infoJson= {};
-                    $scope.infoJson.message =JSON.stringify(data);
-                    $scope.infoJson.app ='settings';
-                    logHelper.error( $scope.infoJson);
+										$scope.infoJson= {};
+										$scope.infoJson.message =JSON.stringify(data);
+										$scope.infoJson.app ='settings';
+										logHelper.error( $scope.infoJson);
 
 										$charge.settingsapp().deleteGeneralData().success(function (data) {
 											//console.log("Settings Rollback..");
 										}).error(function (data) {
 											//console.log("Settings Rollback failed");
-                      $scope.infoJson= {};
-                      $scope.infoJson.message =JSON.stringify(data);
-                      $scope.infoJson.app ='settings';
-                      logHelper.error( $scope.infoJson);
+											$scope.infoJson= {};
+											$scope.infoJson.message =JSON.stringify(data);
+											$scope.infoJson.app ='settings';
+											logHelper.error( $scope.infoJson);
 										});
 
 									});
@@ -1550,19 +1566,19 @@
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
 
-                  $scope.infoJson= {};
-                  $scope.infoJson.message =JSON.stringify(data);
-                  $scope.infoJson.app ='settings';
-                  logHelper.error( $scope.infoJson);
+									$scope.infoJson= {};
+									$scope.infoJson.message =JSON.stringify(data);
+									$scope.infoJson.app ='settings';
+									logHelper.error( $scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
 									}).error(function (data) {
 										//console.log("Settings Rollback failed");
-                    $scope.infoJson= {};
-                    $scope.infoJson.message =JSON.stringify(data);
-                    $scope.infoJson.app ='settings';
-                    logHelper.error( $scope.infoJson);
+										$scope.infoJson= {};
+										$scope.infoJson.message =JSON.stringify(data);
+										$scope.infoJson.app ='settings';
+										logHelper.error( $scope.infoJson);
 									});
 
 								});
@@ -1570,19 +1586,19 @@
 								//console.log(data);
 								$scope.generalSubmit = false;
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
 								}).error(function (data) {
 									//console.log("Settings Rollback failed");
-                  $scope.infoJson= {};
-                  $scope.infoJson.message =JSON.stringify(data);
-                  $scope.infoJson.app ='settings';
-                  logHelper.error( $scope.infoJson);
+									$scope.infoJson= {};
+									$scope.infoJson.message =JSON.stringify(data);
+									$scope.infoJson.app ='settings';
+									logHelper.error( $scope.infoJson);
 								});
 
 							})
@@ -1695,27 +1711,27 @@
 									// }).error(function (data) {
 									// 	console.log("Settings Rollback failed");
 									// });
-                  $scope.infoJson= {};
-                  $scope.infoJson.message ='General records has been saved';
-                  $scope.infoJson.app ='settings';
-                  logHelper.info( $scope.infoJson);
+									$scope.infoJson= {};
+									$scope.infoJson.message ='General records has been saved';
+									$scope.infoJson.app ='settings';
+									logHelper.info( $scope.infoJson);
 								}).error(function (data) {
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
 
-                  $scope.infoJson= {};
-                  $scope.infoJson.message =JSON.stringify(data);
-                  $scope.infoJson.app ='settings';
-                  logHelper.error( $scope.infoJson);
+									$scope.infoJson= {};
+									$scope.infoJson.message =JSON.stringify(data);
+									$scope.infoJson.app ='settings';
+									logHelper.error( $scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
 									}).error(function (data) {
 										//console.log("Settings Rollback failed");
-                    $scope.infoJson= {};
-                    $scope.infoJson.message =JSON.stringify(data);
-                    $scope.infoJson.app ='settings';
-                    logHelper.error( $scope.infoJson);
+										$scope.infoJson= {};
+										$scope.infoJson.message =JSON.stringify(data);
+										$scope.infoJson.app ='settings';
+										logHelper.error( $scope.infoJson);
 									});
 
 								});
@@ -1723,19 +1739,19 @@
 								notifications.toast("Error occured while saving company profile.", "error");
 								$scope.generalSubmit = false;
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
 								}).error(function (data) {
 									//console.log("Settings Rollback failed");
-                  $scope.infoJson= {};
-                  $scope.infoJson.message =JSON.stringify(data);
-                  $scope.infoJson.app ='settings';
-                  logHelper.error( $scope.infoJson);
+									$scope.infoJson= {};
+									$scope.infoJson.message =JSON.stringify(data);
+									$scope.infoJson.app ='settings';
+									logHelper.error( $scope.infoJson);
 								});
 
 							});
@@ -1747,19 +1763,19 @@
 						notifications.toast("Error occured while saving general records.", "error");
 						$scope.generalSubmit = false;
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 
 						$charge.settingsapp().deleteGeneralData().success(function (data) {
 							//console.log("Settings Rollback..");
 						}).error(function (data) {
 							//console.log("Settings Rollback failed");
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						});
 
 					})
@@ -1875,19 +1891,19 @@
 						$scope.template.croppedLogo=data.fileUrl;
 						$scope.insertCompanyIndividual();
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
-            $scope.infoJson.app ='settings';
-            logHelper.info( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
+						$scope.infoJson.app ='settings';
+						logHelper.info( $scope.infoJson);
 
 					}).error(function (data) {
 						//console.log(data);
 						$scope.generalSubmit = false;
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 					})
 
 					//$uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
@@ -1927,10 +1943,10 @@
 				$scope.template.companyLogo=[];
 				$scope.generalSubmit=false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -1971,10 +1987,10 @@
 				notifications.toast("Error occured while updating Company Record.", "error");
 				$scope.generalSubmit=false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2021,10 +2037,10 @@
 				notifications.toast("Error occured while updating Footer Record.", "error");
 				$scope.generalSubmit=false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2045,18 +2061,18 @@
 				$scope.generalSubmit=false;
 				$state.go($state.current, {}, {reload: true});
 
-        $scope.infoJson= {};
-        $scope.infoJson.message ='General records have been updated';
-        $scope.infoJson.app ='settings';
-        logHelper.info( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message ='General records have been updated';
+				$scope.infoJson.app ='settings';
+				logHelper.info( $scope.infoJson);
 			}).error(function (data) {
 				notifications.toast("Error occured while updating Footer Record.", "error");
 				$scope.generalSubmit=false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2162,229 +2178,238 @@
 		//  $rootScope.isBrandLoaded=false;
 		//})
 
+		$scope.loadingProductCategories = true;
+		$scope.loadingProductBrands = true;
+		$scope.loadingProductUMOs = true;
 		$scope.loadProductAttributes= function () {
 
 			$charge.uom().getAllUOM('Product_123').success(function(data) {
-			  $scope.UOMs=[];
-			  //console.log(data);
-			  for(var i=0;i<data.length;i++)
-			  {
-			    //
-			    $scope.UOMs.push(data[i]);
-			    //
-			  }
+				$scope.UOMs=[];
+				//console.log(data);
+				for(var i=0;i<data.length;i++)
+				{
+					//
+					$scope.UOMs.push(data[i]);
+					//
+				}
+				$scope.loadingProductUMOs = false;
 			}).error(function(data) {
-			//  console.log(data);
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				//  console.log(data);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+				$scope.loadingProductUMOs = false;
 			})
 
-      $rootScope.isCategoryLoaded=false;
-      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes","Category").success(function(data) {
-        $scope.categories=[];
-        $rootScope.isCategoryLoaded=true;
-        for(var i=0;i<data.length;i++)
-        {
-          $scope.categories.push(data[i]);
-        }
-      }).error(function(data) {
-        console.log(data);
-        $rootScope.isCategoryLoaded=false;
-      })
+			$rootScope.isCategoryLoaded=false;
+			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes","Category").success(function(data) {
+				$scope.categories=[];
+				$rootScope.isCategoryLoaded=true;
+				for(var i=0;i<data.length;i++)
+				{
+					$scope.categories.push(data[i]);
+				}
+				$scope.loadingProductCategories = false;
+			}).error(function(data) {
+				console.log(data);
+				$rootScope.isCategoryLoaded=false;
+				$scope.loadingProductCategories = false;
+			})
 
-      $rootScope.isBrandLoaded=false;
-      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes","Brand").success(function(data) {
-        $scope.brands=[];
-        $rootScope.isBrandLoaded=true;
-        //console.log(data);
-        for(var i=0;i<data.length;i++)
-        {
-          //
-          $scope.brands.push(data[i]);
-        }
-      }).error(function(data) {
-        console.log(data);
-        $rootScope.isBrandLoaded=false;
-      })
+			$rootScope.isBrandLoaded=false;
+			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes","Brand").success(function(data) {
+				$scope.brands=[];
+				$rootScope.isBrandLoaded=true;
+				//console.log(data);
+				for(var i=0;i<data.length;i++)
+				{
+					//
+					$scope.brands.push(data[i]);
+				}
+				$scope.loadingProductBrands = false;
+			}).error(function(data) {
+				console.log(data);
+				$rootScope.isBrandLoaded=false;
+				$scope.loadingProductBrands = false;
+			})
 
 		}
 
-    var skipPlanChangeFee=0;
-    var takePlanChangeFee=100;
-    $scope.loadingPlanChangeFee = false;
-    $scope.planChangeFeeList=[];
+		var skipPlanChangeFee=0;
+		var takePlanChangeFee=100;
+		$scope.loadingPlanChangeFee = false;
+		$scope.planChangeFeeList=[];
 
-    var skipPlanKeyAttributes=0;
-    var takePlanKeyAttributes=100;
-    $scope.loadingPlanKeyAttributes = true;
-    $scope.planKeyAttributesList=[];
+		var skipPlanKeyAttributes=0;
+		var takePlanKeyAttributes=100;
+		$scope.loadingPlanKeyAttributes = true;
+		$scope.planKeyAttributesList=[];
 
-    $scope.BaseCurrencyPlanChangeFee = "";
-    $scope.currencyRate = 1;
+		$scope.BaseCurrencyPlanChangeFee = "";
+		$scope.currencyRate = 1;
 
-    $scope.isPlanTypeLoaded = false;
+		$scope.isPlanTypeLoaded = false;
 
-    $scope.loadPlanAttributes= function () {
-      //$charge.settingsapp().getDuobaseValuesByTableName("CTS_CommonAttributes").success(function(data) {
-      //  $scope.categories=[];
-      //  $rootScope.isCategoryLoaded=true;
-      //  for(var i=0;i<data.length;i++)
-      //  {
-      //    $scope.categories.push(data[i]);
-      //  }
-      //
-      //  $scope.brands=[];
-      //  $rootScope.isBrandLoaded=true;
-      //  //console.log(data);
-      //  for(var i=0;i<data.length;i++)
-      //  {
-      //    //
-      //    $scope.brands.push(data[i]);
-      //  }
-      //
-      //}).error(function(data) {
-      //  $rootScope.isCategoryLoaded=false;
-      //  $rootScope.isBrandLoaded=false;
-      //})
-      //
-      $charge.uom().getAllUOM('Plan_123').success(function(data) {
-        $scope.UOMs=[];
-        //console.log(data);
-        for(var i=0;i<data.length;i++)
-        {
-          //
-          $scope.UOMs.push(data[i]);
-          //
-        }
-      }).error(function(data) {
-        //  console.log(data);
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
+		$scope.loadPlanAttributes= function () {
+			//$charge.settingsapp().getDuobaseValuesByTableName("CTS_CommonAttributes").success(function(data) {
+			//  $scope.categories=[];
+			//  $rootScope.isCategoryLoaded=true;
+			//  for(var i=0;i<data.length;i++)
+			//  {
+			//    $scope.categories.push(data[i]);
+			//  }
+			//
+			//  $scope.brands=[];
+			//  $rootScope.isBrandLoaded=true;
+			//  //console.log(data);
+			//  for(var i=0;i<data.length;i++)
+			//  {
+			//    //
+			//    $scope.brands.push(data[i]);
+			//  }
+			//
+			//}).error(function(data) {
+			//  $rootScope.isCategoryLoaded=false;
+			//  $rootScope.isBrandLoaded=false;
+			//})
+			//
+			$charge.uom().getAllUOM('Plan_123').success(function(data) {
+				$scope.UOMs=[];
+				//console.log(data);
+				for(var i=0;i<data.length;i++)
+				{
+					//
+					$scope.UOMs.push(data[i]);
+					//
+				}
+			}).error(function(data) {
+				//  console.log(data);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			})
 
-      $charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
-        var length = data.length;
-        //
-        $scope.planTypeList=[];
-        $rootScope.isPlanTypeLoaded=true;
-        for (var i = 0; i < length; i++) {
-          for (var j = 0; j < data[i].length; j++) {
-            var obj = data[i][j];
-            if (obj.ColumnIndex == "0") {
-              $scope.planTypeList.push(obj);
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
+				var length = data.length;
+				//
+				$scope.planTypeList=[];
+				$rootScope.isPlanTypeLoaded=true;
+				for (var i = 0; i < length; i++) {
+					for (var j = 0; j < data[i].length; j++) {
+						var obj = data[i][j];
+						if (obj.ColumnIndex == "0") {
+							$scope.planTypeList.push(obj);
 
-            }
-          }
-        }
-        $scope.isPlanTypeLoaded = true;
-      }).error(function (data) {
-        $rootScope.isPlanTypeLoaded=false;
-        $scope.isPlanTypeLoaded = true;
+						}
+					}
+				}
+				$scope.isPlanTypeLoaded = true;
+			}).error(function (data) {
+				$rootScope.isPlanTypeLoaded=false;
+				$scope.isPlanTypeLoaded = true;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			})
 
-      skipPlanKeyAttributes=0;
-      $scope.loadingPlanKeyAttributes = true;
-      $scope.planKeyAttributesList=[];
+			skipPlanKeyAttributes=0;
+			$scope.loadingPlanKeyAttributes = true;
+			$scope.planKeyAttributesList=[];
 
-      $charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
-      {
-        //console.log(data);
+			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
+			{
+				//console.log(data);
 
-        if($scope.loadingPlanKeyAttributes)
-        {
-          skipPlanKeyAttributes += takePlanKeyAttributes;
+				if($scope.loadingPlanKeyAttributes)
+				{
+					skipPlanKeyAttributes += takePlanKeyAttributes;
 
-          for (var i = 0; i < data.length; i++) {
-            $scope.planKeyAttributesList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						$scope.planKeyAttributesList.push(data[i]);
+					}
 
-          $scope.loadingPlanKeyAttributes = false;
+					$scope.loadingPlanKeyAttributes = false;
 
-          if(data.length<takePlanKeyAttributes){
+					if(data.length<takePlanKeyAttributes){
 
-          }
-          else
-          {
-            $scope.loadPlanKeyAttributesPaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanKeyAttributesPaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.loadingPlanKeyAttributes = false;
+			}).error(function(data)
+			{
+				$scope.loadingPlanKeyAttributes = false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			})
 
-      skipPlanChangeFee=0;
-      $scope.loadingPlanChangeFee = true;
-      $scope.planChangeFeeList=[];
+			skipPlanChangeFee=0;
+			$scope.loadingPlanChangeFee = true;
+			$scope.planChangeFeeList=[];
 
-      $charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
-      {
-        //console.log(data);
+			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
+			{
+				//console.log(data);
 
-        if($scope.loadingPlanChangeFee)
-        {
-          skipPlanChangeFee += takePlanChangeFee;
+				if($scope.loadingPlanChangeFee)
+				{
+					skipPlanChangeFee += takePlanChangeFee;
 
-          for (var i = 0; i < data.length; i++) {
-            data[i].editItem=false;
-            $scope.planChangeFeeList.push(data[i]);
-          }
+					for (var i = 0; i < data.length; i++) {
+						data[i].editItem=false;
+						$scope.planChangeFeeList.push(data[i]);
+					}
 
-          $scope.loadingPlanChangeFee = false;
+					$scope.loadingPlanChangeFee = false;
 
-          if(data.length<takePlanChangeFee){
+					if(data.length<takePlanChangeFee){
 
-          }
-          else
-          {
-            $scope.loadPlanChangeFeePaging();
-          }
+					}
+					else
+					{
+						$scope.loadPlanChangeFeePaging();
+					}
 
-        }
+				}
 
-      }).error(function(data)
-      {
-        $scope.loadingPlanChangeFee = false;
-        $scope.planChangeFeeList = [];
+			}).error(function(data)
+			{
+				$scope.loadingPlanChangeFee = false;
+				$scope.planChangeFeeList = [];
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			})
 
-      $charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
-        $scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
-        //console.log($scope.BaseCurrencyPlanChangeFee);
-        //$scope.selectedCurrency = $scope.BaseCurrency;
+			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
+				$scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
+				//console.log($scope.BaseCurrencyPlanChangeFee);
+				//$scope.selectedCurrency = $scope.BaseCurrency;
 
-      }).error(function(data) {
-        //console.log(data);
-        $scope.BaseCurrencyPlanChangeFee="USD";
-        //$scope.selectedCurrency = $scope.BaseCurrency;
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
+			}).error(function(data) {
+				//console.log(data);
+				$scope.BaseCurrencyPlanChangeFee="USD";
+				//$scope.selectedCurrency = $scope.BaseCurrency;
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			})
 
-    }
+		}
 
 		$scope.loadPlanKeyAttributesPaging= function () {
 			$scope.loadingPlanKeyAttributes = true;
@@ -2416,10 +2441,10 @@
 			{
 				$scope.loadingPlanKeyAttributes = false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2455,10 +2480,10 @@
 				//$scope.planChangeFeeList = false;
 				$scope.loadingPlanChangeFee = false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2511,10 +2536,10 @@
 				vm.webhookEventList=[];
 				$scope.loadingEventsWH = false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 
 			vm.webhookList=[];
@@ -2556,10 +2581,10 @@
 				vm.webhookList=[];
 				$scope.loadingWebhooks = false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 
 
@@ -2591,10 +2616,10 @@
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -2636,10 +2661,10 @@
 					$scope.checkAlreadyUsedEvents();
 				}
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2683,10 +2708,10 @@
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2758,10 +2783,10 @@
 								vm.webhook.mode="Live";
 								vm.webhookTypeChange("custom");
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =vm.webhook.endPoint+' Webhook Created Successfully';
-                $scope.infoJson.app ='settings';
-                logHelper.info( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =vm.webhook.endPoint+' Webhook Created Successfully';
+								$scope.infoJson.app ='settings';
+								logHelper.info( $scope.infoJson);
 
 								vm.webhookList=[];
 								skipAllWebhooks=0;
@@ -2773,10 +2798,10 @@
 							{
 								notifications.toast("Webhook Creation Failed", "error");
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -2785,10 +2810,10 @@
 							//console.log(data);
 							vm.webhookSubmitted = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -2832,19 +2857,19 @@
 								$scope.resetWebhook();
 								$mdDialog.hide();
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =vm.webhook.endPoint+' Webhook Updated Successfully';
-                $scope.infoJson.app ='settings';
-                logHelper.info( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =vm.webhook.endPoint+' Webhook Updated Successfully';
+								$scope.infoJson.app ='settings';
+								logHelper.info( $scope.infoJson);
 							}
 							else
 							{
 								notifications.toast("Webhook Updating Failed", "error");
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -2853,10 +2878,10 @@
 							//console.log(data);
 							vm.webhookSubmitted = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -2994,10 +3019,10 @@
 				$scope.loadingEmailTemplates = false;
 				if(data == '204')vm.emailTemplateList[0].isSelected = true;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -3164,6 +3189,7 @@
 
 		$scope.displayBrand= function (brand) {
 			$scope.editBra=true;
+			brand.editItem = true;
 			$scope.displayBrandCode=brand.RecordFieldData;
 			$scope.editBrand = angular.copy(brand);
 			$scope.updateBraEnable = true;
@@ -3581,11 +3607,19 @@
 		$scope.displayUom= function (uom) {
 			//console.log(ev);
 			$scope.editUom=true;
+			uom.editItem=true;
 			$scope.displayUOMCode=uom.UOMCode;
 			$scope.editUnit = angular.copy(uom);
 			$scope.updateUomEnable = true;
 
 		}
+
+		$scope.cancelEditUOM= function (uom) {
+			//console.log(ev);
+			$timeout(function(){
+				uom.editItem=false;
+			});
+		};
 
 
 		$scope.updateUomDisabled = false;
@@ -3629,10 +3663,10 @@
 							//console.log(data);
 							$scope.updateUomDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					} else {
 						$scope.editUnit = "";
@@ -3652,68 +3686,68 @@
 			}
 		}
 
-    $scope.updateProductUOM= function () {
-      var uom= $scope.editUnit;
-      $scope.updateUomDisabled = true;
-      var req = {
-        "GUUOMID":uom.GUUOMID,
-        "GUTranID":uom.GUTranID,
-        "CommitStatus":uom.CommitStatus,
-        "UOMCode":uom.UOMCode
-      }
-      var countUOM=0;
-      for (var i = 0; i < $scope.UOMs.length; i++) {
-        if ($scope.UOMs[i].UOMCode == uom.UOMCode) {
-          if($scope.displayUOMCode!=uom.UOMCode) {
-            countUOM++;
-          }
-        }
-      }
+		$scope.updateProductUOM= function () {
+			var uom= $scope.editUnit;
+			$scope.updateUomDisabled = true;
+			var req = {
+				"GUUOMID":uom.GUUOMID,
+				"GUTranID":uom.GUTranID,
+				"CommitStatus":uom.CommitStatus,
+				"UOMCode":uom.UOMCode
+			}
+			var countUOM=0;
+			for (var i = 0; i < $scope.UOMs.length; i++) {
+				if ($scope.UOMs[i].UOMCode == uom.UOMCode) {
+					if($scope.displayUOMCode!=uom.UOMCode) {
+						countUOM++;
+					}
+				}
+			}
 
-      if(countUOM==0) {
-        $charge.uom().updateUOM(req).success(function (data) {
+			if(countUOM==0) {
+				$charge.uom().updateUOM(req).success(function (data) {
 
-          if (data.count > 0) {
-            notifications.toast("UOM has been updated.", "success");
-            $charge.uom().getAllUOM('Product_123').success(function (data) {
-              $scope.UOMs = [];
-              //
-              //console.log(data);
-              for (var i = 0; i < data.length; i++) {
-                //
-                $scope.UOMs.push(data[i]);
-                //
-              }
+					if (data.count > 0) {
+						notifications.toast("UOM has been updated.", "success");
+						$charge.uom().getAllUOM('Product_123').success(function (data) {
+							$scope.UOMs = [];
+							//
+							//console.log(data);
+							for (var i = 0; i < data.length; i++) {
+								//
+								$scope.UOMs.push(data[i]);
+								//
+							}
 
-              $scope.editUnit = "";
-              $scope.updateUomEnable = !$scope.updateUomEnable;
-              $scope.updateUomDisabled = false;
-            }).error(function (data) {
-              //console.log(data);
-              $scope.updateUomDisabled = false;
+							$scope.editUnit = "";
+							$scope.updateUomEnable = !$scope.updateUomEnable;
+							$scope.updateUomDisabled = false;
+						}).error(function (data) {
+							//console.log(data);
+							$scope.updateUomDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
-            })
-          } else {
-            $scope.editUnit = "";
-            $scope.updateUomEnable = !$scope.updateUomEnable;
-            $scope.updateUomDisabled = false;
-          }
-        }).error(function (data) {
-          //console.log(data);
-          $scope.updateUomDisabled = false;
-        })
-      }
-      else
-      {
-        notifications.toast("UOM is already exist" , "error");
-        $scope.updateUomDisabled = false;
-        $scope.editUnit.UOMCode = $scope.displayUOMCode;
-      }
-    }
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
+						})
+					} else {
+						$scope.editUnit = "";
+						$scope.updateUomEnable = !$scope.updateUomEnable;
+						$scope.updateUomDisabled = false;
+					}
+				}).error(function (data) {
+					//console.log(data);
+					$scope.updateUomDisabled = false;
+				})
+			}
+			else
+			{
+				notifications.toast("UOM is already exist" , "error");
+				$scope.updateUomDisabled = false;
+				$scope.editUnit.UOMCode = $scope.displayUOMCode;
+			}
+		}
 
 		$scope.submitUOM = function() {
 			if (vm.unitOfMeasure.$valid == true) {
@@ -3780,20 +3814,20 @@
 							//console.log(data);
 							$scope.addUomDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 						//if(data.IsSuccess) {
 						//  console.log(data);
 						//}
 					}).error(function (data) {
 						//console.log(data);
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -3804,81 +3838,81 @@
 
 		}
 
-    $scope.addProductUOM= function () {
-      var ev = $scope.product.uom;
-      $scope.addUomDisabled = true;
+		$scope.addProductUOM= function () {
+			var ev = $scope.product.uom;
+			$scope.addUomDisabled = true;
 
-      if (ev != null && ev != "") {
-        var isDuplicate = false;
-        if ($scope.UOMs.length != 0) {
-          for (var i = 0; i < $scope.UOMs.length; i++) {
-            if ($scope.UOMs[i].UOMCode == ev) {
-              notifications.toast("UOM Code is already exist.", "error");
-              $scope.product.uom = "";
-              $scope.addUomDisabled = false;
-              isDuplicate = true;
-              break;
-            }
-          }
-        }
-        if (!isDuplicate) {
-          var req = {
-            "GUUOMID": "123",
-            "GUUOMTypeID": "supplier1",
-            "GUTranID": "12345",
-            "CommitStatus": "Active",
-            "UOMCode": ev,
-            "uomApplicationMapperDetail": [{
-              "GUApplicationID": "Product_123"
-            }],
-            "uomConversionDetails": [{
-              "FromUOMCode": ev,
-              "Qty": "10",
-              "ToUOMCode": ev
-            }]
+			if (ev != null && ev != "") {
+				var isDuplicate = false;
+				if ($scope.UOMs.length != 0) {
+					for (var i = 0; i < $scope.UOMs.length; i++) {
+						if ($scope.UOMs[i].UOMCode == ev) {
+							notifications.toast("UOM Code is already exist.", "error");
+							$scope.product.uom = "";
+							$scope.addUomDisabled = false;
+							isDuplicate = true;
+							break;
+						}
+					}
+				}
+				if (!isDuplicate) {
+					var req = {
+						"GUUOMID": "123",
+						"GUUOMTypeID": "supplier1",
+						"GUTranID": "12345",
+						"CommitStatus": "Active",
+						"UOMCode": ev,
+						"uomApplicationMapperDetail": [{
+							"GUApplicationID": "Product_123"
+						}],
+						"uomConversionDetails": [{
+							"FromUOMCode": ev,
+							"Qty": "10",
+							"ToUOMCode": ev
+						}]
 
-          }
-          $charge.uom().store(req).success(function (data) {
-            notifications.toast("UOM has been added.", "success");
-            $charge.uom().getAllUOM('Product_123').success(function (data) {
-              $scope.UOMs = [];
-              //
-              //console.log(data);
-              for (var i = 0; i < data.length; i++) {
-                //
-                $scope.UOMs.push(data[i]);
-                //
-              }
-              $scope.product.uom = "";
-              $scope.addUomDisabled = false;
-              //$mdDialog.hide($scope.UOMs);
-            }).error(function (data) {
-              //console.log(data);
-              $scope.addUomDisabled = false;
+					}
+					$charge.uom().store(req).success(function (data) {
+						notifications.toast("UOM has been added.", "success");
+						$charge.uom().getAllUOM('Product_123').success(function (data) {
+							$scope.UOMs = [];
+							//
+							//console.log(data);
+							for (var i = 0; i < data.length; i++) {
+								//
+								$scope.UOMs.push(data[i]);
+								//
+							}
+							$scope.product.uom = "";
+							$scope.addUomDisabled = false;
+							//$mdDialog.hide($scope.UOMs);
+						}).error(function (data) {
+							//console.log(data);
+							$scope.addUomDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
-            })
-            //if(data.IsSuccess) {
-            //  console.log(data);
-            //}
-          }).error(function (data) {
-            //console.log(data);
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
-          })
-        }
-      }
-      else{
-        notifications.toast("UOM cannot be empty", "error");
-        $scope.addUomDisabled = false;
-      }
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
+						})
+						//if(data.IsSuccess) {
+						//  console.log(data);
+						//}
+					}).error(function (data) {
+						//console.log(data);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
+					})
+				}
+			}
+			else{
+				notifications.toast("UOM cannot be empty", "error");
+				$scope.addUomDisabled = false;
+			}
 
-    }
+		}
 
 		$scope.submitPlan= function (state) {
 			$scope.updateUomEnable = state;
@@ -3955,10 +3989,10 @@
 							notifications.toast("Type has been added.", "success");
 							$mdDialog.hide();
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =ev+' Type has been added';
-              $scope.infoJson.app ='settings';
-              logHelper.info( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =ev+' Type has been added';
+							$scope.infoJson.app ='settings';
+							logHelper.info( $scope.infoJson);
 							//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//  $scope.stores = [];
 							//  for (var i = 0; i < data.length; i++) {
@@ -3987,29 +4021,29 @@
 								}
 								$scope.plan.plantype = "";
 							}).error(function (data) {
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							})
 
 							if (data.error=="00000") {
 								//console.log(data);
 								$scope.addUomDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							}
 						}).error(function (data) {
 							//console.log(data);
 							$scope.addUomDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else {
@@ -4045,10 +4079,10 @@
 							notifications.toast("Type has been added.", "success");
 							$mdDialog.hide();
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =ev+' Type has been added';
-              $scope.infoJson.app ='settings';
-              logHelper.info( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =ev+' Type has been added';
+							$scope.infoJson.app ='settings';
+							logHelper.info( $scope.infoJson);
 							//                $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//                  $scope.stores = [];
 							//                  for (var i = 0; i < data.length; i++) {
@@ -4076,10 +4110,10 @@
 								}
 								$scope.plan.plantype = "";
 							}).error(function (data) {
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							})
 
 							if (data[0].error=="00000") {
@@ -4091,10 +4125,10 @@
 							//console.log(data);
 							$scope.addUomDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}
 				}
@@ -4148,10 +4182,10 @@
 					if (data.count > 0) {
 						notifications.toast("Type has been updated.", "success");
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =commondata.RecordFieldData+' Type has been updated';
-            $scope.infoJson.app ='settings';
-            logHelper.info( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =commondata.RecordFieldData+' Type has been updated';
+						$scope.infoJson.app ='settings';
+						logHelper.info( $scope.infoJson);
 //              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 //                $scope.stores = [];
 //                for (var i = 0; i < data.length; i++) {
@@ -4189,10 +4223,10 @@
 							$scope.updateUomDisabled = false;
 							$mdDialog.hide();
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 						$scope.updateUomEnable = false;
 					}
@@ -4208,10 +4242,10 @@
 					$scope.updateUomDisabled = false;
 					$scope.updateUomEnable = false;
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -4271,10 +4305,10 @@
 							$scope.planChangeFeeSubmitted=false;
 							$scope.changePlanFee={};
 
-              $scope.infoJson= {};
-              $scope.infoJson.message ='Successfully plan change fee created';
-              $scope.infoJson.app ='settings';
-              logHelper.info( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message ='Successfully plan change fee created';
+							$scope.infoJson.app ='settings';
+							logHelper.info( $scope.infoJson);
 
 							skipPlanChangeFee=0;
 							$scope.planChangeFeeList=[];
@@ -4295,10 +4329,10 @@
 						$scope.planChangeFeeSubmitted=false;
 						$scope.planChangeView=false;
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 					})
 				}
 				else
@@ -4367,10 +4401,10 @@
 						notifications.toast("Successfully Plan Change Fee Updated","success");
 						$scope.planChangeFeeUpdateSubmitted=false;
 
-            $scope.infoJson= {};
-            $scope.infoJson.message ='Successfully Plan Change Fee Updated';
-            $scope.infoJson.app ='settings';
-            logHelper.info( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message ='Successfully Plan Change Fee Updated';
+						$scope.infoJson.app ='settings';
+						logHelper.info( $scope.infoJson);
 
 						skipPlanChangeFee=0;
 						$scope.planChangeFeeList=[];
@@ -4382,20 +4416,20 @@
 						notifications.toast("Plan Change Fee Updating Failed","error");
 						$scope.planChangeFeeUpdateSubmitted=false;
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 					}
 				}).error(function(data)
 				{
 					notifications.toast("Plan Change Fee Updating Failed","error");
 					$scope.planChangeFeeUpdateSubmitted=false;
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -4420,10 +4454,10 @@
 				{
 					notifications.toast("Successfully Plan Change Fee Deleted","success");
 
-          $scope.infoJson= {};
-          $scope.infoJson.message ='Successfully Plan Change Fee Deleted';
-          $scope.infoJson.app ='settings';
-          logHelper.info( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message ='Successfully Plan Change Fee Deleted';
+					$scope.infoJson.app ='settings';
+					logHelper.info( $scope.infoJson);
 
 					skipPlanChangeFee=0;
 					$scope.planChangeFeeList=[];
@@ -4434,19 +4468,19 @@
 				{
 					notifications.toast("Plan Change Fee Deleting Failed","error");
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				}
 			}).error(function(data)
 			{
 				notifications.toast("Plan Change Fee Deleting Failed","error");
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -4499,26 +4533,26 @@
 					notifications.toast("Webhook has Deleted Successfully", "success");
 					$scope.resetWebhook();
 
-          $scope.infoJson= {};
-          $scope.infoJson.message ='Webhook has Deleted Successfully';
-          $scope.infoJson.app ='settings';
-          logHelper.info( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message ='Webhook has Deleted Successfully';
+					$scope.infoJson.app ='settings';
+					logHelper.info( $scope.infoJson);
 				}
 				else
 				{
 					notifications.toast("Webhook Deleting Failed", "error");
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				}
 			}).error(function (data) {
 				//console.log(data);
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -4624,20 +4658,20 @@
 							notifications.toast("Template Saving Error", "error");
 							vm.emailTemplateSubmitted=false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
 						vm.emailTemplateSubmitted=false;
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 					})
 
 				}
@@ -4683,10 +4717,10 @@
 						notifications.toast("Template Saving Error", "error");
 						vm.emailTemplateSubmitted=false;
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 					})
 				}
 
@@ -4725,6 +4759,7 @@
 							notifications.toast("Category is already exist.", "error");
 							$scope.product.category="";
 							$scope.addCategoryDisabled = false;
+							$scope.addCatView = false;
 							break;
 						}
 					}
@@ -4746,9 +4781,11 @@
 								}
 								$scope.product.category = "";
 								$scope.addCategoryDisabled = false;
+								$scope.addCatView = false;
 //$mdDialog.hide($scope.categories);
 							}).error(function (data) {
 								$scope.addCategoryDisabled = false;
+								$scope.addCatView = false;
 //console.log(data);
 							})
 
@@ -4758,7 +4795,8 @@
 							//}
 						}).error(function (data) {
 							$scope.addCategoryDisabled = false;
-							//console.log(data);
+							$scope.addCatView = false;
+//console.log(data);
 						})
 					}
 					else {
@@ -4799,19 +4837,23 @@
 								}
 								$scope.product.category = "";
 								$scope.addCategoryDisabled = false;
-								//$mdDialog.hide($scope.categories);
+								$scope.addCatView = false;
+//$mdDialog.hide($scope.categories);
 							}).error(function (data) {
 								$scope.addCategoryDisabled = false;
-								//console.log(data);
+								$scope.addCatView = false;
+//console.log(data);
 							})
 
 							if (data.IsSuccess) {
 								//console.log(data);
 								$scope.addCategoryDisabled = false;
-								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
+								$scope.addCatView = false;
+//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
 							//console.log(data);
+							$scope.addCatView = false;
 						})
 					}
 				}
@@ -4879,10 +4921,22 @@
 		}
 
 		$scope.displayCat= function (category) {
-			$scope.editCat=true;
 			$scope.displayCategoryCode=category.RecordFieldData;
 			$scope.editCategory = angular.copy(category);
 			$scope.updateCatEnable = true;
+			category.editItem = true;
+		}
+
+		$scope.cancelEditCat= function (category) {
+			$timeout(function(){
+				category.editItem=false;
+			});
+		}
+
+		$scope.cancelEditBrand= function (brand) {
+			$timeout(function(){
+				brand.editItem=false;
+			});
 		}
 
 		$scope.deleteCommonData= function (ev,index) {
@@ -4908,37 +4962,37 @@
 			})
 		}
 
-    $scope.showDeleteUOMConfirm = function(ev,uom,index) {
-      // Appending dialog to document.body to cover sidenav in docs app
-      var confirm = $mdDialog.confirm()
-        .title('Would you like to delete this UOM?')
-        .textContent('You cannot revert this action again for a active UOM!')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('Please do it!')
-        .cancel('No!');
+		$scope.showDeleteUOMConfirm = function(ev,uom,index) {
+			// Appending dialog to document.body to cover sidenav in docs app
+			var confirm = $mdDialog.confirm()
+				.title('Would you like to delete this UOM?')
+				.textContent('You cannot revert this action again for a active UOM!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Please do it!')
+				.cancel('No!');
 
-      $mdDialog.show(confirm).then(function() {
-        $scope.deleteUOM(uom,index);
-      }, function() {
+			$mdDialog.show(confirm).then(function() {
+				$scope.deleteUOM(uom,index);
+			}, function() {
 
-      });
-    };
+			});
+		};
 
 		$scope.deleteUOM= function (ev,index) {
 			//
 			$charge.uom().delete(ev.GUUOMID).success(function(data) {
 				//
 				$scope.UOMs.splice(index,1);
-        notifications.toast("UOM has been deleted successfully", "success");
+				notifications.toast("UOM has been deleted successfully", "success");
 			}).error(function(data) {
 				//console.log(data);
-        notifications.toast("UOM deleting Failed", "error");
+				notifications.toast("UOM deleting Failed", "error");
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5140,10 +5194,10 @@
 				}];
 				$scope.addNewReminder(0);
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5393,10 +5447,10 @@
 
 			}).error(function(data) {
 				//console.log(data);
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5536,20 +5590,20 @@
 								$scope.addTermsDisabled = false;
 								isInvoiceLoaded = false;
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
 							vm.invoiceSubmit=false;
 							$scope.addTermsDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -5679,20 +5733,20 @@
 								isInvoiceLoaded = false;
 								$scope.addTermsDisabled = false;
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
 							vm.invoiceSubmit=false;
 							$scope.addTermsDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 						//}
 						//else
@@ -5903,20 +5957,20 @@
 							isInvoiceLoaded = false;
 							$scope.addTermsDisabled = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}).error(function(data) {
 						//console.log(data);
 						vm.invoiceSubmit=false;
 						$scope.addTermsDisabled = false;
 
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -6356,19 +6410,19 @@
 							}).error(function (data) {
 								isPaymentLoaded = false;
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
 							vm.paymentSubmit=false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else {
@@ -6431,19 +6485,19 @@
 							}).error(function (data) {
 								isPaymentLoaded = false;
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
 							vm.paymentSubmit=false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 						//}
 						//else {
@@ -6552,17 +6606,17 @@
 						}).error(function (data) {
 							isPaymentLoaded = false;
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							logHelper.error( $scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
-            $scope.infoJson= {};
-            $scope.infoJson.message =JSON.stringify(data);
-            $scope.infoJson.app ='settings';
-            logHelper.error( $scope.infoJson);
+						$scope.infoJson= {};
+						$scope.infoJson.message =JSON.stringify(data);
+						$scope.infoJson.app ='settings';
+						logHelper.error( $scope.infoJson);
 					})
 
 
@@ -6609,10 +6663,10 @@
 				$scope.remindersInPaymentLoaded = true;
 				isPaymentLoaded=false;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 			//$scope.remindersInPaymentLoaded = false;
 			//$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
@@ -6678,10 +6732,10 @@
 					$scope.PaymentRetryUpdating=false;
 				}
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6719,10 +6773,10 @@
 
 			}).error(function(data) {
 				//console.log(data);
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6786,10 +6840,10 @@
 					notifications.toast("Payment Retry Configuration Saving Failed","error");
 					$scope.paymentRetrySubmitted=false;
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -6815,10 +6869,10 @@
 					notifications.toast("Payment Retry Configuration Updating Failed","error");
 					$scope.paymentRetrySubmitted=false;
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				})
 			}
 
@@ -6896,10 +6950,10 @@
 					$scope.isIndTaxLoaded = true;
 				});
 				// $scope.isSpinnerShown=false;
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6926,10 +6980,10 @@
 				$scope.isGrpTaxLoaded = true;
 				response=data;
 				// $scope.isSpinnerShown=false;
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -7314,10 +7368,10 @@
 				}).error(function(data) {
 					notifications.toast(data.error, "error");
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -7402,10 +7456,10 @@
 				}).error(function(data) {
 					notifications.toast(data.error, "error");
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -7639,10 +7693,10 @@
 					}
 					notifications.toast(error, "Error");
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -7692,10 +7746,10 @@
 					}
 					notifications.toast(error, "Error");
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -7743,10 +7797,10 @@
 					}
 					notifications.toast(error, "Error");
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -7793,10 +7847,10 @@
 
 				$scope.gen1Loading = true;
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			});
 
 
@@ -7839,10 +7893,10 @@
 				//console.log( data);
 				notifications.toast("There is a problem, Please try again", "Error");
 
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
 			});
 		}
 
@@ -7892,6 +7946,25 @@
 				$mdDialog.show({
 					controller: 'GuidedPaymentauthorizeController',
 					templateUrl: 'app/main/settings/dialogs/guided-payment-authorize.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
+			}
+			else if(gateway.paymentGateway === 'webxpay'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentWebxpayController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-webxpay.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
 					clickOutsideToClose:false,
