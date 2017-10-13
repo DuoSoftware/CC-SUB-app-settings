@@ -19,7 +19,7 @@
        // debugger;
       if($scope.webxpayForm.$valid){
 
-        $charge.paymentgateway().registerWithAuthorize($scope.webxpay).success(function (response) {
+        $charge.paymentgateway().registerWithWebxpay($scope.webxpay).success(function (response) {
 
           if(response.status){
             notifications.toast("Successfully registered with webxpay", "success");

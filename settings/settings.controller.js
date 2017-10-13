@@ -7993,6 +7993,8 @@
 				$scope.disconnectWithbraintree(key)
 			}else if(gateway === 'authorizednet'){
 				$scope.disconnectWithAuthorize(key);
+			}else if(gateway === 'webxpay'){
+				$scope.disconnectWithWebxpay(key);
 			}
 		}
 
