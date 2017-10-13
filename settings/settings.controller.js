@@ -7518,37 +7518,6 @@
 		$scope.isRegButtonsShow = true;
 		// $scope.isRegisteredWith2checkout = false;
 
-		$scope.loadCardDetails = function() {
-
-			$http({
-				method: 'GET',
-				url: "/azureshell/app/main/settings/paymentMethod/cardHandler.php?view=getCardDetails",
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}).then(function (response) {
-
-				if(!response.data.status){
-					return;
-				}
-
-				$scope.cardDetails = response.data.data;
-
-
-				for (var i = 0; i < $scope.cardDetails.length; i++) {
-					$scope.cardDetails[i].rowId = i;
-				}
-
-			}, function (response) {
-				//console.log(response);
-				$scope.cardDetails = null;
-
-			});
-
-		}
-
-		$scope.loadCardDetails();
-
 		// $scope.checkPaymentMethodRegistry = function(){
 		//
 		// 	$charge.paymentgateway().stripeCheckAccount().success(function (data) {
@@ -7993,6 +7962,8 @@
 				$scope.disconnectWithbraintree(key)
 			}else if(gateway === 'authorizednet'){
 				$scope.disconnectWithAuthorize(key);
+			}else if(gateway === 'webxpay'){
+				$scope.disconnectWithWebxpay(key);
 			}
 		}
 
