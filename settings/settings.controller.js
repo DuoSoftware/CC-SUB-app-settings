@@ -7780,13 +7780,69 @@
 		}
 
 
+    $scope.disconnectWithPaypal = function(key){
+
+      $scope.isRegButtonsShow = true;
+
+      $scope.paypal = key;
+
+      var confirm = $mdDialog.confirm()
+        .title('Disconnect with paypal')
+        .textContent('Do you want to proceed with paypal disconnection?')
+        .ariaLabel('Lucky day')
+        .ok('Yes')
+        .cancel('No');
+      $mdDialog.show(confirm).then(function () {
+
+
+
+        $charge.paymentgateway().disconnectWithPayPal($scope.paypal).success(function (dataa) {
+
+          //console.log(dataa);
+
+          if(dataa.status)
+          {
+            notifications.toast("You have successfully disconnected with paypal", "Success");
+            $scope.makeDefault('testGateway');
+            $scope.loadOnlinePaymentRegistration();
+          }else{
+            notifications.toast("There is a problem, Please try again", "Error");
+          }
+
+          $scope.isRegButtonsShow= false;
+
+        }).error(function (data) {
+          //console.log(data);
+          $scope.isRegButtonsShow= false;
+          var error = "There is a problem, Please try again";
+          if(angular.isDefined(data["error"])){
+            error = data["error"]+". Please try again";
+          }
+          notifications.toast(error, "Error");
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+
+        });
+
+      }, function () {
+        $scope.isRegButtonsShow = true;
+      });
+
+    }
+
+
 		//============================================================
 
 		$scope.currentGateways = [];
 		$scope.defaultGateway = "";
-
+    if($scope.accCategory === null){
+      $scope.accCategory = gst('category');
+    }
 		$scope.loadOnlinePaymentRegistration = function(){
-			$charge.paymentgateway().availableGateways($scope.general.baseCurrency).success(function (data) {
+			$charge.paymentgateway().availableGateways($scope.general.baseCurrency,$scope.accCategory).success(function (data) {
 				if(data.status) {
 
 					$scope.currentGateways = data.data.availableGateway;
@@ -7947,13 +8003,30 @@
 					}, function() {
 
 					});
-			}
+			}else if(gateway.paymentGateway === 'paypal'){
+
+        $mdDialog.show({
+          controller: 'GuidedPaymentPaypalController',
+          templateUrl: 'app/main/settings/dialogs/guided-payment-paypal.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:false,
+          locals:{
+            idToken : $scope.idToken
+          }
+        })
+          .then(function(answer) {
+            $scope.loadOnlinePaymentRegistration();
+
+          }, function() {
+
+          });
+      }
 		}
 
 		$scope.disconnectWithGateway= function (gateway,key) {
 			// $scope.defaultGateway == gateway ? $scope.defaultGateway = 'testGateway' : null;
-
-			if(gateway === 'stripe'){
+      if(gateway === 'stripe'){
 				$scope.disconnectWithStripe();
 			}
 			else if(gateway === 'worldpay'){
@@ -7964,7 +8037,9 @@
 				$scope.disconnectWithAuthorize(key);
 			}else if(gateway === 'webxpay'){
 				$scope.disconnectWithWebxpay(key);
-			}
+			}else if(gateway === 'paypal'){
+        $scope.disconnectWithPaypal(key);
+      }
 		}
 
 
