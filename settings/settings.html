@@ -1988,8 +1988,10 @@
                         <!--start online payments-->
                         <div flex="70">
                             <div class="payment-card" ng-repeat="gateway in currentGateways">
+
                                 <md-divider class="mb-16" ng-if="$index != 0"></md-divider>
                                 <div layout="row" layout-align="start center" ng-class="{'not-uspported':!gateway.support && gateway.paymentGateway != 'testGateway'}" flex>
+                                  <div layout="row" layout-align="start center" flex>
                                     <md-input-container style="margin: 0;" flex>
                                         <div class="online_{{gateway.paymentGateway | lowercase}}" ng-class="{'online_disabled': !gateway.isConnected}"></div>
                                         <!--<div>{{gateway.paymentGateway}}</div>-->
@@ -2057,7 +2059,31 @@
                                             </md-menu-content>
                                         </md-menu>
                                     </md-input-container>
+                                  </div>
+
+                                  <div layout="row" layout-align="start center" flex>
+                                    <div ng-if="gateway.paymentGateway === 'stripe' && gateway.isConnected">
+                                      <label>Bitcoin</label><md-checkbox id="bitcoinCheckBox" ng-model="gateway.key['0'].enableBitcoin" ></md-checkbox>
+                                      <br/>
+                                      <label>ACH</label><md-checkbox id="achCheckBox" ng-model="gateway.key['0'].enableAch" ></md-checkbox>
+                                      <br/>
+                                      <table>
+                                        <tr><td>Client Id</td><td><input type="text" id="clientIdTextBox" ng-model="gateway.key['0'].plaidClientId" /> </td></tr>
+                                        <tr><td>Public key</td><td><input type="text" id="publicKeyTextBox" ng-model="gateway.key['0'].plaidPublicKey" /> </td></tr>
+                                        <tr><td>Secret key</td><td><input type="text" id="secretTextBox" ng-model="gateway.key['0'].plaidSecret" /> </td></tr>
+                                      </table>
+                                      <br/>
+                                      <md-button  id="saveStripeDetails" ng-disabled="issavePyamnetExtraDetailsClicked" ng-click="savePyamnetExtraDetails(gateway.key['0'])"  >SAVE</md-button>
+                                    </div>
+                                  </div>
+
                                 </div>
+
+
+
+
+
+
                             </div>
                         </div>
                         <!--end payment gateways-->

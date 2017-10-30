@@ -7854,6 +7854,14 @@
 						if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
 							$scope.currentGateways[i].isConnected = true;
 							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
+
+              if($scope.currentGateways[i].key['0'].enableBitcoin){
+                  $scope.currentGateways[i].key['0'].enableBitcoin = $scope.currentGateways[i].key['0'].enableBitcoin === 1 ? true : false;
+                }
+
+                if($scope.currentGateways[i].key['0'].enableAch){
+                  $scope.currentGateways[i].key['0'].enableAch = $scope.currentGateways[i].key['0'].enableAch === 1 ? true : false;
+                }
 						}
 						else
 						{
@@ -7880,6 +7888,34 @@
 
 
 		}
+
+
+    $scope.issavePyamnetExtraDetailsClicked = false;
+    $scope.savePyamnetExtraDetails = function(extraDetails){
+      $scope.issavePyamnetExtraDetailsClicked = true;
+      $charge.paymentgateway().stripeachregister(extraDetails).success(function (data) {
+
+        if(data.status) {
+          notifications.toast("Stripe ACH/Bitcoin information saved", "Success");
+
+        }else{
+          notifications.toast("There is a problem, Please try again", "Error");
+        }
+
+        $scope.issavePyamnetExtraDetailsClicked = false;
+
+      }).error(function(data) {
+        //console.log( data);
+        notifications.toast("There is a problem, Please try again", "Error");
+        $scope.issavePyamnetExtraDetailsClicked = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      });
+
+    }
 
 		$scope.viewTestGateway = function(ev) {
 
