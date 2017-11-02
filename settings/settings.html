@@ -1566,6 +1566,64 @@
                             <!--</div>-->
                             <!--</md-card-actions>-->
                         </md-card>
+                        <div layout="row" layout-align="start center" class="msg-empty-list" ng-if="!vm.usingAvalaraTax">
+                          <span><h3><md-icon md-font-icon="icon-information-outline"></md-icon><b>OR, </b> Connect to <a ng-click="enableAvalaraTax()">Avalara</a></h3></span>
+                        </div>
+                        <form id="avalaraTaxForm" name="vm.avalaraTaxForm" ng-submit="submitAvalaraTax()" novalidate ng-if="vm.usingAvalaraTax">
+                          <md-card class="input-block-gen">
+                            <md-card-title>
+                              <div layout="row" layout-align="space-between center" flex>
+                                <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Avalara tax</h3></div>
+                                <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                              </div>
+                            </md-card-title>
+                            <md-card-content class="p-0">
+                              <div layout="row">
+                                <md-input-container flex="30">
+                                  <label>Account Number</label>
+                                  <input type="text" ng-required="true" min="" name="accountNo" ng-maxlength="30" ng-model="avaTax.accountNo">
+                                  <div ng-messages="vm.avalaraTaxForm.accountNo.$error">
+                                    <div ng-message="maxlength">Plan name must be between 1-30 characters</div>
+                                  </div>
+                                </md-input-container>
+                              </div>
+                              <div layout="row">
+                                <md-input-container flex="30">
+                                  <label>License Key</label>
+                                  <input type="text" ng-required="true" min="" name="licenseKey" ng-maxlength="30" ng-model="avaTax.licenseKey">
+                                  <div ng-messages="vm.avalaraTaxForm.licenseKey.$error">
+                                    <div ng-message="maxlength">Plan name must be between 1-30 characters</div>
+                                  </div>
+                                </md-input-container>
+                              </div>
+                              <div layout="row">
+                                <md-input-container flex="30">
+                                  <label>Company Code</label>
+                                  <input type="text" ng-required="true" min="" name="companyCode" ng-maxlength="30" ng-model="avaTax.companyCode">
+                                  <div ng-messages="vm.avalaraTaxForm.companyCode.$error">
+                                    <div ng-message="maxlength">Plan name must be between 1-30 characters</div>
+                                  </div>
+                                </md-input-container>
+                              </div>
+                              <div layout="row">
+                                <md-input-container>
+                                  <md-radio-group name="mode" ng-required="true" ng-model="avaTax.mode" layout="row" class="cc-switch-buttons-group">
+                                    <md-radio-button value="Development" class="cc-switch-buttons" md-ink-ripple ng-style="avaTax.mode == 'Development' ? {'z-index':'1'} : {'z-index':'0'}">Development</md-radio-button>
+                                    <md-radio-button value="Production" class="cc-switch-buttons" md-ink-ripple ng-style="avaTax.mode == 'Production' ? {'z-index':'1'} : {'z-index':'0'}">Production</md-radio-button>
+                                  </md-radio-group>
+                                </md-input-container>
+                              </div>
+                              <div layout="row" class="layout-row">
+                                <md-button ng-disabled="vm.submittedAvaTax" type="submit" form="avalaraTaxForm" style="height:40px;" class="md-raised md-accent">Save</md-button>
+                              </div>
+                            </md-card-content>
+                            <!--<md-card-actions>-->
+                            <!--<div layout="row" class="plan_footer" layout-align="end center">-->
+                            <!--<md-button class="md-icon-button md-accent m-5" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add tax</md-tooltip> </md-button>-->
+                            <!--</div>-->
+                            <!--</md-card-actions>-->
+                          </md-card>
+                        </form>
                     </md-content>
                 </md-tab>
                 <md-tab label="Payments" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('payment')">

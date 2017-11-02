@@ -384,9 +384,11 @@
 				case 'individual-tax':
 					$scope.loadIndividualTaxes();
 					$scope.loadTaxGrps();
+          $scope.loadAvalaraTaxes();
 					break;
 				case 'tax-groups':
 					$scope.loadTaxGrps();
+          $scope.loadAvalaraTaxes();
 					break;
 				default :
 					break;
@@ -6986,6 +6988,61 @@
 				logHelper.error( $scope.infoJson);
 			})
 		}
+
+    vm.usingAvalaraTax = false;
+    $scope.avaTax = {};
+    vm.submittedAvaTax = false;
+
+    $scope.enableAvalaraTax= function () {
+      vm.usingAvalaraTax = true;
+    }
+
+    $scope.loadAvalaraTaxes= function () {
+      $charge.ccapi().getAvalaraTax().success(function(data) {
+        //
+        if(data!=undefined && data!=null && data!="") {
+          vm.usingAvalaraTax = true;
+          $scope.avaTax=data;
+
+        }
+        else{
+          vm.usingAvalaraTax = false;
+        }
+      }).error(function(data) {
+        //console.log(data);
+        vm.usingAvalaraTax = false;
+        // $scope.isSpinnerShown=false;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    $scope.submitAvalaraTax= function () {
+      vm.submittedAvaTax = true;
+      var avalaraTaxObj = $scope.avaTax;
+      $charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function(data) {
+        //
+        if(data.result) {
+          notifications.toast("Successfully Connected to Avalara","success");
+
+        }
+        else{
+          notifications.toast("Connecting to Avalara failed","error");
+        }
+        vm.submittedAvaTax = false;
+      }).error(function(data) {
+        //console.log(data);
+        notifications.toast("Connecting to Avalara failed","error");
+        vm.submittedAvaTax = false;
+        // $scope.isSpinnerShown=false;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
 
 
 
