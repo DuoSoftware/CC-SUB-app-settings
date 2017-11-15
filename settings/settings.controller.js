@@ -6722,6 +6722,11 @@
 					{
 						$scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
 						$scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
+            if(actionObj.processAction=="Webhook")
+            {
+              $scope.retryProcess.endpoint = actionObj.Webhook.endpoint;
+              $scope.retryProcess.method = actionObj.Webhook.method;
+            }
 					}
 				}
 
@@ -6816,13 +6821,20 @@
 			actionObj4.actionIndex=3;
 			actionObj4.daysAfterAttempt=0;
 			actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
+      if(actionObj4.processAction=="Webhook")
+      {
+        actionObj4.Webhook = {
+          "endpoint":$scope.retryProcess.endpoint,
+          "method":$scope.retryProcess.method
+        }
+      }
 			actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
 			$scope.retryProcess.actions.push(actionObj4);
 
 			if(!$scope.PaymentRetryUpdating)
 			{
 				$charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
-					//console.log(data);
+					//console.log(data);delmonispi@deyom.com kerkudatru@deyom.com
 					if(data.response=="succeeded")
 					{
 						notifications.toast("Successfully Payment Retry Configuration Saved","success");
