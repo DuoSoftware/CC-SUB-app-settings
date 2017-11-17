@@ -305,15 +305,15 @@
 				// console.log(data);
 				$scope.taxGrpHeader=data[0];
 				$scope.displayTaxGrp=data[0].taxgroupcode;
-				if(data.groupDetail.length!=0) {
-					for (var i = 0; i < data.groupDetail.length; i++) {
-						data.groupDetail[i].newItem = false;
-						var taxId = data.groupDetail[i].taxid;
+				if(data[0].groupDetail.length!=0) {
+					for (var i = 0; i < data[0].groupDetail.length; i++) {
+						data[0].groupDetail[i].newItem = false;
+						var taxId = data[0].groupDetail[i].taxid;
 						var taxDetails = $filter('filter')($scope.fixedRates, {taxid: taxId})[0];
-						data.groupDetail[i].taxcode = taxDetails.taxcode;
+						data[0].groupDetail[i].taxcode = taxDetails.taxcode;
 					}
 					//data.groupDetail[data.groupDetail.length - 1].newItem = true;
-					$scope.taxgrpdetails=data.groupDetail;
+					$scope.taxgrpdetails=data[0].groupDetail;
 					$scope.groupInfoLoaded = true;
 				}
 				else

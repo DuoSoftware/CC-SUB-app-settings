@@ -7848,14 +7848,173 @@
 
 		}
 
+		$scope.disconnectWithWebxpay = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with Webxpay')
+				.textContent('Do you want to proceed with Webxpay disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithWebxpay($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with Webxpay", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithPaypal = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.paypal = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with paypal')
+				.textContent('Do you want to proceed with paypal disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+
+
+				$charge.paymentgateway().disconnectWithPayPal($scope.paypal).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with paypal", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithAuthorize = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with Adyen')
+				.textContent('Do you want to proceed with Adyen disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithAdyen($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with Adyen", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+
 
 		//============================================================
 
 		$scope.currentGateways = [];
 		$scope.defaultGateway = "";
+		// if($scope.accCategory === null){
+		// 	$scope.accCategory = gst('category');
+		// }
 
 		$scope.loadOnlinePaymentRegistration = function(){
-			$charge.paymentgateway().availableGateways($scope.general.baseCurrency).success(function (data) {
+			$charge.paymentgateway().availableGateways($scope.general.baseCurrency,$scope.accCategory).success(function (data) {
 				if(data.status) {
 
 					$scope.currentGateways = data.data.availableGateway;
@@ -7867,6 +8026,14 @@
 						if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
 							$scope.currentGateways[i].isConnected = true;
 							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
+
+							if($scope.currentGateways[i].key['0'].enableBitcoin){
+								$scope.currentGateways[i].key['0'].enableBitcoin = $scope.currentGateways[i].key['0'].enableBitcoin === 1 ? true : false;
+							}
+
+							if($scope.currentGateways[i].key['0'].enableAch){
+								$scope.currentGateways[i].key['0'].enableAch = $scope.currentGateways[i].key['0'].enableAch === 1 ? true : false;
+							}
 						}
 						else
 						{
@@ -7891,6 +8058,33 @@
 				logHelper.error( $scope.infoJson);
 			});
 
+
+		}
+
+		$scope.issavePyamnetExtraDetailsClicked = false;
+		$scope.savePyamnetExtraDetails = function(extraDetails){
+			$scope.issavePyamnetExtraDetailsClicked = true;
+			$charge.paymentgateway().stripeachregister(extraDetails).success(function (data) {
+
+				if(data.status) {
+					notifications.toast("Stripe ACH/Bitcoin information saved", "Success");
+
+				}else{
+					notifications.toast("There is a problem, Please try again", "Error");
+				}
+
+				$scope.issavePyamnetExtraDetailsClicked = false;
+
+			}).error(function(data) {
+				//console.log( data);
+				notifications.toast("There is a problem, Please try again", "Error");
+				$scope.issavePyamnetExtraDetailsClicked = false;
+
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			});
 
 		}
 
@@ -7960,6 +8154,24 @@
 					}, function() {
 
 					});
+			}else if(gateway.paymentGateway === 'paypal'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentPaypalController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-paypal.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
 			}else if(gateway.paymentGateway === 'braintree'){
 
 				$mdDialog.show({
@@ -8016,6 +8228,24 @@
 					}, function() {
 
 					});
+			}else if(gateway.paymentGateway === 'adyen'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentAdyenController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-adyen.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
 			}
 		}
 
@@ -8033,8 +8263,19 @@
 				$scope.disconnectWithAuthorize(key);
 			}else if(gateway === 'webxpay'){
 				$scope.disconnectWithWebxpay(key);
+			}else if(gateway === 'paypal'){
+				$scope.disconnectWithPaypal(key);
+			}else if(gateway === 'adyen'){
+				$scope.disconnectWithAdyen(key);
 			}
 		}
+
+		// Kasun_Wijeratne_2017_NOV_17
+		$scope.showMoreUserInfo=false;
+		$scope.contentExpandHandler = function () {
+			$scope.showMoreUserInfo =! $scope.showMoreUserInfo;
+		};
+		// Kasun_Wijeratne_2017_NOV_17 - END
 
 
 
