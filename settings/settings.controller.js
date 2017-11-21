@@ -704,6 +704,72 @@
 			$scope.loadOnlinePaymentRegistration();
 		})
 
+    function gst(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      //debugger;
+      return null;
+    }
+
+    function getCurrentDomain() {
+      var _st = gst("currentDomain");
+      var __st = gst("domain");
+      return (_st != null) ? _st : __st; //forduhespu "248570d655d8419b91f6c3e0da331707 51de1ea9effedd696741d5911f77a64f";
+    }
+
+    $scope.dataSyncInitialized = false;
+    $scope.dataSyncEnabled = 0;
+    $scope.settingsSyncData = [];
+
+    $charge.searchhelper().getTenantSyncData(getCurrentDomain()).success(function(data) {
+      //
+      if(data.status)
+      {
+        if(data.data.length != 0)
+        {
+          $scope.dataSyncInitialized = true;
+          $scope.dataSyncEnabled = data.data[0].SyncEnable;
+          $scope.settingsSyncData = data.data;
+        }
+        else
+        {
+          $scope.dataSyncInitialized = false;
+        }
+      }
+    }).error(function(data) {
+
+
+    })
+
+    $scope.syncSettingsChanged = function (syncEnable,syncData) {
+      var syncUpdateObj = {
+        "userId":syncData[0].userId,
+        "syncToDomain":getCurrentDomain(),
+        "SyncEnable":syncEnable
+      }
+
+      $charge.searchhelper().updateSyncTenantSettings(syncUpdateObj).success(function(data) {
+        //
+        if(data.status)
+        {
+          notifications.toast("Settings Sync Updated", "success");
+        }
+        else
+        {
+          notifications.toast("Settings Sync Updating failed", "error");
+          syncEnable = !syncEnable;
+        }
+      }).error(function(data) {
+        notifications.toast("Settings Sync Updating failed", "error");
+        syncEnable = !syncEnable;
+      })
+    };
+
 
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
 		//  //
@@ -1355,7 +1421,7 @@
 					$scope.saveGeneralCheck();
 				}
 			}).error(function (data) {
-				notifications.toast("Error occured while Checking DB", "error");
+				notifications.toast("Building your company still on process. Please try again in few minutes", "error");
 				$scope.generalSubmit = false;
 
 				$scope.infoJson= {};

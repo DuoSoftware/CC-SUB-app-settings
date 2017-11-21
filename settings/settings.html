@@ -67,6 +67,20 @@
                             <md-progress-circular></md-progress-circular>
                         </div>
                         <form name="vm.generalForm" ng-submit="saveGeneralCheck()" id="generalForm">
+                          <div class="content-block-wrapper switches-block">
+                            <div layout="row" layout-align="start center">
+                              <div class="content-block" flex="30">
+                                <b>Enable Tenant Sync</b>
+                              </div>
+                              <div flex="5"></div>
+                              <div class="content-block" flex>
+                                <md-input-container class="md-block no-bottom" flex-gt-sm>
+                                  <md-switch ng-disabled="!dataSyncInitialized" ng-model="dataSyncEnabled" ng-change="syncSettingsChanged(dataSyncEnabled,settingsSyncData)" class="md-primary" ng-true-value="1" ng-false-value="0">
+                                  </md-switch>
+                                </md-input-container>
+                              </div>
+                            </div>
+                          </div>
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
                                     <div layout="row" layout-align="start center">
