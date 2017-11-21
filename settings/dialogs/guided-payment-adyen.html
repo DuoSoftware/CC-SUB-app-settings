@@ -1,0 +1,78 @@
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with Adyen</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+
+    <md-content class="p-16" ms-scroll>
+        <div layout="row">
+            <div layout="column" class="guide-portion" flex>
+                <div layout="column" style="margin-bottom: 20px">
+                    <div class="mb-10">Adyen accepts..</div>
+                    <div class="2c0-cards">
+                        <img src="assets/images/adyen-accepts.png" alt=""/>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <p>With Adyen, you can unlock your true business potential by giving your customers around the world the payment options they know and expect.
+                </p>
+                <i class="op-5">For more information, visit <a href="https://www.adyen.com/payment-methods" target="_blank">Adyen</a></i>
+            </div>
+            <div class="w-20"></div>
+            <div class="form-portion" layout="column" flex="40">
+                <div md-whiteframe="3dp" flex class="p-10">
+                    <form name="adyenForm" ng-submit="submitauthorizeRegistration()" flex novalidate>
+                        <div layout="column" layout-align="space-between start" fill-height>
+                            <md-input-container fill-width class="mb-0">
+                                <label>Username</label>
+                                <input type="text" name="username" required ng-model="authorize.username"/>
+                                <div ng-messages="adyenForm.publickey.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container fill-width class="mb-0">
+                                <label>Password</label>
+                                <input type="password" name="password" required ng-model="authorize.password"/>
+                                <div ng-messages="adyenForm.servicekey.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container fill-width class="mb-0">
+                                <label>Merchant account</label>
+                                <input type="text" name="merchant_account" required ng-model="authorize.merchant_account"/>
+                                <div ng-messages="adyenForm.apiLoginid.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container fill-width class="mb-0">
+                                <label>Customer endpoint</label>
+                                <input type="text" name="custom_endpoint" required ng-model="authorize.custom_endpoint"/>
+                                <div ng-messages="adyenForm.apiLoginid.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <div flex></div>
+
+                            <div layout="row" layout-align="end center" fill-width>
+                                <!--<md-button class="md-primary" ng-click="closeDialog()">Cancel</md-button>-->
+                                <md-button class="md-raised md-accent" type="submit">Submit</md-button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </md-content>
+
+</md-dialog>
