@@ -384,9 +384,11 @@
 				case 'individual-tax':
 					$scope.loadIndividualTaxes();
 					$scope.loadTaxGrps();
+          $scope.loadAvalaraTaxes();
 					break;
 				case 'tax-groups':
 					$scope.loadTaxGrps();
+          $scope.loadAvalaraTaxes();
 					break;
 				default :
 					break;
@@ -701,6 +703,72 @@
 			$scope.gen1Loading = true;
 			$scope.loadOnlinePaymentRegistration();
 		})
+
+    function gst(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      //debugger;
+      return null;
+    }
+
+    function getCurrentDomain() {
+      var _st = gst("currentDomain");
+      var __st = gst("domain");
+      return (_st != null) ? _st : __st; //forduhespu "248570d655d8419b91f6c3e0da331707 51de1ea9effedd696741d5911f77a64f";
+    }
+
+    $scope.dataSyncInitialized = false;
+    $scope.dataSyncEnabled = 0;
+    $scope.settingsSyncData = [];
+
+    $charge.searchhelper().getTenantSyncData(getCurrentDomain()).success(function(data) {
+      //
+      if(data.status)
+      {
+        if(data.data.length != 0)
+        {
+          $scope.dataSyncInitialized = true;
+          $scope.dataSyncEnabled = data.data[0].SyncEnable;
+          $scope.settingsSyncData = data.data;
+        }
+        else
+        {
+          $scope.dataSyncInitialized = false;
+        }
+      }
+    }).error(function(data) {
+
+
+    })
+
+    $scope.syncSettingsChanged = function (syncEnable,syncData) {
+      var syncUpdateObj = {
+        "userId":syncData[0].userId,
+        "syncToDomain":getCurrentDomain(),
+        "SyncEnable":syncEnable
+      }
+
+      $charge.searchhelper().updateSyncTenantSettings(syncUpdateObj).success(function(data) {
+        //
+        if(data.status)
+        {
+          notifications.toast("Settings Sync Updated", "success");
+        }
+        else
+        {
+          notifications.toast("Settings Sync Updating failed", "error");
+          syncEnable = !syncEnable;
+        }
+      }).error(function(data) {
+        notifications.toast("Settings Sync Updating failed", "error");
+        syncEnable = !syncEnable;
+      })
+    };
 
 
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
@@ -1353,7 +1421,7 @@
 					$scope.saveGeneralCheck();
 				}
 			}).error(function (data) {
-				notifications.toast("Error occured while Checking DB", "error");
+				notifications.toast("Building your company still on process. Please try again in few minutes", "error");
 				$scope.generalSubmit = false;
 
 				$scope.infoJson= {};
@@ -6720,6 +6788,11 @@
 					{
 						$scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
 						$scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
+            if(actionObj.processAction=="Webhook")
+            {
+              $scope.retryProcess.endpoint = actionObj.Webhook.endpoint;
+              $scope.retryProcess.method = actionObj.Webhook.method;
+            }
 					}
 				}
 
@@ -6814,13 +6887,20 @@
 			actionObj4.actionIndex=3;
 			actionObj4.daysAfterAttempt=0;
 			actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
+      if(actionObj4.processAction=="Webhook")
+      {
+        actionObj4.Webhook = {
+          "endpoint":$scope.retryProcess.endpoint,
+          "method":$scope.retryProcess.method
+        }
+      }
 			actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
 			$scope.retryProcess.actions.push(actionObj4);
 
 			if(!$scope.PaymentRetryUpdating)
 			{
 				$charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
-					//console.log(data);
+					//console.log(data);delmonispi@deyom.com kerkudatru@deyom.com
 					if(data.response=="succeeded")
 					{
 						notifications.toast("Successfully Payment Retry Configuration Saved","success");
@@ -6986,6 +7066,67 @@
 				logHelper.error( $scope.infoJson);
 			})
 		}
+
+    vm.usingAvalaraTax = false;
+    $scope.avaTax = {};
+    vm.submittedAvaTax = false;
+
+    $scope.enableAvalaraTax= function () {
+      vm.usingAvalaraTax = true;
+    }
+
+    $scope.loadAvalaraTaxes= function () {
+      $charge.ccapi().getAvalaraTax().success(function(data) {
+        //
+        if(data!=undefined && data!=null && data!="") {
+          vm.usingAvalaraTax = true;
+          $scope.avaTax=data;
+
+        }
+        else{
+          vm.usingAvalaraTax = false;
+        }
+      }).error(function(data) {
+        //console.log(data);
+        vm.usingAvalaraTax = false;
+        // $scope.isSpinnerShown=false;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    $scope.submitAvalaraTax= function () {
+      vm.submittedAvaTax = true;
+	  var avalaraTaxObj = {
+			"accountNo":$scope.avaTax.accountNo,
+			"licenseKey":$scope.avaTax.licenseKey,
+			"companyCode":$scope.avaTax.companyCode,
+			"mode":$scope.avaTax.mode,
+			"serviceUrl":"https://development.avalara.net"
+	  }
+      $charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function(data) {
+        //
+        if(data.result) {
+          notifications.toast("Successfully Connected to Avalara","success");
+
+        }
+        else{
+          notifications.toast("Connecting to Avalara failed","error");
+        }
+        vm.submittedAvaTax = false;
+      }).error(function(data) {
+        //console.log(data);
+        notifications.toast("Connecting to Avalara failed","error");
+        vm.submittedAvaTax = false;
+        // $scope.isSpinnerShown=false;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
 
 
 
@@ -7518,37 +7659,6 @@
 		$scope.isRegButtonsShow = true;
 		// $scope.isRegisteredWith2checkout = false;
 
-		$scope.loadCardDetails = function() {
-
-			$http({
-				method: 'GET',
-				url: "/azureshell/app/main/settings/paymentMethod/cardHandler.php?view=getCardDetails",
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}).then(function (response) {
-
-				if(!response.data.status){
-					return;
-				}
-
-				$scope.cardDetails = response.data.data;
-
-
-				for (var i = 0; i < $scope.cardDetails.length; i++) {
-					$scope.cardDetails[i].rowId = i;
-				}
-
-			}, function (response) {
-				//console.log(response);
-				$scope.cardDetails = null;
-
-			});
-
-		}
-
-		$scope.loadCardDetails();
-
 		// $scope.checkPaymentMethodRegistry = function(){
 		//
 		// 	$charge.paymentgateway().stripeCheckAccount().success(function (data) {
@@ -7810,14 +7920,173 @@
 
 		}
 
+		$scope.disconnectWithWebxpay = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with Webxpay')
+				.textContent('Do you want to proceed with Webxpay disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithWebxpay($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with Webxpay", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithPaypal = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.paypal = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with paypal')
+				.textContent('Do you want to proceed with paypal disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+
+
+				$charge.paymentgateway().disconnectWithPayPal($scope.paypal).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with paypal", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithAuthorize = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with Adyen')
+				.textContent('Do you want to proceed with Adyen disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithAdyen($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with Adyen", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+
 
 		//============================================================
 
 		$scope.currentGateways = [];
 		$scope.defaultGateway = "";
+		// if($scope.accCategory === null){
+		// 	$scope.accCategory = gst('category');
+		// }
 
 		$scope.loadOnlinePaymentRegistration = function(){
-			$charge.paymentgateway().availableGateways($scope.general.baseCurrency).success(function (data) {
+			$charge.paymentgateway().availableGateways($scope.general.baseCurrency,$scope.accCategory).success(function (data) {
 				if(data.status) {
 
 					$scope.currentGateways = data.data.availableGateway;
@@ -7829,6 +8098,14 @@
 						if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
 							$scope.currentGateways[i].isConnected = true;
 							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
+
+							if($scope.currentGateways[i].key['0'].enableBitcoin){
+								$scope.currentGateways[i].key['0'].enableBitcoin = $scope.currentGateways[i].key['0'].enableBitcoin === 1 ? true : false;
+							}
+
+							if($scope.currentGateways[i].key['0'].enableAch){
+								$scope.currentGateways[i].key['0'].enableAch = $scope.currentGateways[i].key['0'].enableAch === 1 ? true : false;
+							}
 						}
 						else
 						{
@@ -7853,6 +8130,33 @@
 				logHelper.error( $scope.infoJson);
 			});
 
+
+		}
+
+		$scope.issavePyamnetExtraDetailsClicked = false;
+		$scope.savePyamnetExtraDetails = function(extraDetails){
+			$scope.issavePyamnetExtraDetailsClicked = true;
+			$charge.paymentgateway().stripeachregister(extraDetails).success(function (data) {
+
+				if(data.status) {
+					notifications.toast("Stripe ACH/Bitcoin information saved", "Success");
+
+				}else{
+					notifications.toast("There is a problem, Please try again", "Error");
+				}
+
+				$scope.issavePyamnetExtraDetailsClicked = false;
+
+			}).error(function(data) {
+				//console.log( data);
+				notifications.toast("There is a problem, Please try again", "Error");
+				$scope.issavePyamnetExtraDetailsClicked = false;
+
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			});
 
 		}
 
@@ -7922,6 +8226,24 @@
 					}, function() {
 
 					});
+			}else if(gateway.paymentGateway === 'paypal'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentPaypalController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-paypal.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
 			}else if(gateway.paymentGateway === 'braintree'){
 
 				$mdDialog.show({
@@ -7978,6 +8300,24 @@
 					}, function() {
 
 					});
+			}else if(gateway.paymentGateway === 'adyen'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentAdyenController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-adyen.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
 			}
 		}
 
@@ -7993,8 +8333,21 @@
 				$scope.disconnectWithbraintree(key)
 			}else if(gateway === 'authorizednet'){
 				$scope.disconnectWithAuthorize(key);
+			}else if(gateway === 'webxpay'){
+				$scope.disconnectWithWebxpay(key);
+			}else if(gateway === 'paypal'){
+				$scope.disconnectWithPaypal(key);
+			}else if(gateway === 'adyen'){
+				$scope.disconnectWithAdyen(key);
 			}
 		}
+
+		// Kasun_Wijeratne_2017_NOV_17
+		$scope.showMoreUserInfo=false;
+		$scope.contentExpandHandler = function () {
+			$scope.showMoreUserInfo =! $scope.showMoreUserInfo;
+		};
+		// Kasun_Wijeratne_2017_NOV_17 - END
 
 
 

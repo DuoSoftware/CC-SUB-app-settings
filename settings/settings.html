@@ -67,6 +67,20 @@
                             <md-progress-circular></md-progress-circular>
                         </div>
                         <form name="vm.generalForm" ng-submit="saveGeneralCheck()" id="generalForm">
+                          <div class="content-block-wrapper switches-block">
+                            <div layout="row" layout-align="start center">
+                              <div class="content-block" flex="30">
+                                <b>Enable Tenant Sync</b>
+                              </div>
+                              <div flex="5"></div>
+                              <div class="content-block" flex>
+                                <md-input-container class="md-block no-bottom" flex-gt-sm>
+                                  <md-switch ng-disabled="!dataSyncInitialized" ng-model="dataSyncEnabled" ng-change="syncSettingsChanged(dataSyncEnabled,settingsSyncData)" class="md-primary" ng-true-value="1" ng-false-value="0">
+                                  </md-switch>
+                                </md-input-container>
+                              </div>
+                            </div>
+                          </div>
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
                                     <div layout="row" layout-align="start center">
@@ -1484,6 +1498,12 @@
                 </md-tab>
                 <md-tab label="Tax" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('individual-tax')">
                     <md-content>
+                        <div layout="column" layout-align="center center" class="m-20" ng-if="!vm.usingAvalaraTax">
+                            <p>You can create taxes with Avalara..</p>
+                            <md-button class="md-raised" ng-click="enableAvalaraTax()"><i class="material-icons fs-20 op-5">wifi</i> Connect to Avalara</md-button>
+                            <p><i><b>or..</b></i></p>
+                            <span>You can create custom taxes below.</span>
+                        </div>
                         <md-card class="input-block-gen">
                             <md-card-title>
                                 <div layout="row" layout-align="space-between center" flex>
@@ -1566,6 +1586,61 @@
                             <!--</div>-->
                             <!--</md-card-actions>-->
                         </md-card>
+                        <form id="avalaraTaxForm" name="vm.avalaraTaxForm" ng-submit="submitAvalaraTax()" novalidate ng-if="vm.usingAvalaraTax">
+                          <md-card class="input-block-gen">
+                            <md-card-title>
+                              <div layout="row" layout-align="space-between center" flex>
+                                <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Avalara tax</h3></div>
+                                <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                              </div>
+                            </md-card-title>
+                            <md-card-content class="p-0">
+                              <div layout="row">
+                                <md-input-container flex="30">
+                                  <label>Account Number</label>
+                                  <input type="text" ng-required="true" min="" name="accountNo" ng-maxlength="30" ng-model="avaTax.accountNo">
+                                  <div ng-messages="vm.avalaraTaxForm.accountNo.$error">
+                                    <div ng-message="maxlength">Account Number must be between 1-30 characters</div>
+                                  </div>
+                                </md-input-container>
+                              </div>
+                              <div layout="row">
+                                <md-input-container flex="30">
+                                  <label>License Key</label>
+                                  <input type="text" ng-required="true" min="" name="licenseKey" ng-maxlength="30" ng-model="avaTax.licenseKey">
+                                  <div ng-messages="vm.avalaraTaxForm.licenseKey.$error">
+                                    <div ng-message="maxlength">License Key must be between 1-30 characters</div>
+                                  </div>
+                                </md-input-container>
+                              </div>
+                              <div layout="row">
+                                <md-input-container flex="30">
+                                  <label>Company Code</label>
+                                  <input type="text" ng-required="true" min="" name="companyCode" ng-maxlength="30" ng-model="avaTax.companyCode">
+                                  <div ng-messages="vm.avalaraTaxForm.companyCode.$error">
+                                    <div ng-message="maxlength">Company Code must be between 1-30 characters</div>
+                                  </div>
+                                </md-input-container>
+                              </div>
+                              <div layout="row">
+                                <md-input-container>
+                                  <md-radio-group name="mode" ng-required="true" ng-model="avaTax.mode" layout="row" class="cc-switch-buttons-group">
+                                    <md-radio-button value="Development" class="cc-switch-buttons" md-ink-ripple ng-style="avaTax.mode == 'Development' ? {'z-index':'1'} : {'z-index':'0'}">Development</md-radio-button>
+                                    <md-radio-button value="Production" class="cc-switch-buttons" md-ink-ripple ng-style="avaTax.mode == 'Production' ? {'z-index':'1'} : {'z-index':'0'}">Production</md-radio-button>
+                                  </md-radio-group>
+                                </md-input-container>
+                              </div>
+                              <div layout="row" class="layout-row">
+                                <md-button ng-disabled="vm.submittedAvaTax" type="submit" form="avalaraTaxForm" style="height:40px;" class="md-raised md-accent">Save</md-button>
+                              </div>
+                            </md-card-content>
+                            <!--<md-card-actions>-->
+                            <!--<div layout="row" class="plan_footer" layout-align="end center">-->
+                            <!--<md-button class="md-icon-button md-accent m-5" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add tax</md-tooltip> </md-button>-->
+                            <!--</div>-->
+                            <!--</md-card-actions>-->
+                          </md-card>
+                        </form>
                     </md-content>
                 </md-tab>
                 <md-tab label="Payments" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('payment')">
@@ -1817,6 +1892,7 @@
                                                                             <md-select flex ng-required="true" ng-model="retryProcess.daysAfterAttemptFinally">
                                                                                 <!--<md-option value="Services" ng-selected="true">Services</md-option>-->
                                                                                 <md-option ng-value="'Deactivate Profile'">Deactivate Profile</md-option>
+                                                                                <md-option ng-value="'Webhook'">Config Webhook</md-option>
                                                                             </md-select>
                                                                         </md-input-container>
                                                                     </div>
@@ -1957,6 +2033,75 @@
                                                         <!--</div>-->
                                                     </div>
                                                 </md-card>
+                                                <md-card class="input-block-gen" ng-if="retryProcess.daysAfterAttemptFinally=='Webhook'">
+                                                  <md-card-title>
+                                                    <div layout="row" layout-align="space-between center" flex>
+                                                      <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Webhook Configuration</h3></div>
+                                                      <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                                                    </div>
+                                                  </md-card-title>
+                                                  <md-card-content class="p-0">
+                                                    <div layout="row">
+                                                      <md-input-container flex="30">
+                                                        <label>Endpoint</label>
+                                                        <input type="text" ng-required="true" min="" name="endpoint" ng-maxlength="300" ng-model="retryProcess.endpoint">
+                                                        <div ng-messages="vm.paymentRetryProcessForm.endpoint.$error">
+                                                          <div ng-message="maxlength">Endpoint must be between 1-300 characters</div>
+                                                        </div>
+                                                      </md-input-container>
+                                                    </div>
+                                                    <div layout="row">
+                                                      <!--<md-input-container flex="30">-->
+                                                        <!--<label>Method</label>-->
+                                                        <!--<md-select flex ng-required="true" ng-model="retryProcess.method">-->
+                                                          <!--<md-option ng-value="GET">GET</md-option>-->
+                                                          <!--&lt;!&ndash;<md-option ng-value="POST">POST</md-option>&ndash;&gt;-->
+                                                        <!--</md-select>-->
+                                                      <!--</md-input-container>-->
+                                                      <md-input-container>
+                                                        <md-select flex ng-required="true" ng-model="retryProcess.method">
+                                                          <!--<md-option value="Services" ng-selected="true">Services</md-option>-->
+                                                          <md-option ng-value="'GET'" selected>GET</md-option>
+                                                          <!--<md-option ng-value="'POST'">POST</md-option>-->
+                                                        </md-select>
+                                                      </md-input-container>
+                                                    </div>
+                                                    <div layout="row" ng-if="retryProcess.method=='POST'" style="height:120px;">
+                                                      <md-input-container flex="30">
+                                                        <label>Body</label>
+                                                        <input type="textarea" style="height:100px;" ng-required="true" min="" name="postBody" ng-maxlength="" ng-model="retryProcess.body">
+                                                        <!--<div ng-messages="vm.paymentRetryProcessForm.postBody.$error">-->
+                                                          <!--<div ng-message="maxlength">Body must be between 1-300 characters</div>-->
+                                                        <!--</div>-->
+                                                      </md-input-container>
+                                                    </div>
+                                                    <div layout="row" ng-if="false">
+                                                      <label>Headers</label>
+                                                      <span><button name="add" ng-click="addWebhookHeader()">Add</button></span>
+                                                      <div layout="row" layout-align="start center" class="action-row" ng-repeat="header in paymentRetryWebhookHeader">
+                                                        <div flex layout="row" layout-align="start center">
+                                                          <div flex layout="row" layout-align="start center">
+                                                            <md-input-container flex="30">
+                                                              <input type="text" style="height:100px;" ng-required="true" min="" name="key" ng-maxlength="30" ng-model="header.key">
+                                                            </md-input-container>
+                                                          </div>
+                                                          <!--<md-button class="md-icon-button" ng-click="showReminderInfo($event, $index)"><md-icon md-font-icon="icon-information" style="color: rgba(0, 0, 0, 0.21);"></md-icon></md-button>-->
+                                                          <div layout="row" layout-align="start center" flex>
+                                                            <md-input-container flex="30">
+                                                              <input type="text" style="height:100px;" ng-required="true" min="" name="value" ng-maxlength="30" ng-model="header.value">
+                                                            </md-input-container>
+                                                          </div>
+                                                          <span><button name="add" ng-click="removeWebhookHeader(header)">Remove</button></span>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </md-card-content>
+                                                  <!--<md-card-actions>-->
+                                                  <!--<div layout="row" class="plan_footer" layout-align="end center">-->
+                                                  <!--<md-button class="md-icon-button md-accent m-5" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add tax</md-tooltip> </md-button>-->
+                                                  <!--</div>-->
+                                                  <!--</md-card-actions>-->
+                                                </md-card>
                                             </div>
                                         </form>
                                     </md-content>
@@ -1988,75 +2133,121 @@
                         <!--start online payments-->
                         <div flex="70">
                             <div class="payment-card" ng-repeat="gateway in currentGateways">
-                                <md-divider class="mb-16" ng-if="$index != 0"></md-divider>
-                                <div layout="row" layout-align="start center" ng-class="{'not-uspported':!gateway.support && gateway.paymentGateway != 'testGateway'}" flex>
-                                    <md-input-container style="margin: 0;" flex>
-                                        <div class="online_{{gateway.paymentGateway | lowercase}}" ng-class="{'online_disabled': !gateway.isConnected}"></div>
-                                        <!--<div>{{gateway.paymentGateway}}</div>-->
-                                    </md-input-container>
+                                <div>
+                                    <div layout="row" layout-align="start center" ng-class="{'not-uspported':!gateway.support && gateway.paymentGateway != 'testGateway'}" flex>
+                                        <md-input-container style="margin: 0;" flex>
+                                            <div class="online_{{gateway.paymentGateway | lowercase}}" ng-class="{'online_disabled': !gateway.isConnected}"></div>
+                                            <!--<div>{{gateway.paymentGateway}}</div>-->
+                                        </md-input-container>
 
-                                    <!--<div flex ng-if="defaultGateway != gateway.paymentGateway">-->
-                                    <!--<md-button ng-click="makeDefault(gateway.paymentGateway)">-->
-                                    <!--<md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>-->
-                                    <!--</md-button>-->
-                                    <!--</div>-->
-                                    <div class="msg-inline danger iconed mr-10" ng-if="!gateway.support && gateway.paymentGateway != 'testGateway'">
-                                        <md-icon md-font-icon="icon-lock"></md-icon> This gateway is not supported by your current base currency
+                                        <!--<div flex ng-if="defaultGateway != gateway.paymentGateway">-->
+                                        <!--<md-button ng-click="makeDefault(gateway.paymentGateway)">-->
+                                        <!--<md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>-->
+                                        <!--</md-button>-->
+                                        <!--</div>-->
+                                        <div class="msg-inline danger iconed mr-10" ng-if="!gateway.support && gateway.paymentGateway != 'testGateway'">
+                                            <md-icon md-font-icon="icon-lock"></md-icon> This gateway is not supported by your current base currency
+                                        </div>
+                                        <div class="default-gateway" ng-if="defaultGateway === gateway.paymentGateway">Default</div>
+
+                                        <md-input-container ng-if="gateway.paymentGateway != 'testGateway' " class="m-0">
+                                            <md-menu ng-if="gateway.support">
+                                                <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="vm.openRegistrationMenu($mdOpenMenu, $event)">
+                                                    <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+
+                                                </md-button>
+                                                <md-menu-content width="4" ng-disabled="isRegButtonsShow ">
+                                                    <md-menu-item>
+                                                        <md-button ng-disabled="defaultGateway == gateway.paymentGateway || !gateway.isConnected" ng-click="makeDefault(gateway.paymentGateway)">
+                                                            <md-icon md-font-icon="icon-heart" md-menu-align-target></md-icon>
+                                                            Make default
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-divider></md-divider>
+                                                    <md-menu-item>
+                                                        <md-button ng-disabled="gateway.isConnected" ng-click="proceedWithGateway(gateway)">
+                                                            <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                            Register
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                        <md-button ng-disabled="!gateway.isConnected" ng-click="disconnectWithGateway(gateway.paymentGateway,gateway.key[0])">
+                                                            <md-icon md-font-icon="icon-logout"></md-icon>
+                                                            Leave
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </md-input-container>
+
+                                        <md-input-container style="margin: 0;" ng-if="gateway.paymentGateway === 'testGateway'">
+                                            <md-menu>
+                                                <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="vm.openRegistrationMenu($mdOpenMenu, $event)">
+                                                    <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                                                </md-button>
+                                                <md-menu-content width="4" ng-disabled="isRegButtonsShow">
+                                                    <md-menu-item>
+                                                        <md-button ng-disabled="defaultGateway == gateway.paymentGateway" ng-click="makeDefault(gateway.paymentGateway)">
+                                                            <md-icon md-font-icon="icon-heart" md-menu-align-target></md-icon>
+                                                            Make default
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-divider></md-divider>
+                                                    <md-menu-item>
+                                                        <md-button ng-click="viewTestGateway($event)">
+                                                            <md-icon md-font-icon="icon-magnify" md-menu-align-target></md-icon>
+                                                            View
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </md-input-container>
                                     </div>
-                                    <div class="default-gateway" ng-if="defaultGateway === gateway.paymentGateway">Default</div>
 
-                                    <md-input-container ng-if="gateway.paymentGateway != 'testGateway' " class="m-0">
-                                        <md-menu ng-if="gateway.support">
-                                            <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="vm.openRegistrationMenu($mdOpenMenu, $event)">
-                                                <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                                    <div layout="row" layout-align="space-between center" ng-if="gateway.paymentGateway === 'stripe' && gateway.isConnected && showMoreUserInfo" class="p-10 solid-highlight-gray mv-20">
+                                        <div flex>
+                                            <p class="mt-0 fs-16">You can also get registered with below payment methods and use it for your transactions.</p>
+                                            <span style="color: #888">Select the methods you want and register.</span>
+                                            <div style="padding: 5px 20%">
+                                                <md-input-container layout="row" layout-align="start center" flex>
+                                                    <md-checkbox id="bitcoinCheckBox" ng-model="gateway.key['0'].enableBitcoin" class="m-0"></md-checkbox>
+                                                    <div class="online_stripe_bitcoin"></div>
+                                                    <span class="fs-20 ml-10">Bitcoin</span>
+                                                    <!--<div>{{gateway.paymentGateway}}</div>-->
+                                                </md-input-container>
+                                            </div>
+                                            <div style="padding: 5px 20%">
+                                                <md-input-container layout="row" layout-align="start center" flex>
+                                                    <md-checkbox id="achCheckBox" ng-model="gateway.key['0'].enableAch" class="m-0"></md-checkbox>
+                                                    <div class="online_stripe_ach"></div>
+                                                    <span class="fs-20 ml-10">ACH</span>
+                                                    <!--<div>{{gateway.paymentGateway}}</div>-->
+                                                </md-input-container>
+                                            </div>
+                                        </div>
 
-                                            </md-button>
-                                            <md-menu-content width="4" ng-disabled="isRegButtonsShow ">
-                                                <md-menu-item>
-                                                    <md-button ng-disabled="defaultGateway == gateway.paymentGateway || !gateway.isConnected" ng-click="makeDefault(gateway.paymentGateway)">
-                                                        <md-icon md-font-icon="icon-heart" md-menu-align-target></md-icon>
-                                                        Make default
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-divider></md-divider>
-                                                <md-menu-item>
-                                                    <md-button ng-disabled="gateway.isConnected" ng-click="proceedWithGateway(gateway)">
-                                                        <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
-                                                        Register
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-menu-item>
-                                                    <md-button ng-disabled="!gateway.isConnected" ng-click="disconnectWithGateway(gateway.paymentGateway,gateway.key[0])">
-                                                        <md-icon md-font-icon="icon-logout"></md-icon>
-                                                        Leave
-                                                    </md-button>
-                                                </md-menu-item>
-                                            </md-menu-content>
-                                        </md-menu>
-                                    </md-input-container>
-
-                                    <md-input-container style="margin: 0;" ng-if="gateway.paymentGateway === 'testGateway'">
-                                        <md-menu>
-                                            <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="vm.openRegistrationMenu($mdOpenMenu, $event)">
-                                                <md-icon md-font-icon="icon-dots-vertical"></md-icon>
-                                            </md-button>
-                                            <md-menu-content width="4" ng-disabled="isRegButtonsShow">
-                                                <md-menu-item>
-                                                    <md-button ng-disabled="defaultGateway == gateway.paymentGateway" ng-click="makeDefault(gateway.paymentGateway)">
-                                                        <md-icon md-font-icon="icon-heart" md-menu-align-target></md-icon>
-                                                        Make default
-                                                    </md-button>
-                                                </md-menu-item>
-                                                <md-divider></md-divider>
-                                                <md-menu-item>
-                                                    <md-button ng-click="viewTestGateway($event)">
-                                                        <md-icon md-font-icon="icon-magnify" md-menu-align-target></md-icon>
-                                                        View
-                                                    </md-button>
-                                                </md-menu-item>
-                                            </md-menu-content>
-                                        </md-menu>
-                                    </md-input-container>
+                                        <div md-whiteframe="1dp" class="w-250 p-10 bg-white">
+                                            <md-input-container fill-width>
+                                                <label>Client Id</label>
+                                                <input type="text" id="clientIdTextBox" ng-model="gateway.key['0'].plaidClientId" />
+                                            </md-input-container>
+                                            <md-input-container class="mt-0" fill-width>
+                                                <label>Public key</label>
+                                                <input type="text" id="publicKeyTextBox" ng-model="gateway.key['0'].plaidPublicKey" />
+                                            </md-input-container>
+                                            <md-input-container class="mt-0" fill-width>
+                                                <label>Secret key</label>
+                                                <input type="text" id="secretTextBox" ng-model="gateway.key['0'].plaidSecret" />
+                                            </md-input-container>
+                                            <div class="text-right">
+                                                <md-button id="saveStripeDetails" ng-disabled="issavePyamnetExtraDetailsClicked" ng-click="savePyamnetExtraDetails(gateway.key['0'])" class="md-accent md-accent">Register</md-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <md-divider class="mt-16" ng-if="$index != currentGateways.length-1"></md-divider>
+                                <div layout="row" layout-align="start center" class="more-collapse" ng-if="gateway.paymentGateway === 'stripe'" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                    <md-button class="md-icon-button m-0" ng-click="contentExpandHandler()"><md-icon md-font-icon="icon-chevron-down" ng-if="!showMoreUserInfo"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="showMoreUserInfo"></md-icon> </md-button><label ng-if="showMoreUserInfo">Less</label><label ng-if="!showMoreUserInfo">More</label>
                                 </div>
                             </div>
                         </div>
