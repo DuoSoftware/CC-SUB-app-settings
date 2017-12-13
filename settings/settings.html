@@ -2287,9 +2287,9 @@
                                   <div layout="row">
                                     <md-input-container flex="30">
                                       <label>Account ID</label>
-                                      <input type="text" ng-required="true" min="" name="accountsid" ng-maxlength="30" ng-model="twilioSMSConfig.accountsid">
+                                      <input type="text" ng-required="true" min="" name="accountsid" ng-maxlength="300" ng-model="twilioSMSConfig.accountsid">
                                       <div ng-messages="vm.twilioSmsForm.accountsid.$error">
-                                        <div ng-message="maxlength">Account ID must be between 1-30 characters</div>
+                                        <div ng-message="maxlength">Account ID must be between 1-300 characters</div>
                                       </div>
                                     </md-input-container>
                                   </div>
