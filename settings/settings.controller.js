@@ -390,6 +390,9 @@
 					$scope.loadTaxGrps();
           $scope.loadAvalaraTaxes();
 					break;
+        case 'sms':
+          $scope.loadTwilioSMSConfig();
+          break;
 				default :
 					break;
 
@@ -2613,7 +2616,7 @@
 			vm.webhookList=[];
 			skipAllWebhooks=0;
 
-			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
+			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc','website').success(function (data) {
 				//console.log(data);
 				//
 				if($scope.loadingWebhooks)
@@ -2694,7 +2697,7 @@
 
 		$scope.loadWebhookListPaging= function () {
 			$scope.loadingWebhooks = true;
-			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
+			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc','website').success(function (data) {
 				//console.log(data);
 				if($scope.loadingWebhooks)
 				{
@@ -2825,7 +2828,7 @@
 					var webhookObj={};
 					var tempEventsSelected=false;
 					webhookObj.endPoint=vm.webhook.endPoint;
-					webhookObj.type=vm.webhook.type;
+					webhookObj.type="website";
 					webhookObj.createdDate=new Date();
 					webhookObj.isEnabled=true;
 					webhookObj.eventCodes=[];
@@ -2901,7 +2904,7 @@
 					var tempEventsSelected=false;
 					webhookObj.guWebhookId=vm.webhook.guWebhookId;
 					webhookObj.endPoint=vm.webhook.endPoint;
-					webhookObj.type=vm.webhook.type;
+					webhookObj.type="website";
 					webhookObj.createdDate=new Date();
 					webhookObj.isEnabled=true;
 					webhookObj.eventCodes=[];
@@ -7099,13 +7102,7 @@
 
     $scope.submitAvalaraTax= function () {
       vm.submittedAvaTax = true;
-	  var avalaraTaxObj = {
-			"accountNo":$scope.avaTax.accountNo,
-			"licenseKey":$scope.avaTax.licenseKey,
-			"companyCode":$scope.avaTax.companyCode,
-			"mode":$scope.avaTax.mode,
-			"serviceUrl":"https://development.avalara.net"
-	  }
+      var avalaraTaxObj = $scope.avaTax;
       $charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function(data) {
         //
         if(data.result) {
@@ -7126,6 +7123,344 @@
         $scope.infoJson.app ='settings';
         logHelper.error( $scope.infoJson);
       })
+    }
+
+    vm.usingTwilioSMS = false;
+    $scope.twilioSMSConfig = {};
+
+    $scope.loadTwilioSMSConfig= function () {
+      $charge.twiliosms().getTwilioAccount().success(function(data) {
+        //
+        if(data.connected)
+        {
+          vm.usingTwilioSMS = true;
+          vm.editTwilioConfigEnabled = false;
+          $scope.twilioSMSConfig = data;
+          $scope.loadSmsEvents();
+        }
+      }).error(function(data) {
+        //console.log(data);
+        // $scope.isSpinnerShown=false;
+        if(data.connected)
+        {
+          vm.usingTwilioSMS = true;
+          vm.editTwilioConfigEnabled = false;
+          $scope.twilioSMSConfig = data;
+          $scope.loadSmsEvents();
+        }
+        else
+        {
+          vm.usingTwilioSMS = false;
+          $scope.twilioSMSConfig = {};
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        }
+      })
+    }
+
+    vm.editTwilioConfigEnabled = false;
+    $scope.editTwilioConfig= function () {
+      vm.editTwilioConfigEnabled = !vm.editTwilioConfigEnabled;
+    }
+
+    vm.submittedTwilioConfig = false;
+    $scope.submitTwilioConfig= function () {
+      if(vm.twilioSmsForm.$valid==true) {
+        vm.submittedTwilioConfig = true;
+
+        var twilioConfObj = $scope.twilioSMSConfig;
+        $charge.twiliosms().createTwilioAccount(twilioConfObj).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Twilio SMS alerts Configured","success");
+            $scope.loadTwilioSMSConfig();
+          }
+          vm.submittedTwilioConfig = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Twilio SMS configuration failed","error");
+          vm.submittedTwilioConfig = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        })
+      }
+    }
+
+    $scope.removeTwilioConfig= function (ev) {
+
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure you want to Remove this account?')
+        .textContent('You cannot revert this account once you delete it!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(function() {
+        vm.submittedTwilioConfig = true;
+        var twilioConfAccId = $scope.twilioSMSConfig.accountsid != undefined?$scope.twilioSMSConfig.accountsid:"";
+        $charge.twiliosms().removeTwilioAccount(twilioConfAccId).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Twilio account removed","success");
+            $scope.loadTwilioSMSConfig();
+          }
+          vm.submittedTwilioConfig = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Twilio account removing failed","error");
+          vm.submittedTwilioConfig = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        })
+      }, function() {
+
+      });
+    }
+
+    $scope.loadingSmsEvents = true;
+    vm.smsEvents={};
+    vm.smsEventList=[];
+    vm.smsEvents.selectAll=false;
+    vm.smsEventCreated = false;
+    $scope.loadSmsEvents= function () {
+      $scope.loadingSmsEvents = true;
+      vm.smsEvents.selectAll=false;
+      vm.smsEventList=[];
+      var skipSmsEvents = 0;
+      var takeSmsEvents = 100;
+      $charge.webhook().allEvents(skipSmsEvents,takeSmsEvents,'asc').success(function (data) {
+        //console.log(data);
+        //
+        if($scope.loadingSmsEvents)
+        {
+          skipSmsEvents += takeSmsEvents;
+
+          for (var i = 0; i < data.length; i++) {
+            data[i].isSelected=false;
+            vm.smsEventList.push(data[i]);
+          }
+          vm.selectAllSmsEvents();
+          $scope.loadSmsEventDetails();
+          $scope.loadingSmsEvents = false;
+        }
+      }).error(function (data) {
+        //console.log(data);
+        vm.smsEventList=[];
+        $scope.loadingSmsEvents = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    $scope.loadSmsEventDetails= function () {
+      $scope.loadingEventDetails = true;
+      vm.smsEventCreated = false;
+      var skipEventDetails = 0;
+      var takeEventDetails = 100;
+      $charge.webhook().allWebhooks(skipEventDetails,takeEventDetails,'desc','sms').success(function (data) {
+        //console.log(data);
+        //
+        if($scope.loadingEventDetails)
+        {
+          skipEventDetails += takeEventDetails;
+
+          if(data[0].type=="sms")
+          {
+            vm.smsEventCreated = true;
+          }
+
+          vm.smsEvents.phone = data[0].endPoint;
+          vm.smsEvents.guWebhookId = data[0].guWebhookId;
+          vm.smsEvents.type = data[0].type;
+          vm.smsEvents.createdDate = data[0].createdDate;
+          vm.smsEvents.isEnabled = data[0].isEnabled;
+          data[0].eventCodes=JSON.parse(data[0].eventCodes);
+          for (var j = 0; j < data[0].eventCodes.length; j++) {
+            for (var k = 0; k < vm.smsEventList.length; k++) {
+              if(data[0].eventCodes[j]==vm.smsEventList[k].eventType)
+              {
+                vm.smsEventList[k].isSelected=true;
+              }
+            }
+          }
+          $scope.loadingEventDetails = false;
+
+        }
+      }).error(function (data) {
+        //console.log(data);
+        $scope.loadingEventDetails = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    vm.selectAllSmsEvents= function () {
+      if(vm.smsEvents.selectAll)
+      {
+        for (var i = 0; i < vm.smsEventList.length; i++) {
+          vm.smsEventList[i].isSelected=true;
+        }
+      }
+      else
+      {
+        for (var i = 0; i < vm.smsEventList.length; i++) {
+          vm.smsEventList[i].isSelected=false;
+        }
+      }
+    }
+
+    vm.submitSmsEvents= function () {
+      if(!vm.smsEventCreated)
+      {
+        if (vm.smsEventsForm.$valid == true) {
+          vm.smsEventsSubmitted = true;
+
+          var smsEventsObj={};
+          var tempEventsSelected=false;
+          smsEventsObj.endPoint=vm.smsEvents.phone;
+          smsEventsObj.type="sms";
+          smsEventsObj.createdDate=new Date();
+          smsEventsObj.isEnabled=true;
+          smsEventsObj.eventCodes=[];
+
+          for (var i = 0; i < vm.smsEventList.length; i++) {
+            if(vm.smsEventList[i].isSelected)
+            {
+              smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
+              tempEventsSelected=true;
+            }
+          }
+
+          if(tempEventsSelected)
+          {
+            $charge.webhook().createWH(smsEventsObj).success(function (data) {
+              //console.log(data);
+              //
+              if(data.error=="00000")
+              {
+                notifications.toast("SMS alerts set Successfully", "success");
+                vm.smsEvents.guWebhookId = data.guWebhookId;
+                vm.smsEvents.type = "sms";
+                vm.smsEvents.createdDate = new Date();
+                vm.smsEvents.isEnabled = true;
+
+                $scope.infoJson= {};
+                $scope.infoJson.message ='SMS alerts set Successfully';
+                $scope.infoJson.app ='settings';
+                logHelper.info( $scope.infoJson);
+              }
+              else
+              {
+                notifications.toast("SMS alerts set Failed", "error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
+              }
+              //$scope.webhook={};
+              vm.smsEventsSubmitted = false;
+            }).error(function (data) {
+              //console.log(data);
+              vm.smsEventsSubmitted = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
+            })
+          }
+          else
+          {
+            notifications.toast("Select Events for set SMS alerts", "error");
+            vm.smsEventsSubmitted = false;
+          }
+
+        }
+      }
+      else
+      {
+        if (vm.smsEventsForm.$valid == true) {
+          vm.smsEventsSubmitted = true;
+
+          var smsEventsObj={};
+          var tempEventsSelected=false;
+          smsEventsObj.guWebhookId=vm.smsEvents.guWebhookId;
+          smsEventsObj.endPoint=vm.smsEvents.phone;
+          smsEventsObj.type="sms";
+          smsEventsObj.createdDate=new Date();
+          smsEventsObj.isEnabled=true;
+          smsEventsObj.eventCodes=[];
+
+          for (var i = 0; i < vm.smsEventList.length; i++) {
+            if(vm.smsEventList[i].isSelected)
+            {
+              smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
+              tempEventsSelected=true;
+            }
+          }
+
+          if(tempEventsSelected)
+          {
+            $charge.webhook().updateWH(smsEventsObj).success(function (data) {
+              //console.log(data);
+              //
+              if(data.error=="00000")
+              {
+                notifications.toast("SMS alerts Updated Successfully", "success");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message ='SMS alerts Updated Successfully';
+                $scope.infoJson.app ='settings';
+                logHelper.info( $scope.infoJson);
+              }
+              else
+              {
+                notifications.toast("SMS alerts Updating Failed", "error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
+              }
+              //$scope.webhook={};
+              vm.smsEventsSubmitted = false;
+            }).error(function (data) {
+              //console.log(data);
+              vm.smsEventsSubmitted = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
+            })
+          }
+          else
+          {
+            notifications.toast("Select Events for Set SMS alerts", "error");
+            vm.smsEventsSubmitted = false;
+          }
+
+        }
+      }
     }
 
 

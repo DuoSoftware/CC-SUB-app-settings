@@ -67,20 +67,20 @@
                             <md-progress-circular></md-progress-circular>
                         </div>
                         <form name="vm.generalForm" ng-submit="saveGeneralCheck()" id="generalForm">
-                          <div class="content-block-wrapper switches-block">
-                            <div layout="row" layout-align="start center">
-                              <div class="content-block" flex="30">
-                                <b>Enable Tenant Sync</b>
-                              </div>
-                              <div flex="5"></div>
-                              <div class="content-block" flex>
-                                <md-input-container class="md-block no-bottom" flex-gt-sm>
-                                  <md-switch ng-disabled="!dataSyncInitialized" ng-model="dataSyncEnabled" ng-change="syncSettingsChanged(dataSyncEnabled,settingsSyncData)" class="md-primary" ng-true-value="1" ng-false-value="0">
-                                  </md-switch>
-                                </md-input-container>
-                              </div>
-                            </div>
-                          </div>
+                          <!--<div class="content-block-wrapper switches-block">-->
+                            <!--<div layout="row" layout-align="start center">-->
+                              <!--<div class="content-block" flex="30">-->
+                                <!--<b>Enable Tenant Sync</b>-->
+                              <!--</div>-->
+                              <!--<div flex="5"></div>-->
+                              <!--<div class="content-block" flex>-->
+                                <!--<md-input-container class="md-block no-bottom" flex-gt-sm>-->
+                                  <!--<md-switch ng-disabled="!dataSyncInitialized" ng-model="dataSyncEnabled" ng-change="syncSettingsChanged(dataSyncEnabled,settingsSyncData)" class="md-primary" ng-true-value="1" ng-false-value="0">-->
+                                  <!--</md-switch>-->
+                                <!--</md-input-container>-->
+                              <!--</div>-->
+                            <!--</div>-->
+                          <!--</div>-->
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
                                     <div layout="row" layout-align="start center">
@@ -2254,6 +2254,142 @@
                         <!--end payment gateways-->
 
                     </md-content>
+                </md-tab>
+                <md-tab label="Intergrations" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('sms')">
+                  <md-content flex fill-height layout="column">
+                    <md-tabs md-border-bottom flex>
+                      <md-tab>
+                        <md-tab-label>
+                          <md-icon md-font-icon="icon-cog"></md-icon> Twilio Configurations
+                        </md-tab-label>
+                        <md-tab-body>
+                          <md-content flex fill-height>
+                            <form id="twilioSmsForm" name="vm.twilioSmsForm" ng-submit="submitTwilioConfig()" novalidate>
+                              <md-card class="input-block-gen">
+                                <md-card-title>
+                                  <div layout="row" layout-align="space-between center" flex>
+                                    <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Twilio SMS alerts</h3></div>
+                                    <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                                  </div>
+                                </md-card-title>
+                                <md-card-content class="p-0" ng-if="vm.usingTwilioSMS">
+                                  <div layout="row" layout-align="start center">
+                                    <h3 ><b>Twilio SMS alerts Configured</b></h3>
+                                  </div>
+                                  <div layout="row" layout-align="start center">
+                                    <md-button type="button" ng-click="editTwilioConfig()" ng-if="!vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Change</md-button>
+                                    <md-button type="button" ng-click="editTwilioConfig()" ng-if="vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Cancel</md-button>
+
+                                    <md-button type="button" ng-click="removeTwilioConfig($event)" ng-disabled="vm.submittedTwilioConfig" style="height:30px;" class="md-raised warm">Remove Account</md-button>
+                                  </div>
+                                </md-card-content>
+                                <md-card-content class="p-0" ng-if="!vm.usingTwilioSMS || vm.editTwilioConfigEnabled">
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>Account ID</label>
+                                      <input type="text" ng-required="true" min="" name="accountsid" ng-maxlength="30" ng-model="twilioSMSConfig.accountsid">
+                                      <div ng-messages="vm.twilioSmsForm.accountsid.$error">
+                                        <div ng-message="maxlength">Account ID must be between 1-30 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>Auth Token</label>
+                                      <input type="text" ng-required="true" min="" name="authtoken" ng-maxlength="300" ng-model="twilioSMSConfig.authtoken">
+                                      <div ng-messages="vm.twilioSmsForm.authtoken.$error">
+                                        <div ng-message="maxlength">Auth Token must be between 1-300 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>From Number</label>
+                                      <input type="text" ng-required="true" min="" name="fromnumber" ng-maxlength="30" ng-model="twilioSMSConfig.fromnumber">
+                                      <div ng-messages="vm.twilioSmsForm.fromnumber.$error">
+                                        <div ng-message="maxlength">From Number must be between 1-30 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row" class="layout-row">
+                                    <md-button ng-disabled="vm.submittedTwilioConfig" type="submit" form="twilioSmsForm" style="height:40px;" class="md-raised md-accent">Save</md-button>
+                                  </div>
+                                </md-card-content>
+                                <!--<md-card-actions>-->
+                                <!--<div layout="row" class="plan_footer" layout-align="end center">-->
+                                <!--<md-button class="md-icon-button md-accent m-5" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add tax</md-tooltip> </md-button>-->
+                                <!--</div>-->
+                                <!--</md-card-actions>-->
+                              </md-card>
+                            </form>
+                          </md-content>
+                        </md-tab-body>
+                      </md-tab>
+                      <md-tab ng-if="vm.usingTwilioSMS">
+                        <md-tab-label>
+                          <md-icon md-font-icon="icon-credit-card-multiple"></md-icon> Set SMS Alerts
+                        </md-tab-label>
+                        <md-tab-body>
+                          <md-content flex fill-height>
+                            <div class="preloader animate-fade-in-out" ng-if="loadingSmsEvents || loadingEventDetails">
+                              <md-progress-circular></md-progress-circular>
+                            </div>
+                            <form name="vm.smsEventsForm" id="smsEventsForm" ng-submit="vm.submitSmsEvents()" flex>
+                              <div md-whiteframe="2dp" style="z-index: 1">
+                                <div class="p-16">
+                                  <div layout="row" flex>
+                                    <md-input-container class="md-block m-0" flex>
+                                      <label>Phone Number</label>
+                                      <input name="phone" ng-required="true" type="text" ng-model="vm.smsEvents.phone" ng-maxlength="30">
+                                      <div ng-messages="vm.smsEvents.phone.$error">
+                                        <div ng-message="maxlength">Phone Number has to be less than 30 characters long</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <!--<div layout="row" flex>-->
+                                    <!--<md-input-container class="md-block" flex="30">-->
+                                      <!--<label>Mode</label>-->
+                                      <!--<md-select ng-required="true" flex ng-model="vm.smsEvents.mode">-->
+                                        <!--<md-option value="Live" selected>Live</md-option>-->
+                                        <!--<md-option value="Test">Test</md-option>-->
+                                      <!--</md-select>-->
+                                    <!--</md-input-container>-->
+                                  <!--</div>-->
+                                </div>
+                                <div md-whiteframe="1dp" class="pos-rel" style="z-index: 1;">
+                                  <div class="pv-10 ph-16 light-gray">
+                                    <md-checkbox ng-model="vm.smsEvents.selectAll" ng-change="vm.selectAllSmsEvents()" aria-label="Event" class="md-primary m-0">Select all events</md-checkbox>
+                                  </div>
+                                </div>
+                                <!--<div flex class="light-gray p-16">-->
+                                <!--<md-radio-group layout="row" layout-align="center center" ng-model="vm.webhook.type" ng-init="vm.webhook.type='custom'">-->
+                                <!--<md-radio-button value="custom" ng-click="vm.webhookTypeChange('custom')" class="md-primary">Custom</md-radio-button>-->
+                                <!--<md-radio-button value="all" ng-click="vm.webhookTypeChange('all')" class="md-primary" selected>Select All</md-radio-button>-->
+                                <!--</md-radio-group>-->
+                                <!--</div>-->
+                              </div>
+                              <md-content class="ph-16" ms-scroll>
+                                <!--<div class="msg-empty-list text-center" ng-if="vm.webhook.type == true">-->
+                                <!--<span><md-icon md-font-icon="icon-check-circle"></md-icon> All webhooks are selected</span>-->
+                                <!--</div>-->
+                                <div layout="row" layout-align="start center" class="pv-10" ng-repeat="event in vm.smsEventList" ng-click="null">
+                                  <md-checkbox ng-model="event.isSelected" aria-label="Event" class="md-primary m-0">{{event.eventDesc}}</md-checkbox>
+                                </div>
+                              </md-content>
+
+                              <md-divider></md-divider>
+                              <md-dialog-actions layout="row" class="bg-gray">
+                                <div layout="row" class="layout-row">
+                                  <md-progress-circular class="gen-save-indicator" ng-if="vm.smsEventsSubmitted"></md-progress-circular>
+                                  <md-button ng-disabled="vm.smsEventsSubmitted" type="submit" class="md-raised md-accent" form="smsEventsForm">Save</md-button>
+                                </div>
+                              </md-dialog-actions>
+                            </form>
+                          </md-content>
+                        </md-tab-body>
+                      </md-tab>
+                    </md-tabs>
+                  </md-content>
                 </md-tab>
                 <!--<md-tab label="Test" layout="column" layout-align="start start">-->
                 <!--<md-content>-->
