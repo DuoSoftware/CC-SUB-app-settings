@@ -8410,6 +8410,57 @@
 
 		}
 
+		$scope.disconnectWithSquare = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with Square')
+				.textContent('Do you want to proceed with Square disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithSquare($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with Square", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
 
 
 		//============================================================
@@ -8653,6 +8704,24 @@
 					}, function() {
 
 					});
+			}else if(gateway.paymentGateway === 'square'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentSquareController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-square.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
 			}
 		}
 
@@ -8674,6 +8743,8 @@
 				$scope.disconnectWithPaypal(key);
 			}else if(gateway === 'adyen'){
 				$scope.disconnectWithAdyen(key);
+			}else if(gateway === 'square'){
+				$scope.disconnectWithSquare(key);
 			}
 		}
 
