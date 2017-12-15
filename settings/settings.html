@@ -2388,6 +2388,47 @@
                           </md-content>
                         </md-tab-body>
                       </md-tab>
+					  <md-tab ng-if="vm.usingTwilioSMS">
+                        <md-tab-label>
+                          <md-icon md-font-icon="icon-history"></md-icon> Twilio sms history
+                        </md-tab-label>
+                        <md-tab-body>
+                          <md-content ms-scroll flex fill-height>
+                            <md-card flex class="input-block-gen">
+                              <!--<md-card-title>-->
+                              <!--<div layout="row" layout-align="start center">-->
+                              <!--<i class="material-icons">share</i> <h3>Webhook History</h3>-->
+                              <!--</div>-->
+                              <!--</md-card-title>-->
+                              <div class="list-header" layout="row" flex>
+                                <span flex>Event description</span>
+                                <span flex>Last sent date</span>
+                                <span flex>Last sent Number</span>
+                                <span flex="10">Status</span>
+                              </div>
+                              <md-card-content class="p-0" style="max-height: 400px;" ms-scroll>
+                                <div class="preloader animate-fade-in-out" ng-if="loadingTwilioSmsHistory">
+                                  <md-progress-circular></md-progress-circular>
+                                </div>
+                                <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="vm.twilioSmsHistoryList.length == 0">
+                                  <span><md-icon md-font-icon="icon-information-outline"></md-icon> No history is available for Twilio sms</span>
+                                </div>
+                                <div class="sub-list">
+                                  <div layout="row" class="list-item" ng-repeat="history in vm.twilioSmsHistoryList" ng-click="" layout-align="start center">
+                                    <span flex class="fw-500">{{history.eventDesc}}</span>
+                                    <span flex>{{history.lastSentDate}}</span>
+                                    <span flex style="text-transform: lowercase">{{history.lastSentUrl}}</span>
+                                    <span flex="10">{{history.status}}</span>
+                                  </div>
+                                </div>
+                                <div layout="row" layout-align="center center" class="" ng-if="isMoreTwilioSmsHistoryLoading">
+                                  <md-button ng-click="loadTwilioSMSHistory()" class="md-primary" style="font-size: 12px;font-weight: 400"><md-icon md-font-icon="icon-magnify"></md-icon> More</md-button>
+                                </div>
+                              </md-card-content>
+                            </md-card>
+                          </md-content>
+                        </md-tab-body>
+                      </md-tab>
                     </md-tabs>
                   </md-content>
                 </md-tab>

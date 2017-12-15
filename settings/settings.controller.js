@@ -2663,7 +2663,7 @@
 			skipAllWebhookHistory=0;
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
-			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc','website').success(function (data) {
 				//console.log(data);
 				if($scope.loadingWebhookHistory)
 				{
@@ -2755,7 +2755,7 @@
 		$scope.loadWebhookHistoryListPaging= function () {
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
-			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc','website').success(function (data) {
 				//console.log(data);
 				if($scope.loadingWebhookHistory)
 				{
@@ -7137,6 +7137,7 @@
           vm.editTwilioConfigEnabled = false;
           $scope.twilioSMSConfig = data;
           $scope.loadSmsEvents();
+		  $scope.loadTwilioSMSHistory();
         }
       }).error(function(data) {
         //console.log(data);
@@ -7147,6 +7148,7 @@
           vm.editTwilioConfigEnabled = false;
           $scope.twilioSMSConfig = data;
           $scope.loadSmsEvents();
+		  $scope.loadTwilioSMSHistory();
         }
         else
         {
@@ -7158,6 +7160,46 @@
           $scope.infoJson.app ='settings';
           logHelper.error( $scope.infoJson);
         }
+      })
+    }
+	
+	vm.twilioSmsHistoryList=[];
+    var skipAllTwilioSmsHistory=0;
+    var takeAllTwilioSmsHistory=100;
+    $scope.isMoreTwilioSmsHistoryLoading = true;
+
+    $scope.loadTwilioSMSHistory= function () {
+      $scope.loadingTwilioSmsHistory = true;
+      takeAllTwilioSmsHistory=100;
+
+      $charge.webhook().allWebhookHistory(skipAllTwilioSmsHistory,takeAllTwilioSmsHistory,'desc','sms').success(function (data) {
+        //console.log(data);
+        if($scope.loadingTwilioSmsHistory)
+        {
+          skipAllTwilioSmsHistory += takeAllTwilioSmsHistory;
+
+          for (var i = 0; i < data.length; i++) {
+            vm.twilioSmsHistoryList.push(data[i]);
+          }
+          $scope.loadingTwilioSmsHistory = false;
+
+          if(data.length<takeAllTwilioSmsHistory)
+          {
+            $scope.isMoreTwilioSmsHistoryLoading = false;
+          }
+
+        }
+
+      }).error(function (data) {
+        //console.log(data);
+        //vm.twilioSmsHistoryList=[];
+        $scope.loadingTwilioSmsHistory = false;
+        $scope.isMoreTwilioSmsHistoryLoading = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
       })
     }
 
