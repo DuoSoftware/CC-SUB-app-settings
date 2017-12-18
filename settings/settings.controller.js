@@ -7102,7 +7102,13 @@
 
     $scope.submitAvalaraTax= function () {
       vm.submittedAvaTax = true;
-      var avalaraTaxObj = $scope.avaTax;
+      var avalaraTaxObj = {
+        "accountNo":$scope.avaTax.accountNo,
+        "licenseKey":$scope.avaTax.licenseKey,
+        "companyCode":$scope.avaTax.companyCode,
+        "mode":$scope.avaTax.mode,
+        "serviceUrl":"https://development.avalara.net"
+      }
       $charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function(data) {
         //
         if(data.result) {
@@ -7162,7 +7168,7 @@
         }
       })
     }
-	
+
 	vm.twilioSmsHistoryList=[];
     var skipAllTwilioSmsHistory=0;
     var takeAllTwilioSmsHistory=100;

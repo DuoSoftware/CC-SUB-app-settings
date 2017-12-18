@@ -18,7 +18,7 @@
 
 		$scope.submitSquareRegistration = function () {
 			// debugger;
-			if($scope.squareForm.$valid){
+			if($scope.adyenForm.$valid){
 
 				$charge.paymentgateway().squarekeyregister($scope.square).success(function (response) {
 
