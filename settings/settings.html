@@ -329,15 +329,15 @@
                                                             </div>
                                                         </md-input-container>
                                                     </div>
-                                                    <div class="address" layout="row">
-                                                        <md-input-container class="md-block mb-0" flex>
-                                                            <label>Address</label>
-                                                            <input name="companyAddr" type="" ng-model="template.companyAddress" ng-maxlength="100">
-                                                            <div ng-messages="vm.generalForm.companyAddr.$error">
-                                                                <div ng-message="maxlength">Company Address has to be less than 100 characters long</div>
-                                                            </div>
-                                                        </md-input-container>
-                                                    </div>
+                                                    <!--<div class="address" layout="row">-->
+                                                        <!--<md-input-container class="md-block mb-0" flex>-->
+                                                            <!--<label>Address eka</label>-->
+                                                            <!--<input name="companyAddr" type="" ng-model="template.companyAddress" ng-maxlength="100">-->
+                                                            <!--<div ng-messages="vm.generalForm.companyAddr.$error">-->
+                                                                <!--<div ng-message="maxlength">Company Address has to be less than 100 characters long</div>-->
+                                                            <!--</div>-->
+                                                        <!--</md-input-container>-->
+                                                    <!--</div>-->
                                                     <div class="title">
                                                         <md-input-container class="md-block mb-0" flex>
                                                             <label>Phone</label>
@@ -358,6 +358,74 @@
                                                         </md-input-container>
                                                     </div>
                                                 </div>
+                                              <div class="info p-20 pr-40" flex>
+
+                                                <fieldset>
+                                                  <div class="title">
+                                                  <md-input-container class="md-block mb-0" flex>
+                                                    <label>Line 1 </label>
+                                                    <input name="line1" type="" ng-model="template.line1" ng-maxlength="30">
+                                                    <!--<div ng-messages="vm.generalForm.line1.$error">-->
+                                                      <!--<div ng-message="maxlength">Company Name has to be less than 30 characters long</div>-->
+                                                    <!--</div>-->
+                                                  </md-input-container>
+                                                </div>
+                                                <div class="address" layout="row">
+                                                  <md-input-container class="md-block mb-0" flex>
+                                                    <label>Line 2 </label>
+                                                    <input name="line2" type="" ng-model="template.line2" ng-maxlength="100">
+                                                    <!--<div ng-messages="vm.generalForm.companyAddr.$error">-->
+                                                      <!--<div ng-message="maxlength">Company Address has to be less than 100 characters long</div>-->
+                                                    <!--</div>-->
+                                                  </md-input-container>
+                                                </div>
+                                                <div class="title">
+                                                  <md-input-container class="md-block mb-0" flex>
+                                                    <label>Line 3</label>
+                                                    <input name="line3" type="" ng-model="template.line3" ng-maxlength="15">
+                                                    <!--<div ng-messages="vm.generalForm.companyPhone.$error">-->
+                                                      <!--<div ng-message="maxlength">Phone Number has to be less than 15 characters long</div>-->
+                                                    <!--</div>-->
+                                                  </md-input-container>
+                                                </div>
+                                                <div class="title">
+                                                  <md-input-container class="md-block mb-0" flex>
+                                                    <label>City</label>
+                                                    <input name="city" type="" ng-model="template.city"  ng-maxlength="30">
+                                                    <div ng-messages="vm.generalForm.city.$error">
+                                                      <div ng-message="maxlength">City has to be less than 30 characters long</div>
+                                                    </div>
+                                                  </md-input-container>
+                                                </div>
+                                                <div class="title">
+                                                  <md-input-container class="md-block mb-0" flex>
+                                                    <label>Region</label>
+                                                    <input name="region" type="" ng-model="template.region" ng-maxlength="15">
+                                                    <div ng-messages="vm.generalForm.region.$error">
+                                                    <div ng-message="maxlength">Region has to be less than 15 characters long</div>
+                                                    </div>
+                                                  </md-input-container>
+                                                </div>
+                                                <div class="title">
+                                                  <md-input-container class="md-block mb-0" flex>
+                                                    <label>Country</label>
+                                                    <input name="country" type="" ng-model="template.country" ng-maxlength="15">
+                                                    <div ng-messages="vm.generalForm.country.$error">
+                                                    <div ng-message="maxlength">Country has to be less than 15 characters long</div>
+                                                    </div>
+                                                  </md-input-container>
+                                                </div>
+                                                <div class="title">
+                                                  <md-input-container class="md-block mb-0" flex>
+                                                    <label>Postal Code</label>
+                                                    <input name="postalCode" type="" ng-model="template.postalCode" ng-maxlength="15">
+                                                    <div ng-messages="vm.generalForm.postalCode.$error">
+                                                    <div ng-message="maxlength">Postal Code has to be less than 15 characters long</div>
+                                                    </div>
+                                                  </md-input-container>
+                                                </div>
+                                              </fieldset>
+                                              </div>
                                             </div>
                                         </div>
                                     </div>

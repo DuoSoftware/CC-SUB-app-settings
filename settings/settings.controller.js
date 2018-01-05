@@ -913,6 +913,19 @@
 			$scope.template.companyDet=data;
 			$scope.template.companyName=data[0].RecordFieldData;
 			$scope.template.companyAddress=data[1].RecordFieldData;
+
+      var address = $scope.template.companyAddress.split('|');
+      if(address.length === 7){
+        $scope.template.line1=address[0];
+        $scope.template.line2=address[1];
+        $scope.template.line3=address[2];
+        $scope.template.city=address[3];
+        $scope.template.region=address[4];
+        $scope.template.country=address[5];
+        $scope.template.postalCode=address[6];
+      }
+
+
 			$scope.template.companyPhone=data[2].RecordFieldData;
 			$scope.template.companyEmail=data[3].RecordFieldData;
 			$scope.template.companyLogoPreview=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
@@ -1193,6 +1206,17 @@
 		}
 
 		$scope.updateGeneralRecords= function () {
+
+      $scope.template.companyAddress = "";
+
+      $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1 : "";
+      $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2 : "| ";
+      $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3 : "| ";
+      $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city : "| ";
+      $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region : "| ";
+      $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country : "| ";
+      $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode : "| ";
+
 			var updateData=[{
 				"RowID": $scope.baseCurrencyDet.RowID,
 				"RecordFieldData": $scope.general.baseCurrency
@@ -1896,7 +1920,20 @@
 				"FieldType": "CompanyAddressType",
 				"ColumnIndex": "1"
 			});
-			$scope.companyFieldValues.push({
+
+
+      $scope.template.companyAddress = "";
+
+      $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1 : "";
+      $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2 : "| ";
+      $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3 : "| ";
+      $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city : "| ";
+      $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region : "| ";
+      $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country : "| ";
+      $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode : "| ";
+
+
+      $scope.companyFieldValues.push({
 				"RowID": "",
 				"RecordFieldData": $scope.template.companyAddress,
 				"ColumnIndex": "1"
@@ -2022,6 +2059,19 @@
 		}
 
 		$scope.insertCompanyIndividual= function () {
+
+      $scope.template.companyAddress = "";
+
+        $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1 : "";
+        $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2 : "| ";
+        $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3 : "| ";
+        $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city : "| ";
+        $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region : "| ";
+        $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country : "| ";
+        $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode : "| ";
+
+
+
 			var req =[{
 				"RecordName":"CTS_CompanyAttributes",
 				"FieldName":"CompanyName",
