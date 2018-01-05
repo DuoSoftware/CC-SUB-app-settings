@@ -384,10 +384,15 @@
 				case 'individual-tax':
 					$scope.loadIndividualTaxes();
 					$scope.loadTaxGrps();
+          $scope.loadAvalaraTaxes();
 					break;
 				case 'tax-groups':
 					$scope.loadTaxGrps();
+          $scope.loadAvalaraTaxes();
 					break;
+        case 'sms':
+          $scope.loadTwilioSMSConfig();
+          break;
 				default :
 					break;
 
@@ -702,6 +707,72 @@
 			$scope.loadOnlinePaymentRegistration();
 		})
 
+    function gst(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      //debugger;
+      return null;
+    }
+
+    function getCurrentDomain() {
+      var _st = gst("currentDomain");
+      var __st = gst("domain");
+      return (_st != null) ? _st : __st; //forduhespu "248570d655d8419b91f6c3e0da331707 51de1ea9effedd696741d5911f77a64f";
+    }
+
+    $scope.dataSyncInitialized = false;
+    $scope.dataSyncEnabled = 0;
+    $scope.settingsSyncData = [];
+
+    $charge.searchhelper().getTenantSyncData(getCurrentDomain()).success(function(data) {
+      //
+      if(data.status)
+      {
+        if(data.data.length != 0)
+        {
+          $scope.dataSyncInitialized = true;
+          $scope.dataSyncEnabled = data.data[0].SyncEnable;
+          $scope.settingsSyncData = data.data;
+        }
+        else
+        {
+          $scope.dataSyncInitialized = false;
+        }
+      }
+    }).error(function(data) {
+
+
+    })
+
+    $scope.syncSettingsChanged = function (syncEnable,syncData) {
+      var syncUpdateObj = {
+        "userId":syncData[0].userId,
+        "syncToDomain":getCurrentDomain(),
+        "SyncEnable":syncEnable
+      }
+
+      $charge.searchhelper().updateSyncTenantSettings(syncUpdateObj).success(function(data) {
+        //
+        if(data.status)
+        {
+          notifications.toast("Settings Sync Updated", "success");
+        }
+        else
+        {
+          notifications.toast("Settings Sync Updating failed", "error");
+          syncEnable = !syncEnable;
+        }
+      }).error(function(data) {
+        notifications.toast("Settings Sync Updating failed", "error");
+        syncEnable = !syncEnable;
+      })
+    };
+
 
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
 		//  //
@@ -842,6 +913,19 @@
 			$scope.template.companyDet=data;
 			$scope.template.companyName=data[0].RecordFieldData;
 			$scope.template.companyAddress=data[1].RecordFieldData;
+
+      var address = $scope.template.companyAddress.split('|');
+      if(address.length === 7){
+        $scope.template.line1=address[0];
+        $scope.template.line2=address[1];
+        $scope.template.line3=address[2];
+        $scope.template.city=address[3];
+        $scope.template.region=address[4];
+        $scope.template.country=address[5];
+        $scope.template.postalCode=address[6];
+      }
+
+
 			$scope.template.companyPhone=data[2].RecordFieldData;
 			$scope.template.companyEmail=data[3].RecordFieldData;
 			$scope.template.companyLogoPreview=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
@@ -1122,6 +1206,17 @@
 		}
 
 		$scope.updateGeneralRecords= function () {
+
+      $scope.template.companyAddress = "";
+
+      $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1 : "";
+      $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2 : "|";
+      $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3 : "|";
+      $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city : "|";
+      $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region : "|";
+      $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country : "|";
+      $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode : "|";
+
 			var updateData=[{
 				"RowID": $scope.baseCurrencyDet.RowID,
 				"RecordFieldData": $scope.general.baseCurrency
@@ -1353,7 +1448,7 @@
 					$scope.saveGeneralCheck();
 				}
 			}).error(function (data) {
-				notifications.toast("Error occured while Checking DB", "error");
+				notifications.toast("Building your company still on process. Please try again in few minutes", "error");
 				$scope.generalSubmit = false;
 
 				$scope.infoJson= {};
@@ -1825,7 +1920,20 @@
 				"FieldType": "CompanyAddressType",
 				"ColumnIndex": "1"
 			});
-			$scope.companyFieldValues.push({
+
+
+      $scope.template.companyAddress = "";
+
+      $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1 : "";
+      $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2 : "|";
+      $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3 : "|";
+      $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city : "|";
+      $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region : "|";
+      $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country : "|";
+      $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode : "|";
+
+
+      $scope.companyFieldValues.push({
 				"RowID": "",
 				"RecordFieldData": $scope.template.companyAddress,
 				"ColumnIndex": "1"
@@ -1951,6 +2059,19 @@
 		}
 
 		$scope.insertCompanyIndividual= function () {
+
+      $scope.template.companyAddress = "";
+
+        $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1 : "";
+        $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2 : "|";
+        $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3 : "|";
+        $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city : "|";
+        $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region : "|";
+        $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country : "|";
+        $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode : "|";
+
+
+
 			var req =[{
 				"RecordName":"CTS_CompanyAttributes",
 				"FieldName":"CompanyName",
@@ -2545,7 +2666,7 @@
 			vm.webhookList=[];
 			skipAllWebhooks=0;
 
-			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
+			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc','website').success(function (data) {
 				//console.log(data);
 				//
 				if($scope.loadingWebhooks)
@@ -2592,7 +2713,7 @@
 			skipAllWebhookHistory=0;
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
-			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc','website').success(function (data) {
 				//console.log(data);
 				if($scope.loadingWebhookHistory)
 				{
@@ -2626,7 +2747,7 @@
 
 		$scope.loadWebhookListPaging= function () {
 			$scope.loadingWebhooks = true;
-			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc').success(function (data) {
+			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc','website').success(function (data) {
 				//console.log(data);
 				if($scope.loadingWebhooks)
 				{
@@ -2684,7 +2805,7 @@
 		$scope.loadWebhookHistoryListPaging= function () {
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
-			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc').success(function (data) {
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc','website').success(function (data) {
 				//console.log(data);
 				if($scope.loadingWebhookHistory)
 				{
@@ -2757,7 +2878,7 @@
 					var webhookObj={};
 					var tempEventsSelected=false;
 					webhookObj.endPoint=vm.webhook.endPoint;
-					webhookObj.type=vm.webhook.type;
+					webhookObj.type="website";
 					webhookObj.createdDate=new Date();
 					webhookObj.isEnabled=true;
 					webhookObj.eventCodes=[];
@@ -2833,7 +2954,7 @@
 					var tempEventsSelected=false;
 					webhookObj.guWebhookId=vm.webhook.guWebhookId;
 					webhookObj.endPoint=vm.webhook.endPoint;
-					webhookObj.type=vm.webhook.type;
+					webhookObj.type="website";
 					webhookObj.createdDate=new Date();
 					webhookObj.isEnabled=true;
 					webhookObj.eventCodes=[];
@@ -6720,6 +6841,11 @@
 					{
 						$scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
 						$scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
+            if(actionObj.processAction=="Webhook")
+            {
+              $scope.retryProcess.endpoint = actionObj.Webhook.endpoint;
+              $scope.retryProcess.method = actionObj.Webhook.method;
+            }
 					}
 				}
 
@@ -6814,13 +6940,20 @@
 			actionObj4.actionIndex=3;
 			actionObj4.daysAfterAttempt=0;
 			actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
+      if(actionObj4.processAction=="Webhook")
+      {
+        actionObj4.Webhook = {
+          "endpoint":$scope.retryProcess.endpoint,
+          "method":$scope.retryProcess.method
+        }
+      }
 			actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
 			$scope.retryProcess.actions.push(actionObj4);
 
 			if(!$scope.PaymentRetryUpdating)
 			{
 				$charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
-					//console.log(data);
+					//console.log(data);delmonispi@deyom.com kerkudatru@deyom.com
 					if(data.response=="succeeded")
 					{
 						notifications.toast("Successfully Payment Retry Configuration Saved","success");
@@ -6986,6 +7119,447 @@
 				logHelper.error( $scope.infoJson);
 			})
 		}
+
+    vm.usingAvalaraTax = false;
+    $scope.avaTax = {};
+    vm.submittedAvaTax = false;
+
+    $scope.enableAvalaraTax= function () {
+      vm.usingAvalaraTax = true;
+    }
+
+    $scope.loadAvalaraTaxes= function () {
+      $charge.ccapi().getAvalaraTax().success(function(data) {
+        //
+        if(data!=undefined && data!=null && data!="") {
+          vm.usingAvalaraTax = true;
+          $scope.avaTax=data;
+
+        }
+        else{
+          vm.usingAvalaraTax = false;
+        }
+      }).error(function(data) {
+        //console.log(data);
+        vm.usingAvalaraTax = false;
+        // $scope.isSpinnerShown=false;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    $scope.submitAvalaraTax= function () {
+      vm.submittedAvaTax = true;
+      var avalaraTaxObj = {
+        "accountNo":$scope.avaTax.accountNo,
+        "licenseKey":$scope.avaTax.licenseKey,
+        "companyCode":$scope.avaTax.companyCode,
+        "mode":$scope.avaTax.mode,
+        "serviceUrl":"https://development.avalara.net"
+      }
+      $charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function(data) {
+        //
+        if(data.result) {
+          notifications.toast("Successfully Connected to Avalara","success");
+
+        }
+        else{
+          notifications.toast("Connecting to Avalara failed","error");
+        }
+        vm.submittedAvaTax = false;
+      }).error(function(data) {
+        //console.log(data);
+        notifications.toast("Connecting to Avalara failed","error");
+        vm.submittedAvaTax = false;
+        // $scope.isSpinnerShown=false;
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    vm.usingTwilioSMS = false;
+    $scope.twilioSMSConfig = {};
+
+    $scope.loadTwilioSMSConfig= function () {
+      $charge.twiliosms().getTwilioAccount().success(function(data) {
+        //
+        if(data.connected)
+        {
+          vm.usingTwilioSMS = true;
+          vm.editTwilioConfigEnabled = false;
+          $scope.twilioSMSConfig = data;
+          $scope.loadSmsEvents();
+		  $scope.loadTwilioSMSHistory();
+        }
+      }).error(function(data) {
+        //console.log(data);
+        // $scope.isSpinnerShown=false;
+        if(data.connected)
+        {
+          vm.usingTwilioSMS = true;
+          vm.editTwilioConfigEnabled = false;
+          $scope.twilioSMSConfig = data;
+          $scope.loadSmsEvents();
+		  $scope.loadTwilioSMSHistory();
+        }
+        else
+        {
+          vm.usingTwilioSMS = false;
+          $scope.twilioSMSConfig = {};
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        }
+      })
+    }
+
+	vm.twilioSmsHistoryList=[];
+    var skipAllTwilioSmsHistory=0;
+    var takeAllTwilioSmsHistory=100;
+    $scope.isMoreTwilioSmsHistoryLoading = true;
+
+    $scope.loadTwilioSMSHistory= function () {
+      $scope.loadingTwilioSmsHistory = true;
+      takeAllTwilioSmsHistory=100;
+
+      $charge.webhook().allWebhookHistory(skipAllTwilioSmsHistory,takeAllTwilioSmsHistory,'desc','sms').success(function (data) {
+        //console.log(data);
+        if($scope.loadingTwilioSmsHistory)
+        {
+          skipAllTwilioSmsHistory += takeAllTwilioSmsHistory;
+
+          for (var i = 0; i < data.length; i++) {
+            vm.twilioSmsHistoryList.push(data[i]);
+          }
+          $scope.loadingTwilioSmsHistory = false;
+
+          if(data.length<takeAllTwilioSmsHistory)
+          {
+            $scope.isMoreTwilioSmsHistoryLoading = false;
+          }
+
+        }
+
+      }).error(function (data) {
+        //console.log(data);
+        //vm.twilioSmsHistoryList=[];
+        $scope.loadingTwilioSmsHistory = false;
+        $scope.isMoreTwilioSmsHistoryLoading = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    vm.editTwilioConfigEnabled = false;
+    $scope.editTwilioConfig= function () {
+      vm.editTwilioConfigEnabled = !vm.editTwilioConfigEnabled;
+    }
+
+    vm.submittedTwilioConfig = false;
+    $scope.submitTwilioConfig= function () {
+      if(vm.twilioSmsForm.$valid==true) {
+        vm.submittedTwilioConfig = true;
+
+        var twilioConfObj = $scope.twilioSMSConfig;
+        $charge.twiliosms().createTwilioAccount(twilioConfObj).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Twilio SMS alerts Configured","success");
+            $scope.loadTwilioSMSConfig();
+          }
+          vm.submittedTwilioConfig = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Twilio SMS configuration failed","error");
+          vm.submittedTwilioConfig = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        })
+      }
+    }
+
+    $scope.removeTwilioConfig= function (ev) {
+
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure you want to Remove this account?')
+        .textContent('You cannot revert this account once you delete it!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(function() {
+        vm.submittedTwilioConfig = true;
+        var twilioConfAccId = $scope.twilioSMSConfig.accountsid != undefined?$scope.twilioSMSConfig.accountsid:"";
+        $charge.twiliosms().removeTwilioAccount(twilioConfAccId).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Twilio account removed","success");
+            $scope.loadTwilioSMSConfig();
+          }
+          vm.submittedTwilioConfig = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Twilio account removing failed","error");
+          vm.submittedTwilioConfig = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        })
+      }, function() {
+
+      });
+    }
+
+    $scope.loadingSmsEvents = true;
+    vm.smsEvents={};
+    vm.smsEventList=[];
+    vm.smsEvents.selectAll=false;
+    vm.smsEventCreated = false;
+    $scope.loadSmsEvents= function () {
+      $scope.loadingSmsEvents = true;
+      vm.smsEvents.selectAll=false;
+      vm.smsEventList=[];
+      var skipSmsEvents = 0;
+      var takeSmsEvents = 100;
+      $charge.webhook().allEvents(skipSmsEvents,takeSmsEvents,'asc').success(function (data) {
+        //console.log(data);
+        //
+        if($scope.loadingSmsEvents)
+        {
+          skipSmsEvents += takeSmsEvents;
+
+          for (var i = 0; i < data.length; i++) {
+            data[i].isSelected=false;
+            vm.smsEventList.push(data[i]);
+          }
+          vm.selectAllSmsEvents();
+          $scope.loadSmsEventDetails();
+          $scope.loadingSmsEvents = false;
+        }
+      }).error(function (data) {
+        //console.log(data);
+        vm.smsEventList=[];
+        $scope.loadingSmsEvents = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    $scope.loadSmsEventDetails= function () {
+      $scope.loadingEventDetails = true;
+      vm.smsEventCreated = false;
+      var skipEventDetails = 0;
+      var takeEventDetails = 100;
+      $charge.webhook().allWebhooks(skipEventDetails,takeEventDetails,'desc','sms').success(function (data) {
+        //console.log(data);
+        //
+        if($scope.loadingEventDetails)
+        {
+          skipEventDetails += takeEventDetails;
+
+          if(data[0].type=="sms")
+          {
+            vm.smsEventCreated = true;
+          }
+
+          vm.smsEvents.phone = data[0].endPoint;
+          vm.smsEvents.guWebhookId = data[0].guWebhookId;
+          vm.smsEvents.type = data[0].type;
+          vm.smsEvents.createdDate = data[0].createdDate;
+          vm.smsEvents.isEnabled = data[0].isEnabled;
+          data[0].eventCodes=JSON.parse(data[0].eventCodes);
+          for (var j = 0; j < data[0].eventCodes.length; j++) {
+            for (var k = 0; k < vm.smsEventList.length; k++) {
+              if(data[0].eventCodes[j]==vm.smsEventList[k].eventType)
+              {
+                vm.smsEventList[k].isSelected=true;
+              }
+            }
+          }
+          $scope.loadingEventDetails = false;
+
+        }
+      }).error(function (data) {
+        //console.log(data);
+        $scope.loadingEventDetails = false;
+
+        $scope.infoJson= {};
+        $scope.infoJson.message =JSON.stringify(data);
+        $scope.infoJson.app ='settings';
+        logHelper.error( $scope.infoJson);
+      })
+    }
+
+    vm.selectAllSmsEvents= function () {
+      if(vm.smsEvents.selectAll)
+      {
+        for (var i = 0; i < vm.smsEventList.length; i++) {
+          vm.smsEventList[i].isSelected=true;
+        }
+      }
+      else
+      {
+        for (var i = 0; i < vm.smsEventList.length; i++) {
+          vm.smsEventList[i].isSelected=false;
+        }
+      }
+    }
+
+    vm.submitSmsEvents= function () {
+      if(!vm.smsEventCreated)
+      {
+        if (vm.smsEventsForm.$valid == true) {
+          vm.smsEventsSubmitted = true;
+
+          var smsEventsObj={};
+          var tempEventsSelected=false;
+          smsEventsObj.endPoint=vm.smsEvents.phone;
+          smsEventsObj.type="sms";
+          smsEventsObj.createdDate=new Date();
+          smsEventsObj.isEnabled=true;
+          smsEventsObj.eventCodes=[];
+
+          for (var i = 0; i < vm.smsEventList.length; i++) {
+            if(vm.smsEventList[i].isSelected)
+            {
+              smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
+              tempEventsSelected=true;
+            }
+          }
+
+          if(tempEventsSelected)
+          {
+            $charge.webhook().createWH(smsEventsObj).success(function (data) {
+              //console.log(data);
+              //
+              if(data.error=="00000")
+              {
+                notifications.toast("SMS alerts set Successfully", "success");
+                vm.smsEvents.guWebhookId = data.guWebhookId;
+                vm.smsEvents.type = "sms";
+                vm.smsEvents.createdDate = new Date();
+                vm.smsEvents.isEnabled = true;
+
+                $scope.infoJson= {};
+                $scope.infoJson.message ='SMS alerts set Successfully';
+                $scope.infoJson.app ='settings';
+                logHelper.info( $scope.infoJson);
+              }
+              else
+              {
+                notifications.toast("SMS alerts set Failed", "error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
+              }
+              //$scope.webhook={};
+              vm.smsEventsSubmitted = false;
+            }).error(function (data) {
+              //console.log(data);
+              vm.smsEventsSubmitted = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
+            })
+          }
+          else
+          {
+            notifications.toast("Select Events for set SMS alerts", "error");
+            vm.smsEventsSubmitted = false;
+          }
+
+        }
+      }
+      else
+      {
+        if (vm.smsEventsForm.$valid == true) {
+          vm.smsEventsSubmitted = true;
+
+          var smsEventsObj={};
+          var tempEventsSelected=false;
+          smsEventsObj.guWebhookId=vm.smsEvents.guWebhookId;
+          smsEventsObj.endPoint=vm.smsEvents.phone;
+          smsEventsObj.type="sms";
+          smsEventsObj.createdDate=new Date();
+          smsEventsObj.isEnabled=true;
+          smsEventsObj.eventCodes=[];
+
+          for (var i = 0; i < vm.smsEventList.length; i++) {
+            if(vm.smsEventList[i].isSelected)
+            {
+              smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
+              tempEventsSelected=true;
+            }
+          }
+
+          if(tempEventsSelected)
+          {
+            $charge.webhook().updateWH(smsEventsObj).success(function (data) {
+              //console.log(data);
+              //
+              if(data.error=="00000")
+              {
+                notifications.toast("SMS alerts Updated Successfully", "success");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message ='SMS alerts Updated Successfully';
+                $scope.infoJson.app ='settings';
+                logHelper.info( $scope.infoJson);
+              }
+              else
+              {
+                notifications.toast("SMS alerts Updating Failed", "error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                logHelper.error( $scope.infoJson);
+              }
+              //$scope.webhook={};
+              vm.smsEventsSubmitted = false;
+            }).error(function (data) {
+              //console.log(data);
+              vm.smsEventsSubmitted = false;
+
+              $scope.infoJson= {};
+              $scope.infoJson.message =JSON.stringify(data);
+              $scope.infoJson.app ='settings';
+              logHelper.error( $scope.infoJson);
+            })
+          }
+          else
+          {
+            notifications.toast("Select Events for Set SMS alerts", "error");
+            vm.smsEventsSubmitted = false;
+          }
+
+        }
+      }
+    }
 
 
 
@@ -7518,37 +8092,6 @@
 		$scope.isRegButtonsShow = true;
 		// $scope.isRegisteredWith2checkout = false;
 
-		$scope.loadCardDetails = function() {
-
-			$http({
-				method: 'GET',
-				url: "/azureshell/app/main/settings/paymentMethod/cardHandler.php?view=getCardDetails",
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}).then(function (response) {
-
-				if(!response.data.status){
-					return;
-				}
-
-				$scope.cardDetails = response.data.data;
-
-
-				for (var i = 0; i < $scope.cardDetails.length; i++) {
-					$scope.cardDetails[i].rowId = i;
-				}
-
-			}, function (response) {
-				//console.log(response);
-				$scope.cardDetails = null;
-
-			});
-
-		}
-
-		$scope.loadCardDetails();
-
 		// $scope.checkPaymentMethodRegistry = function(){
 		//
 		// 	$charge.paymentgateway().stripeCheckAccount().success(function (data) {
@@ -7810,14 +8353,224 @@
 
 		}
 
+		$scope.disconnectWithWebxpay = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with Webxpay')
+				.textContent('Do you want to proceed with Webxpay disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithWebxpay($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with Webxpay", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithPaypal = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.paypal = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with paypal')
+				.textContent('Do you want to proceed with paypal disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+
+
+				$charge.paymentgateway().disconnectWithPayPal($scope.paypal).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with paypal", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithAuthorize = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with Adyen')
+				.textContent('Do you want to proceed with Adyen disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithAdyen($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with Adyen", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+		$scope.disconnectWithSquare = function(key){
+
+			$scope.isRegButtonsShow = true;
+
+			$scope.authorize = key;
+
+			var confirm = $mdDialog.confirm()
+				.title('Disconnect with Square')
+				.textContent('Do you want to proceed with Square disconnection?')
+				.ariaLabel('Lucky day')
+				.ok('Yes')
+				.cancel('No');
+			$mdDialog.show(confirm).then(function () {
+
+				$charge.paymentgateway().disconnectWithSquare($scope.authorize).success(function (dataa) {
+
+					//console.log(dataa);
+
+					if(dataa.status)
+					{
+						notifications.toast("You have successfully disconnected with Square", "Success");
+						$scope.makeDefault('testGateway');
+						$scope.loadOnlinePaymentRegistration();
+					}else{
+						notifications.toast("There is a problem, Please try again", "Error");
+					}
+
+					$scope.isRegButtonsShow= false;
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.isRegButtonsShow= false;
+					var error = "There is a problem, Please try again";
+					if(angular.isDefined(data["error"])){
+						error = data["error"]+". Please try again";
+					}
+					notifications.toast(error, "Error");
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					logHelper.error( $scope.infoJson);
+
+				});
+
+			}, function () {
+				$scope.isRegButtonsShow = true;
+			});
+
+		}
+
+
 
 		//============================================================
 
 		$scope.currentGateways = [];
 		$scope.defaultGateway = "";
+		// if($scope.accCategory === null){
+		// 	$scope.accCategory = gst('category');
+		// }
 
 		$scope.loadOnlinePaymentRegistration = function(){
-			$charge.paymentgateway().availableGateways($scope.general.baseCurrency).success(function (data) {
+			$charge.paymentgateway().availableGateways($scope.general.baseCurrency,$scope.accCategory).success(function (data) {
 				if(data.status) {
 
 					$scope.currentGateways = data.data.availableGateway;
@@ -7829,6 +8582,14 @@
 						if (angular.isDefined(data.data.connectedGatways[$scope.currentGateways[i].paymentGateway])) {
 							$scope.currentGateways[i].isConnected = true;
 							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
+
+							if($scope.currentGateways[i].key['0'].enableBitcoin){
+								$scope.currentGateways[i].key['0'].enableBitcoin = $scope.currentGateways[i].key['0'].enableBitcoin === 1 ? true : false;
+							}
+
+							if($scope.currentGateways[i].key['0'].enableAch){
+								$scope.currentGateways[i].key['0'].enableAch = $scope.currentGateways[i].key['0'].enableAch === 1 ? true : false;
+							}
 						}
 						else
 						{
@@ -7853,6 +8614,33 @@
 				logHelper.error( $scope.infoJson);
 			});
 
+
+		}
+
+		$scope.issavePyamnetExtraDetailsClicked = false;
+		$scope.savePyamnetExtraDetails = function(extraDetails){
+			$scope.issavePyamnetExtraDetailsClicked = true;
+			$charge.paymentgateway().stripeachregister(extraDetails).success(function (data) {
+
+				if(data.status) {
+					notifications.toast("Stripe ACH/Bitcoin information saved", "Success");
+
+				}else{
+					notifications.toast("There is a problem, Please try again", "Error");
+				}
+
+				$scope.issavePyamnetExtraDetailsClicked = false;
+
+			}).error(function(data) {
+				//console.log( data);
+				notifications.toast("There is a problem, Please try again", "Error");
+				$scope.issavePyamnetExtraDetailsClicked = false;
+
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				logHelper.error( $scope.infoJson);
+			});
 
 		}
 
@@ -7922,6 +8710,24 @@
 					}, function() {
 
 					});
+			}else if(gateway.paymentGateway === 'paypal'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentPaypalController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-paypal.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
 			}else if(gateway.paymentGateway === 'braintree'){
 
 				$mdDialog.show({
@@ -7978,6 +8784,42 @@
 					}, function() {
 
 					});
+			}else if(gateway.paymentGateway === 'adyen'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentAdyenController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-adyen.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
+			}else if(gateway.paymentGateway === 'square'){
+
+				$mdDialog.show({
+					controller: 'GuidedPaymentSquareController',
+					templateUrl: 'app/main/settings/dialogs/guided-payment-square.html',
+					parent: angular.element(document.body),
+					targetEvent: ev,
+					clickOutsideToClose:false,
+					locals:{
+						idToken : $scope.idToken
+					}
+				})
+					.then(function(answer) {
+						$scope.loadOnlinePaymentRegistration();
+
+					}, function() {
+
+					});
 			}
 		}
 
@@ -7993,8 +8835,23 @@
 				$scope.disconnectWithbraintree(key)
 			}else if(gateway === 'authorizednet'){
 				$scope.disconnectWithAuthorize(key);
+			}else if(gateway === 'webxpay'){
+				$scope.disconnectWithWebxpay(key);
+			}else if(gateway === 'paypal'){
+				$scope.disconnectWithPaypal(key);
+			}else if(gateway === 'adyen'){
+				$scope.disconnectWithAdyen(key);
+			}else if(gateway === 'square'){
+				$scope.disconnectWithSquare(key);
 			}
 		}
+
+		// Kasun_Wijeratne_2017_NOV_17
+		$scope.showMoreUserInfo=false;
+		$scope.contentExpandHandler = function () {
+			$scope.showMoreUserInfo =! $scope.showMoreUserInfo;
+		};
+		// Kasun_Wijeratne_2017_NOV_17 - END
 
 
 
