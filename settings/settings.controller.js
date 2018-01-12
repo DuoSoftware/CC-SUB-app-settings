@@ -7562,6 +7562,346 @@
     }
 
 
+    $scope.quickBookConnected=false;
+    $scope.quickBookConfig={};
+    $scope.salesforceConnected=false;
+    $scope.salesforceConfig={};
+    $scope.zendeskConnected=false;
+    $scope.zendeskConfig={};
+    $scope.zohoConnected=false;
+    $scope.zohoConfig={};
+
+    $scope.openIntergrationConfigs= function () {
+
+      $charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
+        if(data.connected)
+        {
+          $scope.quickBookConnected=true;
+          $scope.quickBookConfig = data.data;
+          angular.element("#quickbookId").empty();
+        }
+        else
+        {
+          $scope.quickBookConnected=false;
+
+          $charge.quickbooks().getQuickbooksConfig().success(function (data) {
+            angular.element("#quickbookId").empty();
+            angular.element("#quickbookId").append(data);
+
+            $("#quickbookId a").attr('href','#settings');
+
+          }).error(function (data) {
+            //console.log(data);
+            angular.element("#quickbookId").empty();
+            notifications.toast("Quickbooks configurations loading failed", "error");
+          })
+        }
+
+      }).error(function (data) {
+        //console.log(data);
+        $scope.quickBookConnected=false;
+      })
+
+
+      $charge.salesforce().checkSalesforceConnected(getCurrentDomain()).success(function (data) {
+        if(data.connected)
+        {
+          $scope.salesforceConnected=true;
+          $scope.salesforceConfig = data.data;
+          angular.element("#salesforceId").empty();
+        }
+        else
+        {
+          $scope.salesforceConnected=false;
+
+          $charge.salesforce().getSalesforceConfig().success(function (data) {
+            angular.element("#salesforceId").empty();
+            angular.element("#salesforceId").append(data);
+
+            $("#salesforceId a").attr('href','#settings');
+
+          }).error(function (data) {
+            //console.log(data);
+            angular.element("#salesforceId").empty();
+            notifications.toast("Salesforce configurations loading failed", "error");
+          })
+        }
+
+      }).error(function (data) {
+        //console.log(data);
+        $scope.salesforceConnected=false;
+      })
+
+
+      $charge.zendesk().checkZendeskConnected(getCurrentDomain()).success(function (data) {
+        if(data.connected)
+        {
+          $scope.zendeskConnected=true;
+          $scope.zendeskConfig = data.data;
+        }
+        else
+        {
+          $scope.zendeskConnected=false;
+          $scope.zendeskConfigContent = {};
+
+        }
+
+      }).error(function (data) {
+        //console.log(data);
+        $scope.zendeskConnected=false;
+      })
+
+
+      $charge.zoho().checkZohoConnected().success(function (data) {
+        if(data.status)
+        {
+          $scope.zohoConnected=true;
+          $scope.zohoConfig = data.guOrganizationId;
+        }
+        else
+        {
+          $scope.zohoConnected=false;
+          $scope.zohoConfigContent = {};
+
+        }
+
+      }).error(function (data) {
+        //console.log(data);
+        $scope.zohoConnected=false;
+      })
+    }
+
+    //$(document).on('a','click', function (e) {
+    //  e.preventDefault();
+    //});
+    $scope.removeQuickbooksConfig= function (ev) {
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure you want to Remove Quickbooks account?')
+        .textContent('You cannot revert this account once you delete it!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(function() {
+        vm.submittedQuickbooks = true;
+        var quickbookKey = {
+          "realmId":$scope.quickBookConfig
+        }
+        $charge.quickbooks().deleteQuickbooksConfig(quickbookKey).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Quickbooks account removed","success");
+            $scope.openIntergrationConfigs();
+          }
+          vm.submittedQuickbooks = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Quickbooks account removing failed","error");
+          vm.submittedQuickbooks = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        })
+      }, function() {
+
+      });
+    }
+
+    $scope.removeSalesforceConfig= function (ev) {
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure you want to Remove Salesforce account?')
+        .textContent('You cannot revert this account once you delete it!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(function() {
+        vm.submittedSalesforce = true;
+        //var salesforceKey = $scope.salesforceConfig;
+        var salesforceKey = {
+          "refreshToken":$scope.salesforceConfig
+        }
+        $charge.salesforce().deleteSalesforceConfig(salesforceKey).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Salesforce account removed","success");
+            $scope.openIntergrationConfigs();
+          }
+          vm.submittedSalesforce = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Salesforce account removing failed","error");
+          vm.submittedSalesforce = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        })
+      }, function() {
+
+      });
+    }
+
+    $scope.zendeskConfigContent = {};
+
+    $scope.submitZendeskConfig= function () {
+      if (vm.zendeskForm.$valid == true) {
+        vm.submittedZendeskConfig = true;
+
+        var zendeskConfigObj = $scope.zendeskConfigContent;
+
+        $charge.zendesk().registerZendesk(zendeskConfigObj).success(function (data) {
+          //console.log(data);
+          //
+          if (data.status) {
+            notifications.toast("Registered to Zendesk Successfully", "success");
+            $scope.openIntergrationConfigs();
+
+            $scope.infoJson = {};
+            $scope.infoJson.message = 'Registered to Zendesk Successfully';
+            $scope.infoJson.app = 'settings';
+            logHelper.info($scope.infoJson);
+          }
+          vm.submittedZendeskConfig = false;
+
+        }).error(function (data) {
+          //console.log(data);
+          notifications.toast("Register to Zendesk Failed", "error");
+          vm.submittedZendeskConfig = false;
+
+          $scope.infoJson = {};
+          $scope.infoJson.message = JSON.stringify(data);
+          $scope.infoJson.app = 'settings';
+          logHelper.error($scope.infoJson);
+        })
+
+      }
+    }
+
+    $scope.removeZendeskConfig= function (ev) {
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure you want to Remove Zendesk account?')
+        .textContent('You cannot revert this account once you delete it!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(function() {
+        vm.submittedZendeskConfig = true;
+        //var salesforceKey = $scope.salesforceConfig;
+        var zendeskKey = {
+          "subDomain":$scope.zendeskConfig
+        }
+        $charge.zendesk().deleteZendeskConfig(zendeskKey).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Zendesk account removed","success");
+            $scope.openIntergrationConfigs();
+          }
+          vm.submittedZendeskConfig = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Zendesk account removing failed","error");
+          vm.submittedZendeskConfig = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        })
+      }, function() {
+
+      });
+    }
+
+    $scope.zohoConfigContent = {};
+
+    $scope.submitZohoConfig= function () {
+      if (vm.zohoForm.$valid == true) {
+        vm.submittedZohoConfig = true;
+
+        var zohoConfigObj = $scope.zohoConfigContent;
+
+        $charge.zoho().registerZoho(zohoConfigObj).success(function (data) {
+          //console.log(data);
+          //
+          if (data.status) {
+            notifications.toast("Registered to Zoho Successfully", "success");
+            $scope.openIntergrationConfigs();
+
+            $scope.infoJson = {};
+            $scope.infoJson.message = 'Registered to Zoho Successfully';
+            $scope.infoJson.app = 'settings';
+            logHelper.info($scope.infoJson);
+          }
+          else
+          {
+            notifications.toast(data.error, "error");
+          }
+          vm.submittedZohoConfig = false;
+
+        }).error(function (data) {
+          //console.log(data);
+          notifications.toast("Register to Zoho Failed", "error");
+          vm.submittedZohoConfig = false;
+
+          $scope.infoJson = {};
+          $scope.infoJson.message = JSON.stringify(data);
+          $scope.infoJson.app = 'settings';
+          logHelper.error($scope.infoJson);
+        })
+
+      }
+    }
+
+    $scope.removeZohoConfig= function (ev) {
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure you want to Remove Zoho account?')
+        .textContent('You cannot revert this account once you delete it!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(function() {
+        vm.submittedZohoConfig = true;
+        //var salesforceKey = $scope.salesforceConfig;
+        var zohoKey = {
+          "organizationId":$scope.zohoConfig
+        }
+        $charge.zoho().deleteZohoConfig(zohoKey).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Zoho account removed","success");
+            $scope.openIntergrationConfigs();
+          }
+          vm.submittedZohoConfig = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Zoho account removing failed","error");
+          vm.submittedZohoConfig = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          logHelper.error( $scope.infoJson);
+        })
+      }, function() {
+
+      });
+    }
+
+
 
 		$scope.editableIndTax=false;
 		$scope.editInd = '';

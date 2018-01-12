@@ -2328,11 +2328,18 @@
                     <md-tabs md-border-bottom flex>
                       <md-tab>
                         <md-tab-label>
-                          <md-icon md-font-icon="icon-cog"></md-icon> Twilio Configurations
+                          <md-icon md-font-icon="icon-cog"></md-icon> Twilio
                         </md-tab-label>
                         <md-tab-body>
-                          <md-content flex fill-height>
-                            <form id="twilioSmsForm" name="vm.twilioSmsForm" ng-submit="submitTwilioConfig()" novalidate>
+                          <md-content flex fill-height layout="column">
+                            <md-tabs md-border-bottom flex>
+                              <md-tab>
+                                <md-tab-label>
+                                  <md-icon md-font-icon="icon-cog"></md-icon> Twilio Configurations
+                                </md-tab-label>
+                                <md-tab-body>
+                                  <md-content flex fill-height>
+                                    <form id="twilioSmsForm" name="vm.twilioSmsForm" ng-submit="submitTwilioConfig()" novalidate>
                               <md-card class="input-block-gen">
                                 <md-card-title>
                                   <div layout="row" layout-align="space-between center" flex>
@@ -2390,10 +2397,10 @@
                                 <!--</md-card-actions>-->
                               </md-card>
                             </form>
-                          </md-content>
-                        </md-tab-body>
-                      </md-tab>
-                      <md-tab ng-if="vm.usingTwilioSMS">
+                                  </md-content>
+                                </md-tab-body>
+                              </md-tab>
+                              <md-tab ng-if="vm.usingTwilioSMS">
                         <md-tab-label>
                           <md-icon md-font-icon="icon-credit-card-multiple"></md-icon> Set SMS Alerts
                         </md-tab-label>
@@ -2456,7 +2463,7 @@
                           </md-content>
                         </md-tab-body>
                       </md-tab>
-					  <md-tab ng-if="vm.usingTwilioSMS">
+					                    <md-tab ng-if="vm.usingTwilioSMS">
                         <md-tab-label>
                           <md-icon md-font-icon="icon-history"></md-icon> Twilio sms history
                         </md-tab-label>
@@ -2495,6 +2502,193 @@
                               </md-card-content>
                             </md-card>
                           </md-content>
+                        </md-tab-body>
+                      </md-tab>
+                            </md-tabs>
+                          </md-content>
+                        </md-tab-body>
+                      </md-tab>
+                      <md-tab ng-click="openIntergrationConfigs()">
+                        <md-tab-label>
+                          <md-icon md-font-icon="icon-cog"></md-icon> Intergration
+                        </md-tab-label>
+                        <md-tab-body>
+                          <div>
+                            <!--<div layout="row">-->
+                            <!--<h3><b>Quickbooks : </b></h3>-->
+                            <!--</div>-->
+                            <md-card class="input-block-gen">
+                              <md-card-title>
+                                <div layout="row" layout-align="space-between center" flex>
+                                  <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Quickbooks</h3></div>
+                                  <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                                </div>
+                              </md-card-title>
+                              <md-card-content class="p-0" ng-if="quickBookConnected">
+                                <div layout="row" layout-align="start center">
+                                  <h3 ><b>Connected to Quickbooks</b></h3>
+                                </div>
+                                <div layout="row" layout-align="start center">
+                                  <!--<md-button type="button" ng-click="editTwilioConfig()" ng-if="!vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Change</md-button>-->
+                                  <!--<md-button type="button" ng-click="editTwilioConfig()" ng-if="vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Cancel</md-button>-->
+
+                                  <md-button type="button" ng-click="removeQuickbooksConfig($event)" ng-disabled="vm.submittedQuickbooks" style="height:30px;" class="md-raised warm">Remove Account</md-button>
+                                </div>
+                              </md-card-content>
+                              <md-card-content class="p-0" ng-if="!quickBookConnected">
+                                <div layout-align="space-between center" layout="row" id="quickbookId">
+                                </div>
+                              </md-card-content>
+                            </md-card>
+                          </div>
+                          <div>
+                            <!--<div layout="row">-->
+                            <!--<h3><b>Salesforce : </b></h3>-->
+                            <!--</div>-->
+                            <md-card class="input-block-gen">
+                              <md-card-title>
+                                <div layout="row" layout-align="space-between center" flex>
+                                  <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Salesforce</h3></div>
+                                  <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                                </div>
+                              </md-card-title>
+                              <md-card-content class="p-0" ng-if="salesforceConnected">
+                                <div layout="row" layout-align="start center">
+                                  <h3 ><b>Connected to Salesforce</b></h3>
+                                </div>
+                                <div layout="row" layout-align="start center">
+                                  <!--<md-button type="button" ng-click="editTwilioConfig()" ng-if="!vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Change</md-button>-->
+                                  <!--<md-button type="button" ng-click="editTwilioConfig()" ng-if="vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Cancel</md-button>-->
+
+                                  <md-button type="button" ng-click="removeSalesforceConfig($event)" ng-disabled="vm.submittedSalesforce" style="height:30px;" class="md-raised warm">Remove Account</md-button>
+                                </div>
+                              </md-card-content>
+                              <md-card-content class="p-0" ng-if="!salesforceConnected">
+                                <div layout-align="space-between center" layout="row" id="salesforceId">
+                                </div>
+                              </md-card-content>
+                            </md-card>
+                          </div>
+                          <div>
+                            <form id="zendeskForm" name="vm.zendeskForm" ng-submit="submitZendeskConfig()" novalidate>
+                              <md-card class="input-block-gen">
+                                <md-card-title>
+                                  <div layout="row" layout-align="space-between center" flex>
+                                    <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Zendesk</h3></div>
+                                    <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                                  </div>
+                                </md-card-title>
+                                <md-card-content class="p-0" ng-if="zendeskConnected">
+                                  <div layout="row" layout-align="start center">
+                                    <h3 ><b>Connected to Zendesk</b></h3>
+                                  </div>
+                                  <div layout="row" layout-align="start center">
+                                    <!--<md-button type="button" ng-click="editTwilioConfig()" ng-if="!vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Change</md-button>-->
+                                    <!--<md-button type="button" ng-click="editTwilioConfig()" ng-if="vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Cancel</md-button>-->
+
+                                    <md-button type="button" ng-click="removeZendeskConfig($event)" ng-disabled="vm.submittedZendeskConfig" style="height:30px;" class="md-raised warm">Remove Account</md-button>
+                                  </div>
+                                </md-card-content>
+                                <md-card-content class="p-0" ng-if="!zendeskConnected">
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>Sub Domain</label>
+                                      <input type="text" ng-required="true" min="" name="subDomain" ng-maxlength="100" ng-model="zendeskConfigContent.subDomain">
+                                      <div ng-messages="vm.zendeskForm.subDomain.$error">
+                                        <div ng-message="maxlength">Sub Domain must be between 1-100 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>Email Address</label>
+                                      <input type="text" ng-required="true" min="" name="email_address" ng-maxlength="100" ng-model="zendeskConfigContent.email_address">
+                                      <div ng-messages="vm.zendeskForm.email_address.$error">
+                                        <div ng-message="maxlength">Email Address must be between 1-100 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>Access Token</label>
+                                      <input type="text" ng-required="true" min="" name="accessToken" ng-maxlength="100" ng-model="zendeskConfigContent.accessToken">
+                                      <div ng-messages="vm.zendeskForm.accessToken.$error">
+                                        <div ng-message="maxlength">Access Token must be between 1-100 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row" class="layout-row">
+                                    <md-button ng-disabled="vm.submittedZendeskConfig" type="submit" form="zendeskForm" style="height:40px;" class="md-raised md-accent">Register</md-button>
+                                  </div>
+                                </md-card-content>
+                                <!--<md-card-actions>-->
+                                <!--<div layout="row" class="plan_footer" layout-align="end center">-->
+                                <!--<md-button class="md-icon-button md-accent m-5" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add tax</md-tooltip> </md-button>-->
+                                <!--</div>-->
+                                <!--</md-card-actions>-->
+                              </md-card>
+                            </form>
+                          </div>
+                          <div>
+                            <form id="zohoForm" name="vm.zohoForm" ng-submit="submitZohoConfig()" novalidate>
+                              <md-card class="input-block-gen">
+                                <md-card-title>
+                                  <div layout="row" layout-align="space-between center" flex>
+                                    <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Zoho</h3></div>
+                                    <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
+                                  </div>
+                                </md-card-title>
+                                <md-card-content class="p-0" ng-if="zohoConnected">
+                                  <div layout="row" layout-align="start center">
+                                    <h3 ><b>Connected to Zoho</b></h3>
+                                  </div>
+                                  <div layout="row" layout-align="start center">
+                                    <!--<md-button type="button" ng-click="editTwilioConfig()" ng-if="!vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Change</md-button>-->
+                                    <!--<md-button type="button" ng-click="editTwilioConfig()" ng-if="vm.editTwilioConfigEnabled" style="height:30px;" class="md-raised">Cancel</md-button>-->
+
+                                    <md-button type="button" ng-click="removeZohoConfig($event)" ng-disabled="vm.submittedZohoConfig" style="height:30px;" class="md-raised warm">Remove Account</md-button>
+                                  </div>
+                                </md-card-content>
+                                <md-card-content class="p-0" ng-if="!zohoConnected">
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>Username</label>
+                                      <input type="text" ng-required="true" min="" name="username" ng-maxlength="100" ng-model="zohoConfigContent.username">
+                                      <div ng-messages="vm.zohoForm.username.$error">
+                                        <div ng-message="maxlength">Username must be between 1-100 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>Password</label>
+                                      <input type="password" ng-required="true" min="" name="password" ng-maxlength="100" ng-model="zohoConfigContent.password">
+                                      <div ng-messages="vm.zohoForm.password.$error">
+                                        <div ng-message="maxlength">Password must be between 1-100 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row">
+                                    <md-input-container flex="30">
+                                      <label>Organization ID</label>
+                                      <input type="text" ng-required="true" min="" name="organizationId" ng-maxlength="100" ng-model="zohoConfigContent.organizationId">
+                                      <div ng-messages="vm.zohoForm.organizationId.$error">
+                                        <div ng-message="maxlength">Organization ID must be between 1-100 characters</div>
+                                      </div>
+                                    </md-input-container>
+                                  </div>
+                                  <div layout="row" class="layout-row">
+                                    <md-button ng-disabled="vm.submittedZohoConfig" type="submit" form="zohoForm" style="height:40px;" class="md-raised md-accent">Register</md-button>
+                                  </div>
+                                </md-card-content>
+                                <!--<md-card-actions>-->
+                                <!--<div layout="row" class="plan_footer" layout-align="end center">-->
+                                <!--<md-button class="md-icon-button md-accent m-5" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add tax</md-tooltip> </md-button>-->
+                                <!--</div>-->
+                                <!--</md-card-actions>-->
+                              </md-card>
+                            </form>
+                          </div>
                         </md-tab-body>
                       </md-tab>
                     </md-tabs>
