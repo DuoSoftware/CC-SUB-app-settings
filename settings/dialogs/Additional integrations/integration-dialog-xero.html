@@ -1,0 +1,98 @@
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with Xero</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <form name="vm.xeroConfigForm" id="xeroConfigForm" ng-submit="vm.submitXeroConfig()" flex>
+        <div class="p-16 light-gray">
+            <div layout="row" layout-align="space-between center">
+                <div layout="row" layout-align="start center">
+                    <div class="title-image"></div> <h2 class="m-0">Xero..</h2>
+                </div>
+                <div>
+                    <span>STEP </span> <b>{{vm.activeXeroConfig + 1}} / 2</b>
+                </div>
+            </div>
+            <p class="m-0">
+                "Accounting software with all the time-saving tools you need to grow your business: unlimited users and 24/7 support … not to mention the security and reliability you’d expect from Xero." <i class="op-5">- www.xero.com</i>
+            </p>
+            </br>
+            <div><i class="op-5">For more information, visit </i><a href="https://www.xero.com/" target="_blank">Xero</a></div>
+        </div>
+        <md-content ms-scroll>
+            <md-tabs flex md-dynamic-height md-selected="vm.activeXeroConfig" class="nohead">
+                <md-tab label="Accounts">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <div layout="column" class="guide-portion" flex>
+                                <div layout="column">
+                                    <b class="group-sub-head mt-0">Add Accounts to Xero</b>
+                                </div>
+                                <p class="m-0" style="color: #888">
+                                    Everyday, Squarespace will export a Daily Sales Summery with a detailed breakdown of the previous day's sales. Each component of every sale(i.e. subtotal, discounts, shipping, sales tax) will be mapped to its related account in Xero so that you can easily keep track of your revenue, expenses and tax liabilities. To get started, you need to add the following accounts to your Chart of Accounts in Xero.
+                                </p>
+                            </div>
+                            <div class="w-20"></div>
+                            <div class="form-portion" layout="column" flex="40">
+                                <div md-whiteframe="1dp" flex class="p-10">
+                                    <div layout="row" flex>
+                                        <md-input-container class="md-block" flex>
+                                            <label>Invoice Account</label>
+                                            <md-select flex ng-required="true" ng-model="vm.xeroConfig.invoiceAccount">
+                                                <md-option ng-value="acc.code" ng-repeat="acc in vm.xero.accounts"><b>{{acc.code}} - </b> {{ acc.name}}</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                    <div layout="row" flex>
+                                        <md-input-container class="md-block" flex>
+                                            <label>Payment Account</label>
+                                            <md-select flex ng-required="true" ng-model="vm.xeroConfig.paymentAccount">
+                                                <md-option ng-value="'Owner A Drawings'">Owner A Drawings</md-option>
+                                                <md-option ng-value="'Owner A Funds Introduced'">Owner A Funds Introduced</md-option>
+                                                <md-option ng-value="'Owner A Share Capital'">Owner A Share Capital</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="end center" class="mt-20">
+                            <md-button class="md-accent" ng-click="vm.toggleXeroConfigViews(1)">Continue ></md-button>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Currency">
+                    <md-content class="md-padding">
+                        <div layout="column">
+                            <b class="group-sub-head mt-0">Currency configuration</b>
+                            <div class="form-portion" layout="column" layout-align="start center" flex>
+                                <div md-whiteframe="1dp" flex class="p-10 w-300">
+                                    <div layout="row" class="mb-20" flex>
+                                        <label flex>CloudCharge Currency</label>
+                                        <label><b>{{vm.baseCurrency}}</b></label>
+                                    </div>
+                                    <div layout="row" flex>
+                                        <label flex>Xero Currency</label>
+                                        <label><b>{{vm.baseCurrency}}</b></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="space-between center" class="mt-20">
+                            <md-button class="md-accent" ng-click="vm.toggleXeroConfigViews(0)">< Back</md-button>
+                            <md-button class="md-accent md-raised" type="submit">Register</md-button>
+                        </div>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </form>
+
+</md-dialog>

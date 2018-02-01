@@ -122,7 +122,7 @@
 		});
 
 	/** @ngInject */
-	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http,logHelper)
+	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
 	{
 		var vm = this;
 		vm.settingsCategoryState = "default";
@@ -384,15 +384,16 @@
 				case 'individual-tax':
 					$scope.loadIndividualTaxes();
 					$scope.loadTaxGrps();
-          $scope.loadAvalaraTaxes();
+					$scope.loadAvalaraTaxes();
 					break;
 				case 'tax-groups':
 					$scope.loadTaxGrps();
-          $scope.loadAvalaraTaxes();
+					$scope.loadAvalaraTaxes();
 					break;
-        case 'sms':
-          $scope.loadTwilioSMSConfig();
-          break;
+				case 'sms':
+					$scope.loadTwilioSMSConfig();
+					$scope.openIntergrationConfigs();
+					break;
 				default :
 					break;
 
@@ -646,7 +647,7 @@
 			$scope.loadOnlinePaymentRegistration(); // load gateways
 
 			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
-			$scope.baseCurrency=data[0].RecordFieldData;
+			$scope.baseCurrency=vm.baseCurrency = data[0].RecordFieldData;
 			$scope.general.GURecID=data[0].GuRecID;
 			//$scope.isAllGenLoaded.push("ok");
 
@@ -707,71 +708,71 @@
 			$scope.loadOnlinePaymentRegistration();
 		})
 
-    function gst(name) {
-      var nameEQ = name + "=";
-      var ca = document.cookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-      }
-      //debugger;
-      return null;
-    }
+		function gst(name) {
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+			}
+			//debugger;
+			return null;
+		}
 
-    function getCurrentDomain() {
-      var _st = gst("currentDomain");
-      var __st = gst("domain");
-      return (_st != null) ? _st : __st; //forduhespu "248570d655d8419b91f6c3e0da331707 51de1ea9effedd696741d5911f77a64f";
-    }
+		function getCurrentDomain() {
+			var _st = gst("currentDomain");
+			var __st = gst("domain");
+			return (_st != null) ? _st : __st; //forduhespu "248570d655d8419b91f6c3e0da331707 51de1ea9effedd696741d5911f77a64f";
+		}
 
-    $scope.dataSyncInitialized = false;
-    $scope.dataSyncEnabled = 0;
-    $scope.settingsSyncData = [];
+		$scope.dataSyncInitialized = false;
+		$scope.dataSyncEnabled = 0;
+		$scope.settingsSyncData = [];
 
-    $charge.searchhelper().getTenantSyncData(getCurrentDomain()).success(function(data) {
-      //
-      if(data.status)
-      {
-        if(data.data.length != 0)
-        {
-          $scope.dataSyncInitialized = true;
-          $scope.dataSyncEnabled = data.data[0].SyncEnable;
-          $scope.settingsSyncData = data.data;
-        }
-        else
-        {
-          $scope.dataSyncInitialized = false;
-        }
-      }
-    }).error(function(data) {
+		$charge.searchhelper().getTenantSyncData(getCurrentDomain()).success(function(data) {
+			//
+			if(data.status)
+			{
+				if(data.data.length != 0)
+				{
+					$scope.dataSyncInitialized = true;
+					$scope.dataSyncEnabled = data.data[0].SyncEnable;
+					$scope.settingsSyncData = data.data;
+				}
+				else
+				{
+					$scope.dataSyncInitialized = false;
+				}
+			}
+		}).error(function(data) {
 
 
-    })
+		})
 
-    $scope.syncSettingsChanged = function (syncEnable,syncData) {
-      var syncUpdateObj = {
-        "userId":syncData[0].userId,
-        "syncToDomain":getCurrentDomain(),
-        "SyncEnable":syncEnable
-      }
+		$scope.syncSettingsChanged = function (syncEnable,syncData) {
+			var syncUpdateObj = {
+				"userId":syncData[0].userId,
+				"syncToDomain":getCurrentDomain(),
+				"SyncEnable":syncEnable
+			}
 
-      $charge.searchhelper().updateSyncTenantSettings(syncUpdateObj).success(function(data) {
-        //
-        if(data.status)
-        {
-          notifications.toast("Settings Sync Updated", "success");
-        }
-        else
-        {
-          notifications.toast("Settings Sync Updating failed", "error");
-          syncEnable = !syncEnable;
-        }
-      }).error(function(data) {
-        notifications.toast("Settings Sync Updating failed", "error");
-        syncEnable = !syncEnable;
-      })
-    };
+			$charge.searchhelper().updateSyncTenantSettings(syncUpdateObj).success(function(data) {
+				//
+				if(data.status)
+				{
+					notifications.toast("Settings Sync Updated", "success");
+				}
+				else
+				{
+					notifications.toast("Settings Sync Updating failed", "error");
+					syncEnable = !syncEnable;
+				}
+			}).error(function(data) {
+				notifications.toast("Settings Sync Updating failed", "error");
+				syncEnable = !syncEnable;
+			})
+		};
 
 
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
@@ -914,16 +915,16 @@
 			$scope.template.companyName=data[0].RecordFieldData;
 			$scope.template.companyAddress=data[1].RecordFieldData;
 
-      var address = $scope.template.companyAddress.split('|');
-      if(address.length === 7){
-        $scope.template.line1=address[0];
-        $scope.template.line2=address[1];
-        $scope.template.line3=address[2];
-        $scope.template.city=address[3];
-        $scope.template.region=address[4];
-        $scope.template.country=address[5];
-        $scope.template.postalCode=address[6];
-      }
+			var address = $scope.template.companyAddress.split('|');
+			if(address.length === 7){
+				$scope.template.line1=address[0];
+				$scope.template.line2=address[1];
+				$scope.template.line3=address[2];
+				$scope.template.city=address[3];
+				$scope.template.region=address[4];
+				$scope.template.country=address[5];
+				$scope.template.postalCode=address[6];
+			}
 
 
 			$scope.template.companyPhone=data[2].RecordFieldData;
@@ -995,7 +996,7 @@
 			$scope.infoJson= {};
 			$scope.infoJson.message =JSON.stringify(data);
 			$scope.infoJson.app ='settings';
-			logHelper.error( $scope.infoJson);
+			// logHelper.error( $scope.infoJson);
 
 		})
 
@@ -1154,7 +1155,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				})
 			}).error(function (data) {
 				$scope.generalSubmit=false;
@@ -1162,7 +1163,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -1186,7 +1187,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
 					$scope.infoJson.app ='settings';
-					logHelper.info( $scope.infoJson);
+					// logHelper.info( $scope.infoJson);
 
 				}).error(function (data) {
 					//console.log(data);
@@ -1196,7 +1197,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -1207,15 +1208,15 @@
 
 		$scope.updateGeneralRecords= function () {
 
-      $scope.template.companyAddress = "";
+			$scope.template.companyAddress = "";
 
-      $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-      $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
-      $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
-      $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
-      $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
-      $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
-      $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
+			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
+			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
+			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
+			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
+			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
+			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
 
 			var updateData=[{
 				"RowID": $scope.baseCurrencyDet.RowID,
@@ -1286,7 +1287,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message ='General records have been updated';
 				$scope.infoJson.app ='settings';
-				logHelper.info( $scope.infoJson);
+				// logHelper.info( $scope.infoJson);
 			}).error(function (data) {
 				notifications.toast("Error occured while updating General Record.", "error");
 				$scope.template.companyLogo=[];
@@ -1295,7 +1296,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -1454,7 +1455,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			});
 		}
 
@@ -1636,7 +1637,7 @@
 										$scope.infoJson= {};
 										$scope.infoJson.message ='General records has been saved';
 										$scope.infoJson.app ='settings';
-										logHelper.info( $scope.infoJson);
+										// logHelper.info( $scope.infoJson);
 									}).error(function (data) {
 										notifications.toast("Error occured while saving company profile.", "error");
 										$scope.generalSubmit = false;
@@ -1644,7 +1645,7 @@
 										$scope.infoJson= {};
 										$scope.infoJson.message =JSON.stringify(data);
 										$scope.infoJson.app ='settings';
-										logHelper.error( $scope.infoJson);
+										// logHelper.error( $scope.infoJson);
 
 										$charge.settingsapp().deleteGeneralData().success(function (data) {
 											//console.log("Settings Rollback..");
@@ -1653,7 +1654,7 @@
 											$scope.infoJson= {};
 											$scope.infoJson.message =JSON.stringify(data);
 											$scope.infoJson.app ='settings';
-											logHelper.error( $scope.infoJson);
+											// logHelper.error( $scope.infoJson);
 										});
 
 									});
@@ -1664,7 +1665,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message =JSON.stringify(data);
 									$scope.infoJson.app ='settings';
-									logHelper.error( $scope.infoJson);
+									// logHelper.error( $scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
@@ -1673,7 +1674,7 @@
 										$scope.infoJson= {};
 										$scope.infoJson.message =JSON.stringify(data);
 										$scope.infoJson.app ='settings';
-										logHelper.error( $scope.infoJson);
+										// logHelper.error( $scope.infoJson);
 									});
 
 								});
@@ -1684,7 +1685,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
@@ -1693,7 +1694,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message =JSON.stringify(data);
 									$scope.infoJson.app ='settings';
-									logHelper.error( $scope.infoJson);
+									// logHelper.error( $scope.infoJson);
 								});
 
 							})
@@ -1809,7 +1810,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message ='General records has been saved';
 									$scope.infoJson.app ='settings';
-									logHelper.info( $scope.infoJson);
+									// logHelper.info( $scope.infoJson);
 								}).error(function (data) {
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
@@ -1817,7 +1818,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message =JSON.stringify(data);
 									$scope.infoJson.app ='settings';
-									logHelper.error( $scope.infoJson);
+									// logHelper.error( $scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
@@ -1826,7 +1827,7 @@
 										$scope.infoJson= {};
 										$scope.infoJson.message =JSON.stringify(data);
 										$scope.infoJson.app ='settings';
-										logHelper.error( $scope.infoJson);
+										// logHelper.error( $scope.infoJson);
 									});
 
 								});
@@ -1837,7 +1838,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
@@ -1846,7 +1847,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message =JSON.stringify(data);
 									$scope.infoJson.app ='settings';
-									logHelper.error( $scope.infoJson);
+									// logHelper.error( $scope.infoJson);
 								});
 
 							});
@@ -1861,7 +1862,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 
 						$charge.settingsapp().deleteGeneralData().success(function (data) {
 							//console.log("Settings Rollback..");
@@ -1870,7 +1871,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						});
 
 					})
@@ -1922,18 +1923,18 @@
 			});
 
 
-      $scope.template.companyAddress = "";
+			$scope.template.companyAddress = "";
 
-      $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-      $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
-      $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
-      $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
-      $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
-      $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
-      $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
+			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
+			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
+			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
+			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
+			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
+			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
 
 
-      $scope.companyFieldValues.push({
+			$scope.companyFieldValues.push({
 				"RowID": "",
 				"RecordFieldData": $scope.template.companyAddress,
 				"ColumnIndex": "1"
@@ -2002,7 +2003,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
 						$scope.infoJson.app ='settings';
-						logHelper.info( $scope.infoJson);
+						// logHelper.info( $scope.infoJson);
 
 					}).error(function (data) {
 						//console.log(data);
@@ -2011,7 +2012,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					})
 
 					//$uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
@@ -2054,21 +2055,21 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
 		$scope.insertCompanyIndividual= function () {
 
-      $scope.template.companyAddress = "";
+			$scope.template.companyAddress = "";
 
-        $scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-        $scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
-        $scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
-        $scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
-        $scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
-        $scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
-        $scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
+			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
+			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
+			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
+			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
+			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
+			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
 
 
 
@@ -2111,7 +2112,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2161,7 +2162,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2185,7 +2186,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message ='General records have been updated';
 				$scope.infoJson.app ='settings';
-				logHelper.info( $scope.infoJson);
+				// logHelper.info( $scope.infoJson);
 			}).error(function (data) {
 				notifications.toast("Error occured while updating Footer Record.", "error");
 				$scope.generalSubmit=false;
@@ -2193,7 +2194,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2319,7 +2320,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 				$scope.loadingProductUMOs = false;
 			})
 
@@ -2409,7 +2410,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
@@ -2434,7 +2435,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 			skipPlanKeyAttributes=0;
@@ -2472,7 +2473,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 			skipPlanChangeFee=0;
@@ -2512,7 +2513,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
@@ -2527,7 +2528,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -2565,7 +2566,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2604,7 +2605,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2660,7 +2661,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 			vm.webhookList=[];
@@ -2705,7 +2706,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 
@@ -2740,7 +2741,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -2785,7 +2786,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2832,7 +2833,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2907,7 +2908,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =vm.webhook.endPoint+' Webhook Created Successfully';
 								$scope.infoJson.app ='settings';
-								logHelper.info( $scope.infoJson);
+								// logHelper.info( $scope.infoJson);
 
 								vm.webhookList=[];
 								skipAllWebhooks=0;
@@ -2922,7 +2923,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -2934,7 +2935,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -2981,7 +2982,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =vm.webhook.endPoint+' Webhook Updated Successfully';
 								$scope.infoJson.app ='settings';
-								logHelper.info( $scope.infoJson);
+								// logHelper.info( $scope.infoJson);
 							}
 							else
 							{
@@ -2990,7 +2991,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -3002,7 +3003,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -3143,7 +3144,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -3787,7 +3788,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					} else {
 						$scope.editUnit = "";
@@ -3850,7 +3851,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					} else {
 						$scope.editUnit = "";
@@ -3938,7 +3939,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 						//if(data.IsSuccess) {
 						//  console.log(data);
@@ -3948,7 +3949,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -4014,7 +4015,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 						//if(data.IsSuccess) {
 						//  console.log(data);
@@ -4024,7 +4025,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -4113,7 +4114,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =ev+' Type has been added';
 							$scope.infoJson.app ='settings';
-							logHelper.info( $scope.infoJson);
+							// logHelper.info( $scope.infoJson);
 							//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//  $scope.stores = [];
 							//  for (var i = 0; i < data.length; i++) {
@@ -4145,7 +4146,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							})
 
 							if (data.error=="00000") {
@@ -4155,7 +4156,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							}
 						}).error(function (data) {
 							//console.log(data);
@@ -4164,7 +4165,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}
 					else {
@@ -4203,7 +4204,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =ev+' Type has been added';
 							$scope.infoJson.app ='settings';
-							logHelper.info( $scope.infoJson);
+							// logHelper.info( $scope.infoJson);
 							//                $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//                  $scope.stores = [];
 							//                  for (var i = 0; i < data.length; i++) {
@@ -4234,7 +4235,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							})
 
 							if (data[0].error=="00000") {
@@ -4249,7 +4250,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}
 				}
@@ -4306,7 +4307,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =commondata.RecordFieldData+' Type has been updated';
 						$scope.infoJson.app ='settings';
-						logHelper.info( $scope.infoJson);
+						// logHelper.info( $scope.infoJson);
 //              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 //                $scope.stores = [];
 //                for (var i = 0; i < data.length; i++) {
@@ -4347,7 +4348,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 						$scope.updateUomEnable = false;
 					}
@@ -4366,7 +4367,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -4429,7 +4430,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message ='Successfully plan change fee created';
 							$scope.infoJson.app ='settings';
-							logHelper.info( $scope.infoJson);
+							// logHelper.info( $scope.infoJson);
 
 							skipPlanChangeFee=0;
 							$scope.planChangeFeeList=[];
@@ -4453,7 +4454,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					})
 				}
 				else
@@ -4525,7 +4526,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message ='Successfully Plan Change Fee Updated';
 						$scope.infoJson.app ='settings';
-						logHelper.info( $scope.infoJson);
+						// logHelper.info( $scope.infoJson);
 
 						skipPlanChangeFee=0;
 						$scope.planChangeFeeList=[];
@@ -4540,7 +4541,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					}
 				}).error(function(data)
 				{
@@ -4550,7 +4551,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -4578,7 +4579,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message ='Successfully Plan Change Fee Deleted';
 					$scope.infoJson.app ='settings';
-					logHelper.info( $scope.infoJson);
+					// logHelper.info( $scope.infoJson);
 
 					skipPlanChangeFee=0;
 					$scope.planChangeFeeList=[];
@@ -4592,7 +4593,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				}
 			}).error(function(data)
 			{
@@ -4601,7 +4602,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -4657,7 +4658,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message ='Webhook has Deleted Successfully';
 					$scope.infoJson.app ='settings';
-					logHelper.info( $scope.infoJson);
+					// logHelper.info( $scope.infoJson);
 				}
 				else
 				{
@@ -4666,14 +4667,14 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				}
 			}).error(function (data) {
 				//console.log(data);
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -4740,7 +4741,7 @@
 			});
 		};
 
-		$scope.closeDialog = function () {
+		$scope.closeDialog = vm.closeDialog = function () {
 			$mdDialog.hide();
 		};
 
@@ -4782,7 +4783,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
@@ -4792,7 +4793,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					})
 
 				}
@@ -4841,7 +4842,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					})
 				}
 
@@ -5113,7 +5114,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5318,7 +5319,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5571,7 +5572,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5714,7 +5715,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
@@ -5724,7 +5725,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -5857,7 +5858,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
@@ -5867,7 +5868,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 						//}
 						//else
@@ -6081,7 +6082,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}).error(function(data) {
 						//console.log(data);
@@ -6091,7 +6092,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -6534,7 +6535,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
@@ -6543,7 +6544,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}
 					else {
@@ -6609,7 +6610,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								// logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
@@ -6618,7 +6619,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 						//}
 						//else {
@@ -6730,14 +6731,14 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							// logHelper.error( $scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						// logHelper.error( $scope.infoJson);
 					})
 
 
@@ -6787,7 +6788,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 			//$scope.remindersInPaymentLoaded = false;
 			//$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
@@ -6841,11 +6842,11 @@
 					{
 						$scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
 						$scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
-            if(actionObj.processAction=="Webhook")
-            {
-              $scope.retryProcess.endpoint = actionObj.Webhook.endpoint;
-              $scope.retryProcess.method = actionObj.Webhook.method;
-            }
+						if(actionObj.processAction=="Webhook")
+						{
+							$scope.retryProcess.endpoint = actionObj.Webhook.endpoint;
+							$scope.retryProcess.method = actionObj.Webhook.method;
+						}
 					}
 				}
 
@@ -6861,7 +6862,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6902,7 +6903,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6940,13 +6941,13 @@
 			actionObj4.actionIndex=3;
 			actionObj4.daysAfterAttempt=0;
 			actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
-      if(actionObj4.processAction=="Webhook")
-      {
-        actionObj4.Webhook = {
-          "endpoint":$scope.retryProcess.endpoint,
-          "method":$scope.retryProcess.method
-        }
-      }
+			if(actionObj4.processAction=="Webhook")
+			{
+				actionObj4.Webhook = {
+					"endpoint":$scope.retryProcess.endpoint,
+					"method":$scope.retryProcess.method
+				}
+			}
 			actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
 			$scope.retryProcess.actions.push(actionObj4);
 
@@ -6976,7 +6977,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -7005,7 +7006,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				})
 			}
 
@@ -7086,7 +7087,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -7116,790 +7117,848 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			})
 		}
 
-    vm.usingAvalaraTax = false;
-    $scope.avaTax = {};
-    vm.submittedAvaTax = false;
-
-    $scope.enableAvalaraTax= function () {
-      vm.usingAvalaraTax = true;
-    }
-
-    $scope.loadAvalaraTaxes= function () {
-      $charge.ccapi().getAvalaraTax().success(function(data) {
-        //
-        if(data!=undefined && data!=null && data!="") {
-          vm.usingAvalaraTax = true;
-          $scope.avaTax=data;
-
-        }
-        else{
-          vm.usingAvalaraTax = false;
-        }
-      }).error(function(data) {
-        //console.log(data);
-        vm.usingAvalaraTax = false;
-        // $scope.isSpinnerShown=false;
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
-    }
-
-    $scope.submitAvalaraTax= function () {
-      vm.submittedAvaTax = true;
-      var avalaraTaxObj = {
-        "accountNo":$scope.avaTax.accountNo,
-        "licenseKey":$scope.avaTax.licenseKey,
-        "companyCode":$scope.avaTax.companyCode,
-        "mode":$scope.avaTax.mode,
-        "serviceUrl":"https://development.avalara.net"
-      }
-      $charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function(data) {
-        //
-        if(data.result) {
-          notifications.toast("Successfully Connected to Avalara","success");
-
-        }
-        else{
-          notifications.toast("Connecting to Avalara failed","error");
-        }
-        vm.submittedAvaTax = false;
-      }).error(function(data) {
-        //console.log(data);
-        notifications.toast("Connecting to Avalara failed","error");
-        vm.submittedAvaTax = false;
-        // $scope.isSpinnerShown=false;
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
-    }
-
-    vm.usingTwilioSMS = false;
-    $scope.twilioSMSConfig = {};
-
-    $scope.loadTwilioSMSConfig= function () {
-      $charge.twiliosms().getTwilioAccount().success(function(data) {
-        //
-        if(data.connected)
-        {
-          vm.usingTwilioSMS = true;
-          vm.editTwilioConfigEnabled = false;
-          $scope.twilioSMSConfig = data;
-          $scope.loadSmsEvents();
-		  $scope.loadTwilioSMSHistory();
-        }
-      }).error(function(data) {
-        //console.log(data);
-        // $scope.isSpinnerShown=false;
-        if(data.connected)
-        {
-          vm.usingTwilioSMS = true;
-          vm.editTwilioConfigEnabled = false;
-          $scope.twilioSMSConfig = data;
-          $scope.loadSmsEvents();
-		  $scope.loadTwilioSMSHistory();
-        }
-        else
-        {
-          vm.usingTwilioSMS = false;
-          $scope.twilioSMSConfig = {};
-
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
-        }
-      })
-    }
-
-	vm.twilioSmsHistoryList=[];
-    var skipAllTwilioSmsHistory=0;
-    var takeAllTwilioSmsHistory=100;
-    $scope.isMoreTwilioSmsHistoryLoading = true;
-
-    $scope.loadTwilioSMSHistory= function () {
-      $scope.loadingTwilioSmsHistory = true;
-      takeAllTwilioSmsHistory=100;
-
-      $charge.webhook().allWebhookHistory(skipAllTwilioSmsHistory,takeAllTwilioSmsHistory,'desc','sms').success(function (data) {
-        //console.log(data);
-        if($scope.loadingTwilioSmsHistory)
-        {
-          skipAllTwilioSmsHistory += takeAllTwilioSmsHistory;
-
-          for (var i = 0; i < data.length; i++) {
-            vm.twilioSmsHistoryList.push(data[i]);
-          }
-          $scope.loadingTwilioSmsHistory = false;
-
-          if(data.length<takeAllTwilioSmsHistory)
-          {
-            $scope.isMoreTwilioSmsHistoryLoading = false;
-          }
-
-        }
-
-      }).error(function (data) {
-        //console.log(data);
-        //vm.twilioSmsHistoryList=[];
-        $scope.loadingTwilioSmsHistory = false;
-        $scope.isMoreTwilioSmsHistoryLoading = false;
-
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
-    }
-
-    vm.editTwilioConfigEnabled = false;
-    $scope.editTwilioConfig= function () {
-      vm.editTwilioConfigEnabled = !vm.editTwilioConfigEnabled;
-    }
-
-    vm.submittedTwilioConfig = false;
-    $scope.submitTwilioConfig= function () {
-      if(vm.twilioSmsForm.$valid==true) {
-        vm.submittedTwilioConfig = true;
-
-        var twilioConfObj = $scope.twilioSMSConfig;
-        $charge.twiliosms().createTwilioAccount(twilioConfObj).success(function(data) {
-          //
-          if(data.status)
-          {
-            notifications.toast("Successfully Twilio SMS alerts Configured","success");
-            $scope.loadTwilioSMSConfig();
-          }
-          vm.submittedTwilioConfig = false;
-        }).error(function(data) {
-          //console.log(data);
-          notifications.toast("Twilio SMS configuration failed","error");
-          vm.submittedTwilioConfig = false;
-
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
-        })
-      }
-    }
-
-    $scope.removeTwilioConfig= function (ev) {
-
-      var confirm = $mdDialog.confirm()
-        .title('Are you sure you want to Remove this account?')
-        .textContent('You cannot revert this account once you delete it!')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('Yes')
-        .cancel('No');
-
-      $mdDialog.show(confirm).then(function() {
-        vm.submittedTwilioConfig = true;
-        var twilioConfAccId = $scope.twilioSMSConfig.accountsid != undefined?$scope.twilioSMSConfig.accountsid:"";
-        $charge.twiliosms().removeTwilioAccount(twilioConfAccId).success(function(data) {
-          //
-          if(data.status)
-          {
-            notifications.toast("Successfully Twilio account removed","success");
-            $scope.loadTwilioSMSConfig();
-          }
-          vm.submittedTwilioConfig = false;
-        }).error(function(data) {
-          //console.log(data);
-          notifications.toast("Twilio account removing failed","error");
-          vm.submittedTwilioConfig = false;
-
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
-        })
-      }, function() {
-
-      });
-    }
-
-    $scope.loadingSmsEvents = true;
-    vm.smsEvents={};
-    vm.smsEventList=[];
-    vm.smsEvents.selectAll=false;
-    vm.smsEventCreated = false;
-    $scope.loadSmsEvents= function () {
-      $scope.loadingSmsEvents = true;
-      vm.smsEvents.selectAll=false;
-      vm.smsEventList=[];
-      var skipSmsEvents = 0;
-      var takeSmsEvents = 100;
-      $charge.webhook().allEvents(skipSmsEvents,takeSmsEvents,'asc').success(function (data) {
-        //console.log(data);
-        //
-        if($scope.loadingSmsEvents)
-        {
-          skipSmsEvents += takeSmsEvents;
-
-          for (var i = 0; i < data.length; i++) {
-            data[i].isSelected=false;
-            vm.smsEventList.push(data[i]);
-          }
-          vm.selectAllSmsEvents();
-          $scope.loadSmsEventDetails();
-          $scope.loadingSmsEvents = false;
-        }
-      }).error(function (data) {
-        //console.log(data);
-        vm.smsEventList=[];
-        $scope.loadingSmsEvents = false;
-
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
-    }
-
-    $scope.loadSmsEventDetails= function () {
-      $scope.loadingEventDetails = true;
-      vm.smsEventCreated = false;
-      var skipEventDetails = 0;
-      var takeEventDetails = 100;
-      $charge.webhook().allWebhooks(skipEventDetails,takeEventDetails,'desc','sms').success(function (data) {
-        //console.log(data);
-        //
-        if($scope.loadingEventDetails)
-        {
-          skipEventDetails += takeEventDetails;
-
-          if(data[0].type=="sms")
-          {
-            vm.smsEventCreated = true;
-          }
-
-          vm.smsEvents.phone = data[0].endPoint;
-          vm.smsEvents.guWebhookId = data[0].guWebhookId;
-          vm.smsEvents.type = data[0].type;
-          vm.smsEvents.createdDate = data[0].createdDate;
-          vm.smsEvents.isEnabled = data[0].isEnabled;
-          data[0].eventCodes=JSON.parse(data[0].eventCodes);
-          for (var j = 0; j < data[0].eventCodes.length; j++) {
-            for (var k = 0; k < vm.smsEventList.length; k++) {
-              if(data[0].eventCodes[j]==vm.smsEventList[k].eventType)
-              {
-                vm.smsEventList[k].isSelected=true;
-              }
-            }
-          }
-          $scope.loadingEventDetails = false;
-
-        }
-      }).error(function (data) {
-        //console.log(data);
-        $scope.loadingEventDetails = false;
-
-        $scope.infoJson= {};
-        $scope.infoJson.message =JSON.stringify(data);
-        $scope.infoJson.app ='settings';
-        logHelper.error( $scope.infoJson);
-      })
-    }
-
-    vm.selectAllSmsEvents= function () {
-      if(vm.smsEvents.selectAll)
-      {
-        for (var i = 0; i < vm.smsEventList.length; i++) {
-          vm.smsEventList[i].isSelected=true;
-        }
-      }
-      else
-      {
-        for (var i = 0; i < vm.smsEventList.length; i++) {
-          vm.smsEventList[i].isSelected=false;
-        }
-      }
-    }
-
-    vm.submitSmsEvents= function () {
-      if(!vm.smsEventCreated)
-      {
-        if (vm.smsEventsForm.$valid == true) {
-          vm.smsEventsSubmitted = true;
-
-          var smsEventsObj={};
-          var tempEventsSelected=false;
-          smsEventsObj.endPoint=vm.smsEvents.phone;
-          smsEventsObj.type="sms";
-          smsEventsObj.createdDate=new Date();
-          smsEventsObj.isEnabled=true;
-          smsEventsObj.eventCodes=[];
-
-          for (var i = 0; i < vm.smsEventList.length; i++) {
-            if(vm.smsEventList[i].isSelected)
-            {
-              smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
-              tempEventsSelected=true;
-            }
-          }
-
-          if(tempEventsSelected)
-          {
-            $charge.webhook().createWH(smsEventsObj).success(function (data) {
-              //console.log(data);
-              //
-              if(data.error=="00000")
-              {
-                notifications.toast("SMS alerts set Successfully", "success");
-                vm.smsEvents.guWebhookId = data.guWebhookId;
-                vm.smsEvents.type = "sms";
-                vm.smsEvents.createdDate = new Date();
-                vm.smsEvents.isEnabled = true;
-
-                $scope.infoJson= {};
-                $scope.infoJson.message ='SMS alerts set Successfully';
-                $scope.infoJson.app ='settings';
-                logHelper.info( $scope.infoJson);
-              }
-              else
-              {
-                notifications.toast("SMS alerts set Failed", "error");
-
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
-              }
-              //$scope.webhook={};
-              vm.smsEventsSubmitted = false;
-            }).error(function (data) {
-              //console.log(data);
-              vm.smsEventsSubmitted = false;
-
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
-            })
-          }
-          else
-          {
-            notifications.toast("Select Events for set SMS alerts", "error");
-            vm.smsEventsSubmitted = false;
-          }
-
-        }
-      }
-      else
-      {
-        if (vm.smsEventsForm.$valid == true) {
-          vm.smsEventsSubmitted = true;
-
-          var smsEventsObj={};
-          var tempEventsSelected=false;
-          smsEventsObj.guWebhookId=vm.smsEvents.guWebhookId;
-          smsEventsObj.endPoint=vm.smsEvents.phone;
-          smsEventsObj.type="sms";
-          smsEventsObj.createdDate=new Date();
-          smsEventsObj.isEnabled=true;
-          smsEventsObj.eventCodes=[];
-
-          for (var i = 0; i < vm.smsEventList.length; i++) {
-            if(vm.smsEventList[i].isSelected)
-            {
-              smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
-              tempEventsSelected=true;
-            }
-          }
-
-          if(tempEventsSelected)
-          {
-            $charge.webhook().updateWH(smsEventsObj).success(function (data) {
-              //console.log(data);
-              //
-              if(data.error=="00000")
-              {
-                notifications.toast("SMS alerts Updated Successfully", "success");
-
-                $scope.infoJson= {};
-                $scope.infoJson.message ='SMS alerts Updated Successfully';
-                $scope.infoJson.app ='settings';
-                logHelper.info( $scope.infoJson);
-              }
-              else
-              {
-                notifications.toast("SMS alerts Updating Failed", "error");
-
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                logHelper.error( $scope.infoJson);
-              }
-              //$scope.webhook={};
-              vm.smsEventsSubmitted = false;
-            }).error(function (data) {
-              //console.log(data);
-              vm.smsEventsSubmitted = false;
-
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              logHelper.error( $scope.infoJson);
-            })
-          }
-          else
-          {
-            notifications.toast("Select Events for Set SMS alerts", "error");
-            vm.smsEventsSubmitted = false;
-          }
-
-        }
-      }
-    }
-
-
-    $scope.quickBookConnected=false;
-    $scope.quickBookConfig={};
-    $scope.salesforceConnected=false;
-    $scope.salesforceConfig={};
-    $scope.zendeskConnected=false;
-    $scope.zendeskConfig={};
-    $scope.zohoConnected=false;
-    $scope.zohoConfig={};
-
-    $scope.openIntergrationConfigs= function () {
-
-      $charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
-        if(data.connected)
-        {
-          $scope.quickBookConnected=true;
-          $scope.quickBookConfig = data.data;
-          angular.element("#quickbookId").empty();
-        }
-        else
-        {
-          $scope.quickBookConnected=false;
-
-          $charge.quickbooks().getQuickbooksConfig().success(function (data) {
-            angular.element("#quickbookId").empty();
-            angular.element("#quickbookId").append(data);
-
-            $("#quickbookId a").attr('href','#settings');
-
-          }).error(function (data) {
-            //console.log(data);
-            angular.element("#quickbookId").empty();
-            notifications.toast("Quickbooks configurations loading failed", "error");
-          })
-        }
-
-      }).error(function (data) {
-        //console.log(data);
-        $scope.quickBookConnected=false;
-      })
-
-
-      $charge.salesforce().checkSalesforceConnected(getCurrentDomain()).success(function (data) {
-        if(data.connected)
-        {
-          $scope.salesforceConnected=true;
-          $scope.salesforceConfig = data.data;
-          angular.element("#salesforceId").empty();
-        }
-        else
-        {
-          $scope.salesforceConnected=false;
-
-          $charge.salesforce().getSalesforceConfig().success(function (data) {
-            angular.element("#salesforceId").empty();
-            angular.element("#salesforceId").append(data);
-
-            $("#salesforceId a").attr('href','#settings');
-
-          }).error(function (data) {
-            //console.log(data);
-            angular.element("#salesforceId").empty();
-            notifications.toast("Salesforce configurations loading failed", "error");
-          })
-        }
-
-      }).error(function (data) {
-        //console.log(data);
-        $scope.salesforceConnected=false;
-      })
-
-
-      $charge.zendesk().checkZendeskConnected(getCurrentDomain()).success(function (data) {
-        if(data.connected)
-        {
-          $scope.zendeskConnected=true;
-          $scope.zendeskConfig = data.data;
-        }
-        else
-        {
-          $scope.zendeskConnected=false;
-          $scope.zendeskConfigContent = {};
-
-        }
-
-      }).error(function (data) {
-        //console.log(data);
-        $scope.zendeskConnected=false;
-      })
-
-
-      $charge.zoho().checkZohoConnected().success(function (data) {
-        if(data.status)
-        {
-          $scope.zohoConnected=true;
-          $scope.zohoConfig = data.guOrganizationId;
-        }
-        else
-        {
-          $scope.zohoConnected=false;
-          $scope.zohoConfigContent = {};
-
-        }
-
-      }).error(function (data) {
-        //console.log(data);
-        $scope.zohoConnected=false;
-      })
-    }
-
-    //$(document).on('a','click', function (e) {
-    //  e.preventDefault();
-    //});
-    $scope.removeQuickbooksConfig= function (ev) {
-      var confirm = $mdDialog.confirm()
-        .title('Are you sure you want to Remove Quickbooks account?')
-        .textContent('You cannot revert this account once you delete it!')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('Yes')
-        .cancel('No');
-
-      $mdDialog.show(confirm).then(function() {
-        vm.submittedQuickbooks = true;
-        var quickbookKey = {
-          "realmId":$scope.quickBookConfig
-        }
-        $charge.quickbooks().deleteQuickbooksConfig(quickbookKey).success(function(data) {
-          //
-          if(data.status)
-          {
-            notifications.toast("Successfully Quickbooks account removed","success");
-            $scope.openIntergrationConfigs();
-          }
-          vm.submittedQuickbooks = false;
-        }).error(function(data) {
-          //console.log(data);
-          notifications.toast("Quickbooks account removing failed","error");
-          vm.submittedQuickbooks = false;
-
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
-        })
-      }, function() {
-
-      });
-    }
-
-    $scope.removeSalesforceConfig= function (ev) {
-      var confirm = $mdDialog.confirm()
-        .title('Are you sure you want to Remove Salesforce account?')
-        .textContent('You cannot revert this account once you delete it!')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('Yes')
-        .cancel('No');
-
-      $mdDialog.show(confirm).then(function() {
-        vm.submittedSalesforce = true;
-        //var salesforceKey = $scope.salesforceConfig;
-        var salesforceKey = {
-          "refreshToken":$scope.salesforceConfig
-        }
-        $charge.salesforce().deleteSalesforceConfig(salesforceKey).success(function(data) {
-          //
-          if(data.status)
-          {
-            notifications.toast("Successfully Salesforce account removed","success");
-            $scope.openIntergrationConfigs();
-          }
-          vm.submittedSalesforce = false;
-        }).error(function(data) {
-          //console.log(data);
-          notifications.toast("Salesforce account removing failed","error");
-          vm.submittedSalesforce = false;
-
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
-        })
-      }, function() {
-
-      });
-    }
-
-    $scope.zendeskConfigContent = {};
-
-    $scope.submitZendeskConfig= function () {
-      if (vm.zendeskForm.$valid == true) {
-        vm.submittedZendeskConfig = true;
-
-        var zendeskConfigObj = $scope.zendeskConfigContent;
-
-        $charge.zendesk().registerZendesk(zendeskConfigObj).success(function (data) {
-          //console.log(data);
-          //
-          if (data.status) {
-            notifications.toast("Registered to Zendesk Successfully", "success");
-            $scope.openIntergrationConfigs();
-
-            $scope.infoJson = {};
-            $scope.infoJson.message = 'Registered to Zendesk Successfully';
-            $scope.infoJson.app = 'settings';
-            logHelper.info($scope.infoJson);
-          }
-          vm.submittedZendeskConfig = false;
-
-        }).error(function (data) {
-          //console.log(data);
-          notifications.toast("Register to Zendesk Failed", "error");
-          vm.submittedZendeskConfig = false;
-
-          $scope.infoJson = {};
-          $scope.infoJson.message = JSON.stringify(data);
-          $scope.infoJson.app = 'settings';
-          logHelper.error($scope.infoJson);
-        })
-
-      }
-    }
-
-    $scope.removeZendeskConfig= function (ev) {
-      var confirm = $mdDialog.confirm()
-        .title('Are you sure you want to Remove Zendesk account?')
-        .textContent('You cannot revert this account once you delete it!')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('Yes')
-        .cancel('No');
-
-      $mdDialog.show(confirm).then(function() {
-        vm.submittedZendeskConfig = true;
-        //var salesforceKey = $scope.salesforceConfig;
-        var zendeskKey = {
-          "subDomain":$scope.zendeskConfig
-        }
-        $charge.zendesk().deleteZendeskConfig(zendeskKey).success(function(data) {
-          //
-          if(data.status)
-          {
-            notifications.toast("Successfully Zendesk account removed","success");
-            $scope.openIntergrationConfigs();
-          }
-          vm.submittedZendeskConfig = false;
-        }).error(function(data) {
-          //console.log(data);
-          notifications.toast("Zendesk account removing failed","error");
-          vm.submittedZendeskConfig = false;
-
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
-        })
-      }, function() {
-
-      });
-    }
-
-    $scope.zohoConfigContent = {};
-
-    $scope.submitZohoConfig= function () {
-      if (vm.zohoForm.$valid == true) {
-        vm.submittedZohoConfig = true;
-
-        var zohoConfigObj = $scope.zohoConfigContent;
-
-        $charge.zoho().registerZoho(zohoConfigObj).success(function (data) {
-          //console.log(data);
-          //
-          if (data.status) {
-            notifications.toast("Registered to Zoho Successfully", "success");
-            $scope.openIntergrationConfigs();
-
-            $scope.infoJson = {};
-            $scope.infoJson.message = 'Registered to Zoho Successfully';
-            $scope.infoJson.app = 'settings';
-            logHelper.info($scope.infoJson);
-          }
-          else
-          {
-            notifications.toast(data.error, "error");
-          }
-          vm.submittedZohoConfig = false;
-
-        }).error(function (data) {
-          //console.log(data);
-          notifications.toast("Register to Zoho Failed", "error");
-          vm.submittedZohoConfig = false;
-
-          $scope.infoJson = {};
-          $scope.infoJson.message = JSON.stringify(data);
-          $scope.infoJson.app = 'settings';
-          logHelper.error($scope.infoJson);
-        })
-
-      }
-    }
-
-    $scope.removeZohoConfig= function (ev) {
-      var confirm = $mdDialog.confirm()
-        .title('Are you sure you want to Remove Zoho account?')
-        .textContent('You cannot revert this account once you delete it!')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('Yes')
-        .cancel('No');
-
-      $mdDialog.show(confirm).then(function() {
-        vm.submittedZohoConfig = true;
-        //var salesforceKey = $scope.salesforceConfig;
-        var zohoKey = {
-          "organizationId":$scope.zohoConfig
-        }
-        $charge.zoho().deleteZohoConfig(zohoKey).success(function(data) {
-          //
-          if(data.status)
-          {
-            notifications.toast("Successfully Zoho account removed","success");
-            $scope.openIntergrationConfigs();
-          }
-          vm.submittedZohoConfig = false;
-        }).error(function(data) {
-          //console.log(data);
-          notifications.toast("Zoho account removing failed","error");
-          vm.submittedZohoConfig = false;
-
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          logHelper.error( $scope.infoJson);
-        })
-      }, function() {
-
-      });
-    }
+		vm.usingAvalaraTax = false;
+		$scope.avaTax = {};
+		vm.submittedAvaTax = false;
+
+		$scope.enableAvalaraTax= function () {
+			vm.usingAvalaraTax = true;
+		}
+
+		$scope.loadAvalaraTaxes= function () {
+			$charge.ccapi().getAvalaraTax().success(function(data) {
+				//
+				if(data!=undefined && data!=null && data!="") {
+					vm.usingAvalaraTax = true;
+					$scope.avaTax=data;
+
+				}
+				else{
+					vm.usingAvalaraTax = false;
+				}
+			}).error(function(data) {
+				//console.log(data);
+				vm.usingAvalaraTax = false;
+				// $scope.isSpinnerShown=false;
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				// logHelper.error( $scope.infoJson);
+			})
+		}
+
+		$scope.submitAvalaraTax= function () {
+			vm.submittedAvaTax = true;
+			var avalaraTaxObj = {
+				"accountNo":$scope.avaTax.accountNo,
+				"licenseKey":$scope.avaTax.licenseKey,
+				"companyCode":$scope.avaTax.companyCode,
+				"mode":$scope.avaTax.mode,
+				"serviceUrl":"https://development.avalara.net"
+			}
+			$charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function(data) {
+				//
+				if(data.result) {
+					notifications.toast("Successfully Connected to Avalara","success");
+
+				}
+				else{
+					notifications.toast("Connecting to Avalara failed","error");
+				}
+				vm.submittedAvaTax = false;
+			}).error(function(data) {
+				//console.log(data);
+				notifications.toast("Connecting to Avalara failed","error");
+				vm.submittedAvaTax = false;
+				// $scope.isSpinnerShown=false;
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				// logHelper.error( $scope.infoJson);
+			})
+		}
+
+
+		// TWILIO ============================================================================
+		vm.usingTwilioSMS = false;
+		$scope.twilioSMSConfig = {};
+
+		$scope.loadTwilioSMSConfig= function () {
+			$charge.twiliosms().getTwilioAccount().success(function(data) {
+				//
+				if(data.connected)
+				{
+					vm.usingTwilioSMS = true;
+					$scope.twilioConnected = true;
+					vm.editTwilioConfigEnabled = false;
+					$scope.twilioSMSConfig = data;
+					$scope.loadSmsEvents();
+					$scope.loadTwilioSMSHistory();
+				}
+			}).error(function(data) {
+				//console.log(data);
+				// $scope.isSpinnerShown=false;
+				if(data.connected)
+				{
+					vm.usingTwilioSMS = true;
+					$scope.twilioConnected = true;
+					vm.editTwilioConfigEnabled = false;
+					$scope.twilioSMSConfig = data;
+					$scope.loadSmsEvents();
+					$scope.loadTwilioSMSHistory();
+				}
+				else
+				{
+					vm.usingTwilioSMS = false;
+					$scope.twilioConnected = false;
+					$scope.twilioSMSConfig = {};
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				}
+			});
+		}
+
+		vm.twilioSmsHistoryList=[];
+		var skipAllTwilioSmsHistory=0;
+		var takeAllTwilioSmsHistory=100;
+		$scope.isMoreTwilioSmsHistoryLoading = true;
+
+		$scope.loadTwilioSMSHistory= function () {
+			$scope.loadingTwilioSmsHistory = true;
+			takeAllTwilioSmsHistory=100;
+
+			$charge.webhook().allWebhookHistory(skipAllTwilioSmsHistory,takeAllTwilioSmsHistory,'desc','sms').success(function (data) {
+				//console.log(data);
+				if($scope.loadingTwilioSmsHistory)
+				{
+					skipAllTwilioSmsHistory += takeAllTwilioSmsHistory;
+
+					for (var i = 0; i < data.length; i++) {
+						vm.twilioSmsHistoryList.push(data[i]);
+					}
+					$scope.loadingTwilioSmsHistory = false;
+
+					if(data.length<takeAllTwilioSmsHistory)
+					{
+						$scope.isMoreTwilioSmsHistoryLoading = false;
+					}
+
+				}
+
+			}).error(function (data) {
+				//console.log(data);
+				//vm.twilioSmsHistoryList=[];
+				$scope.loadingTwilioSmsHistory = false;
+				$scope.isMoreTwilioSmsHistoryLoading = false;
+
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				// logHelper.error( $scope.infoJson);
+			})
+		}
+
+		vm.editTwilioConfigEnabled = false;
+		$scope.editTwilioConfig= function () {
+			vm.editTwilioConfigEnabled = !vm.editTwilioConfigEnabled;
+		}
+
+		vm.submittedTwilioConfig = false;
+		$scope.submitTwilioConfig= vm.submitTwilioConfig = function () {
+			if(vm.twilioSmsForm.$valid==true) {
+				vm.submittedTwilioConfig = true;
+
+				var twilioConfObj = $scope.twilioSMSConfig;
+				$charge.twiliosms().createTwilioAccount(twilioConfObj).success(function(data) {
+					//
+					if(data.status)
+					{
+						notifications.toast("Successfully Twilio SMS alerts Configured","success");
+						$mdDialog.hide();
+						$scope.loadTwilioSMSConfig();
+					}
+					vm.submittedTwilioConfig = false;
+				}).error(function(data) {
+					//console.log(data);
+					notifications.toast("Twilio SMS configuration failed","error");
+					vm.submittedTwilioConfig = false;
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				})
+			}
+		}
+
+		$scope.removeTwilioConfig= function (ev) {
+
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to Remove this account?')
+				.textContent('You cannot revert this account once you delete it!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Yes')
+				.cancel('No');
+
+			$mdDialog.show(confirm).then(function() {
+				vm.submittedTwilioConfig = true;
+				var twilioConfAccId = $scope.twilioSMSConfig.accountsid != undefined?$scope.twilioSMSConfig.accountsid:"";
+				$charge.twiliosms().removeTwilioAccount(twilioConfAccId).success(function(data) {
+					//
+					if(data.status)
+					{
+						notifications.toast("Successfully Twilio account removed","success");
+						$scope.loadTwilioSMSConfig();
+					}
+					vm.submittedTwilioConfig = false;
+				}).error(function(data) {
+					//console.log(data);
+					notifications.toast("Twilio account removing failed","error");
+					vm.submittedTwilioConfig = false;
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				})
+			}, function() {
+
+			});
+		}
+
+		$scope.loadingSmsEvents = true;
+		vm.smsEvents={};
+		vm.smsEventList=[];
+		vm.smsEvents.selectAll=false;
+		vm.smsEventCreated = false;
+		$scope.loadSmsEvents= function () {
+			$scope.loadingSmsEvents = true;
+			vm.smsEvents.selectAll=false;
+			vm.smsEventList=[];
+			var skipSmsEvents = 0;
+			var takeSmsEvents = 100;
+			$charge.webhook().allEvents(skipSmsEvents,takeSmsEvents,'asc').success(function (data) {
+				//console.log(data);
+				//
+				if($scope.loadingSmsEvents)
+				{
+					skipSmsEvents += takeSmsEvents;
+
+					for (var i = 0; i < data.length; i++) {
+						data[i].isSelected=false;
+						vm.smsEventList.push(data[i]);
+					}
+					vm.selectAllSmsEvents();
+					$scope.loadSmsEventDetails();
+					$scope.loadingSmsEvents = false;
+				}
+			}).error(function (data) {
+				//console.log(data);
+				vm.smsEventList=[];
+				$scope.loadingSmsEvents = false;
+
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				// logHelper.error( $scope.infoJson);
+			})
+		}
+
+		$scope.loadSmsEventDetails= function () {
+			$scope.loadingEventDetails = true;
+			vm.smsEventCreated = false;
+			var skipEventDetails = 0;
+			var takeEventDetails = 100;
+			$charge.webhook().allWebhooks(skipEventDetails,takeEventDetails,'desc','sms').success(function (data) {
+				//console.log(data);
+				//
+				if($scope.loadingEventDetails)
+				{
+					skipEventDetails += takeEventDetails;
+
+					if(data[0].type=="sms")
+					{
+						vm.smsEventCreated = true;
+					}
+
+					vm.smsEvents.phone = data[0].endPoint;
+					vm.smsEvents.guWebhookId = data[0].guWebhookId;
+					vm.smsEvents.type = data[0].type;
+					vm.smsEvents.createdDate = data[0].createdDate;
+					vm.smsEvents.isEnabled = data[0].isEnabled;
+					data[0].eventCodes=JSON.parse(data[0].eventCodes);
+					for (var j = 0; j < data[0].eventCodes.length; j++) {
+						for (var k = 0; k < vm.smsEventList.length; k++) {
+							if(data[0].eventCodes[j]==vm.smsEventList[k].eventType)
+							{
+								vm.smsEventList[k].isSelected=true;
+							}
+						}
+					}
+					$scope.loadingEventDetails = false;
+
+				}
+			}).error(function (data) {
+				//console.log(data);
+				$scope.loadingEventDetails = false;
+
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				// logHelper.error( $scope.infoJson);
+			})
+		}
+
+		vm.selectAllSmsEvents= function () {
+			if(vm.smsEvents.selectAll)
+			{
+				for (var i = 0; i < vm.smsEventList.length; i++) {
+					vm.smsEventList[i].isSelected=true;
+				}
+			}
+			else
+			{
+				for (var i = 0; i < vm.smsEventList.length; i++) {
+					vm.smsEventList[i].isSelected=false;
+				}
+			}
+		}
+
+		vm.submitSmsEvents= function () {
+			if(!vm.smsEventCreated)
+			{
+				if (vm.smsEventsForm.$valid == true) {
+					vm.smsEventsSubmitted = true;
+
+					var smsEventsObj={};
+					var tempEventsSelected=false;
+					smsEventsObj.endPoint=vm.smsEvents.phone;
+					smsEventsObj.type="sms";
+					smsEventsObj.createdDate=new Date();
+					smsEventsObj.isEnabled=true;
+					smsEventsObj.eventCodes=[];
+
+					for (var i = 0; i < vm.smsEventList.length; i++) {
+						if(vm.smsEventList[i].isSelected)
+						{
+							smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
+							tempEventsSelected=true;
+						}
+					}
+
+					if(tempEventsSelected)
+					{
+						$charge.webhook().createWH(smsEventsObj).success(function (data) {
+							//console.log(data);
+							//
+							if(data.error=="00000")
+							{
+								notifications.toast("SMS alerts set Successfully", "success");
+								vm.smsEvents.guWebhookId = data.guWebhookId;
+								vm.smsEvents.type = "sms";
+								vm.smsEvents.createdDate = new Date();
+								vm.smsEvents.isEnabled = true;
+
+								$scope.infoJson= {};
+								$scope.infoJson.message ='SMS alerts set Successfully';
+								$scope.infoJson.app ='settings';
+								// logHelper.info( $scope.infoJson);
+							}
+							else
+							{
+								notifications.toast("SMS alerts set Failed", "error");
+
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								// logHelper.error( $scope.infoJson);
+							}
+							//$scope.webhook={};
+							vm.smsEventsSubmitted = false;
+						}).error(function (data) {
+							//console.log(data);
+							vm.smsEventsSubmitted = false;
+
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							// logHelper.error( $scope.infoJson);
+						})
+					}
+					else
+					{
+						notifications.toast("Select Events for set SMS alerts", "error");
+						vm.smsEventsSubmitted = false;
+					}
+
+				}
+			}
+			else
+			{
+				if (vm.smsEventsForm.$valid == true) {
+					vm.smsEventsSubmitted = true;
+
+					var smsEventsObj={};
+					var tempEventsSelected=false;
+					smsEventsObj.guWebhookId=vm.smsEvents.guWebhookId;
+					smsEventsObj.endPoint=vm.smsEvents.phone;
+					smsEventsObj.type="sms";
+					smsEventsObj.createdDate=new Date();
+					smsEventsObj.isEnabled=true;
+					smsEventsObj.eventCodes=[];
+
+					for (var i = 0; i < vm.smsEventList.length; i++) {
+						if(vm.smsEventList[i].isSelected)
+						{
+							smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
+							tempEventsSelected=true;
+						}
+					}
+
+					if(tempEventsSelected)
+					{
+						$charge.webhook().updateWH(smsEventsObj).success(function (data) {
+							//console.log(data);
+							//
+							if(data.error=="00000")
+							{
+								notifications.toast("SMS alerts Updated Successfully", "success");
+
+								$scope.infoJson= {};
+								$scope.infoJson.message ='SMS alerts Updated Successfully';
+								$scope.infoJson.app ='settings';
+								// logHelper.info( $scope.infoJson);
+							}
+							else
+							{
+								notifications.toast("SMS alerts Updating Failed", "error");
+
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								// logHelper.error( $scope.infoJson);
+							}
+							//$scope.webhook={};
+							vm.smsEventsSubmitted = false;
+						}).error(function (data) {
+							//console.log(data);
+							vm.smsEventsSubmitted = false;
+
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							// logHelper.error( $scope.infoJson);
+						})
+					}
+					else
+					{
+						notifications.toast("Select Events for Set SMS alerts", "error");
+						vm.smsEventsSubmitted = false;
+					}
+
+				}
+			}
+		}
+		// TWILIO - END =======================================================================
+
+
+		$scope.quickBookConnected=false;
+		$scope.quickBookConfig={};
+		$scope.salesforceConnected=false;
+		$scope.salesforceConfig={};
+		$scope.zendeskConnected=false;
+		$scope.zendeskConfig={};
+		$scope.zohoConnected=false;
+		$scope.zohoConfig={};
+		$scope.xeroConnected=false;
+		$scope.xeroConfig={};
+
+		$scope.openIntergrationConfigs= function () {
+
+			$charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
+				if(data.connected)
+				{
+					$scope.quickBookConnected=true;
+					$scope.quickBookConfig = data.data;
+					angular.element("#quickbookId").empty();
+				}
+				else
+				{
+					$scope.quickBookConnected=false;
+
+					$charge.quickbooks().getQuickbooksConfig().success(function (data) {
+						angular.element("#quickbookId").empty();
+						angular.element("#quickbookId").append(data);
+
+						$("#quickbookId a").attr('href','#settings');
+
+					}).error(function (data) {
+						//console.log(data);
+						angular.element("#quickbookId").empty();
+						notifications.toast("Quickbooks configurations loading failed", "error");
+					})
+				}
+
+			}).error(function (data) {
+				//console.log(data);
+				$scope.quickBookConnected=false;
+			})
+
+			$charge.salesforce().checkSalesforceConnected(getCurrentDomain()).success(function (data) {
+				if(data.connected)
+				{
+					$scope.salesforceConnected=true;
+					$scope.salesforceConfig = data.data;
+					angular.element("#salesforceId").empty();
+				}
+				else
+				{
+					$scope.salesforceConnected=false;
+
+					$charge.salesforce().getSalesforceConfig().success(function (data) {
+						angular.element("#salesforceId").empty();
+						angular.element("#salesforceId").append(data);
+
+						$("#salesforceId a").attr('href','#settings');
+
+					}).error(function (data) {
+						//console.log(data);
+						angular.element("#salesforceId").empty();
+						notifications.toast("Salesforce configurations loading failed", "error");
+					})
+				}
+
+			}).error(function (data) {
+				//console.log(data);
+				$scope.salesforceConnected=false;
+			})
+
+			$charge.zendesk().checkZendeskConnected(getCurrentDomain()).success(function (data) {
+				if(data.connected)
+				{
+					$scope.zendeskConnected=true;
+					$scope.zendeskConfig = data.data;
+				}
+				else
+				{
+					$scope.zendeskConnected=false;
+					vm.zendeskConfigContent = {};
+
+				}
+
+			}).error(function (data) {
+				//console.log(data);
+				$scope.zendeskConnected=false;
+			})
+
+			$charge.zoho().checkZohoConnected().success(function (data) {
+				if(data.status)
+				{
+					$scope.zohoConnected=true;
+					$scope.zohoConfig = data.guOrganizationId;
+				}
+				else
+				{
+					$scope.zohoConnected=false;
+					vm.zohoConfigContent = {};
+
+				}
+
+			}).error(function (data) {
+				//console.log(data);
+				$scope.zohoConnected=false;
+			})
+
+			$charge.xero().checkXeroConnected().success(function (data) {
+				if(data.status)
+				{
+					$scope.xeroConnected=true;
+					$scope.xeroConfig = data.guOrganizationId;
+				}
+				else
+				{
+					$scope.xeroConnected=false;
+					vm.xeroConfigContent = {};
+
+				}
+
+			}).error(function (data) {
+				//console.log(data);
+				$scope.xeroConnected=false;
+			});
+		}
+
+		//$(document).on('a','click', function (e) {
+		//  e.preventDefault();
+		//});
+		$scope.removeQuickbooksConfig = vm.removeQuickbooksConfig= function (ev) {
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to Remove Quickbooks account?')
+				.textContent('You cannot revert this account once you delete it!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Yes')
+				.cancel('No');
+
+			$mdDialog.show(confirm).then(function() {
+				vm.submittedQuickbooks = true;
+				var quickbookKey = {
+					"realmId":$scope.quickBookConfig
+				}
+				$charge.quickbooks().deleteQuickbooksConfig(quickbookKey).success(function(data) {
+					//
+					if(data.status)
+					{
+						notifications.toast("Successfully Quickbooks account removed","success");
+						$scope.openIntergrationConfigs();
+					}
+					vm.submittedQuickbooks = false;
+				}).error(function(data) {
+					//console.log(data);
+					notifications.toast("Quickbooks account removing failed","error");
+					vm.submittedQuickbooks = false;
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				})
+			}, function() {
+
+			});
+		}
+
+		$scope.removeSalesforceConfig= vm.removeSalesforceConfig = function (ev) {
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to Remove Salesforce account?')
+				.textContent('You cannot revert this account once you delete it!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Yes')
+				.cancel('No');
+
+			$mdDialog.show(confirm).then(function() {
+				vm.submittedSalesforce = true;
+				//var salesforceKey = $scope.salesforceConfig;
+				var salesforceKey = {
+					"refreshToken":$scope.salesforceConfig
+				}
+				$charge.salesforce().deleteSalesforceConfig(salesforceKey).success(function(data) {
+					//
+					if(data.status)
+					{
+						notifications.toast("Successfully Salesforce account removed","success");
+						$scope.openIntergrationConfigs();
+					}
+					vm.submittedSalesforce = false;
+				}).error(function(data) {
+					//console.log(data);
+					notifications.toast("Salesforce account removing failed","error");
+					vm.submittedSalesforce = false;
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				})
+			}, function() {
+
+			});
+		}
+
+		vm.zendeskConfigContent = {};
+
+		$scope.submitZendeskConfig= vm.submitZendeskConfig = function () {
+			if (vm.zendeskForm.$valid == true) {
+				vm.submittedZendeskConfig = true;
+
+				var zendeskConfigObj = vm.zendeskConfigContent;
+
+				$charge.zendesk().registerZendesk(zendeskConfigObj).success(function (data) {
+					//console.log(data);
+					//
+					if (data.status) {
+						notifications.toast("Registered to Zendesk Successfully", "success");
+						$mdDialog.hide();
+						$scope.openIntergrationConfigs();
+
+						$scope.infoJson = {};
+						$scope.infoJson.message = 'Registered to Zendesk Successfully';
+						$scope.infoJson.app = 'settings';
+						// logHelper.info($scope.infoJson);
+					}
+					vm.submittedZendeskConfig = false;
+
+				}).error(function (data) {
+					//console.log(data);
+					notifications.toast("Register to Zendesk Failed", "error");
+					vm.submittedZendeskConfig = false;
+
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					// logHelper.error($scope.infoJson);
+				})
+
+			}
+		}
+
+		$scope.removeZendeskConfig= vm.removeZendeskConfig = function (ev) {
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to Remove Zendesk account?')
+				.textContent('You cannot revert this account once you delete it!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Yes')
+				.cancel('No');
+
+			$mdDialog.show(confirm).then(function() {
+				vm.submittedZendeskConfig = true;
+				//var salesforceKey = $scope.salesforceConfig;
+				var zendeskKey = {
+					"subDomain":$scope.zendeskConfig
+				}
+				$charge.zendesk().deleteZendeskConfig(zendeskKey).success(function(data) {
+					//
+					if(data.status)
+					{
+						notifications.toast("Successfully Zendesk account removed","success");
+						$scope.openIntergrationConfigs();
+					}
+					vm.submittedZendeskConfig = false;
+				}).error(function(data) {
+					//console.log(data);
+					notifications.toast("Zendesk account removing failed","error");
+					vm.submittedZendeskConfig = false;
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				})
+			}, function() {
+
+			});
+		}
+
+		vm.zohoConfigContent = {};
+
+		$scope.submitZohoConfig= vm.submitZohoConfig = function () {
+			if (vm.zohoForm.$valid == true) {
+				vm.submittedZohoConfig = true;
+
+				var zohoConfigObj = vm.zohoConfigContent;
+
+				$charge.zoho().registerZoho(zohoConfigObj).success(function (data) {
+					//console.log(data);
+					//
+					if (data.status) {
+						notifications.toast("Registered to Zoho Successfully", "success");
+						$mdDialog.hide();
+						$scope.openIntergrationConfigs();
+
+						$scope.infoJson = {};
+						$scope.infoJson.message = 'Registered to Zoho Successfully';
+						$scope.infoJson.app = 'settings';
+						// logHelper.info($scope.infoJson);
+					}
+					else
+					{
+						notifications.toast(data.error, "error");
+					}
+					vm.submittedZohoConfig = false;
+
+				}).error(function (data) {
+					//console.log(data);
+					notifications.toast("Register to Zoho Failed", "error");
+					vm.submittedZohoConfig = false;
+
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					// logHelper.error($scope.infoJson);
+				})
+
+			}
+		}
+
+		$scope.removeZohoConfig= function (ev) {
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to Remove Zoho account?')
+				.textContent('You cannot revert this account once you delete it!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Yes')
+				.cancel('No');
+
+			$mdDialog.show(confirm).then(function() {
+				vm.submittedZohoConfig = true;
+				//var salesforceKey = $scope.salesforceConfig;
+				var zohoKey = {
+					"organizationId":$scope.zohoConfig
+				}
+				$charge.zoho().deleteZohoConfig(zohoKey).success(function(data) {
+					//
+					if(data.status)
+					{
+						notifications.toast("Successfully Zoho account removed","success");
+						$scope.openIntergrationConfigs();
+					}
+					vm.submittedZohoConfig = false;
+				}).error(function(data) {
+					//console.log(data);
+					notifications.toast("Zoho account removing failed","error");
+					vm.submittedZohoConfig = false;
+
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				})
+			}, function() {
+
+			});
+		}
+
+
+		// Xero configuration
+		vm.xero = {
+			accounts : [{
+					name: 'Sales',
+					code: 400
+				},{
+					name: 'Postage & Delivery',
+					code: 624
+				},{
+					name: '"On-Sale" Discounts',
+					code: 410
+				},{
+					name: 'Coupon Discounts',
+					code: 411
+				},{
+					name: 'Other Revenue',
+					code: 460
+				},{
+					name: 'Cost of Goods Sold',
+					code: 500
+				},{
+					name: 'Credit Card Receivable',
+					code: 121
+				}]
+		}
+		vm.toggleXeroConfigViews = function (view) {
+			vm.activeXeroConfig = view;
+		}
+
+		vm.baseCurrency = $scope.general.baseCurrency;
 
 
 
@@ -8285,7 +8344,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -8373,7 +8432,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -8579,7 +8638,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8632,7 +8691,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8683,7 +8742,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8734,7 +8793,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8787,7 +8846,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8838,7 +8897,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8889,7 +8948,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					// logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8951,7 +9010,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			});
 
 
@@ -8979,7 +9038,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			});
 
 		}
@@ -9024,7 +9083,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				// logHelper.error( $scope.infoJson);
 			});
 		}
 
@@ -9267,6 +9326,63 @@
 
 
 
+		// ADDITIONAL INTEGRATIONS ===================================================================================================
+		$scope.registerIntegrationDialog = function (tool, ev) {
+			$mdDialog.show({
+				controller: function () {
+					return vm;
+				},
+				controllerAs: 'vm',
+				templateUrl: 'app/main/settings/dialogs/Additional integrations/integration-dialog-'+tool+'.html',
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose:false
+			}).then(
+				function(confirmation) {
+				}, function() {
+					$mdDialog.hide();
+				});
+
+			if(tool == 'quickbooks'){
+				$charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
+					if(data.connected)
+					{
+						$scope.quickBookConnected=true;
+						$scope.quickBookConfig = data.data;
+						angular.element("#quickbookId").empty();
+					}
+					else
+					{
+						$scope.quickBookConnected=false;
+
+						$charge.quickbooks().getQuickbooksConfig().success(function (data) {
+							angular.element("#quickbookId").empty();
+							angular.element("#quickbookId").append(data);
+
+							$("#quickbookId a").attr('href','#settings');
+
+						}).error(function (data) {
+							//console.log(data);
+							angular.element("#quickbookId").empty();
+							notifications.toast("Quickbooks configurations loading failed", "error");
+						})
+					}
+
+				}).error(function (data) {
+					//console.log(data);
+					$scope.quickBookConnected=false;
+				})
+			}
+		}
+
+		$scope.integratedToolConfigHelper = {
+			twilio:{ moreConfig : false },
+			xero:{ moreConfig : false }
+		};
+		$scope.configExpandHandler = function (integration) {
+			$scope.integratedToolConfigHelper[integration].moreConfig = !$scope.integratedToolConfigHelper[integration].moreConfig;
+		}
+		// ADDITIONAL INTEGRATIONS - END =============================================================================================
 
 
 

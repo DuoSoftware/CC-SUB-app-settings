@@ -1,0 +1,68 @@
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with Twilio</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+
+    <md-content class="p-16" ms-scroll>
+        <div layout="row">
+            <div layout="column" class="guide-portion" flex>
+                <div layout="column" style="margin-bottom: 20px">
+                    <h2 class="mb-10">Twilio SMS..</h2>
+                </div>
+                <p class="m-0">
+                    "A lot has to go right so that every single one of your messages reaches its destination. It’s not just about access to carrier connections — it’s how your message is managed across those connections. Twilio’s intelligent cloud software handles it all for you"
+                </p>
+                </br>
+                <i class="op-5">For more information, visit <a href="https://www.twilio.com/sms" target="_blank">Twilio SMS</a></i>
+            </div>
+            <div class="w-20"></div>
+            <div class="form-portion" layout="column" flex="40">
+                <div md-whiteframe="3dp" flex class="p-10">
+                    <form id="twilioSmsForm" name="vm.twilioSmsForm" ng-submit="vm.submitTwilioConfig()" novalidate>
+                        <div class="p-0" ng-if="!vm.usingTwilioSMS || vm.editTwilioConfigEnabled">
+                            <div layout="row">
+                                <md-input-container flex>
+                                    <label>Account ID</label>
+                                    <input type="text" ng-required="true" min="" name="accountsid" ng-maxlength="300" ng-model="twilioSMSConfig.accountsid">
+                                    <div ng-messages="vm.twilioSmsForm.accountsid.$error">
+                                        <div ng-message="maxlength">Account ID must be between 1-300 characters</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex>
+                                    <label>Auth Token</label>
+                                    <input type="text" ng-required="true" min="" name="authtoken" ng-maxlength="300" ng-model="twilioSMSConfig.authtoken">
+                                    <div ng-messages="vm.twilioSmsForm.authtoken.$error">
+                                        <div ng-message="maxlength">Auth Token must be between 1-300 characters</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex>
+                                    <label>From Number</label>
+                                    <input type="text" ng-required="true" min="" name="fromnumber" ng-maxlength="30" ng-model="twilioSMSConfig.fromnumber">
+                                    <div ng-messages="vm.twilioSmsForm.fromnumber.$error">
+                                        <div ng-message="maxlength">From Number must be between 1-30 characters</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="text-right">
+                                <md-button ng-disabled="vm.submittedTwilioConfig" type="submit" form="twilioSmsForm" style="height:40px;" class="md-raised md-accent">Save</md-button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </md-content>
+
+</md-dialog>
