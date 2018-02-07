@@ -1,0 +1,46 @@
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with Salesforce</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+
+    <md-content class="p-16" ms-scroll>
+        <div layout="row">
+            <div layout="column" class="guide-portion" flex>
+                <div layout="column" style="margin-bottom: 20px">
+                    <h2 class="mb-10">Salesforce..</h2>
+                </div>
+                <p class="m-0">
+                    "Salesforce is much more than just a CRM solution. It brings together all your customer information in a single, integrated platform that enables you to build a customer-centred business from marketing right through to sales, customer service and business analysis. This gives you more complete understanding of your customers to drive your business’s success."
+                </p>
+                </br>
+                <i class="op-5">For more information, visit <a href="https://www.salesforce.com/eu/" target="_blank">Salesforce</a></i>
+            </div>
+            <div class="w-20"></div>
+            <div class="form-portion" layout="column" flex="40">
+                <div md-whiteframe="3dp" flex class="p-10">
+                    <md-card-content class="p-0" ng-if="salesforceConnected">
+                        <div layout="row" layout-align="start center">
+                            <h3 ><b>Connected to Salesforce</b></h3>
+                        </div>
+                        <div layout="row" layout-align="start center">
+                            <md-button type="button" ng-click="removeSalesforceConfig($event)" ng-disabled="vm.submittedSalesforce" style="height:30px;" class="md-raised warm">Remove Account</md-button>
+                        </div>
+                    </md-card-content>
+                    <md-card-content class="p-0" ng-if="!salesforceConnected">
+                        <div layout-align="space-between center" layout="row" id="salesforceId">
+                        </div>
+                    </md-card-content>
+                </div>
+            </div>
+        </div>
+    </md-content>
+
+</md-dialog>

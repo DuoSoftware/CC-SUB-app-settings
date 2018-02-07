@@ -1,0 +1,69 @@
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with Square</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content class="p-16" ms-scroll>
+        <div layout="row">
+            <div layout="column" class="guide-portion" flex>
+                <div layout="column" style="margin-bottom: 20px">
+                    <div class="mb-10">Square accepts..</div>
+                    <div class="2c0-cards">
+                        <img src="assets/images/square-accepts.jpg" alt=""/>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+                <p>Square can process most internationally-issued cards bearing any of the logos above via manual entry. To manually process an international card, enter the card number, expiration date, CVV, and postal or ZIP code.
+                </p>
+                <i class="op-5">For more information, visit <a href="https://squareup.com/help/us/en/article/5085-accepted-cards" target="_blank">Square</a></i>
+            </div>
+            <div class="w-20"></div>
+            <div class="form-portion" layout="column" flex="40">
+                <div md-whiteframe="3dp" flex class="p-10">
+                    <form name="squareForm" ng-submit="submitSquareRegistration()" flex novalidate>
+                        <div layout="column" layout-align="space-between start" fill-height>
+                            <md-input-container fill-width class="mb-0">
+                                <label>Application ID</label>
+                                <input type="text" name="appid" required ng-model="square.applicationId"/>
+                                <div ng-messages="squareForm.appid.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container fill-width class="mb-0">
+                                <label>Location ID</label>
+                                <input type="text" name="locid" required ng-model="square.locationId"/>
+                                <div ng-messages="squareForm.locid.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <md-input-container fill-width class="mb-0">
+                                <label>Access token</label>
+                                <input type="text" name="token" required ng-model="square.accessToken"/>
+                                <div ng-messages="squareForm.token.$error">
+                                    <div ng-message="required"></div>
+                                </div>
+                            </md-input-container>
+
+                            <div flex></div>
+
+                            <div layout="row" layout-align="end center" fill-width>
+                                <!--<md-button class="md-primary" ng-click="closeDialog()">Cancel</md-button>-->
+                                <md-button class="md-raised md-accent" type="submit">Submit</md-button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </md-content>
+
+</md-dialog>
