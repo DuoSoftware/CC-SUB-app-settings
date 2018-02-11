@@ -29,29 +29,26 @@
                     }
                 },
                 resolve: {
-                    security: ['$q','mesentitlement','$timeout','$rootScope','$state', function($q,mesentitlement,$timeout,$rootScope,$state){
-                        var entitledStatesReturn = mesentitlement.stateDepResolver('settings');
+					security: ['$q','mesentitlement','$timeout','$rootScope','$state','$location', function($q,mesentitlement,$timeout,$rootScope,$state, $location){
+						return $q(function(resolve, reject) {
+							$timeout(function() {
+								if (true) {
+									// if ($rootScope.isBaseSet2) {
+									resolve(function () {
+										var entitledStatesReturn = mesentitlement.stateDepResolver('rating');
 
-                        if(entitledStatesReturn !== true){
-                              return $q.reject("unauthorized");
-                        }
-                        else
-                        {
-                          //debugger;
-                          $timeout(function() {
-                            //console.log('Timeout started');
-                            var firstLogin=localStorage.getItem("firstLogin");
-                            if(firstLogin==null ||firstLogin=="" || firstLogin==undefined) {
-                              $rootScope.firstLoginDitected = true;
-                            }
-                            else
-                            {
-                              $rootScope.firstLoginDitected = false;
-                              //localStorage.removeItem('firstLogin');
-                            }
-                          }, 50);
-                        }
-                    }]
+										mesentitlementProvider.setStateCheck("rating");
+
+										if(entitledStatesReturn !== true){
+											return $q.reject("unauthorized");
+										}
+									});
+								} else {
+									return $location.path('/settings');
+								}
+							});
+						});
+					}]
                 },
                 bodyClass: 'settings'
             });
