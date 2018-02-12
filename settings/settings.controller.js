@@ -7189,7 +7189,7 @@
 
 		// TWILIO ============================================================================
 		vm.usingTwilioSMS = false;
-		$scope.twilioSMSConfig = {};
+		vm.twilioSMSConfig = {};
 
 		$scope.loadTwilioSMSConfig= function () {
 			$charge.twiliosms().getTwilioAccount().success(function(data) {
@@ -7199,7 +7199,7 @@
 					vm.usingTwilioSMS = true;
 					$scope.twilioConnected = true;
 					vm.editTwilioConfigEnabled = false;
-					$scope.twilioSMSConfig = data;
+					vm.twilioSMSConfig = data;
 					$scope.loadSmsEvents();
 					$scope.loadTwilioSMSHistory();
 				}
@@ -7211,7 +7211,7 @@
 					vm.usingTwilioSMS = true;
 					$scope.twilioConnected = true;
 					vm.editTwilioConfigEnabled = false;
-					$scope.twilioSMSConfig = data;
+					vm.twilioSMSConfig = data;
 					$scope.loadSmsEvents();
 					$scope.loadTwilioSMSHistory();
 				}
@@ -7219,7 +7219,7 @@
 				{
 					vm.usingTwilioSMS = false;
 					$scope.twilioConnected = false;
-					$scope.twilioSMSConfig = {};
+					vm.twilioSMSConfig = {};
 
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
@@ -7279,7 +7279,7 @@
 			if(vm.twilioSmsForm.$valid==true) {
 				vm.submittedTwilioConfig = true;
 
-				var twilioConfObj = $scope.twilioSMSConfig;
+				var twilioConfObj = vm.twilioSMSConfig;
 				$charge.twiliosms().createTwilioAccount(twilioConfObj).success(function(data) {
 					//
 					if(data.status)
@@ -7314,7 +7314,7 @@
 
 			$mdDialog.show(confirm).then(function() {
 				vm.submittedTwilioConfig = true;
-				var twilioConfAccId = $scope.twilioSMSConfig.accountsid != undefined?$scope.twilioSMSConfig.accountsid:"";
+				var twilioConfAccId = vm.twilioSMSConfig.accountsid != undefined?vm.twilioSMSConfig.accountsid:"";
 				$charge.twiliosms().removeTwilioAccount(twilioConfAccId).success(function(data) {
 					//
 					if(data.status)
