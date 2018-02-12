@@ -122,7 +122,7 @@
 		});
 
 	/** @ngInject */
-	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http)
+	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http,logHelper)
 	{
 		var vm = this;
 		vm.settingsCategoryState = "default";
@@ -972,6 +972,10 @@
 			$scope.gen2Loading = true;
 		})
 
+		$scope.toggleAdditionalUserDetails = function () {
+			$scope.showAdditionalUserInfo = !$scope.showAdditionalUserInfo;
+		}
+
 
 		var isFooterDet=false;
 		$charge.settingsapp().getDuobaseValuesByTableName("CTS_FooterAttributes").success(function(data) {
@@ -996,7 +1000,7 @@
 			$scope.infoJson= {};
 			$scope.infoJson.message =JSON.stringify(data);
 			$scope.infoJson.app ='settings';
-			// logHelper.error( $scope.infoJson);
+			logHelper.error( $scope.infoJson);
 
 		})
 
@@ -1155,7 +1159,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}).error(function (data) {
 				$scope.generalSubmit=false;
@@ -1163,7 +1167,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -1187,7 +1191,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
 					$scope.infoJson.app ='settings';
-					// logHelper.info( $scope.infoJson);
+					logHelper.info( $scope.infoJson);
 
 				}).error(function (data) {
 					//console.log(data);
@@ -1197,7 +1201,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -1287,7 +1291,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message ='General records have been updated';
 				$scope.infoJson.app ='settings';
-				// logHelper.info( $scope.infoJson);
+				logHelper.info( $scope.infoJson);
 			}).error(function (data) {
 				notifications.toast("Error occured while updating General Record.", "error");
 				$scope.template.companyLogo=[];
@@ -1296,7 +1300,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -1455,7 +1459,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			});
 		}
 
@@ -1637,7 +1641,7 @@
 										$scope.infoJson= {};
 										$scope.infoJson.message ='General records has been saved';
 										$scope.infoJson.app ='settings';
-										// logHelper.info( $scope.infoJson);
+										logHelper.info( $scope.infoJson);
 									}).error(function (data) {
 										notifications.toast("Error occured while saving company profile.", "error");
 										$scope.generalSubmit = false;
@@ -1645,7 +1649,7 @@
 										$scope.infoJson= {};
 										$scope.infoJson.message =JSON.stringify(data);
 										$scope.infoJson.app ='settings';
-										// logHelper.error( $scope.infoJson);
+										logHelper.error( $scope.infoJson);
 
 										$charge.settingsapp().deleteGeneralData().success(function (data) {
 											//console.log("Settings Rollback..");
@@ -1654,7 +1658,7 @@
 											$scope.infoJson= {};
 											$scope.infoJson.message =JSON.stringify(data);
 											$scope.infoJson.app ='settings';
-											// logHelper.error( $scope.infoJson);
+											logHelper.error( $scope.infoJson);
 										});
 
 									});
@@ -1665,7 +1669,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message =JSON.stringify(data);
 									$scope.infoJson.app ='settings';
-									// logHelper.error( $scope.infoJson);
+									logHelper.error( $scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
@@ -1674,7 +1678,7 @@
 										$scope.infoJson= {};
 										$scope.infoJson.message =JSON.stringify(data);
 										$scope.infoJson.app ='settings';
-										// logHelper.error( $scope.infoJson);
+										logHelper.error( $scope.infoJson);
 									});
 
 								});
@@ -1685,7 +1689,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
@@ -1694,7 +1698,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message =JSON.stringify(data);
 									$scope.infoJson.app ='settings';
-									// logHelper.error( $scope.infoJson);
+									logHelper.error( $scope.infoJson);
 								});
 
 							})
@@ -1810,7 +1814,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message ='General records has been saved';
 									$scope.infoJson.app ='settings';
-									// logHelper.info( $scope.infoJson);
+									logHelper.info( $scope.infoJson);
 								}).error(function (data) {
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
@@ -1818,7 +1822,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message =JSON.stringify(data);
 									$scope.infoJson.app ='settings';
-									// logHelper.error( $scope.infoJson);
+									logHelper.error( $scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
@@ -1827,7 +1831,7 @@
 										$scope.infoJson= {};
 										$scope.infoJson.message =JSON.stringify(data);
 										$scope.infoJson.app ='settings';
-										// logHelper.error( $scope.infoJson);
+										logHelper.error( $scope.infoJson);
 									});
 
 								});
@@ -1838,7 +1842,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
@@ -1847,7 +1851,7 @@
 									$scope.infoJson= {};
 									$scope.infoJson.message =JSON.stringify(data);
 									$scope.infoJson.app ='settings';
-									// logHelper.error( $scope.infoJson);
+									logHelper.error( $scope.infoJson);
 								});
 
 							});
@@ -1862,7 +1866,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 
 						$charge.settingsapp().deleteGeneralData().success(function (data) {
 							//console.log("Settings Rollback..");
@@ -1871,7 +1875,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						});
 
 					})
@@ -2003,7 +2007,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
 						$scope.infoJson.app ='settings';
-						// logHelper.info( $scope.infoJson);
+						logHelper.info( $scope.infoJson);
 
 					}).error(function (data) {
 						//console.log(data);
@@ -2012,7 +2016,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					})
 
 					//$uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
@@ -2055,7 +2059,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2112,7 +2116,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2162,7 +2166,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2186,7 +2190,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message ='General records have been updated';
 				$scope.infoJson.app ='settings';
-				// logHelper.info( $scope.infoJson);
+				logHelper.info( $scope.infoJson);
 			}).error(function (data) {
 				notifications.toast("Error occured while updating Footer Record.", "error");
 				$scope.generalSubmit=false;
@@ -2194,7 +2198,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2320,7 +2324,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 				$scope.loadingProductUMOs = false;
 			})
 
@@ -2410,7 +2414,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
@@ -2435,7 +2439,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 			skipPlanKeyAttributes=0;
@@ -2473,7 +2477,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 			skipPlanChangeFee=0;
@@ -2513,7 +2517,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
@@ -2528,7 +2532,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -2566,7 +2570,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2605,7 +2609,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2661,7 +2665,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 			vm.webhookList=[];
@@ -2706,7 +2710,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 
@@ -2741,7 +2745,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -2786,7 +2790,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2833,7 +2837,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -2908,7 +2912,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =vm.webhook.endPoint+' Webhook Created Successfully';
 								$scope.infoJson.app ='settings';
-								// logHelper.info( $scope.infoJson);
+								logHelper.info( $scope.infoJson);
 
 								vm.webhookList=[];
 								skipAllWebhooks=0;
@@ -2923,7 +2927,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -2935,7 +2939,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -2982,7 +2986,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =vm.webhook.endPoint+' Webhook Updated Successfully';
 								$scope.infoJson.app ='settings';
-								// logHelper.info( $scope.infoJson);
+								logHelper.info( $scope.infoJson);
 							}
 							else
 							{
@@ -2991,7 +2995,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -3003,7 +3007,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -3144,7 +3148,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -3788,7 +3792,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					} else {
 						$scope.editUnit = "";
@@ -3851,7 +3855,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					} else {
 						$scope.editUnit = "";
@@ -3939,7 +3943,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 						//if(data.IsSuccess) {
 						//  console.log(data);
@@ -3949,7 +3953,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -4015,7 +4019,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 						//if(data.IsSuccess) {
 						//  console.log(data);
@@ -4025,7 +4029,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -4114,7 +4118,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =ev+' Type has been added';
 							$scope.infoJson.app ='settings';
-							// logHelper.info( $scope.infoJson);
+							logHelper.info( $scope.infoJson);
 							//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//  $scope.stores = [];
 							//  for (var i = 0; i < data.length; i++) {
@@ -4146,7 +4150,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							})
 
 							if (data.error=="00000") {
@@ -4156,7 +4160,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							}
 						}).error(function (data) {
 							//console.log(data);
@@ -4165,7 +4169,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else {
@@ -4204,7 +4208,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =ev+' Type has been added';
 							$scope.infoJson.app ='settings';
-							// logHelper.info( $scope.infoJson);
+							logHelper.info( $scope.infoJson);
 							//                $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//                  $scope.stores = [];
 							//                  for (var i = 0; i < data.length; i++) {
@@ -4235,7 +4239,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							})
 
 							if (data[0].error=="00000") {
@@ -4250,7 +4254,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}
 				}
@@ -4307,7 +4311,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =commondata.RecordFieldData+' Type has been updated';
 						$scope.infoJson.app ='settings';
-						// logHelper.info( $scope.infoJson);
+						logHelper.info( $scope.infoJson);
 //              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 //                $scope.stores = [];
 //                for (var i = 0; i < data.length; i++) {
@@ -4348,7 +4352,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 						$scope.updateUomEnable = false;
 					}
@@ -4367,7 +4371,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -4430,7 +4434,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message ='Successfully plan change fee created';
 							$scope.infoJson.app ='settings';
-							// logHelper.info( $scope.infoJson);
+							logHelper.info( $scope.infoJson);
 
 							skipPlanChangeFee=0;
 							$scope.planChangeFeeList=[];
@@ -4454,7 +4458,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					})
 				}
 				else
@@ -4526,7 +4530,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message ='Successfully Plan Change Fee Updated';
 						$scope.infoJson.app ='settings';
-						// logHelper.info( $scope.infoJson);
+						logHelper.info( $scope.infoJson);
 
 						skipPlanChangeFee=0;
 						$scope.planChangeFeeList=[];
@@ -4541,7 +4545,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					}
 				}).error(function(data)
 				{
@@ -4551,7 +4555,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -4579,7 +4583,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message ='Successfully Plan Change Fee Deleted';
 					$scope.infoJson.app ='settings';
-					// logHelper.info( $scope.infoJson);
+					logHelper.info( $scope.infoJson);
 
 					skipPlanChangeFee=0;
 					$scope.planChangeFeeList=[];
@@ -4593,7 +4597,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				}
 			}).error(function(data)
 			{
@@ -4602,7 +4606,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 
 		}
@@ -4658,7 +4662,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message ='Webhook has Deleted Successfully';
 					$scope.infoJson.app ='settings';
-					// logHelper.info( $scope.infoJson);
+					logHelper.info( $scope.infoJson);
 				}
 				else
 				{
@@ -4667,14 +4671,14 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				}
 			}).error(function (data) {
 				//console.log(data);
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -4783,7 +4787,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
@@ -4793,7 +4797,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					})
 
 				}
@@ -4842,7 +4846,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					})
 				}
 
@@ -5114,7 +5118,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5319,7 +5323,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5572,7 +5576,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -5715,7 +5719,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
@@ -5725,7 +5729,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -5858,7 +5862,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
@@ -5868,7 +5872,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 						//}
 						//else
@@ -6082,7 +6086,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}).error(function(data) {
 						//console.log(data);
@@ -6092,7 +6096,7 @@
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					})
 				}
 			}
@@ -6535,7 +6539,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
@@ -6544,7 +6548,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else {
@@ -6610,7 +6614,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
@@ -6619,7 +6623,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 						//}
 						//else {
@@ -6731,14 +6735,14 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
 						$scope.infoJson= {};
 						$scope.infoJson.message =JSON.stringify(data);
 						$scope.infoJson.app ='settings';
-						// logHelper.error( $scope.infoJson);
+						logHelper.error( $scope.infoJson);
 					})
 
 
@@ -6788,7 +6792,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 			//$scope.remindersInPaymentLoaded = false;
 			//$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
@@ -6862,7 +6866,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6903,7 +6907,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -6977,7 +6981,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}
 			else
@@ -7006,7 +7010,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}
 
@@ -7087,7 +7091,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -7117,7 +7121,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -7147,7 +7151,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -7178,14 +7182,14 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
 
 		// TWILIO ============================================================================
 		vm.usingTwilioSMS = false;
-		vm.twilioSMSConfig = {};
+		$scope.twilioSMSConfig = {};
 
 		$scope.loadTwilioSMSConfig= function () {
 			$charge.twiliosms().getTwilioAccount().success(function(data) {
@@ -7195,7 +7199,7 @@
 					vm.usingTwilioSMS = true;
 					$scope.twilioConnected = true;
 					vm.editTwilioConfigEnabled = false;
-					vm.twilioSMSConfig = data;
+					$scope.twilioSMSConfig = data;
 					$scope.loadSmsEvents();
 					$scope.loadTwilioSMSHistory();
 				}
@@ -7207,7 +7211,7 @@
 					vm.usingTwilioSMS = true;
 					$scope.twilioConnected = true;
 					vm.editTwilioConfigEnabled = false;
-					vm.twilioSMSConfig = data;
+					$scope.twilioSMSConfig = data;
 					$scope.loadSmsEvents();
 					$scope.loadTwilioSMSHistory();
 				}
@@ -7215,12 +7219,12 @@
 				{
 					vm.usingTwilioSMS = false;
 					$scope.twilioConnected = false;
-					vm.twilioSMSConfig = {};
+					$scope.twilioSMSConfig = {};
 
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				}
 			});
 		}
@@ -7261,7 +7265,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -7275,7 +7279,7 @@
 			if(vm.twilioSmsForm.$valid==true) {
 				vm.submittedTwilioConfig = true;
 
-				var twilioConfObj = vm.twilioSMSConfig;
+				var twilioConfObj = $scope.twilioSMSConfig;
 				$charge.twiliosms().createTwilioAccount(twilioConfObj).success(function(data) {
 					//
 					if(data.status)
@@ -7293,7 +7297,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}
 		}
@@ -7310,7 +7314,7 @@
 
 			$mdDialog.show(confirm).then(function() {
 				vm.submittedTwilioConfig = true;
-				var twilioConfAccId = vm.twilioSMSConfig.accountsid != undefined?vm.twilioSMSConfig.accountsid:"";
+				var twilioConfAccId = $scope.twilioSMSConfig.accountsid != undefined?$scope.twilioSMSConfig.accountsid:"";
 				$charge.twiliosms().removeTwilioAccount(twilioConfAccId).success(function(data) {
 					//
 					if(data.status)
@@ -7327,7 +7331,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -7368,7 +7372,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -7413,7 +7417,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			})
 		}
 
@@ -7470,7 +7474,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message ='SMS alerts set Successfully';
 								$scope.infoJson.app ='settings';
-								// logHelper.info( $scope.infoJson);
+								logHelper.info( $scope.infoJson);
 							}
 							else
 							{
@@ -7479,7 +7483,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.smsEventsSubmitted = false;
@@ -7490,7 +7494,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -7535,7 +7539,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message ='SMS alerts Updated Successfully';
 								$scope.infoJson.app ='settings';
-								// logHelper.info( $scope.infoJson);
+								logHelper.info( $scope.infoJson);
 							}
 							else
 							{
@@ -7544,7 +7548,7 @@
 								$scope.infoJson= {};
 								$scope.infoJson.message =JSON.stringify(data);
 								$scope.infoJson.app ='settings';
-								// logHelper.error( $scope.infoJson);
+								logHelper.error( $scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.smsEventsSubmitted = false;
@@ -7555,7 +7559,7 @@
 							$scope.infoJson= {};
 							$scope.infoJson.message =JSON.stringify(data);
 							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
+							logHelper.error( $scope.infoJson);
 						})
 					}
 					else
@@ -7729,7 +7733,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -7767,7 +7771,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -7793,7 +7797,7 @@
 						$scope.infoJson = {};
 						$scope.infoJson.message = 'Registered to Zendesk Successfully';
 						$scope.infoJson.app = 'settings';
-						// logHelper.info($scope.infoJson);
+						logHelper.info($scope.infoJson);
 					}
 					vm.submittedZendeskConfig = false;
 
@@ -7805,7 +7809,7 @@
 					$scope.infoJson = {};
 					$scope.infoJson.message = JSON.stringify(data);
 					$scope.infoJson.app = 'settings';
-					// logHelper.error($scope.infoJson);
+					logHelper.error($scope.infoJson);
 				})
 
 			}
@@ -7842,7 +7846,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -7868,7 +7872,7 @@
 						$scope.infoJson = {};
 						$scope.infoJson.message = 'Registered to Zoho Successfully';
 						$scope.infoJson.app = 'settings';
-						// logHelper.info($scope.infoJson);
+						logHelper.info($scope.infoJson);
 					}
 					else
 					{
@@ -7884,7 +7888,7 @@
 					$scope.infoJson = {};
 					$scope.infoJson.message = JSON.stringify(data);
 					$scope.infoJson.app = 'settings';
-					// logHelper.error($scope.infoJson);
+					logHelper.error($scope.infoJson);
 				})
 
 			}
@@ -7921,7 +7925,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -8344,7 +8348,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -8432,7 +8436,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 				})
 			}, function() {
 
@@ -8638,7 +8642,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8691,7 +8695,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8742,7 +8746,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8793,7 +8797,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8846,7 +8850,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8897,7 +8901,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -8948,7 +8952,7 @@
 					$scope.infoJson= {};
 					$scope.infoJson.message =JSON.stringify(data);
 					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
+					logHelper.error( $scope.infoJson);
 
 				});
 
@@ -9010,7 +9014,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			});
 
 
@@ -9038,7 +9042,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			});
 
 		}
@@ -9083,7 +9087,7 @@
 				$scope.infoJson= {};
 				$scope.infoJson.message =JSON.stringify(data);
 				$scope.infoJson.app ='settings';
-				// logHelper.error( $scope.infoJson);
+				logHelper.error( $scope.infoJson);
 			});
 		}
 
