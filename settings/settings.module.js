@@ -1,9 +1,9 @@
 //////////////////////////////////////
 // App : Settings                   //
 // Owner : Suvethan                 //
-// Last changed date : 2018/02/01   //
+// Last changed date : 2018/02/14   //
 // Version : 6.1.0.38               //
-// Updated By : Kasun               //
+// Updated By : Gihan               //
 //////////////////////////////////////
 
 (function ()
@@ -29,26 +29,29 @@
                     }
                 },
                 resolve: {
-					security: ['$q','mesentitlement','$timeout','$rootScope','$state','$location', function($q,mesentitlement,$timeout,$rootScope,$state, $location){
-						return $q(function(resolve, reject) {
-							$timeout(function() {
-								if (true) {
-									// if ($rootScope.isBaseSet2) {
-									resolve(function () {
-										var entitledStatesReturn = mesentitlement.stateDepResolver('rating');
+                    security: ['$q','mesentitlement','$timeout','$rootScope','$state', function($q,mesentitlement,$timeout,$rootScope,$state){
+                        var entitledStatesReturn = mesentitlement.stateDepResolver('settings');
 
-										mesentitlementProvider.setStateCheck("rating");
-
-										if(entitledStatesReturn !== true){
-											return $q.reject("unauthorized");
-										}
-									});
-								} else {
-									return $location.path('/settings');
-								}
-							});
-						});
-					}]
+                        if(entitledStatesReturn !== true){
+                              return $q.reject("unauthorized");
+                        }
+                        else
+                        {
+                          //debugger;
+                          $timeout(function() {
+                            //console.log('Timeout started');
+                            var firstLogin=localStorage.getItem("firstLogin");
+                            if(firstLogin==null ||firstLogin=="" || firstLogin==undefined) {
+                              $rootScope.firstLoginDitected = true;
+                            }
+                            else
+                            {
+                              $rootScope.firstLoginDitected = false;
+                              //localStorage.removeItem('firstLogin');
+                            }
+                          }, 50);
+                        }
+                    }]
                 },
                 bodyClass: 'settings'
             });

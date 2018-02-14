@@ -152,7 +152,36 @@
                                         <div class="group-sub-head pos-rel">
                                             <b>Header</b>
                                             <md-icon md-font-icon="icon-information" class="fs-14 format-header-ico">
-                                                <div ng-include="'app/main/settings/templates/format-header.html'"></div>
+                                                <div id="format-header" class="doc-format-tooltip" md-whiteframe="4dp" layout="column">
+                                                    <div layout="row" class="mb-10">
+                                                        <div flex>
+                                                            <div class="line"></div>
+                                                            <div class="line"></div>
+                                                            <div class="line"></div>
+                                                        </div>
+                                                        <div flex layout="row" class="highlight">
+                                                            <div class="logo"></div>
+                                                            <div flex>
+                                                                <div class="line"></div>
+                                                                <div class="line"></div>
+                                                                <div class="line"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="line"></div>
+                                                    <div class="line"></div>
+                                                    <div class="line"></div>
+                                                    <div class="line"></div>
+                                                    <div class="line"></div>
+                                                    <div class="line"></div>
+                                                    <div class="line"></div>
+                                                    <div class="line"></div>
+                                                    <div layout="column" class="mt-10">
+                                                        <div class="line w-10"></div>
+                                                        <div class="line"></div>
+                                                        <div class="line"></div>
+                                                    </div>
+                                                </div>
                                             </md-icon>
                                         </div>
                                         <div class="issuer gen-template" layout="row" layout-align="center center">
@@ -240,7 +269,7 @@
                                             <!--</td>-->
                                             <!--</tr>-->
                                             <!--</table>-->
-                                            <div layout="row" layout-align="center start" flex class="ph-100">
+                                            <div layout="row" layout-align="center center" flex class="ph-7p">
                                                 <div class="w-280 p-40 h-375 pos-rel" ng-class="{'md-whiteframe-2dp':editImageOn, 'dragOn':divClass,'light-gray':editImageOn}" layout="column" drag-and-drop>
                                                     <div class="text-right close-logo" ng-if="editImageOn">
                                                         <md-button class="md-icon-button" ng-click="editCompanyCancel()"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
@@ -328,11 +357,10 @@
                                                             </div>
                                                         </md-input-container>
                                                     </div>
-                                                    <div layout="row" layout-align="end center" class="pos-rel more-collapse"
-                                                         ng-style="showAdditionalUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
-                                                        <md-button class="md-icon-button m-0" ng-click="toggleAdditionalUserDetails()"><md-icon md-font-icon="icon-chevron-down" ng-if="!showAdditionalUserInfo"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="showAdditionalUserInfo"></md-icon> </md-button><label ng-if="showAdditionalUserInfo">Less</label><label ng-if="!showAdditionalUserInfo">Additional details</label>
-                                                    </div>
-                                                    <div ng-show="showAdditionalUserInfo">
+                                                </div>
+                                                <div class="info p-20 pr-40" flex>
+
+                                                    <fieldset>
                                                         <div class="title">
                                                             <md-input-container class="md-block mb-0" flex>
                                                                 <label>Line 1 </label>
@@ -396,7 +424,7 @@
                                                                 </div>
                                                             </md-input-container>
                                                         </div>
-                                                    </div>
+                                                    </fieldset>
                                                 </div>
                                             </div>
                                         </div>
@@ -1684,7 +1712,7 @@
                     </md-content>
                 </md-tab>
                 <md-tab label="Payments" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('payment')">
-                    <md-content flex fill-height layout="column" class="pb-50 custom-scroll" ms-scroll>
+                    <md-content flex fill-height layout="column">
                         <md-tabs md-selected="paymentsInnerNav" md-border-bottom flex>
                             <md-tab>
                                 <md-tab-label>
@@ -2427,7 +2455,7 @@
                                 <md-divider class="mt-16"></md-divider>
                                 <div layout="row" layout-align="start center" class="more-collapse"
                                      ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}"
-                                     ng-if="twilioConnected"
+                                     ng-if="gateway.isConnected"
                                 >
                                     <md-button class="md-icon-button m-0" ng-click="configExpandHandler('twilio')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.twilio.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.twilio.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.twilio.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.twilio.moreConfig">More configuration</label>
                                 </div>
@@ -2466,11 +2494,45 @@
                                         </md-input-container>
                                     </div>
 
+                                  <div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.quickbooks.moreConfig">
+                                    <form name="vm.quickbooksConfigForm" id="quickbooksConfigForm" ng-submit="vm.submitquickbooksConfig()" ng-if="!quickBookMigrateConfigAdded" flex>
+                                      <div class="p-15" md-whiteframe="1dp">
+                                        <div>
+                                        <div class="group-sub-head" style="margin-top: 0">Migration Configuration</div>
+                                          <div layout="row" class="pt-20" flex>
+                                            <md-input-container class="md-block m-0" flex="50">
+                                              <label>Sync Profiles</label>
+                                              <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migration">
+                                              <md-option ng-value="'Migrate Existing Profiles'">Migrate existing profiles</md-option>
+                                              <md-option ng-value="'Migrate profiles from now onwards'">Migrate profiles from now onwards</md-option>
+                                              </md-select>
+                                            </md-input-container>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <md-dialog-actions layout="row" layout-align="end center">
+                                      <div layout="row" class="layout-row">
+                                      <md-progress-circular class="gen-save-indicator" ng-if="vm.quickbooksConfigSubmitted"></md-progress-circular>
+                                      <md-button ng-disabled="vm.quickbooksConfigSubmitted" type="submit" class="md-raised md-accent" form="quickbooksConfigForm">Save</md-button>
+                                      </div>
+                                      </md-dialog-actions>
+                                    </form>
+
+                                    <div class="p-30" md-whiteframe="1dp" ng-if="quickBookMigrateConfigAdded">
+                                      <h4><b>Quickbooks Profile Migration Config: </b></h4>
+                                      <label>{{vm.quickbooksConfig.selectedMigrateValue}}</label>
+                                    </div>
+                                  </div>
+
                                     <!--INTEGRATION - Additional Config-->
                                     <!--INTEGRATION - Additional Config-->
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
+                                <div layout="row" layout-align="start center" ng-disabled="" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                <md-button class="md-icon-button m-0" ng-click="configExpandHandler('quickbooks')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.quickbooks.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.quickbooks.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.quickbooks.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.quickbooks.moreConfig">More configuration</label>
+                                </div>
                             </div>
                             <div class="payment-card">
                                 <div>
@@ -2582,37 +2644,48 @@
                                     <!--INTEGRATION - Additional Config-->
 
                                 </div>
-                                <!-- <md-divider class="mt-16"></md-divider> -->
+                                <md-divider class="mt-16"></md-divider>
                             </div>
-                            <!-- <div class="payment-card"> -->
-                                <!-- <div> -->
-                                    <!-- <div layout="row" layout-align="start center" flex>
-                                        <!--<md-input-container style="margin: 0;" flex>-->
-                                            <!--<div class="integration_xero" ng-class="{'online_disabled': !xeroConnected}"></div>-->
-                                        <!--</md-input-container>-->
+                            <div class="payment-card">
+                                <div>
+                                    <div layout="row" layout-align="start center" flex>
+                                        <md-input-container style="margin: 0;" flex>
+                                            <div class="integration_xero" ng-class="{'online_disabled': !xeroConnected}"></div>
+                                        </md-input-container>
 
-                                        <!--<md-input-container class="m-0">-->
-                                            <!--<md-menu>-->
-                                                <!--<md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdMenu.open($event)">-->
-                                                    <!--<md-icon md-font-icon="icon-dots-vertical"></md-icon>-->
-                                                <!--</md-button>-->
-                                                <!--<md-menu-content width="4">-->
-                                                    <!--<md-menu-item>-->
-                                                        <!--<md-button  ng-disabled="xeroConnected" ng-click="registerIntegrationDialog('xero', $event)">-->
-                                                            <!--<md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>-->
-                                                            <!--Register-->
-                                                        <!--</md-button>-->
-                                                    <!--</md-menu-item>-->
-                                                    <!--<md-menu-item>-->
-                                                        <!--<md-button ng-disabled="!xeroConnected" ng-click="removeXeroConfig()">-->
-                                                            <!--<md-icon md-font-icon="icon-logout"></md-icon>-->
-                                                            <!--Leave-->
-                                                        <!--</md-button>-->
-                                                    <!--</md-menu-item>-->
-                                                <!--</md-menu-content>-->
-                                            <!--</md-menu>-->
-                                        <!--</md-input-container>-->
-                                    <!--</div>-->
+                                        <md-input-container class="m-0">
+                                            <md-menu>
+                                                <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                                                    <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                                                </md-button>
+                                                <md-menu-content width="4">
+                                                    <md-menu-item>
+                                                        <md-button  ng-disabled="" ng-click="registerXeroIntegration()">
+                                                            <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                            Register
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                      <md-button  ng-disabled="!xeroConnected" ng-click="registerIntegrationDialog('xero', $event)">
+                                                        <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                        Advanced Configurations
+                                                      </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                        <md-button ng-disabled="!xeroConnected" ng-click="removeXeroConfig()">
+                                                            <md-icon md-font-icon="icon-logout"></md-icon>
+                                                            Leave
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </md-input-container>
+                                    </div>
+
+                                    <div layout="row" layout-align="start center" ng-if="vm.xeroIntegrateUILoading" flex>
+                                      <iframe ng-src="{{vm.xeroIntegrationUrl}}" fill-width height="550px" id="xeroIntegrationUI">
+                                      </iframe>
+                                    </div>
                                     <!--<div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.xero.moreConfig">-->
                                         <!--<form name="vm.xeroConfigForm" id="xeroConfigForm" ng-submit="vm.submitXeroConfig()" flex>-->
                                             <!--<div class="p-15" md-whiteframe="1dp">-->
@@ -2689,15 +2762,16 @@
                                     <!--INTEGRATION - Additional Config-->
                                     <!--INTEGRATION - Additional Config-->
 
-                                <!-- </div> -->
+                                </div>
                                 <!--<md-divider class="mt-16"></md-divider>-->
                                 <!--<div layout="row" layout-align="start center" ng-disabled="" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">-->
                                     <!--<md-button class="md-icon-button m-0" ng-click="configExpandHandler('xero')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.xero.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.xero.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.xero.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.xero.moreConfig">More configuration</label>-->
                                 <!--</div>-->
-                            <!-- </div> -->
+                            </div>
                         </div>
                     </div>
                 </md-tab>
+
 
                 <!--DEPRICATED - Integrations_Tabbed UI-->
                 <!--<md-content flex fill-height layout="column">-->
