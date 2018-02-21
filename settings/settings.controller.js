@@ -8230,7 +8230,7 @@
 
     function getExtensionMode() {
       var _st = gst("extension_mode");
-      _st=="live"?"live":"test";
+      _st=(_st=="live")?"live":"test";
       return (_st != null) ? _st : "test";
     }
 
