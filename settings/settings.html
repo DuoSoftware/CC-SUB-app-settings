@@ -2466,43 +2466,84 @@
                                         </md-input-container>
                                     </div>
 
-                                  <div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.quickbooks.moreConfig">
-                                    <form name="vm.quickbooksConfigForm" id="quickbooksConfigForm" ng-submit="vm.submitquickbooksConfig()" ng-if="!quickBookMigrateConfigAdded" flex>
-                                      <div class="p-15" md-whiteframe="1dp">
-                                        <div>
-                                        <div class="group-sub-head" style="margin-top: 0">Migration Configuration</div>
-                                          <div layout="row" class="pt-20" flex>
-                                            <md-input-container class="md-block m-0" flex="50">
-                                              <label>Sync Profiles</label>
-                                              <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migration">
-                                              <md-option ng-value="'Migrate Existing Profiles'">Migrate existing profiles</md-option>
-                                              <md-option ng-value="'Migrate profiles from now onwards'">Migrate profiles from now onwards</md-option>
-                                              </md-select>
-                                            </md-input-container>
-                                          </div>
-                                        </div>
-                                      </div>
+								  <div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.quickbooks.moreConfig">
+									<form name="vm.quickbooksConfigForm" id="quickbooksConfigForm" ng-submit="vm.submitquickbooksConfig()" ng-if="!quickBookMigrateConfigAdded" flex>
+									  <div class="p-15" md-whiteframe="1dp">
+										<div>
+										<div class="group-sub-head" style="margin-top: 0">Migration Configuration</div>
+										  <div layout="row" class="pt-20" flex>
+											<md-input-container class="md-block m-0" flex="50">
+											  <label>Sync Profiles</label>
+											  <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationProfiles">
+											  <md-option ng-value="'Migrate Existing Profiles'">Migrate existing profiles</md-option>
+											  <md-option ng-value="'Migrate profiles from now onwards'">Migrate profiles from now onwards</md-option>
+											  </md-select>
+											</md-input-container>
+										  </div>
+										  <div layout="row" class="pt-20" flex>
+											<md-input-container class="md-block m-0" flex="50">
+											  <label>Sync Products</label>
+											  <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationProducts">
+												<md-option ng-value="'Migrate Existing Products'">Migrate existing Products</md-option>
+												<md-option ng-value="'Migrate Products from now onwards'">Migrate Products from now onwards</md-option>
+											  </md-select>
+											</md-input-container>
+										  </div>
+										  <div layout="row" class="pt-20" flex>
+											<md-input-container class="md-block m-0" flex="50">
+											  <label>Sync Plans</label>
+											  <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationPlans">
+												<md-option ng-value="'Migrate Existing Plans'">Migrate existing Plans</md-option>
+												<md-option ng-value="'Migrate Plans from now onwards'">Migrate Plans from now onwards</md-option>
+											  </md-select>
+											</md-input-container>
+										  </div>
+										  <div layout="row" class="pt-20" flex>
+											<md-input-container class="md-block m-0" flex="50">
+											  <label>Sync Invoices</label>
+											  <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationInvoices">
+												<md-option ng-value="'Migrate Existing Invoices'">Migrate existing Invoices</md-option>
+												<md-option ng-value="'Migrate Invoices from now onwards'">Migrate Invoices from now onwards</md-option>
+											  </md-select>
+											</md-input-container>
+										  </div>
+										</div>
+									  </div>
 
-                                      <md-dialog-actions layout="row" layout-align="end center">
-                                      <div layout="row" class="layout-row">
-                                      <md-progress-circular class="gen-save-indicator" ng-if="vm.quickbooksConfigSubmitted"></md-progress-circular>
-                                      <md-button ng-disabled="vm.quickbooksConfigSubmitted" type="submit" class="md-raised md-accent" form="quickbooksConfigForm">Save</md-button>
-                                      </div>
-                                      </md-dialog-actions>
-                                    </form>
+									  <md-dialog-actions layout="row" layout-align="end center">
+									  <div layout="row" class="layout-row">
+									  <md-progress-circular class="gen-save-indicator" ng-if="vm.quickbooksConfigSubmitted"></md-progress-circular>
+									  <md-button ng-disabled="vm.quickbooksConfigSubmitted" type="submit" class="md-raised md-accent" form="quickbooksConfigForm">Save</md-button>
+									  </div>
+									  </md-dialog-actions>
+									</form>
 
-                                    <div class="p-30" md-whiteframe="1dp" ng-if="quickBookMigrateConfigAdded">
-                                      <h4><b>Quickbooks Profile Migration Config: </b></h4>
-                                      <label>{{vm.quickbooksConfig.selectedMigrateValue}}</label>
-                                    </div>
-                                  </div>
+									<div class="p-30" md-whiteframe="1dp" ng-if="quickBookMigrateConfigAdded">
+									  <div layout="row">
+										<h4><b>Quickbooks Profiles Migration Config: </b></h4>
+										<label>{{vm.quickbooksConfig.selectedMigrateProfileValue}}</label>
+									  </div>
+									  <div layout="row">
+										<h4><b>Quickbooks Products Migration Config: </b></h4>
+										<label>{{vm.quickbooksConfig.selectedMigrateProductValue}}</label>
+									  </div>
+									  <div layout="row">
+										<h4><b>Quickbooks Plans Migration Config: </b></h4>
+										<label>{{vm.quickbooksConfig.selectedMigratePlanValue}}</label>
+									  </div>
+									  <div layout="row">
+										<h4><b>Quickbooks Invoices Migration Config: </b></h4>
+										<label>{{vm.quickbooksConfig.selectedMigrateInvoiceValue}}</label>
+									  </div>
+									</div>
+								  </div>
 
                                     <!--INTEGRATION - Additional Config-->
                                     <!--INTEGRATION - Additional Config-->
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
-                                <div layout="row" layout-align="start center" ng-disabled="" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                <div layout="row" layout-align="start center" ng-hide="!quickBookConnected" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
                                 <md-button class="md-icon-button m-0" ng-click="configExpandHandler('quickbooks')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.quickbooks.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.quickbooks.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.quickbooks.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.quickbooks.moreConfig">More configuration</label>
                                 </div>
                             </div>
@@ -2638,13 +2679,13 @@
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                      <md-button  ng-disabled="!xeroConnected" ng-click="registerIntegrationDialog('xero', $event)">
+                                                      <md-button  ng-disabled="!xeroConnected || vm.xeroConfigStored" ng-click="registerIntegrationDialog('xero', $event)">
                                                         <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                         Advanced Configurations
                                                       </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="!xeroConnected" ng-click="removeXeroConfig()">
+                                                        <md-button ng-disabled="true" ng-click="removeXeroConfig()">
                                                             <md-icon md-font-icon="icon-logout"></md-icon>
                                                             Leave
                                                         </md-button>
@@ -2652,6 +2693,24 @@
                                                 </md-menu-content>
                                             </md-menu>
                                         </md-input-container>
+                                    </div>
+									
+									<div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="vm.xeroConfigStored">
+                                      <div class="p-60" md-whiteframe="1dp">
+                                        <div class="group-sub-head" style="margin-top: 0">Xero Configuration</div>
+                                        <div layout="row">
+                                          <h4><b>Invoice Account: </b></h4>
+                                          <label>{{vm.xeroConfigContent.invoiceAccountCode}} - {{vm.xeroConfigContent.invoiceAccount}}</label>
+                                        </div>
+                                        <div layout="row">
+                                          <h4><b>Payment Account: </b></h4>
+                                          <label>{{vm.xeroConfigContent.paymentAccountCode}} - {{vm.xeroConfigContent.paymentAccount}}</label>
+                                        </div>
+                                        <div layout="row">
+                                          <h4><b>Default Tax type: </b></h4>
+                                          <label>{{vm.xeroConfigContent.defaultTaxType}}</label>
+                                        </div>
+                                      </div>
                                     </div>
 
                                     <div layout="row" layout-align="start center" ng-if="vm.xeroIntegrateUILoading" flex>
