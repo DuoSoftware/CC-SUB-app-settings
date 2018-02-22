@@ -7891,7 +7891,7 @@
             $charge.profile().integrationProfileSync(queue).success(function (data) {
               //
               var responseSyncProfiles = data;
-              notifications.toast("Profiles migrated to Quickbooks","success");
+              notifications.toast(responseSyncProfiles.syncedProfiles+"/"+responseSyncProfiles.profiles+" Profiles migrated to Quickbooks","success");
 
             }).error(function(data) {
               //console.log(data);
@@ -7909,7 +7909,7 @@
             $charge.product().integrationProductSync(queue).success(function (data) {
               //
               var responseSyncProducts = data;
-              notifications.toast("Products migrated to Quickbooks","success");
+              notifications.toast(responseSyncProducts.syncedProducts+"/"+responseSyncProducts.products+" Products migrated to Quickbooks","success");
 
             }).error(function(data) {
               //console.log(data);
@@ -7927,7 +7927,7 @@
             $charge.plan().integrationPlanSync(queue).success(function (data) {
               //
               var responseSyncPlans = data;
-              notifications.toast("Plans migrated to Quickbooks","success");
+              notifications.toast(responseSyncPlans.length+" Plans migrated to Quickbooks","success");
 
             }).error(function(data) {
               //console.log(data);
@@ -7945,7 +7945,7 @@
             $charge.invoicing().integrationInvoiceSync(queue).success(function (data) {
               //
               var responseSyncInvoices = data;
-              notifications.toast("Invoices migrated to Quickbooks","success");
+              notifications.toast(responseSyncInvoices.data.syncedData+"/"+responseSyncInvoices.data.invoices+" Invoices migrated to Quickbooks","success");
 
             }).error(function(data) {
               //console.log(data);
