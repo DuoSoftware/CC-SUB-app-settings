@@ -7708,7 +7708,7 @@
 			})
 
       vm.xeroIntegrateUILoading = false;
-			$charge.xero().checkXeroConnected(getCurrentDomain()).success(function (data) {
+			$charge.xero().checkXeroConnected().success(function (data) {
 				if(data.Results)
 				{
 					$scope.xeroConnected=true;
@@ -7740,7 +7740,7 @@
         vm.xeroConfigStored = false;
       });
 
-      $charge.xero().getXeroAccounts(getCurrentDomain()).success(function (data) {
+      $charge.xero().getXeroAccounts().success(function (data) {
         $scope.xeroConfigAccounts = data;
         vm.xeroConfigInvoiceList = [];
         vm.xeroConfigPaymentList = [];
@@ -7765,7 +7765,7 @@
       });
 
       vm.xeroConfigCurrencyMatched = false;
-      $charge.xero().getXeroCurrencies(getCurrentDomain()).success(function (data) {
+      $charge.xero().getXeroCurrencies().success(function (data) {
         vm.xeroConfigCurrencies = data;
         vm.xeroConfigCurrencyString = "";
 
@@ -8262,6 +8262,7 @@
     vm.submitXeroConfig = function () {
 
       if (vm.xeroConfigForm.$valid == true) {
+		  vm.submittedXeroConfig = true;
         var xeroconfigs = {
           "invoiceAccount": vm.xeroConfig.invoiceAccount.Name,
           "invoiceAccountCode": vm.xeroConfig.invoiceAccount.Code,
@@ -8276,14 +8277,54 @@
             notifications.toast("Successfully Xero configurations saved","success");
             vm.closeDialog();
             $scope.openIntergrationConfigs();
+			vm.submittedXeroConfig = false;
           }
 
         }).error(function (data) {
           //console.log(data);
           notifications.toast("Xero configurations saving failed","error");
+		  vm.submittedXeroConfig = false;
         });
 
       }
+    }
+	
+	$scope.removeXeroConfig= function (ev) {
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure you want to Remove Xero account?')
+        .textContent('You cannot revert this account once you delete it!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(function() {
+        vm.submittedXeroConfig = true;
+        //var salesforceKey = $scope.salesforceConfig;
+        //var zohoKey = {
+        //  "organizationId":$scope.zohoConfig
+        //}
+        $charge.xero().deleteXeroConfig().success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully Xero account removed","success");
+            $scope.openIntergrationConfigs();
+          }
+          vm.submittedXeroConfig = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("Xero account removing failed","error");
+          vm.submittedXeroConfig = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          // logHelper.error( $scope.infoJson);
+        })
+      }, function() {
+
+      }); 
     }
 
 

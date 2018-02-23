@@ -2685,7 +2685,7 @@
                                                       </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="true" ng-click="removeXeroConfig()">
+                                                        <md-button ng-disabled="!xeroConnected || vm.submittedXeroConfig" ng-click="removeXeroConfig($event)">
                                                             <md-icon md-font-icon="icon-logout"></md-icon>
                                                             Leave
                                                         </md-button>
