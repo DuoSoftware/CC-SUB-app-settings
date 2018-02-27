@@ -2,7 +2,7 @@
 // App : Settings                   //
 // Owner : Suvethan                 //
 // Last changed date : 2018/02/27   //
-// Version : 6.1.0.39               //
+// Version : 6.1.0.38               //
 // Updated By : Kasun               //
 //////////////////////////////////////
 
@@ -35,9 +35,9 @@
 								if (true) {
 									// if ($rootScope.isBaseSet2) {
 									resolve(function () {
-										var entitledStatesReturn = mesentitlement.stateDepResolver('rating');
+										var entitledStatesReturn = mesentitlement.stateDepResolver('settings');
 
-										mesentitlementProvider.setStateCheck("rating");
+										mesentitlementProvider.setStateCheck("settings");
 
 										if(entitledStatesReturn !== true){
 											return $q.reject("unauthorized");
