@@ -2,15 +2,13 @@
     <md-toolbar>
         <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
-                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with Quickbooks</h3>
+                <md-icon md-font-icon="icon-cog"></md-icon> <h3>Quickbooks Migration Configuration</h3>
             </div>
             <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
                 <md-icon md-font-icon="icon-close"></md-icon>
             </md-button>
         </div>
     </md-toolbar>
-
-
     <md-content class="p-16" ms-scroll>
         <div layout="row">
             <div layout="column" class="guide-portion" flex>
@@ -25,23 +23,54 @@
                 <i class="op-5">For more information, visit <a href="https://quickbooks.intuit.com/global/" target="_blank">Quickbooks</a></i>
             </div>
             <div class="w-20"></div>
-            <div class="form-portion" layout="column" flex="40">
-                <div md-whiteframe="3dp" flex class="p-10">
-                    <md-card-content class="p-0" ng-if="quickBookConnected">
-                        <div layout="row" layout-align="start center">
-                            <h3 ><b>Connected to Quickbooks</b></h3>
+            <form name="vm.quickbooksConfigForm" id="quickbooksConfigForm" ng-submit="vm.submitquickbooksConfig()" ng-if="!vm.quickBookMigrateConfigAdded" flex>
+                <div class="p-15" md-whiteframe="1dp">
+                    <div>
+                        <div class="group-sub-head" style="margin-top: 0">Migration Configuration</div>
+                        <div layout="row" class="pt-20" flex>
+                            <md-input-container class="md-block m-0" flex>
+                                <label>Sync Profiles</label>
+                                <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationProfiles">
+                                    <md-option ng-value="'Migrate Existing Profiles'">Migrate existing profiles</md-option>
+                                    <md-option ng-value="'Migrate profiles from now onwards'">Migrate profiles from now onwards</md-option>
+                                </md-select>
+                            </md-input-container>
                         </div>
-                        <div layout="row" layout-align="start center">
-                            <md-button type="button" ng-click="vm.removeQuickbooksConfig($event)" ng-disabled="vm.submittedQuickbooks" style="height:30px;" class="md-raised warm">Remove Account</md-button>
+                        <div layout="row" class="pt-20" flex>
+                            <md-input-container class="md-block m-0" flex>
+                                <label>Sync Products</label>
+                                <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationProducts">
+                                    <md-option ng-value="'Migrate Existing Products'">Migrate existing Products</md-option>
+                                    <md-option ng-value="'Migrate Products from now onwards'">Migrate Products from now onwards</md-option>
+                                </md-select>
+                            </md-input-container>
                         </div>
-                    </md-card-content>
-                    <md-card-content class="p-0" ng-if="!quickBookConnected">
-                        <div layout-align="space-between center" layout="row" id="quickbookId">
+                        <div layout="row" class="pt-20" flex>
+                            <md-input-container class="md-block m-0" flex>
+                                <label>Sync Plans</label>
+                                <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationPlans">
+                                    <md-option ng-value="'Migrate Existing Plans'">Migrate existing Plans</md-option>
+                                    <md-option ng-value="'Migrate Plans from now onwards'">Migrate Plans from now onwards</md-option>
+                                </md-select>
+                            </md-input-container>
                         </div>
-                    </md-card-content>
+                        <div layout="row" class="pt-20" flex>
+                            <md-input-container class="md-block m-0" flex>
+                                <label>Sync Invoices</label>
+                                <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationInvoices">
+                                    <md-option ng-value="'Migrate Existing Invoices'">Migrate existing Invoices</md-option>
+                                    <md-option ng-value="'Migrate Invoices from now onwards'">Migrate Invoices from now onwards</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+                <md-dialog-actions layout="row" layout-align="end center">
+                    <md-progress-circular class="gen-save-indicator" ng-if="vm.quickbooksConfigSubmitted"></md-progress-circular>
+                    <md-button ng-disabled="vm.quickbooksConfigSubmitted" type="submit" class="md-raised md-accent" form="quickbooksConfigForm">Save</md-button>
+                </md-dialog-actions>
+            </form>
         </div>
     </md-content>
-
 </md-dialog>

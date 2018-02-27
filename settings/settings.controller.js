@@ -971,7 +971,7 @@
 			isDateFormat=false;
 			$scope.gen2Loading = true;
 		})
-		
+
 		$scope.toggleAdditionalUserDetails = function () {
 			$scope.showAdditionalUserInfo = !$scope.showAdditionalUserInfo;
 		}
@@ -7211,7 +7211,7 @@
 					vm.usingTwilioSMS = true;
 					$scope.twilioConnected = true;
 					vm.editTwilioConfigEnabled = false;
-          vm.twilioSMSConfig = data;
+					vm.twilioSMSConfig = data;
 					$scope.loadSmsEvents();
 					$scope.loadTwilioSMSHistory();
 				}
@@ -7576,8 +7576,8 @@
 
 		$scope.quickBookConnected=false;
 		$scope.quickBookConfig={};
-    $scope.quickBookMigrateConfigAdded=false;
-    vm.quickbooksConfig={};
+		$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =false;
+		vm.quickbooksConfig={};
 		$scope.salesforceConnected=false;
 		$scope.salesforceConfig={};
 		$scope.zendeskConnected=false;
@@ -7586,11 +7586,11 @@
 		$scope.zohoConfig={};
 		$scope.xeroConnected=false;
 		//$scope.xeroConfig={};
-    vm.xeroConfig={};
+		vm.xeroConfig={};
 
 		$scope.openIntergrationConfigs= function () {
 
-      vm.quickbooksConfig={};
+			vm.quickbooksConfig={};
 
 			$charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
 				if(data.connected)
@@ -7599,25 +7599,25 @@
 					$scope.quickBookConfig = data.data;
 					angular.element("#quickbookId").empty();
 
-          $charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationAttributes").success(function(data) {
-            $scope.quickBookMigrateConfigAdded=true;
-            vm.quickbooksConfig.GuRecID = data[0].GuRecID;
-            vm.quickbooksConfig.selectedMigrateProfileValue = data[0].RecordFieldData;
-            vm.quickbooksConfig.selectedMigrateProductValue = data[1].RecordFieldData;
-            vm.quickbooksConfig.selectedMigratePlanValue = data[2].RecordFieldData;
-            vm.quickbooksConfig.selectedMigrateInvoiceValue = data[3].RecordFieldData;
+					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationAttributes").success(function(data) {
+						$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
+						vm.quickbooksConfig.GuRecID = data[0].GuRecID;
+						vm.quickbooksConfig.selectedMigrateProfileValue = data[0].RecordFieldData;
+						vm.quickbooksConfig.selectedMigrateProductValue = data[1].RecordFieldData;
+						vm.quickbooksConfig.selectedMigratePlanValue = data[2].RecordFieldData;
+						vm.quickbooksConfig.selectedMigrateInvoiceValue = data[3].RecordFieldData;
 
-          }).error(function (data) {
-            //console.log(data);
-            $scope.quickBookMigrateConfigAdded=false;
+					}).error(function (data) {
+						//console.log(data);
+						$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =false;
 
-            vm.quickbooksConfig.GuRecID = "";
-            vm.quickbooksConfig.selectedMigrateProfileValue = "";
-            vm.quickbooksConfig.selectedMigrateProductValue = "";
-            vm.quickbooksConfig.selectedMigratePlanValue = "";
-            vm.quickbooksConfig.selectedMigrateInvoiceValue = "";
+						vm.quickbooksConfig.GuRecID = "";
+						vm.quickbooksConfig.selectedMigrateProfileValue = "";
+						vm.quickbooksConfig.selectedMigrateProductValue = "";
+						vm.quickbooksConfig.selectedMigratePlanValue = "";
+						vm.quickbooksConfig.selectedMigrateInvoiceValue = "";
 
-          })
+					})
 
 				}
 				else
@@ -7707,7 +7707,7 @@
 				$scope.zohoConnected=false;
 			})
 
-      vm.xeroIntegrateUILoading = false;
+			vm.xeroIntegrateUILoading = false;
 			$charge.xero().checkXeroConnected().success(function (data) {
 				if(data.Results)
 				{
@@ -7726,250 +7726,251 @@
 				$scope.xeroConnected=false;
 			});
 
-      vm.xeroConfigStored = false;
-      $charge.xero().getConfigurations().success(function (data) {
-        vm.xeroConfigContent = data;
-        if(vm.xeroConfigContent.invoiceAccount != null && vm.xeroConfigContent.invoiceAccountCode != null && vm.xeroConfigContent.paymentAccount != null && vm.xeroConfigContent.paymentAccountCode != null)
-        {
-          vm.xeroConfigStored = true;
-        }
+			vm.xeroConfigStored = false;
+			$charge.xero().getConfigurations().success(function (data) {
+				vm.xeroConfigContent = data;
+				if(vm.xeroConfigContent.invoiceAccount != null && vm.xeroConfigContent.invoiceAccountCode != null && vm.xeroConfigContent.paymentAccount != null && vm.xeroConfigContent.paymentAccountCode != null)
+				{
+					vm.xeroConfigStored = true;
+				}
 
-      }).error(function (data) {
-        //console.log(data);
-        vm.xeroConfigContent = {};
-        vm.xeroConfigStored = false;
-      });
+			}).error(function (data) {
+				//console.log(data);
+				vm.xeroConfigContent = {};
+				vm.xeroConfigStored = false;
+			});
 
-      $charge.xero().getXeroAccounts().success(function (data) {
-        $scope.xeroConfigAccounts = data;
-        vm.xeroConfigInvoiceList = [];
-        vm.xeroConfigPaymentList = [];
+			$charge.xero().getXeroAccounts().success(function (data) {
+				$scope.xeroConfigAccounts = data;
+				vm.xeroConfigInvoiceList = [];
+				vm.xeroConfigPaymentList = [];
 
-        for(var i=0;i<data.length;i++)
-        {
-          if(data[i].EnablePaymentsToAccount)
-          {
-            vm.xeroConfigPaymentList.push(data[i]);
-          }
-          else
-          {
-            vm.xeroConfigInvoiceList.push(data[i]);
-          }
-        }
+				for(var i=0;i<data.length;i++)
+				{
+					if(data[i].EnablePaymentsToAccount)
+					{
+						vm.xeroConfigPaymentList.push(data[i]);
+					}
+					else
+					{
+						vm.xeroConfigInvoiceList.push(data[i]);
+					}
+				}
 
-      }).error(function (data) {
-        //console.log(data);
-        $scope.xeroConfigAccounts = {};
-        vm.xeroConfigInvoiceList = [];
-        vm.xeroConfigPaymentList = [];
-      });
+			}).error(function (data) {
+				//console.log(data);
+				$scope.xeroConfigAccounts = {};
+				vm.xeroConfigInvoiceList = [];
+				vm.xeroConfigPaymentList = [];
+			});
 
-      vm.xeroConfigCurrencyMatched = false;
-      $charge.xero().getXeroCurrencies().success(function (data) {
-        vm.xeroConfigCurrencies = data;
-        vm.xeroConfigCurrencyString = "";
+			vm.xeroConfigCurrencyMatched = false;
+			$charge.xero().getXeroCurrencies().success(function (data) {
+				vm.xeroConfigCurrencies = data;
+				vm.xeroConfigCurrencyString = "";
 
-        for(var i =0;i<vm.xeroConfigCurrencies.length;i++)
-        {
-          if(i!=(vm.xeroConfigCurrencies.length-1))
-          {
-            vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code+", ";
-          }
-          else
-          {
-            vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code;
-          }
+				for(var i =0;i<vm.xeroConfigCurrencies.length;i++)
+				{
+					if(i!=(vm.xeroConfigCurrencies.length-1))
+					{
+						vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code+", ";
+					}
+					else
+					{
+						vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code;
+					}
 
-          if(vm.xeroConfigCurrencies[i].Code==vm.baseCurrency)
-          {
-            vm.xeroConfigCurrencyMatched = true;
-          }
-        }
+					if(vm.xeroConfigCurrencies[i].Code==vm.baseCurrency)
+					{
+						vm.xeroConfigCurrencyMatched = true;
+					}
+				}
 
-      }).error(function (data) {
-        //console.log(data);
-        vm.xeroConfigCurrencies = {};
-        vm.xeroConfigCurrencyString = "";
-        vm.xeroConfigCurrencyMatched = false;
-      });
+			}).error(function (data) {
+				//console.log(data);
+				vm.xeroConfigCurrencies = {};
+				vm.xeroConfigCurrencyString = "";
+				vm.xeroConfigCurrencyMatched = false;
+			});
 		}
 
 		//$(document).on('a','click', function (e) {
 		//  e.preventDefault();
 		//});
-    $scope.integrationConfigFields = [];
-    $scope.integrationConfigValues = [];
+		$scope.integrationConfigFields = [];
+		$scope.integrationConfigValues = [];
 
-    vm.quickbooksConfigSubmitted = false;
-    vm.submitquickbooksConfig = function () {
-      if(vm.quickbooksConfigForm.$valid==true) {
-        vm.quickbooksConfigSubmitted = true;
+		vm.quickbooksConfigSubmitted = false;
+		vm.activeQuickbooksConfig = 0;
+		vm.submitquickbooksConfig = function () {
+			if(vm.quickbooksConfigForm.$valid==true) {
+				vm.quickbooksConfigSubmitted = true;
 
-        var quickbooksProfilesObj = vm.quickbooksConfig.migrationProfiles;
-        var quickbooksProductsObj = vm.quickbooksConfig.migrationProducts;
-        var quickbooksPlansObj = vm.quickbooksConfig.migrationPlans;
-        var quickbooksInvoicesObj = vm.quickbooksConfig.migrationInvoices;
+				var quickbooksProfilesObj = vm.quickbooksConfig.migrationProfiles;
+				var quickbooksProductsObj = vm.quickbooksConfig.migrationProducts;
+				var quickbooksPlansObj = vm.quickbooksConfig.migrationPlans;
+				var quickbooksInvoicesObj = vm.quickbooksConfig.migrationInvoices;
 
-        $scope.integrationConfigFields = [];
-        $scope.integrationConfigValues = [];
+				$scope.integrationConfigFields = [];
+				$scope.integrationConfigValues = [];
 
-        $scope.integrationConfigFields.push({
-          "FieldCultureName": "QuickbooksMigrateProfiles",
-          "FieldID": "",
-          "FieldName": "QuickbooksMigrateProfiles",
-          "FieldType": "QuickbooksMigrateProfileType",
-          "ColumnIndex": "0"
-        });
-        $scope.integrationConfigValues.push({
-          "RowID": "",
-          "RecordFieldData": quickbooksProfilesObj,
-          "ColumnIndex": "0"
-        });
-        $scope.integrationConfigFields.push({
-          "FieldCultureName": "QuickbooksMigrateProducts",
-          "FieldID": "",
-          "FieldName": "QuickbooksMigrateProducts",
-          "FieldType": "QuickbooksMigrateProductType",
-          "ColumnIndex": "1"
-        });
-        $scope.integrationConfigValues.push({
-          "RowID": "",
-          "RecordFieldData": quickbooksProductsObj,
-          "ColumnIndex": "1"
-        });
-        $scope.integrationConfigFields.push({
-          "FieldCultureName": "QuickbooksMigratePlans",
-          "FieldID": "",
-          "FieldName": "QuickbooksMigratePlans",
-          "FieldType": "QuickbooksMigratePlanType",
-          "ColumnIndex": "2"
-        });
-        $scope.integrationConfigValues.push({
-          "RowID": "",
-          "RecordFieldData": quickbooksPlansObj,
-          "ColumnIndex": "2"
-        });
-        $scope.integrationConfigFields.push({
-          "FieldCultureName": "QuickbooksMigrateInvoices",
-          "FieldID": "",
-          "FieldName": "QuickbooksMigrateInvoices",
-          "FieldType": "QuickbooksMigrateInvoiceType",
-          "ColumnIndex": "3"
-        });
-        $scope.integrationConfigValues.push({
-          "RowID": "",
-          "RecordFieldData": quickbooksInvoicesObj,
-          "ColumnIndex": "3"
-        });
+				$scope.integrationConfigFields.push({
+					"FieldCultureName": "QuickbooksMigrateProfiles",
+					"FieldID": "",
+					"FieldName": "QuickbooksMigrateProfiles",
+					"FieldType": "QuickbooksMigrateProfileType",
+					"ColumnIndex": "0"
+				});
+				$scope.integrationConfigValues.push({
+					"RowID": "",
+					"RecordFieldData": quickbooksProfilesObj,
+					"ColumnIndex": "0"
+				});
+				$scope.integrationConfigFields.push({
+					"FieldCultureName": "QuickbooksMigrateProducts",
+					"FieldID": "",
+					"FieldName": "QuickbooksMigrateProducts",
+					"FieldType": "QuickbooksMigrateProductType",
+					"ColumnIndex": "1"
+				});
+				$scope.integrationConfigValues.push({
+					"RowID": "",
+					"RecordFieldData": quickbooksProductsObj,
+					"ColumnIndex": "1"
+				});
+				$scope.integrationConfigFields.push({
+					"FieldCultureName": "QuickbooksMigratePlans",
+					"FieldID": "",
+					"FieldName": "QuickbooksMigratePlans",
+					"FieldType": "QuickbooksMigratePlanType",
+					"ColumnIndex": "2"
+				});
+				$scope.integrationConfigValues.push({
+					"RowID": "",
+					"RecordFieldData": quickbooksPlansObj,
+					"ColumnIndex": "2"
+				});
+				$scope.integrationConfigFields.push({
+					"FieldCultureName": "QuickbooksMigrateInvoices",
+					"FieldID": "",
+					"FieldName": "QuickbooksMigrateInvoices",
+					"FieldType": "QuickbooksMigrateInvoiceType",
+					"ColumnIndex": "3"
+				});
+				$scope.integrationConfigValues.push({
+					"RowID": "",
+					"RecordFieldData": quickbooksInvoicesObj,
+					"ColumnIndex": "3"
+				});
 
-        var req = {
-          "GURecID": "",
-          "RecordType": "CTS_IntergrationAttributes",
-          "OperationalStatus": "Active",
-          "RecordStatus": "Active",
-          "Cache": "CTS_IntergrationAttributes",
-          "Separate": "Test",
-          "RecordName": "CTS_IntergrationAttributes",
-          "GuTranID": "12345",
-          "RecordCultureName": "CTS_IntergrationAttributes",
-          "RecordCode": "CTS_IntergrationAttributes",
-          "commonDatafieldDetails": $scope.integrationConfigFields,
-          "commonDataValueDetails": $scope.integrationConfigValues
-        }
+				var req = {
+					"GURecID": "",
+					"RecordType": "CTS_IntergrationAttributes",
+					"OperationalStatus": "Active",
+					"RecordStatus": "Active",
+					"Cache": "CTS_IntergrationAttributes",
+					"Separate": "Test",
+					"RecordName": "CTS_IntergrationAttributes",
+					"GuTranID": "12345",
+					"RecordCultureName": "CTS_IntergrationAttributes",
+					"RecordCode": "CTS_IntergrationAttributes",
+					"commonDatafieldDetails": $scope.integrationConfigFields,
+					"commonDataValueDetails": $scope.integrationConfigValues
+				}
 
-        $charge.settingsapp().store(req).success(function (data) {
-          //
-          notifications.toast("Quickbooks configurations updated","success");
-          vm.quickbooksConfigSubmitted = false;
+				$charge.settingsapp().store(req).success(function (data) {
+					//
+					notifications.toast("Quickbooks configurations updated","success");
+					vm.quickbooksConfigSubmitted = false;
 
-          $scope.quickBookMigrateConfigAdded=true;
+					$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
 
-          var queue = "quickbook";
+					var queue = "quickbook";
 
-          if(quickbooksProfilesObj=="Migrate Existing Profiles")
-          {
-            $charge.profile().integrationProfileSync(queue).success(function (data) {
-              //
-              var responseSyncProfiles = data;
-              notifications.toast(responseSyncProfiles.syncedProfiles+"/"+responseSyncProfiles.profiles+" Profiles migrated to Quickbooks","success");
+					if(quickbooksProfilesObj=="Migrate Existing Profiles")
+					{
+						$charge.profile().integrationProfileSync(queue).success(function (data) {
+							//
+							var responseSyncProfiles = data;
+							notifications.toast(responseSyncProfiles.syncedProfiles+"/"+responseSyncProfiles.profiles+" Profiles migrated to Quickbooks","success");
 
-            }).error(function(data) {
-              //console.log(data);
-              notifications.toast("Profiles migration to Quickbooks failed","error");
+						}).error(function(data) {
+							//console.log(data);
+							notifications.toast("Profiles migration to Quickbooks failed","error");
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              // logHelper.error( $scope.infoJson);
-            })
-          }
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							// logHelper.error( $scope.infoJson);
+						})
+					}
 
-          if(quickbooksProductsObj=="Migrate Existing Products")
-          {
-            $charge.product().integrationProductSync(queue).success(function (data) {
-              //
-              var responseSyncProducts = data;
-              notifications.toast(responseSyncProducts.syncedProducts+"/"+responseSyncProducts.products+" Products migrated to Quickbooks","success");
+					if(quickbooksProductsObj=="Migrate Existing Products")
+					{
+						$charge.product().integrationProductSync(queue).success(function (data) {
+							//
+							var responseSyncProducts = data;
+							notifications.toast(responseSyncProducts.syncedProducts+"/"+responseSyncProducts.products+" Products migrated to Quickbooks","success");
 
-            }).error(function(data) {
-              //console.log(data);
-              notifications.toast("Products migration to Quickbooks failed","error");
+						}).error(function(data) {
+							//console.log(data);
+							notifications.toast("Products migration to Quickbooks failed","error");
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              // logHelper.error( $scope.infoJson);
-            })
-          }
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							// logHelper.error( $scope.infoJson);
+						})
+					}
 
-          if(quickbooksPlansObj=="Migrate Existing Plans")
-          {
-            $charge.plan().integrationPlanSync(queue).success(function (data) {
-              //
-              var responseSyncPlans = data;
-              notifications.toast(responseSyncPlans.length+" Plans migrated to Quickbooks","success");
+					if(quickbooksPlansObj=="Migrate Existing Plans")
+					{
+						$charge.plan().integrationPlanSync(queue).success(function (data) {
+							//
+							var responseSyncPlans = data;
+							notifications.toast(responseSyncPlans.length+" Plans migrated to Quickbooks","success");
 
-            }).error(function(data) {
-              //console.log(data);
-              notifications.toast("Plans migration to Quickbooks failed","error");
+						}).error(function(data) {
+							//console.log(data);
+							notifications.toast("Plans migration to Quickbooks failed","error");
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              // logHelper.error( $scope.infoJson);
-            })
-          }
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							// logHelper.error( $scope.infoJson);
+						})
+					}
 
-          if(quickbooksInvoicesObj=="Migrate Existing Invoices")
-          {
-            $charge.invoicing().integrationInvoiceSync(queue).success(function (data) {
-              //
-              var responseSyncInvoices = data;
-              notifications.toast(responseSyncInvoices.data.syncedData+"/"+responseSyncInvoices.data.invoices+" Invoices migrated to Quickbooks","success");
+					if(quickbooksInvoicesObj=="Migrate Existing Invoices")
+					{
+						$charge.invoicing().integrationInvoiceSync(queue).success(function (data) {
+							//
+							var responseSyncInvoices = data;
+							notifications.toast(responseSyncInvoices.data.syncedData+"/"+responseSyncInvoices.data.invoices+" Invoices migrated to Quickbooks","success");
 
-            }).error(function(data) {
-              //console.log(data);
-              notifications.toast("Invoices migration to Quickbooks failed","error");
+						}).error(function(data) {
+							//console.log(data);
+							notifications.toast("Invoices migration to Quickbooks failed","error");
 
-              $scope.infoJson= {};
-              $scope.infoJson.message =JSON.stringify(data);
-              $scope.infoJson.app ='settings';
-              // logHelper.error( $scope.infoJson);
-            })
-          }
+							$scope.infoJson= {};
+							$scope.infoJson.message =JSON.stringify(data);
+							$scope.infoJson.app ='settings';
+							// logHelper.error( $scope.infoJson);
+						})
+					}
 
-        }).error(function(data) {
-          //console.log(data);
-          notifications.toast("Quickbooks configurations failed","error");
-          vm.quickbooksConfigSubmitted = false;
+				}).error(function(data) {
+					//console.log(data);
+					notifications.toast("Quickbooks configurations failed","error");
+					vm.quickbooksConfigSubmitted = false;
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          // logHelper.error( $scope.infoJson);
-        })
-      }
-    }
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				})
+			}
+		}
 
 		$scope.removeQuickbooksConfig = vm.removeQuickbooksConfig= function (ev) {
 			var confirm = $mdDialog.confirm()
@@ -7991,21 +7992,21 @@
 					{
 						notifications.toast("Successfully Quickbooks account removed","success");
 
-            if(vm.quickbooksConfig.GuRecID!="" && vm.quickbooksConfig.GuRecID!=undefined)
-            {
-              $charge.settingsapp().deleteCommmon(vm.quickbooksConfig.GuRecID).success(function (data) {
+						if(vm.quickbooksConfig.GuRecID!="" && vm.quickbooksConfig.GuRecID!=undefined)
+						{
+							$charge.settingsapp().deleteCommmon(vm.quickbooksConfig.GuRecID).success(function (data) {
 
-                var quickbooksConfigCleared = data;
+								var quickbooksConfigCleared = data;
 
-              }).error(function(data) {
-                //console.log(data);
+							}).error(function(data) {
+								//console.log(data);
 
-                $scope.infoJson= {};
-                $scope.infoJson.message =JSON.stringify(data);
-                $scope.infoJson.app ='settings';
-                // logHelper.error( $scope.infoJson);
-              })
-            }
+								$scope.infoJson= {};
+								$scope.infoJson.message =JSON.stringify(data);
+								$scope.infoJson.app ='settings';
+								// logHelper.error( $scope.infoJson);
+							})
+						}
 
 						$scope.openIntergrationConfigs();
 					}
@@ -8217,141 +8218,141 @@
 			});
 		}
 
-    $scope.baseUrl="";
-    $http.get('app/core/cloudcharge/js/config.json').then(function(data){
+		$scope.baseUrl="";
+		$http.get('app/core/cloudcharge/js/config.json').then(function(data){
 
-      //console.log(data);
-      $scope.baseUrl=data.data["xero"]["domain"];
-      //$scope.baseUrl=$scope.baseUrl.split('/')[2];
-    }, function(errorResponse){
-      //console.log(errorResponse);
-      $scope.baseUrl="";
-    });
+			//console.log(data);
+			$scope.baseUrl=data.data["xero"]["domain"];
+			//$scope.baseUrl=$scope.baseUrl.split('/')[2];
+		}, function(errorResponse){
+			//console.log(errorResponse);
+			$scope.baseUrl="";
+		});
 
-    function getExtensionMode() {
-      var _st = gst("extension_mode");
-      _st=(_st=="live")?"live":"test";
-      return (_st != null) ? _st : "test";
-    }
+		function getExtensionMode() {
+			var _st = gst("extension_mode");
+			_st=(_st=="live")?"live":"test";
+			return (_st != null) ? _st : "test";
+		}
 
-    vm.xeroIntegrateUILoading = false;
-    vm.xeroIntegrationUrl = "";
-    $scope.registerXeroIntegration = function () {
+		vm.xeroIntegrateUILoading = false;
+		vm.xeroIntegrationUrl = "";
+		$scope.registerXeroIntegration = function () {
 
-      //var url = "http://app.cloudcharge.com:3100/xero/connect?domain="+getCurrentDomain();
-      var url = $scope.baseUrl+"/apis.php/xeroConnect/connect?domain="+getCurrentDomain()+"&mode="+getExtensionMode();
-       $window.open(
-       	url, '_self'
-       );
+			//var url = "http://app.cloudcharge.com:3100/xero/connect?domain="+getCurrentDomain();
+			var url = $scope.baseUrl+"/apis.php/xeroConnect/connect?domain="+getCurrentDomain()+"&mode="+getExtensionMode();
+			$window.open(
+				url, '_self'
+			);
 
-      //vm.xeroIntegrateUILoading = true;
-      //vm.xeroIntegrationUrl = $sce.trustAsResourceUrl(url);
+			//vm.xeroIntegrateUILoading = true;
+			//vm.xeroIntegrationUrl = $sce.trustAsResourceUrl(url);
 
-      //var iframe = document.getElementById('xeroIntegrationUI');
-      //iframe.setAttribute("src",url);
+			//var iframe = document.getElementById('xeroIntegrationUI');
+			//iframe.setAttribute("src",url);
 
-      //$charge.xero().registerXero(getCurrentDomain()).success(function (data) {
-      //  var registerUI = data;
-      //
-      //}).error(function (data) {
-      //  //console.log(data);
-      //  var errorData = data;
-      //});
-    }
+			//$charge.xero().registerXero(getCurrentDomain()).success(function (data) {
+			//  var registerUI = data;
+			//
+			//}).error(function (data) {
+			//  //console.log(data);
+			//  var errorData = data;
+			//});
+		}
 
-    vm.submitXeroConfig = function () {
+		vm.submitXeroConfig = function () {
 
-      if (vm.xeroConfigForm.$valid == true) {
-		  vm.submittedXeroConfig = true;
-        var xeroconfigs = {
-          "invoiceAccount": vm.xeroConfig.invoiceAccount.Name,
-          "invoiceAccountCode": vm.xeroConfig.invoiceAccount.Code,
-          "paymentAccount": vm.xeroConfig.paymentAccount.Name,
-          "paymentAccountCode": vm.xeroConfig.paymentAccount.Code,
-          "defaultTaxType": vm.xeroConfig.defaultTaxType
-        };
+			if (vm.xeroConfigForm.$valid == true) {
+				vm.submittedXeroConfig = true;
+				var xeroconfigs = {
+					"invoiceAccount": vm.xeroConfig.invoiceAccount.Name,
+					"invoiceAccountCode": vm.xeroConfig.invoiceAccount.Code,
+					"paymentAccount": vm.xeroConfig.paymentAccount.Name,
+					"paymentAccountCode": vm.xeroConfig.paymentAccount.Code,
+					"defaultTaxType": vm.xeroConfig.defaultTaxType
+				};
 
-        $charge.xero().saveConfigurations(xeroconfigs).success(function (data) {
-          if(data.status)
-          {
-            notifications.toast("Successfully Xero configurations saved","success");
-            vm.closeDialog();
-            $scope.openIntergrationConfigs();
-			vm.submittedXeroConfig = false;
-          }
+				$charge.xero().saveConfigurations(xeroconfigs).success(function (data) {
+					if(data.status)
+					{
+						notifications.toast("Successfully Xero configurations saved","success");
+						vm.closeDialog();
+						$scope.openIntergrationConfigs();
+						vm.submittedXeroConfig = false;
+					}
 
-        }).error(function (data) {
-          //console.log(data);
-          notifications.toast("Xero configurations saving failed","error");
-		  vm.submittedXeroConfig = false;
-        });
+				}).error(function (data) {
+					//console.log(data);
+					notifications.toast("Xero configurations saving failed","error");
+					vm.submittedXeroConfig = false;
+				});
 
-      }
-    }
-	
-	$scope.removeXeroConfig= function (ev) {
-      var confirm = $mdDialog.confirm()
-        .title('Are you sure you want to Remove Xero account?')
-        .textContent('You cannot revert this account once you delete it!')
-        .ariaLabel('Lucky day')
-        .targetEvent(ev)
-        .ok('Yes')
-        .cancel('No');
+			}
+		}
 
-      $mdDialog.show(confirm).then(function() {
-        vm.submittedXeroConfig = true;
-        //var salesforceKey = $scope.salesforceConfig;
-        //var zohoKey = {
-        //  "organizationId":$scope.zohoConfig
-        //}
-        $charge.xero().deleteXeroConfig().success(function(data) {
-          //
-          if(data.status)
-          {
-            notifications.toast("Successfully Xero account removed","success");
-            $scope.openIntergrationConfigs();
-          }
-          vm.submittedXeroConfig = false;
-        }).error(function(data) {
-          //console.log(data);
-          notifications.toast("Xero account removing failed","error");
-          vm.submittedXeroConfig = false;
+		$scope.removeXeroConfig= function (ev) {
+			var confirm = $mdDialog.confirm()
+				.title('Are you sure you want to Remove Xero account?')
+				.textContent('You cannot revert this account once you delete it!')
+				.ariaLabel('Lucky day')
+				.targetEvent(ev)
+				.ok('Yes')
+				.cancel('No');
 
-          $scope.infoJson= {};
-          $scope.infoJson.message =JSON.stringify(data);
-          $scope.infoJson.app ='settings';
-          // logHelper.error( $scope.infoJson);
-        })
-      }, function() {
+			$mdDialog.show(confirm).then(function() {
+				vm.submittedXeroConfig = true;
+				//var salesforceKey = $scope.salesforceConfig;
+				//var zohoKey = {
+				//  "organizationId":$scope.zohoConfig
+				//}
+				$charge.xero().deleteXeroConfig().success(function(data) {
+					//
+					if(data.status)
+					{
+						notifications.toast("Successfully Xero account removed","success");
+						$scope.openIntergrationConfigs();
+					}
+					vm.submittedXeroConfig = false;
+				}).error(function(data) {
+					//console.log(data);
+					notifications.toast("Xero account removing failed","error");
+					vm.submittedXeroConfig = false;
 
-      }); 
-    }
+					$scope.infoJson= {};
+					$scope.infoJson.message =JSON.stringify(data);
+					$scope.infoJson.app ='settings';
+					// logHelper.error( $scope.infoJson);
+				})
+			}, function() {
+
+			});
+		}
 
 
 		// Xero configuration
 		vm.xero = {
 			accounts : [{
-					name: 'Sales',
-					code: 400
-				},{
-					name: 'Postage & Delivery',
-					code: 624
-				},{
-					name: '"On-Sale" Discounts',
-					code: 410
-				},{
-					name: 'Coupon Discounts',
-					code: 411
-				},{
-					name: 'Other Revenue',
-					code: 460
-				},{
-					name: 'Cost of Goods Sold',
-					code: 500
-				},{
-					name: 'Credit Card Receivable',
-					code: 121
-				}]
+				name: 'Sales',
+				code: 400
+			},{
+				name: 'Postage & Delivery',
+				code: 624
+			},{
+				name: '"On-Sale" Discounts',
+				code: 410
+			},{
+				name: 'Coupon Discounts',
+				code: 411
+			},{
+				name: 'Other Revenue',
+				code: 460
+			},{
+				name: 'Cost of Goods Sold',
+				code: 500
+			},{
+				name: 'Credit Card Receivable',
+				code: 121
+			}]
 		}
 		vm.toggleXeroConfigViews = function (view) {
 			vm.activeXeroConfig = view;

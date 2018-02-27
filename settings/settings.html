@@ -152,7 +152,7 @@
                                         <div class="group-sub-head pos-rel">
                                             <b>Header</b>
                                             <md-icon md-font-icon="icon-information" class="fs-14 format-header-ico">
-												<div ng-include="'app/main/settings/templates/format-header.html'"></div>
+                                                <div ng-include="'app/main/settings/templates/format-header.html'"></div>
                                             </md-icon>
                                         </div>
                                         <div class="issuer gen-template" layout="row" layout-align="center center">
@@ -240,7 +240,7 @@
                                             <!--</td>-->
                                             <!--</tr>-->
                                             <!--</table>-->
-											<div layout="row" layout-align="center start" flex class="ph-100">
+                                            <div layout="row" layout-align="center start" flex class="ph-100">
                                                 <div class="w-280 p-40 h-375 pos-rel" ng-class="{'md-whiteframe-2dp':editImageOn, 'dragOn':divClass,'light-gray':editImageOn}" layout="column" drag-and-drop>
                                                     <div class="text-right close-logo" ng-if="editImageOn">
                                                         <md-button class="md-icon-button" ng-click="editCompanyCancel()"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
@@ -328,11 +328,11 @@
                                                             </div>
                                                         </md-input-container>
                                                     </div>
-													<div layout="row" layout-align="end center" class="pos-rel more-collapse" 
-														ng-style="showAdditionalUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
-														<md-button class="md-icon-button m-0" ng-click="toggleAdditionalUserDetails()"><md-icon md-font-icon="icon-chevron-down" ng-if="!showAdditionalUserInfo"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="showAdditionalUserInfo"></md-icon> </md-button><label ng-if="showAdditionalUserInfo">Less</label><label ng-if="!showAdditionalUserInfo">Additional details</label>
-													</div>
-													<div ng-show="showAdditionalUserInfo">
+                                                    <div layout="row" layout-align="end center" class="pos-rel more-collapse"
+                                                         ng-style="showAdditionalUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                                        <md-button class="md-icon-button m-0" ng-click="toggleAdditionalUserDetails()"><md-icon md-font-icon="icon-chevron-down" ng-if="!showAdditionalUserInfo"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="showAdditionalUserInfo"></md-icon> </md-button><label ng-if="showAdditionalUserInfo">Less</label><label ng-if="!showAdditionalUserInfo">Additional details</label>
+                                                    </div>
+                                                    <div ng-show="showAdditionalUserInfo">
                                                         <div class="title">
                                                             <md-input-container class="md-block mb-0" flex>
                                                                 <label>Line 1 </label>
@@ -396,7 +396,7 @@
                                                                 </div>
                                                             </md-input-container>
                                                         </div>
-													</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -2305,6 +2305,13 @@
                                             <div class="integration_twilio" ng-class="{'online_disabled': !twilioConnected}"></div>
                                         </md-input-container>
 
+                                        <div flex>
+                                            <ul class="small-list iconed">
+                                                <li ng-class="{'dead':!twilioConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':twilioConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.usingTwilioSMS}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.usingTwilioSMS}"></md-icon> Twilio SMS configuration</li>
+                                            </ul>
+                                        </div>
+
                                         <md-input-container class="m-0">
                                             <md-menu>
                                                 <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
@@ -2440,6 +2447,13 @@
                                             <!--<div>{{gateway.paymentGateway}}</div>-->
                                         </md-input-container>
 
+                                        <div flex>
+                                            <ul class="small-list iconed">
+                                                <li ng-class="{'dead':!vm.quickBookMigrateConfigAdded}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':quickBookConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.quickBookMigrateConfigAdded}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.quickBookMigrateConfigAdded}"></md-icon> Migration Configuration</li>
+                                            </ul>
+                                        </div>
+
                                         <md-input-container class="m-0">
                                             <md-menu>
                                                 <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
@@ -2456,6 +2470,12 @@
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
+                                                        <md-button ng-disabled="vm.quickBookMigrateConfigAdded" ng-click="registerIntegrationDialog('quickbooks', $event)">
+                                                            <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                            Migration Configuration
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
                                                         <md-button type="button" ng-click="removeQuickbooksConfig($event)" ng-disabled="vm.submittedQuickbooks || !quickBookConnected">
                                                             <md-icon md-font-icon="icon-logout"></md-icon>
                                                             Leave
@@ -2466,85 +2486,98 @@
                                         </md-input-container>
                                     </div>
 
-								  <div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.quickbooks.moreConfig">
-									<form name="vm.quickbooksConfigForm" id="quickbooksConfigForm" ng-submit="vm.submitquickbooksConfig()" ng-if="!quickBookMigrateConfigAdded" flex>
-									  <div class="p-15" md-whiteframe="1dp">
-										<div>
-										<div class="group-sub-head" style="margin-top: 0">Migration Configuration</div>
-										  <div layout="row" class="pt-20" flex>
-											<md-input-container class="md-block m-0" flex="50">
-											  <label>Sync Profiles</label>
-											  <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationProfiles">
-											  <md-option ng-value="'Migrate Existing Profiles'">Migrate existing profiles</md-option>
-											  <md-option ng-value="'Migrate profiles from now onwards'">Migrate profiles from now onwards</md-option>
-											  </md-select>
-											</md-input-container>
-										  </div>
-										  <div layout="row" class="pt-20" flex>
-											<md-input-container class="md-block m-0" flex="50">
-											  <label>Sync Products</label>
-											  <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationProducts">
-												<md-option ng-value="'Migrate Existing Products'">Migrate existing Products</md-option>
-												<md-option ng-value="'Migrate Products from now onwards'">Migrate Products from now onwards</md-option>
-											  </md-select>
-											</md-input-container>
-										  </div>
-										  <div layout="row" class="pt-20" flex>
-											<md-input-container class="md-block m-0" flex="50">
-											  <label>Sync Plans</label>
-											  <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationPlans">
-												<md-option ng-value="'Migrate Existing Plans'">Migrate existing Plans</md-option>
-												<md-option ng-value="'Migrate Plans from now onwards'">Migrate Plans from now onwards</md-option>
-											  </md-select>
-											</md-input-container>
-										  </div>
-										  <div layout="row" class="pt-20" flex>
-											<md-input-container class="md-block m-0" flex="50">
-											  <label>Sync Invoices</label>
-											  <md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationInvoices">
-												<md-option ng-value="'Migrate Existing Invoices'">Migrate existing Invoices</md-option>
-												<md-option ng-value="'Migrate Invoices from now onwards'">Migrate Invoices from now onwards</md-option>
-											  </md-select>
-											</md-input-container>
-										  </div>
-										</div>
-									  </div>
+                                    <div class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.quickbooks.moreConfig">
+                                        <!--<form name="vm.quickbooksConfigForm" id="quickbooksConfigForm" ng-submit="vm.submitquickbooksConfig()" ng-if="!quickBookMigrateConfigAdded" flex>-->
+                                        <!--<div class="p-15" md-whiteframe="1dp">-->
+                                        <!--<div>-->
+                                        <!--<div class="group-sub-head" style="margin-top: 0">Migration Configuration</div>-->
+                                        <!--<div layout="row" class="pt-20" flex>-->
+                                        <!--<md-input-container class="md-block m-0" flex="50">-->
+                                        <!--<label>Sync Profiles</label>-->
+                                        <!--<md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationProfiles">-->
+                                        <!--<md-option ng-value="'Migrate Existing Profiles'">Migrate existing profiles</md-option>-->
+                                        <!--<md-option ng-value="'Migrate profiles from now onwards'">Migrate profiles from now onwards</md-option>-->
+                                        <!--</md-select>-->
+                                        <!--</md-input-container>-->
+                                        <!--</div>-->
+                                        <!--<div layout="row" class="pt-20" flex>-->
+                                        <!--<md-input-container class="md-block m-0" flex="50">-->
+                                        <!--<label>Sync Products</label>-->
+                                        <!--<md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationProducts">-->
+                                        <!--<md-option ng-value="'Migrate Existing Products'">Migrate existing Products</md-option>-->
+                                        <!--<md-option ng-value="'Migrate Products from now onwards'">Migrate Products from now onwards</md-option>-->
+                                        <!--</md-select>-->
+                                        <!--</md-input-container>-->
+                                        <!--</div>-->
+                                        <!--<div layout="row" class="pt-20" flex>-->
+                                        <!--<md-input-container class="md-block m-0" flex="50">-->
+                                        <!--<label>Sync Plans</label>-->
+                                        <!--<md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationPlans">-->
+                                        <!--<md-option ng-value="'Migrate Existing Plans'">Migrate existing Plans</md-option>-->
+                                        <!--<md-option ng-value="'Migrate Plans from now onwards'">Migrate Plans from now onwards</md-option>-->
+                                        <!--</md-select>-->
+                                        <!--</md-input-container>-->
+                                        <!--</div>-->
+                                        <!--<div layout="row" class="pt-20" flex>-->
+                                        <!--<md-input-container class="md-block m-0" flex="50">-->
+                                        <!--<label>Sync Invoices</label>-->
+                                        <!--<md-select flex ng-required="true" ng-model="vm.quickbooksConfig.migrationInvoices">-->
+                                        <!--<md-option ng-value="'Migrate Existing Invoices'">Migrate existing Invoices</md-option>-->
+                                        <!--<md-option ng-value="'Migrate Invoices from now onwards'">Migrate Invoices from now onwards</md-option>-->
+                                        <!--</md-select>-->
+                                        <!--</md-input-container>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
 
-									  <md-dialog-actions layout="row" layout-align="end center">
-									  <div layout="row" class="layout-row">
-									  <md-progress-circular class="gen-save-indicator" ng-if="vm.quickbooksConfigSubmitted"></md-progress-circular>
-									  <md-button ng-disabled="vm.quickbooksConfigSubmitted" type="submit" class="md-raised md-accent" form="quickbooksConfigForm">Save</md-button>
-									  </div>
-									  </md-dialog-actions>
-									</form>
+                                        <!--<md-dialog-actions layout="row" layout-align="end center">-->
+                                        <!--<div layout="row" class="layout-row">-->
+                                        <!--<md-progress-circular class="gen-save-indicator" ng-if="vm.quickbooksConfigSubmitted"></md-progress-circular>-->
+                                        <!--<md-button ng-disabled="vm.quickbooksConfigSubmitted" type="submit" class="md-raised md-accent" form="quickbooksConfigForm">Save</md-button>-->
+                                        <!--</div>-->
+                                        <!--</md-dialog-actions>-->
+                                        <!--</form>-->
 
-									<div class="p-30" md-whiteframe="1dp" ng-if="quickBookMigrateConfigAdded">
-									  <div layout="row">
-										<h4><b>Quickbooks Profiles Migration Config: </b></h4>
-										<label>{{vm.quickbooksConfig.selectedMigrateProfileValue}}</label>
-									  </div>
-									  <div layout="row">
-										<h4><b>Quickbooks Products Migration Config: </b></h4>
-										<label>{{vm.quickbooksConfig.selectedMigrateProductValue}}</label>
-									  </div>
-									  <div layout="row">
-										<h4><b>Quickbooks Plans Migration Config: </b></h4>
-										<label>{{vm.quickbooksConfig.selectedMigratePlanValue}}</label>
-									  </div>
-									  <div layout="row">
-										<h4><b>Quickbooks Invoices Migration Config: </b></h4>
-										<label>{{vm.quickbooksConfig.selectedMigrateInvoiceValue}}</label>
-									  </div>
-									</div>
-								  </div>
+                                        <div class="p-16" ng-if="quickBookMigrateConfigAdded" flex>
+                                            <div layout="row" class="info-grid-row bordered-dark">
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-account"></md-icon>
+                                                    <span>Profiles Migration Configuration:</span>
+                                                </span>
+                                                <span flex>{{vm.quickbooksConfig.selectedMigrateProfileValue}}</span>
+                                            </div>
+                                            <div layout="row" class="info-grid-row bordered-dark">
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-package"></md-icon>
+                                                    <span>Products Migration Configuration:</span>
+                                                </span>
+                                                <span flex>{{vm.quickbooksConfig.selectedMigrateProductValue}}</span>
+                                            </div>
+                                            <div layout="row" class="info-grid-row bordered-dark">
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-map"></md-icon>
+                                                    <span>Plans Migration Configuration:</span>
+                                                </span>
+                                                <span flex>{{vm.quickbooksConfig.selectedMigratePlanValue}}</span>
+                                            </div>
+                                            <div layout="row" class="info-grid-row">
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-document"></md-icon>
+                                                    <span>Invoices Migration Configuration:</span>
+                                                </span>
+                                                <span flex>{{vm.quickbooksConfig.selectedMigrateInvoiceValue}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <!--INTEGRATION - Additional Config-->
                                     <!--INTEGRATION - Additional Config-->
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
-                                <div layout="row" layout-align="start center" ng-hide="!quickBookConnected" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
-                                <md-button class="md-icon-button m-0" ng-click="configExpandHandler('quickbooks')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.quickbooks.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.quickbooks.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.quickbooks.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.quickbooks.moreConfig">More configuration</label>
+                                <div layout="row" layout-align="start center" ng-if="quickBookMigrateConfigAdded" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                    <md-button class="md-icon-button m-0" ng-click="configExpandHandler('quickbooks')">
+                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.quickbooks.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.quickbooks.moreConfig ? 'Less' : 'More'}}</label>
                                 </div>
                             </div>
                             <div class="payment-card">
@@ -2666,6 +2699,13 @@
                                             <div class="integration_xero" ng-class="{'online_disabled': !xeroConnected}"></div>
                                         </md-input-container>
 
+                                        <div flex>
+                                            <ul class="small-list iconed">
+                                                <li ng-class="{'dead':!xeroConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':xeroConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.xeroConfigStored}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.xeroConfigStored}"></md-icon> Advanced configuration</li>
+                                            </ul>
+                                        </div>
+
                                         <md-input-container class="m-0">
                                             <md-menu>
                                                 <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
@@ -2679,10 +2719,10 @@
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                      <md-button  ng-disabled="!xeroConnected || vm.xeroConfigStored" ng-click="registerIntegrationDialog('xero', $event)">
-                                                        <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
-                                                        Advanced Configurations
-                                                      </md-button>
+                                                        <md-button  ng-disabled="!xeroConnected || vm.xeroConfigStored" ng-click="registerIntegrationDialog('xero', $event)">
+                                                            <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                            Advanced Configurations
+                                                        </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
                                                         <md-button ng-disabled="!xeroConnected || vm.submittedXeroConfig" ng-click="removeXeroConfig($event)">
@@ -2694,100 +2734,100 @@
                                             </md-menu>
                                         </md-input-container>
                                     </div>
-									
-									<div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="vm.xeroConfigStored">
-                                      <div class="p-60" md-whiteframe="1dp">
-                                        <div class="group-sub-head" style="margin-top: 0">Xero Configuration</div>
-                                        <div layout="row">
-                                          <h4><b>Invoice Account: </b></h4>
-                                          <label>{{vm.xeroConfigContent.invoiceAccountCode}} - {{vm.xeroConfigContent.invoiceAccount}}</label>
+
+                                    <div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="vm.xeroConfigStored">
+                                        <div class="p-60" md-whiteframe="1dp">
+                                            <div class="group-sub-head" style="margin-top: 0">Xero Configuration</div>
+                                            <div layout="row">
+                                                <h4><b>Invoice Account: </b></h4>
+                                                <label>{{vm.xeroConfigContent.invoiceAccountCode}} - {{vm.xeroConfigContent.invoiceAccount}}</label>
+                                            </div>
+                                            <div layout="row">
+                                                <h4><b>Payment Account: </b></h4>
+                                                <label>{{vm.xeroConfigContent.paymentAccountCode}} - {{vm.xeroConfigContent.paymentAccount}}</label>
+                                            </div>
+                                            <div layout="row">
+                                                <h4><b>Default Tax type: </b></h4>
+                                                <label>{{vm.xeroConfigContent.defaultTaxType}}</label>
+                                            </div>
                                         </div>
-                                        <div layout="row">
-                                          <h4><b>Payment Account: </b></h4>
-                                          <label>{{vm.xeroConfigContent.paymentAccountCode}} - {{vm.xeroConfigContent.paymentAccount}}</label>
-                                        </div>
-                                        <div layout="row">
-                                          <h4><b>Default Tax type: </b></h4>
-                                          <label>{{vm.xeroConfigContent.defaultTaxType}}</label>
-                                        </div>
-                                      </div>
                                     </div>
 
                                     <div layout="row" layout-align="start center" ng-if="vm.xeroIntegrateUILoading" flex>
-                                      <iframe ng-src="{{vm.xeroIntegrationUrl}}" fill-width height="550px" id="xeroIntegrationUI">
-                                      </iframe>
+                                        <iframe ng-src="{{vm.xeroIntegrationUrl}}" fill-width height="550px" id="xeroIntegrationUI">
+                                        </iframe>
                                     </div>
                                     <!--<div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.xero.moreConfig">-->
-                                        <!--<form name="vm.xeroConfigForm" id="xeroConfigForm" ng-submit="vm.submitXeroConfig()" flex>-->
-                                            <!--<div class="p-15" md-whiteframe="1dp">-->
-                                                <!--<div>-->
-                                                    <!--<div class="group-sub-head" style="margin-top: 0">Basic Configuration</div>-->
-                                                    <!--<div layout="row" class="pt-20" flex>-->
-                                                        <!--<md-input-container class="md-block m-0" flex="50">-->
-                                                            <!--<label>Invoice Account</label>-->
-                                                            <!--<md-select flex ng-required="true" ng-model="vm.xeroConfig.invoiceAccount">-->
-                                                                <!--<md-option ng-value="'Sales'">Sales</md-option>-->
-                                                                <!--<md-option ng-value="'Other Revenue'">Other Revenue</md-option>-->
-                                                                <!--<md-option ng-value="'Interest Income'">Interest Income</md-option>-->
-                                                            <!--</md-select>-->
-                                                        <!--</md-input-container>-->
-                                                    <!--</div>-->
-                                                    <!--<div layout="row" class="pt-20" flex>-->
-                                                        <!--<md-input-container class="md-block m-0" flex="50">-->
-                                                            <!--<label>Payment Account</label>-->
-                                                            <!--<md-select flex ng-required="true" ng-model="vm.xeroConfig.paymentAccount">-->
-                                                                <!--<md-option ng-value="'Owner A Drawings'">Owner A Drawings</md-option>-->
-                                                                <!--<md-option ng-value="'Owner A Funds Introduced'">Owner A Funds Introduced</md-option>-->
-                                                                <!--<md-option ng-value="'Owner A Share Capital'">Owner A Share Capital</md-option>-->
-                                                            <!--</md-select>-->
-                                                        <!--</md-input-container>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div>-->
-                                                    <!--<div class="group-sub-head" style="margin-top: 0">Currency Configuration</div>-->
-                                                    <!--<div layout="row" class="pt-20" flex>-->
-                                                        <!--<label flex="50" layout="column">CloudCharge Currency</label>-->
-                                                        <!--<label flex="50" layout="column"><b>{{general.baseCurrency}}</b></label>-->
-                                                    <!--</div>-->
-                                                    <!--<div layout="row" class="pt-20" flex>-->
-                                                        <!--<label flex="50" layout="column">Xero Currency</label>-->
-                                                        <!--<label flex="50" layout="column"><b>{{general.baseCurrency}}</b></label>-->
-                                                    <!--</div>-->
-                                                    <!--<div layout="row" class="pt-20" flex>-->
-                                                        <!--<label layout="column">Currencys are matching</label>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div>-->
-                                                    <!--<div class="group-sub-head" style="margin-top: 0">Tax Configuration</div>-->
-                                                    <!--<div layout="row" class="pt-20" flex>-->
-                                                        <!--<label><b>Non-Taxable Items :</b></label>-->
-                                                        <!--<label>We use empty tax code to indicate non-taxable items. You may change it here as desired.</label>-->
-                                                    <!--</div>-->
-                                                    <!--<div layout="row" class="pt-20" flex>-->
-                                                        <!--<md-input-container class="md-block m-0" flex="50">-->
-                                                            <!--<label>Default tax type</label>-->
-                                                            <!--<md-select flex ng-required="true" ng-model="vm.xeroConfig.invoiceAccount">-->
-                                                                <!--<md-option ng-value="'Sales Tax on Imports'">Sales Tax on Imports(0.0%)</md-option>-->
-                                                                <!--<md-option ng-value="'Tax Exempt'">Tax Exempt(0.0%)</md-option>-->
-                                                                <!--<md-option ng-value="'Tax on Purchases'">Tax on Purchases(0.0%)</md-option>-->
-                                                                <!--<md-option ng-value="'Tax on Sales'">Tax on Sales(0.0%)</md-option>-->
-                                                            <!--</md-select>-->
-                                                        <!--</md-input-container>-->
-                                                    <!--</div>-->
-                                                    <!--<div layout="row" class="pt-20" flex>-->
-                                                        <!--<label><b>Taxable Items :</b></label>-->
-                                                        <!--<label>Because you use the GLOBAL version of Xero, we automatically sync your Cloudcharge taxes to Xero and apply them to your transactions, as applicable.</label>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                            <!--</div>-->
+                                    <!--<form name="vm.xeroConfigForm" id="xeroConfigForm" ng-submit="vm.submitXeroConfig()" flex>-->
+                                    <!--<div class="p-15" md-whiteframe="1dp">-->
+                                    <!--<div>-->
+                                    <!--<div class="group-sub-head" style="margin-top: 0">Basic Configuration</div>-->
+                                    <!--<div layout="row" class="pt-20" flex>-->
+                                    <!--<md-input-container class="md-block m-0" flex="50">-->
+                                    <!--<label>Invoice Account</label>-->
+                                    <!--<md-select flex ng-required="true" ng-model="vm.xeroConfig.invoiceAccount">-->
+                                    <!--<md-option ng-value="'Sales'">Sales</md-option>-->
+                                    <!--<md-option ng-value="'Other Revenue'">Other Revenue</md-option>-->
+                                    <!--<md-option ng-value="'Interest Income'">Interest Income</md-option>-->
+                                    <!--</md-select>-->
+                                    <!--</md-input-container>-->
+                                    <!--</div>-->
+                                    <!--<div layout="row" class="pt-20" flex>-->
+                                    <!--<md-input-container class="md-block m-0" flex="50">-->
+                                    <!--<label>Payment Account</label>-->
+                                    <!--<md-select flex ng-required="true" ng-model="vm.xeroConfig.paymentAccount">-->
+                                    <!--<md-option ng-value="'Owner A Drawings'">Owner A Drawings</md-option>-->
+                                    <!--<md-option ng-value="'Owner A Funds Introduced'">Owner A Funds Introduced</md-option>-->
+                                    <!--<md-option ng-value="'Owner A Share Capital'">Owner A Share Capital</md-option>-->
+                                    <!--</md-select>-->
+                                    <!--</md-input-container>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div>-->
+                                    <!--<div class="group-sub-head" style="margin-top: 0">Currency Configuration</div>-->
+                                    <!--<div layout="row" class="pt-20" flex>-->
+                                    <!--<label flex="50" layout="column">CloudCharge Currency</label>-->
+                                    <!--<label flex="50" layout="column"><b>{{general.baseCurrency}}</b></label>-->
+                                    <!--</div>-->
+                                    <!--<div layout="row" class="pt-20" flex>-->
+                                    <!--<label flex="50" layout="column">Xero Currency</label>-->
+                                    <!--<label flex="50" layout="column"><b>{{general.baseCurrency}}</b></label>-->
+                                    <!--</div>-->
+                                    <!--<div layout="row" class="pt-20" flex>-->
+                                    <!--<label layout="column">Currencys are matching</label>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div>-->
+                                    <!--<div class="group-sub-head" style="margin-top: 0">Tax Configuration</div>-->
+                                    <!--<div layout="row" class="pt-20" flex>-->
+                                    <!--<label><b>Non-Taxable Items :</b></label>-->
+                                    <!--<label>We use empty tax code to indicate non-taxable items. You may change it here as desired.</label>-->
+                                    <!--</div>-->
+                                    <!--<div layout="row" class="pt-20" flex>-->
+                                    <!--<md-input-container class="md-block m-0" flex="50">-->
+                                    <!--<label>Default tax type</label>-->
+                                    <!--<md-select flex ng-required="true" ng-model="vm.xeroConfig.invoiceAccount">-->
+                                    <!--<md-option ng-value="'Sales Tax on Imports'">Sales Tax on Imports(0.0%)</md-option>-->
+                                    <!--<md-option ng-value="'Tax Exempt'">Tax Exempt(0.0%)</md-option>-->
+                                    <!--<md-option ng-value="'Tax on Purchases'">Tax on Purchases(0.0%)</md-option>-->
+                                    <!--<md-option ng-value="'Tax on Sales'">Tax on Sales(0.0%)</md-option>-->
+                                    <!--</md-select>-->
+                                    <!--</md-input-container>-->
+                                    <!--</div>-->
+                                    <!--<div layout="row" class="pt-20" flex>-->
+                                    <!--<label><b>Taxable Items :</b></label>-->
+                                    <!--<label>Because you use the GLOBAL version of Xero, we automatically sync your Cloudcharge taxes to Xero and apply them to your transactions, as applicable.</label>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
 
-                                            <!--<md-dialog-actions layout="row" layout-align="end center">-->
-                                                <!--<div layout="row" class="layout-row">-->
-                                                    <!--<md-progress-circular class="gen-save-indicator" ng-if="vm.xeroConfigSubmitted"></md-progress-circular>-->
-                                                    <!--<md-button ng-disabled="vm.xeroConfigSubmitted" type="submit" class="md-raised md-accent" form="xeroConfigForm">Save</md-button>-->
-                                                <!--</div>-->
-                                            <!--</md-dialog-actions>-->
-                                        <!--</form>-->
+                                    <!--<md-dialog-actions layout="row" layout-align="end center">-->
+                                    <!--<div layout="row" class="layout-row">-->
+                                    <!--<md-progress-circular class="gen-save-indicator" ng-if="vm.xeroConfigSubmitted"></md-progress-circular>-->
+                                    <!--<md-button ng-disabled="vm.xeroConfigSubmitted" type="submit" class="md-raised md-accent" form="xeroConfigForm">Save</md-button>-->
+                                    <!--</div>-->
+                                    <!--</md-dialog-actions>-->
+                                    <!--</form>-->
                                     <!--</div>-->
 
                                     <!--INTEGRATION - Additional Config-->
@@ -2796,7 +2836,7 @@
                                 </div>
                                 <!--<md-divider class="mt-16"></md-divider>-->
                                 <!--<div layout="row" layout-align="start center" ng-disabled="" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">-->
-                                    <!--<md-button class="md-icon-button m-0" ng-click="configExpandHandler('xero')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.xero.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.xero.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.xero.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.xero.moreConfig">More configuration</label>-->
+                                <!--<md-button class="md-icon-button m-0" ng-click="configExpandHandler('xero')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.xero.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.xero.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.xero.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.xero.moreConfig">More configuration</label>-->
                                 <!--</div>-->
                             </div>
                         </div>
