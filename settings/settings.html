@@ -2839,6 +2839,42 @@
                                 <!--<md-button class="md-icon-button m-0" ng-click="configExpandHandler('xero')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.xero.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.xero.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.xero.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.xero.moreConfig">More configuration</label>-->
                                 <!--</div>-->
                             </div>
+                            <div class="payment-card">
+                              <div>
+                                <div layout="row" layout-align="start center" flex>
+                                  <md-input-container style="margin: 0;" flex>
+                                    <div class="integration_mailchimp" ng-class="{'online_disabled': !mailchimpConnected}"></div>
+                                  </md-input-container>
+
+                                  <md-input-container class="m-0">
+                                    <md-menu>
+                                      <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                                        <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                                      </md-button>
+                                      <md-menu-content width="4">
+                                        <md-menu-item>
+                                          <md-button  ng-disabled="mailchimpConnected" ng-click="registerIntegrationDialog('mailchimp', $event)">
+                                            <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                            Register
+                                          </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                          <md-button ng-disabled="!mailchimpConnected || vm.submittedMailChimpConfig" ng-click="removeMailChimpConfig($event)">
+                                            <md-icon md-font-icon="icon-logout"></md-icon>
+                                            Leave
+                                          </md-button>
+                                        </md-menu-item>
+                                      </md-menu-content>
+                                    </md-menu>
+                                  </md-input-container>
+                                </div>
+
+                                <!--INTEGRATION - Additional Config-->
+                                <!--INTEGRATION - Additional Config-->
+
+                              </div>
+                              <md-divider class="mt-16"></md-divider>
+                            </div>
                         </div>
                     </div>
                 </md-tab>

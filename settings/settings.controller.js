@@ -7587,6 +7587,8 @@
 		$scope.xeroConnected=false;
 		//$scope.xeroConfig={};
 		vm.xeroConfig={};
+    $scope.mailchimpConnected=false;
+    vm.mailchimpConfigContent = {};
 
 		$scope.openIntergrationConfigs= function () {
 
@@ -7792,6 +7794,25 @@
 				vm.xeroConfigCurrencyString = "";
 				vm.xeroConfigCurrencyMatched = false;
 			});
+
+      $charge.mailchimp().checkMailChimpConnected().success(function (data) {
+        if(data.status)
+        {
+          $scope.mailchimpConnected=true;
+          $scope.mailchimpConfig = data;
+        }
+        else
+        {
+          $scope.mailchimpConnected=false;
+          vm.mailchimpConfigContent = {};
+
+        }
+
+      }).error(function (data) {
+        //console.log(data);
+        $scope.mailchimpConnected=false;
+        vm.mailchimpConfigContent = {};
+      })
 		}
 
 		//$(document).on('a','click', function (e) {
@@ -8327,6 +8348,106 @@
 
 			});
 		}
+
+    vm.toggleMailChimpConfigViews = function (view) {
+      vm.activeMailChimpConfig = view;
+    }
+
+    vm.mailchimpConfigList = [];
+    vm.submitMailChimpApiKey = function () {
+
+      if (vm.mailchimpForm.$valid == true) {
+        vm.submittedMailChimpConfig = true;
+        var mailchimpkeyconfigs = {
+          "token": vm.mailchimpConfigContent.key
+        };
+
+        $charge.mailchimp().getAllList(mailchimpkeyconfigs).success(function (data) {
+          vm.submittedMailChimpConfig = false;
+          vm.mailchimpConfigList = data.lists;
+
+          vm.toggleMailChimpConfigViews(1);
+
+        }).error(function (data) {
+          //console.log(data);
+          vm.submittedMailChimpConfig = false;
+          vm.mailchimpConfigList = [];
+          notifications.toast("MailChimp doesn't recognized the provided key!","error");
+        });
+
+      }
+    }
+
+    vm.submitMailChimpConfig = function () {
+
+      if (vm.mailchimpForm2.$valid == true) {
+        vm.submittedMailChimpConfig = true;
+        var mailchimpconfigs = {
+          "guListId": vm.mailchimpConfigContent.guListId,
+          "key": vm.mailchimpConfigContent.key,
+          "mergefields": [{"name":"Quantity","type":"text","tag":"QTY","public":true},
+            {"name":"Amount","type":"text","tag":"AMT","public":true},
+            {"name":"PlanCode","type":"text","tag":"PCODE","public":true}]
+        };
+
+        $charge.mailchimp().registerMailChimp(mailchimpconfigs).success(function (data) {
+          if(data.status)
+          {
+            notifications.toast("Registered to MailChimp Successfully", "success");
+            $mdDialog.hide();
+            $scope.openIntergrationConfigs();
+          }
+          else
+          {
+            notifications.toast(data.error,"error");
+          }
+          vm.submittedMailChimpConfig = false;
+
+        }).error(function (data) {
+          //console.log(data);
+          notifications.toast(data.error,"error");
+          vm.submittedMailChimpConfig = false;
+        });
+
+      }
+    }
+
+    $scope.removeMailChimpConfig= function (ev) {
+      var confirm = $mdDialog.confirm()
+        .title('Are you sure you want to Remove MailChimp account?')
+        .textContent('You cannot revert this account once you delete it!')
+        .ariaLabel('Lucky day')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+
+      $mdDialog.show(confirm).then(function() {
+        vm.submittedMailChimpConfig = true;
+        //var salesforceKey = $scope.salesforceConfig;
+        var mailchimpkey={};
+
+        $charge.mailchimp().deleteMailChimpConfig(mailchimpkey).success(function(data) {
+          //
+          if(data.status)
+          {
+            notifications.toast("Successfully MailChimp account removed","success");
+            $scope.openIntergrationConfigs();
+          }
+          vm.submittedMailChimpConfig = false;
+        }).error(function(data) {
+          //console.log(data);
+          notifications.toast("MailChimp account removing failed","error");
+          vm.submittedMailChimpConfig = false;
+
+          $scope.infoJson= {};
+          $scope.infoJson.message =JSON.stringify(data);
+          $scope.infoJson.app ='settings';
+          // logHelper.error( $scope.infoJson);
+        })
+      }, function() {
+
+      });
+    }
 
 
 		// Xero configuration
@@ -9773,6 +9894,10 @@
 					$scope.quickBookConnected=false;
 				})
 			}
+      else if(tool == 'mailchimp'){
+        vm.toggleMailChimpConfigViews(0);
+        vm.mailchimpConfigContent = {};
+      }
 		}
 
 		$scope.integratedToolConfigHelper = {
