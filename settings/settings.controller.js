@@ -7778,10 +7778,24 @@
           if(data[i].EnablePaymentsToAccount)
           {
             vm.xeroConfigPaymentList.push(data[i]);
+            if(vm.xeroConfigContent.paymentAccount != null && vm.xeroConfigContent.paymentAccountCode != null)
+            {
+              if(vm.xeroConfigContent.paymentAccount == data[i].Name)
+              {
+                vm.xeroConfig.paymentAccount = data[i];
+              }
+            }
           }
           else
           {
             vm.xeroConfigInvoiceList.push(data[i]);
+            if(vm.xeroConfigContent.invoiceAccount != null && vm.xeroConfigContent.invoiceAccountCode != null)
+            {
+              if(vm.xeroConfigContent.invoiceAccount == data[i].Name)
+              {
+                vm.xeroConfig.invoiceAccount = data[i];
+              }
+            }
           }
         }
 
@@ -9925,6 +9939,10 @@
         vm.toggleXeroConfigViews(0);
         vm.xeroConfig = {};
         vm.getXeroAdvanceConfig();
+        if(vm.xeroConfigContent.defaultTaxType != null)
+        {
+          vm.xeroConfig.defaultTaxType = vm.xeroConfigContent.defaultTaxType;
+        }
       }
 		}
 
