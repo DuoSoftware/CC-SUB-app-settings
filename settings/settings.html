@@ -2719,7 +2719,8 @@
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button  ng-disabled="!xeroConnected || vm.xeroConfigStored" ng-click="registerIntegrationDialog('xero', $event)">
+                                                        <!--vm.xeroConfigStored  : used to disable when advanced config has stored-->
+                                                        <md-button  ng-disabled="!xeroConnected" ng-click="registerIntegrationDialog('xero', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Advanced Configurations
                                                         </md-button>

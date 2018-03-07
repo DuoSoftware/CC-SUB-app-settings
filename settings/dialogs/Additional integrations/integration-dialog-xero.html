@@ -30,6 +30,9 @@
             <md-tabs flex md-dynamic-height md-selected="vm.activeXeroConfig" class="nohead">
                 <md-tab label="Accounts">
                     <md-content class="md-padding">
+                        <div class="preloader" ng-if="!vm.xeroConfigloaded">
+                          <md-progress-circular></md-progress-circular>
+                        </div>
                         <div layout="row">
                             <div layout="column" class="guide-portion" flex>
                                 <div layout="column">

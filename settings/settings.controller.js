@@ -7744,22 +7744,46 @@
 
       vm.xeroConfigCurrencyMatched = false;
 
-			$charge.xero().getXeroAccounts().success(function (data) {
-				$scope.xeroConfigAccounts = data;
-				vm.xeroConfigInvoiceList = [];
-				vm.xeroConfigPaymentList = [];
+      $charge.mailchimp().checkMailChimpConnected().success(function (data) {
+        if(data.status)
+        {
+          $scope.mailchimpConnected=true;
+          $scope.mailchimpConfig = data;
+        }
+        else
+        {
+          $scope.mailchimpConnected=false;
+          vm.mailchimpConfigContent = {};
 
-				for(var i=0;i<data.length;i++)
-				{
-					if(data[i].EnablePaymentsToAccount)
-					{
-						vm.xeroConfigPaymentList.push(data[i]);
-					}
-					else
-					{
-						vm.xeroConfigInvoiceList.push(data[i]);
-					}
-				}
+        }
+
+      }).error(function (data) {
+        //console.log(data);
+        $scope.mailchimpConnected=false;
+        vm.mailchimpConfigContent = {};
+      })
+		}
+
+    vm.xeroConfigloaded = false;
+    vm.getXeroAdvanceConfig = function () {
+      vm.xeroConfigCurrencyMatched = false;
+      vm.xeroConfigloaded = false;
+      $charge.xero().getXeroAccounts().success(function (data) {
+        $scope.xeroConfigAccounts = data;
+        vm.xeroConfigInvoiceList = [];
+        vm.xeroConfigPaymentList = [];
+
+        for(var i=0;i<data.length;i++)
+        {
+          if(data[i].EnablePaymentsToAccount)
+          {
+            vm.xeroConfigPaymentList.push(data[i]);
+          }
+          else
+          {
+            vm.xeroConfigInvoiceList.push(data[i]);
+          }
+        }
 
         vm.xeroConfigCurrencyMatched = false;
         $charge.xero().getXeroCurrencies().success(function (data) {
@@ -7782,40 +7806,24 @@
               vm.xeroConfigCurrencyMatched = true;
             }
           }
+          vm.xeroConfigloaded = true;
 
         }).error(function (data) {
           //console.log(data);
           vm.xeroConfigCurrencies = {};
           vm.xeroConfigCurrencyString = "";
           vm.xeroConfigCurrencyMatched = false;
+          vm.xeroConfigloaded = true;
         });
-
-			}).error(function (data) {
-				//console.log(data);
-				$scope.xeroConfigAccounts = {};
-				vm.xeroConfigInvoiceList = [];
-				vm.xeroConfigPaymentList = [];
-			});
-
-      $charge.mailchimp().checkMailChimpConnected().success(function (data) {
-        if(data.status)
-        {
-          $scope.mailchimpConnected=true;
-          $scope.mailchimpConfig = data;
-        }
-        else
-        {
-          $scope.mailchimpConnected=false;
-          vm.mailchimpConfigContent = {};
-
-        }
 
       }).error(function (data) {
         //console.log(data);
-        $scope.mailchimpConnected=false;
-        vm.mailchimpConfigContent = {};
-      })
-		}
+        $scope.xeroConfigAccounts = {};
+        vm.xeroConfigInvoiceList = [];
+        vm.xeroConfigPaymentList = [];
+        vm.xeroConfigloaded = true;
+      });
+    }
 
 		//$(document).on('a','click', function (e) {
 		//  e.preventDefault();
@@ -9916,6 +9924,7 @@
       else if(tool == 'xero'){
         vm.toggleXeroConfigViews(0);
         vm.xeroConfig = {};
+        vm.getXeroAdvanceConfig();
       }
 		}
 
