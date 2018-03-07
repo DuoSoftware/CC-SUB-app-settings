@@ -7742,6 +7742,8 @@
 				vm.xeroConfigStored = false;
 			});
 
+      vm.xeroConfigCurrencyMatched = false;
+
 			$charge.xero().getXeroAccounts().success(function (data) {
 				$scope.xeroConfigAccounts = data;
 				vm.xeroConfigInvoiceList = [];
@@ -7759,40 +7761,40 @@
 					}
 				}
 
+        vm.xeroConfigCurrencyMatched = false;
+        $charge.xero().getXeroCurrencies().success(function (data) {
+          vm.xeroConfigCurrencies = data;
+          vm.xeroConfigCurrencyString = "";
+
+          for(var i =0;i<vm.xeroConfigCurrencies.length;i++)
+          {
+            if(i!=(vm.xeroConfigCurrencies.length-1))
+            {
+              vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code+", ";
+            }
+            else
+            {
+              vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code;
+            }
+
+            if(vm.xeroConfigCurrencies[i].Code==vm.baseCurrency)
+            {
+              vm.xeroConfigCurrencyMatched = true;
+            }
+          }
+
+        }).error(function (data) {
+          //console.log(data);
+          vm.xeroConfigCurrencies = {};
+          vm.xeroConfigCurrencyString = "";
+          vm.xeroConfigCurrencyMatched = false;
+        });
+
 			}).error(function (data) {
 				//console.log(data);
 				$scope.xeroConfigAccounts = {};
 				vm.xeroConfigInvoiceList = [];
 				vm.xeroConfigPaymentList = [];
-			});
-
-			vm.xeroConfigCurrencyMatched = false;
-			$charge.xero().getXeroCurrencies().success(function (data) {
-				vm.xeroConfigCurrencies = data;
-				vm.xeroConfigCurrencyString = "";
-
-				for(var i =0;i<vm.xeroConfigCurrencies.length;i++)
-				{
-					if(i!=(vm.xeroConfigCurrencies.length-1))
-					{
-						vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code+", ";
-					}
-					else
-					{
-						vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code;
-					}
-
-					if(vm.xeroConfigCurrencies[i].Code==vm.baseCurrency)
-					{
-						vm.xeroConfigCurrencyMatched = true;
-					}
-				}
-
-			}).error(function (data) {
-				//console.log(data);
-				vm.xeroConfigCurrencies = {};
-				vm.xeroConfigCurrencyString = "";
-				vm.xeroConfigCurrencyMatched = false;
 			});
 
       $charge.mailchimp().checkMailChimpConnected().success(function (data) {
@@ -8476,7 +8478,20 @@
 			}]
 		}
 		vm.toggleXeroConfigViews = function (view) {
-			vm.activeXeroConfig = view;
+      if(view==1)
+      {
+        if (vm.xeroConfigForm.$valid == true) {
+          vm.activeXeroConfig = view;
+        }
+        else
+        {
+          angular.element('#xeroConfigForm').find('.ng-invalid:visible:first').focus();
+        }
+      }
+      else
+      {
+        vm.activeXeroConfig = view;
+      }
 		}
 
 		vm.baseCurrency = $scope.general.baseCurrency;
@@ -9897,6 +9912,10 @@
       else if(tool == 'mailchimp'){
         vm.toggleMailChimpConfigViews(0);
         vm.mailchimpConfigContent = {};
+      }
+      else if(tool == 'xero'){
+        vm.toggleXeroConfigViews(0);
+        vm.xeroConfig = {};
       }
 		}
 

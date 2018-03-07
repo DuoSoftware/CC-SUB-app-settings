@@ -2713,7 +2713,7 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button  ng-disabled="" ng-click="registerXeroIntegration()">
+                                                        <md-button  ng-disabled="xeroConnected" ng-click="registerXeroIntegration()">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
@@ -2834,6 +2834,7 @@
                                     <!--INTEGRATION - Additional Config-->
 
                                 </div>
+                                <md-divider class="mt-16"></md-divider>
                                 <!--<md-divider class="mt-16"></md-divider>-->
                                 <!--<div layout="row" layout-align="start center" ng-disabled="" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">-->
                                 <!--<md-button class="md-icon-button m-0" ng-click="configExpandHandler('xero')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.xero.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.xero.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.xero.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.xero.moreConfig">More configuration</label>-->
@@ -2873,7 +2874,7 @@
                                 <!--INTEGRATION - Additional Config-->
 
                               </div>
-                              <md-divider class="mt-16"></md-divider>
+                              <!--<md-divider class="mt-16"></md-divider>-->
                             </div>
                         </div>
                     </div>
