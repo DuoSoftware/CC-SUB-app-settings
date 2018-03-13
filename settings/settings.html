@@ -2319,7 +2319,7 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="vm.usingTwilioSMS" ng-click="registerIntegrationDialog('twilio', $event)">
+                                                        <md-button ng-disabled="vm.usingTwilioSMS" ng-click="registerIntegrationDialog('twilio', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
@@ -2470,7 +2470,7 @@
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="vm.quickBookMigrateConfigAdded" ng-click="registerIntegrationDialog('quickbooks', $event)">
+                                                        <md-button ng-disabled="!quickBookConnected || vm.quickBookMigrateConfigAdded" ng-click="registerIntegrationDialog('migration', 'quickbooks', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Migration Configuration
                                                         </md-button>
@@ -2604,6 +2604,12 @@
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
+                                                      <md-button ng-disabled="!salesforceConnected || vm.salesForceMigrateConfigAdded" ng-click="registerIntegrationDialog('migration', 'salesforce', $event)">
+                                                        <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                        Migration Configuration
+                                                      </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
                                                         <md-button type="button" ng-click="removeSalesforceConfig($event)" ng-disabled="vm.submittedSalesforce || !salesforceConnected">
                                                             <md-icon md-font-icon="icon-logout"></md-icon>
                                                             Leave
@@ -2613,12 +2619,49 @@
                                             </md-menu>
                                         </md-input-container>
                                     </div>
+                                    <div class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.salesforce.moreConfig">
+
+                                      <div class="p-16" ng-if="salesForceMigrateConfigAdded" flex>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                  <span class="iconed-label" flex="40">
+                                                      <md-icon md-font-icon="icon-account"></md-icon>
+                                                      <span>Profiles Migration Configuration:</span>
+                                                  </span>
+                                          <span flex>{{vm.migrateConfig.salesforceProfileValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                  <span class="iconed-label" flex="40">
+                                                      <md-icon md-font-icon="icon-package"></md-icon>
+                                                      <span>Products Migration Configuration:</span>
+                                                  </span>
+                                          <span flex>{{vm.migrateConfig.salesforceProductValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                  <span class="iconed-label" flex="40">
+                                                      <md-icon md-font-icon="icon-map"></md-icon>
+                                                      <span>Plans Migration Configuration:</span>
+                                                  </span>
+                                          <span flex>{{vm.migrateConfig.salesforcePlanValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row">
+                                                  <span class="iconed-label" flex="40">
+                                                      <md-icon md-font-icon="icon-document"></md-icon>
+                                                      <span>Invoices Migration Configuration:</span>
+                                                  </span>
+                                          <span flex>{{vm.migrateConfig.salesforceInvoiceValue}}</span>
+                                        </div>
+                                      </div>
+                                    </div>
 
                                     <!--INTEGRATION - Additional Config-->
                                     <!--INTEGRATION - Additional Config-->
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
+                                <div layout="row" layout-align="start center" ng-if="salesForceMigrateConfigAdded" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                  <md-button class="md-icon-button m-0" ng-click="configExpandHandler('salesforce')">
+                                    <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.salesforce.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.salesforce.moreConfig ? 'Less' : 'More'}}</label>
+                                </div>
                             </div>
                             <div class="payment-card">
                                 <div>
@@ -2634,10 +2677,16 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="vm.usingTwilioSMS" ng-click="registerIntegrationDialog('zendesk', $event)">
+                                                        <md-button ng-disabled="vm.usingTwilioSMS" ng-click="registerIntegrationDialog('zendesk', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                      <md-button ng-disabled="vm.zendeskMigrateConfigAdded" ng-click="registerIntegrationDialog('migration', 'zendesk', $event)">
+                                                        <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                        Migration Configuration
+                                                      </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
                                                         <md-button ng-disabled="!vm.usingTwilioSMS" ng-click="removeZendeskConfig()">
@@ -2649,12 +2698,49 @@
                                             </md-menu>
                                         </md-input-container>
                                     </div>
+                                    <div class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.zendesk.moreConfig">
+
+                                      <div class="p-16" ng-if="zendeskMigrateConfigAdded" flex>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                    <span class="iconed-label" flex="40">
+                                                        <md-icon md-font-icon="icon-account"></md-icon>
+                                                        <span>Profiles Migration Configuration:</span>
+                                                    </span>
+                                          <span flex>{{vm.migrateConfig.zendeskProfileValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                    <span class="iconed-label" flex="40">
+                                                        <md-icon md-font-icon="icon-package"></md-icon>
+                                                        <span>Products Migration Configuration:</span>
+                                                    </span>
+                                          <span flex>{{vm.migrateConfig.zendeskProductValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                    <span class="iconed-label" flex="40">
+                                                        <md-icon md-font-icon="icon-map"></md-icon>
+                                                        <span>Plans Migration Configuration:</span>
+                                                    </span>
+                                          <span flex>{{vm.migrateConfig.zendeskPlanValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row">
+                                                    <span class="iconed-label" flex="40">
+                                                        <md-icon md-font-icon="icon-document"></md-icon>
+                                                        <span>Invoices Migration Configuration:</span>
+                                                    </span>
+                                          <span flex>{{vm.migrateConfig.zendeskInvoiceValue}}</span>
+                                        </div>
+                                      </div>
+                                    </div>
 
                                     <!--INTEGRATION - Additional Config-->
                                     <!--INTEGRATION - Additional Config-->
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
+                                <div layout="row" layout-align="start center" ng-if="zendeskMigrateConfigAdded" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                  <md-button class="md-icon-button m-0" ng-click="configExpandHandler('zendesk')">
+                                    <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.zendesk.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.zendesk.moreConfig ? 'Less' : 'More'}}</label>
+                                </div>
                             </div>
                             <div class="payment-card">
                                 <div>
@@ -2670,10 +2756,16 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button  ng-disabled="zohoConnected" ng-click="registerIntegrationDialog('zoho', $event)">
+                                                        <md-button  ng-disabled="zohoConnected" ng-click="registerIntegrationDialog('zoho', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                      <md-button ng-disabled="!zohoConnected || vm.zohoMigrateConfigAdded" ng-click="registerIntegrationDialog('migration', 'zoho', $event)">
+                                                        <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                        Migration Configuration
+                                                      </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
                                                         <md-button ng-disabled="!zohoConnected" ng-click="removeZohoConfig()">
@@ -2685,12 +2777,49 @@
                                             </md-menu>
                                         </md-input-container>
                                     </div>
+                                    <div class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.zoho.moreConfig">
+
+                                      <div class="p-16" ng-if="zohoMigrateConfigAdded" flex>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                      <span class="iconed-label" flex="40">
+                                                          <md-icon md-font-icon="icon-account"></md-icon>
+                                                          <span>Profiles Migration Configuration:</span>
+                                                      </span>
+                                          <span flex>{{vm.migrateConfig.zohoProfileValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                      <span class="iconed-label" flex="40">
+                                                          <md-icon md-font-icon="icon-package"></md-icon>
+                                                          <span>Products Migration Configuration:</span>
+                                                      </span>
+                                          <span flex>{{vm.migrateConfig.zohoProductValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                      <span class="iconed-label" flex="40">
+                                                          <md-icon md-font-icon="icon-map"></md-icon>
+                                                          <span>Plans Migration Configuration:</span>
+                                                      </span>
+                                          <span flex>{{vm.migrateConfig.zohoPlanValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row">
+                                                      <span class="iconed-label" flex="40">
+                                                          <md-icon md-font-icon="icon-document"></md-icon>
+                                                          <span>Invoices Migration Configuration:</span>
+                                                      </span>
+                                          <span flex>{{vm.migrateConfig.zohoInvoiceValue}}</span>
+                                        </div>
+                                      </div>
+                                    </div>
 
                                     <!--INTEGRATION - Additional Config-->
                                     <!--INTEGRATION - Additional Config-->
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
+                                <div layout="row" layout-align="start center" ng-if="zohoMigrateConfigAdded" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                  <md-button class="md-icon-button m-0" ng-click="configExpandHandler('zoho')">
+                                    <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.zoho.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.zoho.moreConfig ? 'Less' : 'More'}}</label>
+                                </div>
                             </div>
                             <div class="payment-card">
                                 <div>
@@ -2720,10 +2849,16 @@
                                                     </md-menu-item>
                                                     <md-menu-item>
                                                         <!--vm.xeroConfigStored  : used to disable when advanced config has stored-->
-                                                        <md-button  ng-disabled="!xeroConnected" ng-click="registerIntegrationDialog('xero', $event)">
+                                                        <md-button  ng-disabled="!xeroConnected" ng-click="registerIntegrationDialog('xero', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Advanced Configurations
                                                         </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                      <md-button ng-disabled="!xeroConnected || vm.xeroMigrateConfigAdded" ng-click="registerIntegrationDialog('migration', 'xero', $event)">
+                                                        <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                        Migration Configuration
+                                                      </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
                                                         <md-button ng-disabled="!xeroConnected || vm.submittedXeroConfig" ng-click="removeXeroConfig($event)">
@@ -2736,22 +2871,64 @@
                                         </md-input-container>
                                     </div>
 
-                                    <div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="vm.xeroConfigStored">
+                                    <div class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.xero.moreConfig">
+
+                                      <div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="vm.xeroConfigStored">
                                         <div class="p-60" md-whiteframe="1dp">
-                                            <div class="group-sub-head" style="margin-top: 0">Xero Configuration</div>
-                                            <div layout="row">
-                                                <h4><b>Invoice Account: </b></h4>
-                                                <label>{{vm.xeroConfigContent.invoiceAccountCode}} - {{vm.xeroConfigContent.invoiceAccount}}</label>
-                                            </div>
-                                            <div layout="row">
-                                                <h4><b>Payment Account: </b></h4>
-                                                <label>{{vm.xeroConfigContent.paymentAccountCode}} - {{vm.xeroConfigContent.paymentAccount}}</label>
-                                            </div>
-                                            <div layout="row">
-                                                <h4><b>Default Tax type: </b></h4>
-                                                <label>{{vm.xeroConfigContent.defaultTaxType}}</label>
-                                            </div>
+                                          <div class="group-sub-head" style="margin-top: 0">Xero Configuration</div>
+                                          <div layout="row">
+                                            <h3><b>Organization: </b></h3>
+                                            <h3>{{vm.xeroConfigContent.organisation}}</h3>
+                                          </div>
+                                          <div layout="row">
+                                            <h4><b>Base Currency: </b></h4>
+                                            <h4>{{vm.xeroConfigContent.baseCurrency}}</h4>
+                                          </div>
+                                          <div layout="row">
+                                            <h4><b>Invoice Account: </b></h4>
+                                            <label>{{vm.xeroConfigContent.invoiceAccountCode}} - {{vm.xeroConfigContent.invoiceAccount}}</label>
+                                          </div>
+                                          <div layout="row">
+                                            <h4><b>Payment Account: </b></h4>
+                                            <label>{{vm.xeroConfigContent.paymentAccountCode}} - {{vm.xeroConfigContent.paymentAccount}}</label>
+                                          </div>
+                                          <div layout="row">
+                                            <h4><b>Default Tax type: </b></h4>
+                                            <label>{{vm.xeroConfigContent.defaultTaxType}}</label>
+                                          </div>
                                         </div>
+                                      </div>
+
+                                      <div class="p-16" ng-if="xeroMigrateConfigAdded" flex>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                        <span class="iconed-label" flex="40">
+                                                            <md-icon md-font-icon="icon-account"></md-icon>
+                                                            <span>Profiles Migration Configuration:</span>
+                                                        </span>
+                                          <span flex>{{vm.migrateConfig.xeroProfileValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                        <span class="iconed-label" flex="40">
+                                                            <md-icon md-font-icon="icon-package"></md-icon>
+                                                            <span>Products Migration Configuration:</span>
+                                                        </span>
+                                          <span flex>{{vm.migrateConfig.xeroProductValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row bordered-dark">
+                                                        <span class="iconed-label" flex="40">
+                                                            <md-icon md-font-icon="icon-map"></md-icon>
+                                                            <span>Plans Migration Configuration:</span>
+                                                        </span>
+                                          <span flex>{{vm.migrateConfig.xeroPlanValue}}</span>
+                                        </div>
+                                        <div layout="row" class="info-grid-row">
+                                                        <span class="iconed-label" flex="40">
+                                                            <md-icon md-font-icon="icon-document"></md-icon>
+                                                            <span>Invoices Migration Configuration:</span>
+                                                        </span>
+                                          <span flex>{{vm.migrateConfig.xeroInvoiceValue}}</span>
+                                        </div>
+                                      </div>
                                     </div>
 
                                     <div layout="row" layout-align="start center" ng-if="vm.xeroIntegrateUILoading" flex>
@@ -2836,6 +3013,10 @@
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
+                                <div layout="row" layout-align="start center" ng-if="xeroMigrateConfigAdded || vm.xeroConfigStored" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                  <md-button class="md-icon-button m-0" ng-click="configExpandHandler('xero')">
+                                    <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.xero.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.xero.moreConfig ? 'Less' : 'More'}}</label>
+                                </div>
                                 <!--<md-divider class="mt-16"></md-divider>-->
                                 <!--<div layout="row" layout-align="start center" ng-disabled="" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">-->
                                 <!--<md-button class="md-icon-button m-0" ng-click="configExpandHandler('xero')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.xero.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.xero.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.xero.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.xero.moreConfig">More configuration</label>-->
@@ -2855,7 +3036,7 @@
                                       </md-button>
                                       <md-menu-content width="4">
                                         <md-menu-item>
-                                          <md-button  ng-disabled="mailchimpConnected" ng-click="registerIntegrationDialog('mailchimp', $event)">
+                                          <md-button  ng-disabled="mailchimpConnected" ng-click="registerIntegrationDialog('mailchimp', '', $event)">
                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                             Register
                                           </md-button>
