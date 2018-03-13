@@ -8310,7 +8310,7 @@
             "commonDataValueDetails": $scope.integrationConfigValues
           }
 
-          queue = "zoho";
+          queue = "zohobooks";
         }
         else if(tool=="MailChimp")
         {
