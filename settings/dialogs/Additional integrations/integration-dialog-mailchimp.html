@@ -1,0 +1,83 @@
+<md-dialog class="prompt-dialog guided-payment" style="width: 65%;">
+    <md-toolbar>
+        <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-login"></md-icon> <h3>Register with MailChimp</h3>
+            </div>
+            <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
+                <md-icon md-font-icon="icon-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+
+    <md-content class="p-16" ms-scroll>
+        <div layout="row">
+            <div layout="column" class="guide-portion" flex>
+                <div layout="column" style="margin-bottom: 20px">
+                    <h2 class="mb-10">MailChimp..</h2>
+                </div>
+                <p class="m-0">
+                    "Is there a secret formula to great email design? MailChimp dug into the data to find out."
+                </p>
+                </br>
+                <i class="op-5">For more information, visit <a href="https://login.mailchimp.com/" target="_blank">MailChimp</a></i>
+            </div>
+            <div class="w-20"></div>
+            <div class="form-portion" layout="column" flex="40">
+                <div md-whiteframe="3dp" flex class="p-10">
+                    <md-tabs flex md-dynamic-height md-selected="vm.activeMailChimpConfig" class="nohead">
+                      <md-tab label="Step 1">
+                        <md-content class="md-padding">
+                          <form id="mailchimpForm" name="vm.mailchimpForm" ng-submit="vm.submitMailChimpApiKey()" novalidate>
+                            <div class="p-0" ng-if="mailchimpConnected">
+                              <div layout="row" layout-align="start center">
+                                <h3 ><b>Connected to MailChimp</b></h3>
+                              </div>
+                              <div layout="row" layout-align="start center">
+                                <md-button type="button" ng-click="vm.removeMailchimpConfig($event)" ng-disabled="vm.submittedMailChimpConfig" style="height:30px;" class="md-raised warm">Remove Account</md-button>
+                              </div>
+                            </div>
+                            <div class="p-0" ng-if="!mailchimpConnected">
+                              <div layout="row">
+                                <md-input-container flex>
+                                  <label>API Key</label>
+                                  <input type="text" ng-required="true" min="" name="key" ng-maxlength="100" ng-model="vm.mailchimpConfigContent.key">
+                                  <div ng-messages="vm.mailchimpForm.key.$error">
+                                    <div ng-message="maxlength">API key must be between 1-100 characters</div>
+                                  </div>
+                                </md-input-container>
+                              </div>
+                              <div class="text-right">
+                                <md-button ng-disabled="vm.submittedMailChimpConfig" type="submit" form="mailchimpForm" class="md-raised md-accent">Next</md-button>
+                              </div>
+                            </div>
+                          </form>
+                        </md-content>
+                      </md-tab>
+                      <md-tab label="Step 2">
+                        <md-content class="md-padding">
+                          <form id="mailchimpForm2" name="vm.mailchimpForm2" ng-submit="vm.submitMailChimpConfig()" novalidate>
+                            <div class="p-0">
+                              <div layout="row">
+                                <md-input-container flex>
+                                  <label>MailChimp List</label>
+                                  <md-select flex ng-required="true" ng-model="vm.mailchimpConfigContent.guListId">
+                                    <md-option ng-value="item.id" ng-repeat="item in vm.mailchimpConfigList">{{item.name}}</md-option>
+                                  </md-select>
+                                </md-input-container>
+                              </div>
+                              <div class="text-right">
+                                <md-button ng-disabled="vm.submittedMailChimpConfig" type="submit" form="mailchimpForm2" class="md-raised md-accent">Register</md-button>
+                              </div>
+                            </div>
+                          </form>
+                        </md-content>
+                      </md-tab>
+                    </md-tabs>
+                </div>
+            </div>
+        </div>
+    </md-content>
+
+</md-dialog>
