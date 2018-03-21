@@ -7961,555 +7961,594 @@
 			if(vm.migrationConfigForm.$valid==true) {
 				vm.migrationConfigSubmitted = true;
 
-				var migrateProfilesObj = vm.migrationConfig.migrationProfiles;
-				var migrateProductsObj = vm.migrationConfig.migrationProducts;
-				var migratePlansObj = vm.migrationConfig.migrationPlans;
-				var migrateInvoicesObj = vm.migrationConfig.migrationInvoices;
-
-				$scope.integrationConfigFields = [];
-				$scope.integrationConfigValues = [];
-
-        var queue = "";
-        var req = {};
-
-        if(tool=="Quickbooks")
+        if(getExtensionMode()!="live")
         {
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "QuickbooksMigrateProfiles",
-            "FieldID": "",
-            "FieldName": "QuickbooksMigrateProfiles",
-            "FieldType": "QuickbooksMigrateProfileType",
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProfilesObj,
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "QuickbooksMigrateProducts",
-            "FieldID": "",
-            "FieldName": "QuickbooksMigrateProducts",
-            "FieldType": "QuickbooksMigrateProductType",
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProductsObj,
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "QuickbooksMigratePlans",
-            "FieldID": "",
-            "FieldName": "QuickbooksMigratePlans",
-            "FieldType": "QuickbooksMigratePlanType",
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migratePlansObj,
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "QuickbooksMigrateInvoices",
-            "FieldID": "",
-            "FieldName": "QuickbooksMigrateInvoices",
-            "FieldType": "QuickbooksMigrateInvoiceType",
-            "ColumnIndex": "3"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateInvoicesObj,
-            "ColumnIndex": "3"
-          });
-
-          req = {
-            "GURecID": "",
-            "RecordType": "CTS_IntergrationQuickbooksAttributes",
-            "OperationalStatus": "Active",
-            "RecordStatus": "Active",
-            "Cache": "CTS_IntergrationQuickbooksAttributes",
-            "Separate": "Test",
-            "RecordName": "CTS_IntergrationQuickbooksAttributes",
-            "GuTranID": "12345",
-            "RecordCultureName": "CTS_IntergrationQuickbooksAttributes",
-            "RecordCode": "CTS_IntergrationQuickbooksAttributes",
-            "commonDatafieldDetails": $scope.integrationConfigFields,
-            "commonDataValueDetails": $scope.integrationConfigValues
-          }
-
-          queue = "quickbook";
+          notifications.toast("Please upgrade your tenant to 'Live' for Migrate data!","error");
+          vm.migrationConfigSubmitted = false;
         }
-        else if(tool=="Xero")
+        else
         {
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "XeroMigrateProfiles",
-            "FieldID": "",
-            "FieldName": "XeroMigrateProfiles",
-            "FieldType": "XeroMigrateProfileType",
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProfilesObj,
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "XeroMigrateProducts",
-            "FieldID": "",
-            "FieldName": "XeroMigrateProducts",
-            "FieldType": "XeroMigrateProductType",
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProductsObj,
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "XeroMigratePlans",
-            "FieldID": "",
-            "FieldName": "XeroMigratePlans",
-            "FieldType": "XeroMigratePlanType",
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migratePlansObj,
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "XeroMigrateInvoices",
-            "FieldID": "",
-            "FieldName": "XeroMigrateInvoices",
-            "FieldType": "XeroMigrateInvoiceType",
-            "ColumnIndex": "3"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateInvoicesObj,
-            "ColumnIndex": "3"
-          });
+          var migrateProfilesObj = vm.migrationConfig.migrationProfiles;
+          var migrateProductsObj = vm.migrationConfig.migrationProducts;
+          var migratePlansObj = vm.migrationConfig.migrationPlans;
+          var migrateInvoicesObj = vm.migrationConfig.migrationInvoices;
 
-          req = {
-            "GURecID": "",
-            "RecordType": "CTS_IntergrationXeroAttributes",
-            "OperationalStatus": "Active",
-            "RecordStatus": "Active",
-            "Cache": "CTS_IntergrationXeroAttributes",
-            "Separate": "Test",
-            "RecordName": "CTS_IntergrationXeroAttributes",
-            "GuTranID": "12345",
-            "RecordCultureName": "CTS_IntergrationXeroAttributes",
-            "RecordCode": "CTS_IntergrationXeroAttributes",
-            "commonDatafieldDetails": $scope.integrationConfigFields,
-            "commonDataValueDetails": $scope.integrationConfigValues
-          }
+          $scope.integrationConfigFields = [];
+          $scope.integrationConfigValues = [];
 
-          queue = "xero";
-        }
-        else if(tool=="SalesForce")
-        {
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "SalesForceMigrateProfiles",
-            "FieldID": "",
-            "FieldName": "SalesForceMigrateProfiles",
-            "FieldType": "SalesForceMigrateProfileType",
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProfilesObj,
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "SalesForceMigrateProducts",
-            "FieldID": "",
-            "FieldName": "SalesForceMigrateProducts",
-            "FieldType": "SalesForceMigrateProductType",
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProductsObj,
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "SalesForceMigratePlans",
-            "FieldID": "",
-            "FieldName": "SalesForceMigratePlans",
-            "FieldType": "SalesForceMigratePlanType",
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migratePlansObj,
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "SalesForceMigrateInvoices",
-            "FieldID": "",
-            "FieldName": "SalesForceMigrateInvoices",
-            "FieldType": "SalesForceMigrateInvoiceType",
-            "ColumnIndex": "3"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateInvoicesObj,
-            "ColumnIndex": "3"
-          });
-
-          req = {
-            "GURecID": "",
-            "RecordType": "CTS_IntergrationSalesForceAttributes",
-            "OperationalStatus": "Active",
-            "RecordStatus": "Active",
-            "Cache": "CTS_IntergrationSalesForceAttributes",
-            "Separate": "Test",
-            "RecordName": "CTS_IntergrationSalesForceAttributes",
-            "GuTranID": "12345",
-            "RecordCultureName": "CTS_IntergrationSalesForceAttributes",
-            "RecordCode": "CTS_IntergrationSalesForceAttributes",
-            "commonDatafieldDetails": $scope.integrationConfigFields,
-            "commonDataValueDetails": $scope.integrationConfigValues
-          }
-
-          queue = "salesforce";
-        }
-        else if(tool=="Zendesk")
-        {
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "ZendeskMigrateProfiles",
-            "FieldID": "",
-            "FieldName": "ZendeskMigrateProfiles",
-            "FieldType": "ZendeskMigrateProfileType",
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProfilesObj,
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "ZendeskMigrateProducts",
-            "FieldID": "",
-            "FieldName": "ZendeskMigrateProducts",
-            "FieldType": "ZendeskMigrateProductType",
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProductsObj,
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "ZendeskMigratePlans",
-            "FieldID": "",
-            "FieldName": "ZendeskMigratePlans",
-            "FieldType": "ZendeskMigratePlanType",
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migratePlansObj,
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "ZendeskMigrateInvoices",
-            "FieldID": "",
-            "FieldName": "ZendeskMigrateInvoices",
-            "FieldType": "ZendeskMigrateInvoiceType",
-            "ColumnIndex": "3"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateInvoicesObj,
-            "ColumnIndex": "3"
-          });
-
-          req = {
-            "GURecID": "",
-            "RecordType": "CTS_IntergrationZendeskAttributes",
-            "OperationalStatus": "Active",
-            "RecordStatus": "Active",
-            "Cache": "CTS_IntergrationZendeskAttributes",
-            "Separate": "Test",
-            "RecordName": "CTS_IntergrationZendeskAttributes",
-            "GuTranID": "12345",
-            "RecordCultureName": "CTS_IntergrationZendeskAttributes",
-            "RecordCode": "CTS_IntergrationZendeskAttributes",
-            "commonDatafieldDetails": $scope.integrationConfigFields,
-            "commonDataValueDetails": $scope.integrationConfigValues
-          }
-
-          queue = "zendesk";
-        }
-        else if(tool=="Zoho")
-        {
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "ZohoMigrateProfiles",
-            "FieldID": "",
-            "FieldName": "ZohoMigrateProfiles",
-            "FieldType": "ZohoMigrateProfileType",
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProfilesObj,
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "ZohoMigrateProducts",
-            "FieldID": "",
-            "FieldName": "ZohoMigrateProducts",
-            "FieldType": "ZohoMigrateProductType",
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProductsObj,
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "ZohoMigratePlans",
-            "FieldID": "",
-            "FieldName": "ZohoMigratePlans",
-            "FieldType": "ZohoMigratePlanType",
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migratePlansObj,
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "ZohoMigrateInvoices",
-            "FieldID": "",
-            "FieldName": "ZohoMigrateInvoices",
-            "FieldType": "ZohoMigrateInvoiceType",
-            "ColumnIndex": "3"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateInvoicesObj,
-            "ColumnIndex": "3"
-          });
-
-          req = {
-            "GURecID": "",
-            "RecordType": "CTS_IntergrationZohoAttributes",
-            "OperationalStatus": "Active",
-            "RecordStatus": "Active",
-            "Cache": "CTS_IntergrationZohoAttributes",
-            "Separate": "Test",
-            "RecordName": "CTS_IntergrationZohoAttributes",
-            "GuTranID": "12345",
-            "RecordCultureName": "CTS_IntergrationZohoAttributes",
-            "RecordCode": "CTS_IntergrationZohoAttributes",
-            "commonDatafieldDetails": $scope.integrationConfigFields,
-            "commonDataValueDetails": $scope.integrationConfigValues
-          }
-
-          queue = "zohobooks";
-        }
-        else if(tool=="MailChimp")
-        {
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "MailChimpMigrateProfiles",
-            "FieldID": "",
-            "FieldName": "MailChimpMigrateProfiles",
-            "FieldType": "MailChimpMigrateProfileType",
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProfilesObj,
-            "ColumnIndex": "0"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "MailChimpMigrateProducts",
-            "FieldID": "",
-            "FieldName": "MailChimpMigrateProducts",
-            "FieldType": "MailChimpMigrateProductType",
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateProductsObj,
-            "ColumnIndex": "1"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "MailChimpMigratePlans",
-            "FieldID": "",
-            "FieldName": "MailChimpMigratePlans",
-            "FieldType": "MailChimpMigratePlanType",
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migratePlansObj,
-            "ColumnIndex": "2"
-          });
-          $scope.integrationConfigFields.push({
-            "FieldCultureName": "MailChimpMigrateInvoices",
-            "FieldID": "",
-            "FieldName": "MailChimpMigrateInvoices",
-            "FieldType": "MailChimpMigrateInvoiceType",
-            "ColumnIndex": "3"
-          });
-          $scope.integrationConfigValues.push({
-            "RowID": "",
-            "RecordFieldData": migrateInvoicesObj,
-            "ColumnIndex": "3"
-          });
-
-          req = {
-            "GURecID": "",
-            "RecordType": "CTS_IntergrationMailChimpAttributes",
-            "OperationalStatus": "Active",
-            "RecordStatus": "Active",
-            "Cache": "CTS_IntergrationMailChimpAttributes",
-            "Separate": "Test",
-            "RecordName": "CTS_IntergrationMailChimpAttributes",
-            "GuTranID": "12345",
-            "RecordCultureName": "CTS_IntergrationMailChimpAttributes",
-            "RecordCode": "CTS_IntergrationMailChimpAttributes",
-            "commonDatafieldDetails": $scope.integrationConfigFields,
-            "commonDataValueDetails": $scope.integrationConfigValues
-          }
-
-          queue = "mailchimp";
-        }
-
-        //req = {
-        //  "GURecID": "",
-        //  "RecordType": "CTS_IntergrationAttributes",
-        //  "OperationalStatus": "Active",
-        //  "RecordStatus": "Active",
-        //  "Cache": "CTS_IntergrationAttributes",
-        //  "Separate": "Test",
-        //  "RecordName": "CTS_IntergrationAttributes",
-        //  "GuTranID": "12345",
-        //  "RecordCultureName": "CTS_IntergrationAttributes",
-        //  "RecordCode": "CTS_IntergrationAttributes",
-        //  "commonDatafieldDetails": $scope.integrationConfigFields,
-        //  "commonDataValueDetails": $scope.integrationConfigValues
-        //}
-
-				$charge.settingsapp().store(req).success(function (data) {
-					//
-					notifications.toast(tool+" configurations updated","success");
-					vm.migrationConfigSubmitted = false;
-          vm.closeDialog();
+          var queue = "";
+          var req = {};
 
           if(tool=="Quickbooks")
           {
-            $scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "QuickbooksMigrateProfiles",
+              "FieldID": "",
+              "FieldName": "QuickbooksMigrateProfiles",
+              "FieldType": "QuickbooksMigrateProfileType",
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProfilesObj,
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "QuickbooksMigrateProducts",
+              "FieldID": "",
+              "FieldName": "QuickbooksMigrateProducts",
+              "FieldType": "QuickbooksMigrateProductType",
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProductsObj,
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "QuickbooksMigratePlans",
+              "FieldID": "",
+              "FieldName": "QuickbooksMigratePlans",
+              "FieldType": "QuickbooksMigratePlanType",
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migratePlansObj,
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "QuickbooksMigrateInvoices",
+              "FieldID": "",
+              "FieldName": "QuickbooksMigrateInvoices",
+              "FieldType": "QuickbooksMigrateInvoiceType",
+              "ColumnIndex": "3"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateInvoicesObj,
+              "ColumnIndex": "3"
+            });
+
+            req = {
+              "GURecID": "",
+              "RecordType": "CTS_IntergrationQuickbooksAttributes",
+              "OperationalStatus": "Active",
+              "RecordStatus": "Active",
+              "Cache": "CTS_IntergrationQuickbooksAttributes",
+              "Separate": "Test",
+              "RecordName": "CTS_IntergrationQuickbooksAttributes",
+              "GuTranID": "12345",
+              "RecordCultureName": "CTS_IntergrationQuickbooksAttributes",
+              "RecordCode": "CTS_IntergrationQuickbooksAttributes",
+              "commonDatafieldDetails": $scope.integrationConfigFields,
+              "commonDataValueDetails": $scope.integrationConfigValues
+            }
+
+            queue = "quickbook";
           }
           else if(tool=="Xero")
           {
-            $scope.xeroMigrateConfigAdded = vm.xeroBookMigrateConfigAdded =true;
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "XeroMigrateProfiles",
+              "FieldID": "",
+              "FieldName": "XeroMigrateProfiles",
+              "FieldType": "XeroMigrateProfileType",
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProfilesObj,
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "XeroMigrateProducts",
+              "FieldID": "",
+              "FieldName": "XeroMigrateProducts",
+              "FieldType": "XeroMigrateProductType",
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProductsObj,
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "XeroMigratePlans",
+              "FieldID": "",
+              "FieldName": "XeroMigratePlans",
+              "FieldType": "XeroMigratePlanType",
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migratePlansObj,
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "XeroMigrateInvoices",
+              "FieldID": "",
+              "FieldName": "XeroMigrateInvoices",
+              "FieldType": "XeroMigrateInvoiceType",
+              "ColumnIndex": "3"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateInvoicesObj,
+              "ColumnIndex": "3"
+            });
+
+            req = {
+              "GURecID": "",
+              "RecordType": "CTS_IntergrationXeroAttributes",
+              "OperationalStatus": "Active",
+              "RecordStatus": "Active",
+              "Cache": "CTS_IntergrationXeroAttributes",
+              "Separate": "Test",
+              "RecordName": "CTS_IntergrationXeroAttributes",
+              "GuTranID": "12345",
+              "RecordCultureName": "CTS_IntergrationXeroAttributes",
+              "RecordCode": "CTS_IntergrationXeroAttributes",
+              "commonDatafieldDetails": $scope.integrationConfigFields,
+              "commonDataValueDetails": $scope.integrationConfigValues
+            }
+
+            queue = "xero";
           }
           else if(tool=="SalesForce")
           {
-            $scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "SalesForceMigrateProfiles",
+              "FieldID": "",
+              "FieldName": "SalesForceMigrateProfiles",
+              "FieldType": "SalesForceMigrateProfileType",
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProfilesObj,
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "SalesForceMigrateProducts",
+              "FieldID": "",
+              "FieldName": "SalesForceMigrateProducts",
+              "FieldType": "SalesForceMigrateProductType",
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProductsObj,
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "SalesForceMigratePlans",
+              "FieldID": "",
+              "FieldName": "SalesForceMigratePlans",
+              "FieldType": "SalesForceMigratePlanType",
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migratePlansObj,
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "SalesForceMigrateInvoices",
+              "FieldID": "",
+              "FieldName": "SalesForceMigrateInvoices",
+              "FieldType": "SalesForceMigrateInvoiceType",
+              "ColumnIndex": "3"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateInvoicesObj,
+              "ColumnIndex": "3"
+            });
+
+            req = {
+              "GURecID": "",
+              "RecordType": "CTS_IntergrationSalesForceAttributes",
+              "OperationalStatus": "Active",
+              "RecordStatus": "Active",
+              "Cache": "CTS_IntergrationSalesForceAttributes",
+              "Separate": "Test",
+              "RecordName": "CTS_IntergrationSalesForceAttributes",
+              "GuTranID": "12345",
+              "RecordCultureName": "CTS_IntergrationSalesForceAttributes",
+              "RecordCode": "CTS_IntergrationSalesForceAttributes",
+              "commonDatafieldDetails": $scope.integrationConfigFields,
+              "commonDataValueDetails": $scope.integrationConfigValues
+            }
+
+            queue = "salesforce";
           }
           else if(tool=="Zendesk")
           {
-            $scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded =true;
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "ZendeskMigrateProfiles",
+              "FieldID": "",
+              "FieldName": "ZendeskMigrateProfiles",
+              "FieldType": "ZendeskMigrateProfileType",
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProfilesObj,
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "ZendeskMigrateProducts",
+              "FieldID": "",
+              "FieldName": "ZendeskMigrateProducts",
+              "FieldType": "ZendeskMigrateProductType",
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProductsObj,
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "ZendeskMigratePlans",
+              "FieldID": "",
+              "FieldName": "ZendeskMigratePlans",
+              "FieldType": "ZendeskMigratePlanType",
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migratePlansObj,
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "ZendeskMigrateInvoices",
+              "FieldID": "",
+              "FieldName": "ZendeskMigrateInvoices",
+              "FieldType": "ZendeskMigrateInvoiceType",
+              "ColumnIndex": "3"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateInvoicesObj,
+              "ColumnIndex": "3"
+            });
+
+            req = {
+              "GURecID": "",
+              "RecordType": "CTS_IntergrationZendeskAttributes",
+              "OperationalStatus": "Active",
+              "RecordStatus": "Active",
+              "Cache": "CTS_IntergrationZendeskAttributes",
+              "Separate": "Test",
+              "RecordName": "CTS_IntergrationZendeskAttributes",
+              "GuTranID": "12345",
+              "RecordCultureName": "CTS_IntergrationZendeskAttributes",
+              "RecordCode": "CTS_IntergrationZendeskAttributes",
+              "commonDatafieldDetails": $scope.integrationConfigFields,
+              "commonDataValueDetails": $scope.integrationConfigValues
+            }
+
+            queue = "zendesk";
           }
           else if(tool=="Zoho")
           {
-            $scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded =true;
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "ZohoMigrateProfiles",
+              "FieldID": "",
+              "FieldName": "ZohoMigrateProfiles",
+              "FieldType": "ZohoMigrateProfileType",
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProfilesObj,
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "ZohoMigrateProducts",
+              "FieldID": "",
+              "FieldName": "ZohoMigrateProducts",
+              "FieldType": "ZohoMigrateProductType",
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProductsObj,
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "ZohoMigratePlans",
+              "FieldID": "",
+              "FieldName": "ZohoMigratePlans",
+              "FieldType": "ZohoMigratePlanType",
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migratePlansObj,
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "ZohoMigrateInvoices",
+              "FieldID": "",
+              "FieldName": "ZohoMigrateInvoices",
+              "FieldType": "ZohoMigrateInvoiceType",
+              "ColumnIndex": "3"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateInvoicesObj,
+              "ColumnIndex": "3"
+            });
+
+            req = {
+              "GURecID": "",
+              "RecordType": "CTS_IntergrationZohoAttributes",
+              "OperationalStatus": "Active",
+              "RecordStatus": "Active",
+              "Cache": "CTS_IntergrationZohoAttributes",
+              "Separate": "Test",
+              "RecordName": "CTS_IntergrationZohoAttributes",
+              "GuTranID": "12345",
+              "RecordCultureName": "CTS_IntergrationZohoAttributes",
+              "RecordCode": "CTS_IntergrationZohoAttributes",
+              "commonDatafieldDetails": $scope.integrationConfigFields,
+              "commonDataValueDetails": $scope.integrationConfigValues
+            }
+
+            queue = "zohobooks";
           }
           else if(tool=="MailChimp")
           {
-            $scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =true;
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "MailChimpMigrateProfiles",
+              "FieldID": "",
+              "FieldName": "MailChimpMigrateProfiles",
+              "FieldType": "MailChimpMigrateProfileType",
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProfilesObj,
+              "ColumnIndex": "0"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "MailChimpMigrateProducts",
+              "FieldID": "",
+              "FieldName": "MailChimpMigrateProducts",
+              "FieldType": "MailChimpMigrateProductType",
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateProductsObj,
+              "ColumnIndex": "1"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "MailChimpMigratePlans",
+              "FieldID": "",
+              "FieldName": "MailChimpMigratePlans",
+              "FieldType": "MailChimpMigratePlanType",
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migratePlansObj,
+              "ColumnIndex": "2"
+            });
+            $scope.integrationConfigFields.push({
+              "FieldCultureName": "MailChimpMigrateInvoices",
+              "FieldID": "",
+              "FieldName": "MailChimpMigrateInvoices",
+              "FieldType": "MailChimpMigrateInvoiceType",
+              "ColumnIndex": "3"
+            });
+            $scope.integrationConfigValues.push({
+              "RowID": "",
+              "RecordFieldData": migrateInvoicesObj,
+              "ColumnIndex": "3"
+            });
+
+            req = {
+              "GURecID": "",
+              "RecordType": "CTS_IntergrationMailChimpAttributes",
+              "OperationalStatus": "Active",
+              "RecordStatus": "Active",
+              "Cache": "CTS_IntergrationMailChimpAttributes",
+              "Separate": "Test",
+              "RecordName": "CTS_IntergrationMailChimpAttributes",
+              "GuTranID": "12345",
+              "RecordCultureName": "CTS_IntergrationMailChimpAttributes",
+              "RecordCode": "CTS_IntergrationMailChimpAttributes",
+              "commonDatafieldDetails": $scope.integrationConfigFields,
+              "commonDataValueDetails": $scope.integrationConfigValues
+            }
+
+            queue = "mailchimp";
           }
 
+          //req = {
+          //  "GURecID": "",
+          //  "RecordType": "CTS_IntergrationAttributes",
+          //  "OperationalStatus": "Active",
+          //  "RecordStatus": "Active",
+          //  "Cache": "CTS_IntergrationAttributes",
+          //  "Separate": "Test",
+          //  "RecordName": "CTS_IntergrationAttributes",
+          //  "GuTranID": "12345",
+          //  "RecordCultureName": "CTS_IntergrationAttributes",
+          //  "RecordCode": "CTS_IntergrationAttributes",
+          //  "commonDatafieldDetails": $scope.integrationConfigFields,
+          //  "commonDataValueDetails": $scope.integrationConfigValues
+          //}
 
-					if(migrateProfilesObj=="Migrate Existing Profiles")
-					{
-						$charge.profile().integrationProfileSync(queue).success(function (data) {
-							//
-							var responseSyncProfiles = data;
-							notifications.toast(responseSyncProfiles.syncedProfiles+"/"+responseSyncProfiles.profiles+" Profiles migrated to "+tool,"success");
+          $charge.settingsapp().store(req).success(function (data) {
+            //
+            notifications.toast(tool+" configurations updated","success");
+            vm.migrationConfigSubmitted = false;
+            vm.closeDialog();
 
-						}).error(function(data) {
-							//console.log(data);
-							notifications.toast("Profiles migration to "+tool+" failed","error");
+            if(tool=="Quickbooks")
+            {
+              $scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
-						})
-					}
+              vm.quickbooksConfig.selectedMigrateProfileValue = vm.migrationConfig.migrationProfiles;
+              vm.quickbooksConfig.selectedMigrateProductValue = vm.migrationConfig.migrationProducts;
+              vm.quickbooksConfig.selectedMigratePlanValue = vm.migrationConfig.migrationPlans;
+              vm.quickbooksConfig.selectedMigrateInvoiceValue = vm.migrationConfig.migrationInvoices;
+            }
+            else if(tool=="Xero")
+            {
+              $scope.xeroMigrateConfigAdded = vm.xeroBookMigrateConfigAdded =true;
 
-					if(migrateProductsObj=="Migrate Existing Products")
-					{
-						$charge.product().integrationProductSync(queue).success(function (data) {
-							//
-							var responseSyncProducts = data;
-							notifications.toast(responseSyncProducts.syncedProducts+"/"+responseSyncProducts.products+" Products migrated to "+tool,"success");
+              vm.migrateConfig.xeroProfileValue = vm.migrationConfig.migrationProfiles;
+              vm.migrateConfig.xeroProductValue = vm.migrationConfig.migrationProducts;
+              vm.migrateConfig.xeroPlanValue = vm.migrationConfig.migrationPlans;
+              vm.migrateConfig.xeroInvoiceValue = vm.migrationConfig.migrationInvoices;
+            }
+            else if(tool=="SalesForce")
+            {
+              $scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
 
-						}).error(function(data) {
-							//console.log(data);
-							notifications.toast("Products migration to "+tool+" failed","error");
+              vm.migrateConfig.salesforceProfileValue = vm.migrationConfig.migrationProfiles;
+              vm.migrateConfig.salesforceProductValue = vm.migrationConfig.migrationProducts;
+              vm.migrateConfig.salesforcePlanValue = vm.migrationConfig.migrationPlans;
+              vm.migrateConfig.salesforceInvoiceValue = vm.migrationConfig.migrationInvoices;
+            }
+            else if(tool=="Zendesk")
+            {
+              $scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded =true;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
-						})
-					}
+              vm.migrateConfig.zendeskProfileValue = vm.migrationConfig.migrationProfiles;
+              vm.migrateConfig.zendeskProductValue = vm.migrationConfig.migrationProducts;
+              vm.migrateConfig.zendeskPlanValue = vm.migrationConfig.migrationPlans;
+              vm.migrateConfig.zendeskInvoiceValue = vm.migrationConfig.migrationInvoices;
+            }
+            else if(tool=="Zoho")
+            {
+              $scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded =true;
 
-					if(migratePlansObj=="Migrate Existing Plans")
-					{
-						$charge.plan().integrationPlanSync(queue).success(function (data) {
-							//
-							var responseSyncPlans = data;
-							notifications.toast(responseSyncPlans.length+" Plans migrated to "+tool,"success");
+              vm.migrateConfig.zohoProfileValue = vm.migrationConfig.migrationProfiles;
+              vm.migrateConfig.zohoProductValue = vm.migrationConfig.migrationProducts;
+              vm.migrateConfig.zohoPlanValue = vm.migrationConfig.migrationPlans;
+              vm.migrateConfig.zohoInvoiceValue = vm.migrationConfig.migrationInvoices;
+            }
+            else if(tool=="MailChimp")
+            {
+              $scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =true;
 
-						}).error(function(data) {
-							//console.log(data);
-							notifications.toast("Plans migration to "+tool+" failed","error");
+              vm.migrateConfig.mailchimpProfileValue = vm.migrationConfig.migrationProfiles;
+              vm.migrateConfig.mailchimpProductValue = vm.migrationConfig.migrationProducts;
+              vm.migrateConfig.mailchimpPlanValue = vm.migrationConfig.migrationPlans;
+              vm.migrateConfig.mailchimpInvoiceValue = vm.migrationConfig.migrationInvoices;
+            }
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
-						})
-					}
 
-					if(migrateInvoicesObj=="Migrate Existing Invoices")
-					{
-						$charge.invoicing().integrationInvoiceSync(queue).success(function (data) {
-							//
-							var responseSyncInvoices = data;
-							notifications.toast(responseSyncInvoices.data.syncedData+"/"+responseSyncInvoices.data.invoices+" Invoices migrated to "+tool,"success");
+            if(migrateProfilesObj=="Migrate Existing Profiles")
+            {
+              $charge.profile().integrationProfileSync(queue).success(function (data) {
+                //
+                var responseSyncProfiles = data;
+                notifications.toast(responseSyncProfiles.syncedProfiles+"/"+responseSyncProfiles.profiles+" Profiles migrated to "+tool,"success");
 
-						}).error(function(data) {
-							//console.log(data);
-							notifications.toast("Invoices migration to "+tool+" failed","error");
+              }).error(function(data) {
+                //console.log(data);
+                notifications.toast("Profiles migration to "+tool+" failed","error");
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							// logHelper.error( $scope.infoJson);
-						})
-					}
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                // logHelper.error( $scope.infoJson);
+              })
+            }
 
-				}).error(function(data) {
-					//console.log(data);
-					notifications.toast(tool+" configurations failed","error");
-					vm.migrationConfigSubmitted = false;
+            if(migrateProductsObj=="Migrate Existing Products")
+            {
+              $charge.product().integrationProductSync(queue).success(function (data) {
+                //
+                var responseSyncProducts = data;
+                notifications.toast(responseSyncProducts.syncedProducts+"/"+responseSyncProducts.products+" Products migrated to "+tool,"success");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					// logHelper.error( $scope.infoJson);
-				})
+              }).error(function(data) {
+                //console.log(data);
+                notifications.toast("Products migration to "+tool+" failed","error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                // logHelper.error( $scope.infoJson);
+              })
+            }
+
+            if(migratePlansObj=="Migrate Existing Plans")
+            {
+              $charge.plan().integrationPlanSync(queue).success(function (data) {
+                //
+                var responseSyncPlans = data;
+                notifications.toast(responseSyncPlans.length+" Plans migrated to "+tool,"success");
+
+              }).error(function(data) {
+                //console.log(data);
+                notifications.toast("Plans migration to "+tool+" failed","error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                // logHelper.error( $scope.infoJson);
+              })
+            }
+
+            if(migrateInvoicesObj=="Migrate Existing Invoices")
+            {
+              $charge.invoicing().integrationInvoiceSync(queue).success(function (data) {
+                //
+                var responseSyncInvoices = data;
+                notifications.toast(responseSyncInvoices.data.syncedData+"/"+responseSyncInvoices.data.invoices+" Invoices migrated to "+tool,"success");
+
+              }).error(function(data) {
+                //console.log(data);
+                notifications.toast("Invoices migration to "+tool+" failed","error");
+
+                $scope.infoJson= {};
+                $scope.infoJson.message =JSON.stringify(data);
+                $scope.infoJson.app ='settings';
+                // logHelper.error( $scope.infoJson);
+              })
+            }
+
+          }).error(function(data) {
+            //console.log(data);
+            notifications.toast(tool+" configurations failed","error");
+            vm.migrationConfigSubmitted = false;
+
+            $scope.infoJson= {};
+            $scope.infoJson.message =JSON.stringify(data);
+            $scope.infoJson.app ='settings';
+            // logHelper.error( $scope.infoJson);
+          })
+        }
+
 			}
 		}
 
@@ -8538,6 +8577,7 @@
 							$charge.settingsapp().deleteCommmon(vm.quickbooksConfig.GuRecID).success(function (data) {
 
 								var quickbooksConfigCleared = data;
+                $scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =false;
 
 							}).error(function(data) {
 								//console.log(data);
@@ -8593,6 +8633,7 @@
               $charge.settingsapp().deleteCommmon(vm.migrateConfig.salesforceGuRecID).success(function (data) {
 
                 var salesforceConfigCleared = data;
+                $scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =false;
 
               }).error(function(data) {
                 //console.log(data);
@@ -8685,6 +8726,7 @@
               $charge.settingsapp().deleteCommmon(vm.migrateConfig.zendeskGuRecID).success(function (data) {
 
                 var zendeskConfigCleared = data;
+                $scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded =false;
 
               }).error(function(data) {
                 //console.log(data);
@@ -8781,6 +8823,7 @@
               $charge.settingsapp().deleteCommmon(vm.migrateConfig.zohoGuRecID).success(function (data) {
 
                 var zohoConfigCleared = data;
+                $scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded =false;
 
               }).error(function(data) {
                 //console.log(data);
@@ -8908,6 +8951,7 @@
               $charge.settingsapp().deleteCommmon(vm.migrateConfig.xeroGuRecID).success(function (data) {
 
                 var xeroConfigCleared = data;
+                $scope.xeroMigrateConfigAdded = vm.xeroBookMigrateConfigAdded =false;
 
               }).error(function(data) {
                 //console.log(data);
@@ -9019,6 +9063,7 @@
           if(data.status)
           {
             notifications.toast("Successfully MailChimp account removed","success");
+            $scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =false;
             $scope.openIntergrationConfigs();
           }
           vm.submittedMailChimpConfig = false;

@@ -1,7 +1,7 @@
 //////////////////////////////////////
 // App : Settings                   //
 // Owner : Suvethan                 //
-// Last changed date : 2018/03/13   //
+// Last changed date : 2018/03/21   //
 // Version : 6.1.0.38               //
 // Updated By : Gihan               //
 //////////////////////////////////////
@@ -32,8 +32,8 @@
 					security: ['$q','mesentitlement','$timeout','$rootScope','$state','$location', function($q,mesentitlement,$timeout,$rootScope,$state, $location){
 						return $q(function(resolve, reject) {
 							$timeout(function() {
-								// if (true) {
-								if ($rootScope.isBaseSet2) {
+								if (true) {
+									// if ($rootScope.isBaseSet2) {
 									resolve(function () {
 										var entitledStatesReturn = mesentitlement.stateDepResolver('settings');
 

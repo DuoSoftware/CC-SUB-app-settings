@@ -2691,19 +2691,19 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="vm.usingTwilioSMS" ng-click="registerIntegrationDialog('zendesk', '', $event)">
+                                                        <md-button ng-disabled="zendeskConnected" ng-click="registerIntegrationDialog('zendesk', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="vm.zendeskMigrateConfigAdded" ng-click="registerIntegrationDialog('migration', 'zendesk', $event)">
+                                                        <md-button ng-disabled="vm.zendeskMigrateConfigAdded || !zendeskConnected" ng-click="registerIntegrationDialog('migration', 'zendesk', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Migration Configuration
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="!vm.usingTwilioSMS" ng-click="removeZendeskConfig()">
+                                                        <md-button ng-disabled="!zendeskConnected" ng-click="removeZendeskConfig()">
                                                             <md-icon md-font-icon="icon-logout"></md-icon>
                                                             Leave
                                                         </md-button>
