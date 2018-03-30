@@ -21,7 +21,7 @@
 			// debugger;
 			if($scope.adyenForm.$valid){
 
-				$charge.paymentgateway().registerWithAdyen($scope.authorize).success(function (response) {
+				$charge.paymentgateway().adyenkeyregister($scope.authorize).success(function (response) {
 
 					if(response.status){
 						notifications.toast("Successfully registered with Adyen", "success");

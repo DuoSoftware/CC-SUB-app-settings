@@ -10023,7 +10023,7 @@
 
 		}
 
-		$scope.disconnectWithAuthorize = function(key){
+		$scope.disconnectWithAdyen = function(key){
 
 			$scope.isRegButtonsShow = true;
 

@@ -2244,18 +2244,18 @@
                                         </md-input-container>
                                     </div>
 
-                                    <div layout="row" layout-align="space-between center" ng-if="gateway.paymentGateway === 'stripe' && gateway.isConnected && showMoreUserInfo" class="p-10 solid-highlight-gray mv-20">
+                                    <div layout="row" layout-align="space-between start" ng-if="gateway.paymentGateway === 'stripe' && gateway.isConnected && showMoreUserInfo" class="p-10 solid-highlight-gray mv-20">
                                         <div flex>
                                             <p class="mt-0 fs-16">You can also get registered with below payment methods and use it for your transactions.</p>
                                             <span style="color: #888">Select the methods you want and register.</span>
-                                            <div style="padding: 5px 20%">
-                                                <md-input-container layout="row" layout-align="start center" flex>
-                                                    <md-checkbox id="bitcoinCheckBox" ng-model="gateway.key['0'].enableBitcoin" class="m-0"></md-checkbox>
-                                                    <div class="online_stripe_bitcoin"></div>
-                                                    <span class="fs-20 ml-10">Bitcoin</span>
-                                                    <!--<div>{{gateway.paymentGateway}}</div>-->
-                                                </md-input-container>
-                                            </div>
+                                            <!--<div style="padding: 5px 20%">-->
+                                                <!--<md-input-container layout="row" layout-align="start center" flex>-->
+                                                    <!--<md-checkbox id="bitcoinCheckBox" ng-model="gateway.key['0'].enableBitcoin" class="m-0"></md-checkbox>-->
+                                                    <!--<div class="online_stripe_bitcoin"></div>-->
+                                                    <!--<span class="fs-20 ml-10">Bitcoin</span>-->
+                                                    <!--&lt;!&ndash;<div>{{gateway.paymentGateway}}</div>&ndash;&gt;-->
+                                                <!--</md-input-container>-->
+                                            <!--</div>-->
                                             <div style="padding: 5px 20%">
                                                 <md-input-container layout="row" layout-align="start center" flex>
                                                     <md-checkbox id="achCheckBox" ng-model="gateway.key['0'].enableAch" class="m-0"></md-checkbox>
