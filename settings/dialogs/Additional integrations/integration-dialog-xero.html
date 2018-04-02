@@ -31,7 +31,7 @@
                 <md-tab label="Accounts">
                     <md-content class="md-padding">
                         <div class="preloader" ng-if="!vm.xeroConfigloaded">
-                          <md-progress-circular></md-progress-circular>
+                            <md-progress-circular></md-progress-circular>
                         </div>
                         <div layout="row">
                             <div layout="column" class="guide-portion" flex>
@@ -85,13 +85,13 @@
                                         <label><b>{{vm.xeroConfigCurrencies[0].Code}}</b></label>
                                     </div>
                                     <div layout="row" class="mb-20" flex>
-                                      <label flex>Avalable Xero Currencies</label>
-                                      <label><b>{{vm.xeroConfigCurrencyString}}</b></label>
+                                        <label flex>Avalable Xero Currencies</label>
+                                        <label><b>{{vm.xeroConfigCurrencyString}}</b></label>
                                     </div>
                                     <div layout="row" flex>
-                                      <label style="color:red" ng-if="!vm.xeroConfigCurrencyMatched" flex>
-                                        Xero currencies not matching with the Cloudcharge currency!
-                                      </label>
+                                        <label style="color:red" ng-if="!vm.xeroConfigCurrencyMatched" flex>
+                                            Xero currencies not matching with the Cloudcharge currency!
+                                        </label>
                                     </div>
                                 </div>
                                 <div layout="row" flex>
@@ -107,32 +107,32 @@
                     </md-content>
                 </md-tab>
                 <md-tab label="Tax" ng-disabled="!vm.xeroConfigCurrencyMatched">
-                  <md-content class="md-padding">
-                    <div layout="column">
-                      <b class="group-sub-head mt-0">Tax configuration</b>
-                      <label><b>By default, we will use the tax code of “NONE” for non-taxable items, but you may change that here.</b></label>
-                      <br/>
-                      <div class="form-portion" layout="column" layout-align="start center" flex>
-                        <div md-whiteframe="1dp" flex class="p-10 w-300">
-                          <div layout="row" flex>
-                            <md-input-container class="md-block" flex>
-                              <label>Default tax type</label>
-                              <md-select flex ng-required="false" ng-model="vm.xeroConfig.defaultTaxType">
-                                <md-option ng-value="'Sales Tax on Imports (0.0%)'">Sales Tax on Imports (0.0%)</md-option>
-                                <md-option ng-value="'Tax Exempt (0.0%)'">Tax Exempt (0.0%)</md-option>
-                                <md-option ng-value="'Tax on Purchases (0.0%)'">Tax on Purchases (0.0%)</md-option>
-                                <md-option ng-value="'Tax on Sales (0.0%)'">Tax on Sales (0.0%)</md-option>
-                              </md-select>
-                            </md-input-container>
-                          </div>
+                    <md-content class="md-padding">
+                        <div layout="column">
+                            <b class="group-sub-head mt-0">Tax configuration</b>
+                            <label><b>By default, we will use the tax code of “NONE” for non-taxable items, but you may change that here.</b></label>
+                            <br/>
+                            <div class="form-portion" layout="column" layout-align="start center" flex>
+                                <div md-whiteframe="1dp" flex class="p-10 w-300">
+                                    <div layout="row" flex>
+                                        <md-input-container class="md-block" flex>
+                                            <label>Default tax type</label>
+                                            <md-select flex ng-required="false" ng-model="vm.xeroConfig.defaultTaxType">
+                                                <md-option ng-value="'Sales Tax on Imports (0.0%)'">Sales Tax on Imports (0.0%)</md-option>
+                                                <md-option ng-value="'Tax Exempt (0.0%)'">Tax Exempt (0.0%)</md-option>
+                                                <md-option ng-value="'Tax on Purchases (0.0%)'">Tax on Purchases (0.0%)</md-option>
+                                                <md-option ng-value="'Tax on Sales (0.0%)'">Tax on Sales (0.0%)</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                    </div>
-                    <div layout="row" layout-align="space-between center" class="mt-20">
-                      <md-button class="md-accent" ng-click="vm.toggleXeroConfigViews(1)">< Back</md-button>
-                      <md-button class="md-accent md-raised" ng-disabled="vm.submittedXeroConfig" type="submit">Register</md-button>
-                    </div>
-                  </md-content>
+                        <div layout="row" layout-align="space-between center" class="mt-20">
+                            <md-button class="md-accent" ng-click="vm.toggleXeroConfigViews(1)">< Back</md-button>
+                            <md-button class="md-accent md-raised" ng-disabled="vm.submittedXeroConfig" type="submit">Save</md-button>
+                        </div>
+                    </md-content>
                 </md-tab>
             </md-tabs>
         </md-content>

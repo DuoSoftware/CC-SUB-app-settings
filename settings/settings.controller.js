@@ -7605,7 +7605,7 @@
 				{
 					$scope.quickBookConnected=true;
 					$scope.quickBookConfig = data.data;
-					angular.element("#quickbookId").empty();
+					// angular.element("#quickbookId").empty();
 
 					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationQuickbooksAttributes").success(function(data) {
 						$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
@@ -7635,10 +7635,12 @@
 					$scope.quickBookConnected=false;
 
 					$charge.quickbooks().getQuickbooksConfig().success(function (data) {
-						angular.element("#quickbookId").empty();
-						angular.element("#quickbookId").append(data);
-
-						$("#quickbookId a").attr('href','#settings');
+						// angular.element("#quickbookId").empty();
+						// angular.element("#quickbookId").append(data);
+						//
+						// $("#quickbookId a").attr('href','#settings');
+						var elem = $(document.createElement('div')).append(data);
+						$scope.qbUrl = elem.find('a').attr('onclick').split("'")[1];
 
 						vm.quickbooksIntegrateUILoading = false;
 					}).error(function (data) {
@@ -7661,7 +7663,7 @@
 				{
 					$scope.salesforceConnected=true;
 					$scope.salesforceConfig = data.data;
-					angular.element("#salesforceId").empty();
+					// angular.element("#salesforceId").empty();
 
 					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationSalesForceAttributes").success(function(data) {
 						$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
@@ -7690,15 +7692,14 @@
 					$scope.salesforceConnected=false;
 
 					$charge.salesforce().getSalesforceConfig().success(function (data) {
-						angular.element("#salesforceId").empty();
-						angular.element("#salesforceId").append(data);
-
-						$("#salesforceId a").attr('href','#settings');
-
+						// angular.element("#salesforceId").empty();
+						// angular.element("#salesforceId").append(data);
+						var elem = $(document.createElement('div')).append(data);
+						$scope.sfUrl = elem.find('a').attr('onclick').split("'")[1];
 						vm.salesforceIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
-						angular.element("#salesforceId").empty();
+						// angular.element("#salesforceId").empty();
 						notifications.toast("Salesforce configurations loading failed", "error");
 						vm.salesforceIntegrateUILoading = false;
 					})
@@ -7708,7 +7709,7 @@
 				//console.log(data);
 				$scope.salesforceConnected=false;
 				vm.salesforceIntegrateUILoading = false;
-			})
+			});
 
 			vm.zendeskIntegrateUILoading = true;
 			$charge.zendesk().checkZendeskConnected(getCurrentDomain()).success(function (data) {
@@ -7898,6 +7899,126 @@
 				vm.mailchimpIntegrateUILoading = false;
 			})
 		}
+
+		$scope.executeSf = function (url) {
+			window.open($scope.sfUrl, null, "location=1,width=800,height=650");
+
+			var sfcounter = 0;
+			function sfStatWatcher() {
+				if(sfcounter < 20){
+					checkSFState(function (stat, data) {
+						if(stat){
+							$scope.salesforceConnected=true;
+							$scope.salesforceConfig = data.data;
+							// angular.element("#salesforceId").empty();
+
+							$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationSalesForceAttributes").success(function(data) {
+								$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
+								vm.migrateConfig.salesforceGuRecID = data[0].GuRecID;
+								vm.migrateConfig.salesforceProfileValue = data[0].RecordFieldData;
+								vm.migrateConfig.salesforceProductValue = data[1].RecordFieldData;
+								vm.migrateConfig.salesforcePlanValue = data[2].RecordFieldData;
+								vm.migrateConfig.salesforceInvoiceValue = data[3].RecordFieldData;
+
+								vm.salesforceIntegrateUILoading = false;
+							}).error(function (data) {
+								//console.log(data);
+								$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =false;
+
+								vm.migrateConfig.salesforceGuRecID = "";
+								vm.migrateConfig.salesforceProfileValue = "";
+								vm.migrateConfig.salesforceProductValue = "";
+								vm.migrateConfig.salesforcePlanValue = "";
+								vm.migrateConfig.salesforceInvoiceValue = "";
+
+								vm.salesforceIntegrateUILoading = false;
+							});
+							notifications.toast("Successfully registered with Salseforce", "success");
+							clearInterval(sfTimer);
+						}
+					});
+				}else{
+					notifications.toast('Error', 'Salseforce registration failed');
+					clearInterval(sfTimer);
+				}
+				sfcounter++;
+			}
+
+			var sfTimer = setInterval(sfStatWatcher, 5000);
+
+		};
+
+		$scope.executeQB = function (url) {
+			window.open($scope.qbUrl, null, "location=1,width=800,height=650");
+
+			var qbcounter = 0;
+			function qbStatWatcher() {
+				if(qbcounter < 20){
+					checkSFState(function (stat, data) {
+						if(stat){
+							$scope.quickBookConnected=true;
+							$scope.quickBookConfig = data.data;
+							// angular.element("#quickbookId").empty();
+
+							$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationQuickbooksAttributes").success(function(data) {
+								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
+								vm.quickbooksConfig.GuRecID = data[0].GuRecID;
+								vm.quickbooksConfig.selectedMigrateProfileValue = data[0].RecordFieldData;
+								vm.quickbooksConfig.selectedMigrateProductValue = data[1].RecordFieldData;
+								vm.quickbooksConfig.selectedMigratePlanValue = data[2].RecordFieldData;
+								vm.quickbooksConfig.selectedMigrateInvoiceValue = data[3].RecordFieldData;
+
+								vm.quickbooksIntegrateUILoading = false;
+							}).error(function (data) {
+								//console.log(data);
+								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =false;
+
+								vm.quickbooksConfig.GuRecID = "";
+								vm.quickbooksConfig.selectedMigrateProfileValue = "";
+								vm.quickbooksConfig.selectedMigrateProductValue = "";
+								vm.quickbooksConfig.selectedMigratePlanValue = "";
+								vm.quickbooksConfig.selectedMigrateInvoiceValue = "";
+
+								vm.quickbooksIntegrateUILoading = false;
+							})
+							notifications.toast("Successfully registered with Quickbooks", "success");
+							clearInterval(qbTimer);
+						}
+					});
+				}else{
+					notifications.toast('Error', 'Quickbooks registration failed');
+					clearInterval(qbTimer);
+				}
+				qbcounter++;
+			}
+
+			var qbTimer = setInterval(qbStatWatcher, 5000);
+
+		};
+
+		function checkSFState(callback) {
+			$charge.salesforce().checkSalesforceConnected(getCurrentDomain()).success(function (data) {
+				if(data.connected){
+					callback(true, data);
+				}else{
+					callback(false, null);
+				}
+			}).error(function (res) {
+				callback(false, null);
+			});
+		};
+
+		function checkQBState(callback) {
+			$charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
+				if(data.connected){
+					callback(true, data);
+				}else{
+					callback(false, null);
+				}
+			}).error(function (res) {
+				callback(false, null);
+			});
+		};
 
 		vm.xeroConfigloaded = false;
 		vm.getXeroAdvanceConfig = function () {
