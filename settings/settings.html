@@ -59,7 +59,9 @@
 
         <!-- CONTENT CARD -->
         <div class="content-card" layout="column" flex md-whiteframe="5dp">
-
+            <div class="preloader mt-80" ng-if="vm.quickbooksIntegrateUILoading || vm.twilioIntegrateUILoading || vm.salesforceIntegrateUILoading || vm.xeroIntegrateUILoading || vm.zendeskIntegrateUILoading || vm.mailchimpIntegrateUILoading || vm.zohoIntegrateUILoading">
+                <md-progress-circular></md-progress-circular>
+            </div>
             <md-tabs class="main-nav-tabs" id="settingsTabs" flex md-selected="mainNavSelected" md-border-bottom>
                 <md-tab label="General" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('default')">
                     <md-content flex>
@@ -2297,9 +2299,6 @@
                 </md-tab>
                 <md-tab label="Integrations" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('sms')">
                     <div flex layout="row" layout-align="center center">
-                        <div class="preloader" ng-if="vm.quickbooksIntegrateUILoading || vm.twilioIntegrateUILoading || vm.salesforceIntegrateUILoading || vm.xeroIntegrateUILoading || vm.zendeskIntegrateUILoading || vm.mailchimpIntegrateUILoading || vm.zohoIntegrateUILoading">
-                            <md-progress-circular></md-progress-circular>
-                        </div>
                         <div flex="70">
                             <div class="payment-card">
                                 <div>
