@@ -2463,12 +2463,9 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button id="quickbookId" ng-disabled="quickBookConnected">
-                                                            <!--
-                                                            +++++++++++++
-                                                            Quickbooks registration controls will be injected here dynamically from the controller
-                                                            +++++++++++++
-                                                            -->
+                                                        <md-button id="quickbookId" ng-disabled="quickBookConnected"  ng-click="executeQB()">
+                                                            <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                            Register
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
