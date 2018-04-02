@@ -7715,16 +7715,42 @@
 
 				var counter = 0;
 				function sfStatWatcher() {
-					// if(counter < 3){
+					if(counter < 20){
 						checkSFState(function (stat, data) {
 							if(stat){
+								$scope.salesforceConnected=true;
+								$scope.salesforceConfig = data.data;
+								// angular.element("#salesforceId").empty();
+
+								$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationSalesForceAttributes").success(function(data) {
+									$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
+									vm.migrateConfig.salesforceGuRecID = data[0].GuRecID;
+									vm.migrateConfig.salesforceProfileValue = data[0].RecordFieldData;
+									vm.migrateConfig.salesforceProductValue = data[1].RecordFieldData;
+									vm.migrateConfig.salesforcePlanValue = data[2].RecordFieldData;
+									vm.migrateConfig.salesforceInvoiceValue = data[3].RecordFieldData;
+
+									vm.salesforceIntegrateUILoading = false;
+								}).error(function (data) {
+									//console.log(data);
+									$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =false;
+
+									vm.migrateConfig.salesforceGuRecID = "";
+									vm.migrateConfig.salesforceProfileValue = "";
+									vm.migrateConfig.salesforceProductValue = "";
+									vm.migrateConfig.salesforcePlanValue = "";
+									vm.migrateConfig.salesforceInvoiceValue = "";
+
+									vm.salesforceIntegrateUILoading = false;
+								});
+								notifications.toast("Successfully registered with Square", "success");
 								clearInterval(timer);
 							}
 						});
-					// }else{
-					// 	notifications.toast('Error', 'Salseforce registration failed');
-					// }
-					// counter++;
+					}else{
+						notifications.toast('Error', 'Salseforce registration failed');
+					}
+					counter++;
 				}
 
 				var timer = setInterval(sfStatWatcher, 4000);
