@@ -7663,7 +7663,7 @@
 				{
 					$scope.salesforceConnected=true;
 					$scope.salesforceConfig = data.data;
-					angular.element("#salesforceId").empty();
+					// angular.element("#salesforceId").empty();
 
 					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationSalesForceAttributes").success(function(data) {
 						$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
@@ -7699,7 +7699,7 @@
 						vm.salesforceIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
-						angular.element("#salesforceId").empty();
+						// angular.element("#salesforceId").empty();
 						notifications.toast("Salesforce configurations loading failed", "error");
 						vm.salesforceIntegrateUILoading = false;
 					})
@@ -7903,9 +7903,9 @@
 		$scope.executeSf = function (url) {
 			window.open($scope.sfUrl, null, "location=1,width=800,height=650");
 
-			var counter = 0;
+			var sfcounter = 0;
 			function sfStatWatcher() {
-				if(counter < 20){
+				if(sfcounter < 20){
 					checkSFState(function (stat, data) {
 						if(stat){
 							$scope.salesforceConnected=true;
@@ -7934,24 +7934,25 @@
 								vm.salesforceIntegrateUILoading = false;
 							});
 							notifications.toast("Successfully registered with Salseforce", "success");
-							clearInterval(timer);
+							clearInterval(sfTimer);
 						}
 					});
 				}else{
 					notifications.toast('Error', 'Salseforce registration failed');
+					clearInterval(sfTimer);
 				}
-				counter++;
+				sfcounter++;
 			}
 
-			var timer = setInterval(sfStatWatcher, 4000);
+			var sfTimer = setInterval(sfStatWatcher, 5000);
 
 		};
 
 		$scope.executeQB = function (url) {
 			window.open($scope.qbUrl, null, "location=1,width=800,height=650");
 
-			var counter = 0;
-			function statWatcher() {
+			var qbcounter = 0;
+			function qbStatWatcher() {
 				if(counter < 20){
 					checkSFState(function (stat, data) {
 						if(stat){
@@ -7981,16 +7982,17 @@
 								vm.quickbooksIntegrateUILoading = false;
 							})
 							notifications.toast("Successfully registered with Quickbooks", "success");
-							clearInterval(timer);
+							clearInterval(qbTimer);
 						}
 					});
 				}else{
 					notifications.toast('Error', 'Quickbooks registration failed');
+					clearInterval(qbTimer);
 				}
-				counter++;
+				qbcounter++;
 			}
 
-			var timer = setInterval(statWatcher, 4000);
+			var qbTimer = setInterval(qbStatWatcher, 5000);
 
 		};
 
