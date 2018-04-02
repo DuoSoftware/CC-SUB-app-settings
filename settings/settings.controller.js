@@ -7656,6 +7656,7 @@
 			})
 
 			vm.salesforceIntegrateUILoading = true;
+
 			$charge.salesforce().checkSalesforceConnected(getCurrentDomain()).success(function (data) {
 				if(data.connected)
 				{
@@ -7690,11 +7691,10 @@
 					$scope.salesforceConnected=false;
 
 					$charge.salesforce().getSalesforceConfig().success(function (data) {
-						angular.element("#salesforceId").empty();
-						angular.element("#salesforceId").append(data);
-
-						$("#salesforceId a").attr('href','#settings');
-
+						// angular.element("#salesforceId").empty();
+						// angular.element("#salesforceId").append(data);
+						var elem = $(document.createElement('div')).append(data);
+						$scope.sfUrl = elem.find('a').attr('onclick').split("'")[1];
 						vm.salesforceIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
@@ -7708,7 +7708,40 @@
 				//console.log(data);
 				$scope.salesforceConnected=false;
 				vm.salesforceIntegrateUILoading = false;
-			})
+			});
+
+			$scope.executeSf = function (url) {
+				window.open($scope.sfUrl, null, "location=1,width=800,height=650");
+
+				var counter = 0;
+				function sfStatWatcher() {
+					// if(counter < 3){
+						checkSFState(function (stat, data) {
+							if(stat){
+								clearInterval(timer);
+							}
+						});
+					// }else{
+					// 	notifications.toast('Error', 'Salseforce registration failed');
+					// }
+					// counter++;
+				}
+
+				var timer = setInterval(sfStatWatcher, 4000);
+
+			};
+
+			function checkSFState(callback) {
+				$charge.salesforce().checkSalesforceConnected(getCurrentDomain()).success(function (data) {
+					if(data.connected){
+						callback(true, data);
+					}else{
+						callback(false, null);
+					}
+				}).error(function (res) {
+					callback(false, null);
+				});
+			};
 
 			vm.zendeskIntegrateUILoading = true;
 			$charge.zendesk().checkZendeskConnected(getCurrentDomain()).success(function (data) {
