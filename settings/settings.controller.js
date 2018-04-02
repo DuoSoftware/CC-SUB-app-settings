@@ -7953,7 +7953,7 @@
 
 			var qbcounter = 0;
 			function qbStatWatcher() {
-				if(counter < 20){
+				if(qbcounter < 20){
 					checkSFState(function (stat, data) {
 						if(stat){
 							$scope.quickBookConnected=true;
