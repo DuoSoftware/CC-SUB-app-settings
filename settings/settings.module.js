@@ -1,8 +1,8 @@
 //////////////////////////////////////
 // App : Settings                   //
 // Owner : Suvethan                 //
-// Last changed date : 2018/03/30   //
-// Version : 6.1.0.39               //
+// Last changed date : 2018/04/02   //
+// Version : 6.1.0.40               //
 // Updated By : Kasun               //
 //////////////////////////////////////
 
