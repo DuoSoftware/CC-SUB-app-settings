@@ -2,7 +2,7 @@
     <md-toolbar>
         <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
-                <md-icon md-font-icon="icon-cog"></md-icon> <h3>{{vm.migrateTool}} Migration Configuration</h3>
+                <md-icon md-font-icon="icon-cog"></md-icon> <h3>{{vm.migrateTool | capitalize}} Migration Configuration</h3>
             </div>
             <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Close dialog">
                 <md-icon md-font-icon="icon-close"></md-icon>
@@ -13,7 +13,7 @@
         <div layout="row">
             <div layout="column" class="guide-portion" flex>
                 <div layout="column" style="margin-bottom: 20px">
-                    <h2 class="mb-10">{{vm.migrateTool}}..</h2>
+                    <h2 class="mb-10">{{vm.migrateTool | capitalize}}..</h2>
                 </div>
                 <p class="m-0">
                     {{vm.migrateToolDescription}}
