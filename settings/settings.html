@@ -37,7 +37,7 @@
                 <div class="title" layout="column" layout-align="center start">
                     <div class="logo" layout="row" layout-align="start center">
                         <span class="logo-icon">
-                            <img src="app/core/app_icons/settings_app_icon.png" alt=""/>
+                            <img src="app/core/app_icons/settings_app_icon.png" alt="" />
                         </span>
                         <span class="logo-text">Settings</span>
                     </div>
@@ -59,7 +59,7 @@
 
         <!-- CONTENT CARD -->
         <div class="content-card" layout="column" flex md-whiteframe="5dp">
-            <div class="preloader mt-80" ng-if="vm.quickbooksIntegrateUILoading || vm.twilioIntegrateUILoading || vm.salesforceIntegrateUILoading || vm.xeroIntegrateUILoading || vm.zendeskIntegrateUILoading || vm.mailchimpIntegrateUILoading || vm.zohoIntegrateUILoading">
+            <div class="preloader mt-80" ng-if="vm.quickbooksIntegrateUILoading || vm.twilioIntegrateUILoading || vm.salesforceIntegrateUILoading || vm.xeroIntegrateUILoading || vm.zendeskIntegrateUILoading || vm.mailchimpIntegrateUILoading || vm.zohoIntegrateUILoading || vm.avalaraIntegrateUILoading">
                 <md-progress-circular></md-progress-circular>
             </div>
             <md-tabs class="main-nav-tabs" id="settingsTabs" flex md-selected="mainNavSelected" md-border-bottom>
@@ -86,7 +86,8 @@
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
                                     <div layout="row" layout-align="start center">
-                                        <md-icon md-font-icon="icon-cog"></md-icon> <h3>General details</h3>
+                                        <md-icon md-font-icon="icon-cog"></md-icon>
+                                        <h3>General details</h3>
                                     </div>
                                 </md-card-title>
                                 <md-card-content>
@@ -105,20 +106,11 @@
 
                                         <div flex="5"></div>
 
-                                        <md-autocomplete flex class="mt-20"
-                                                         md-select-on-match
-                                                         ng-keypress="enter($event)"
-                                                         ng-disabled="UIbaseCurrency != null && UIbaseCurrency != '' && transactionCount > 0"
-                                                         md-input-name="autocompleteField"
-                                                         md-no-cache="vm.noCache"
-                                                         md-selected-item="vm.selectedItem"
-                                                         md-selected-item-change="setBaseCurrency(item)"
-                                                         md-search-text-change="setBaseCurrency(item)"
-                                                         md-search-text="vm.searchText"
-                                                         md-items="item in querySearch(vm.searchText)"
-                                                         md-item-text="item.code"
-                                                         md-floating-label="Currency"
-                                                         md-min-length="">
+                                        <md-autocomplete flex class="mt-20" md-select-on-match ng-keypress="enter($event)" ng-disabled="UIbaseCurrency != null && UIbaseCurrency != '' && transactionCount > 0"
+                                            md-input-name="autocompleteField" md-no-cache="vm.noCache" md-selected-item="vm.selectedItem"
+                                            md-selected-item-change="setBaseCurrency(item)" md-search-text-change="setBaseCurrency(item)"
+                                            md-search-text="vm.searchText" md-items="item in querySearch(vm.searchText)" md-item-text="item.code"
+                                            md-floating-label="Currency" md-min-length="">
                                             <md-item-template>
                                                 <span md-highlight-text="vm.searchText" ng-mouseover="tooltip=true">{{item.code}} - {{item.name}}</span>
                                                 <!--<md-tooltip md-direction="right" md-visible="tooltip">{{item.name}}</md-tooltip>-->
@@ -143,7 +135,8 @@
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
                                     <div layout="row" layout-align="start center">
-                                        <md-icon md-font-icon="icon-document"></md-icon> <h3>Document format</h3>
+                                        <md-icon md-font-icon="icon-document"></md-icon>
+                                        <h3>Document format</h3>
                                     </div>
                                 </md-card-title>
                                 <md-card-content md-whiteframe="1dp">
@@ -243,9 +236,12 @@
                                             <!--</tr>-->
                                             <!--</table>-->
                                             <div layout="row" layout-align="center start" flex class="ph-100">
-                                                <div class="w-280 p-40 h-375 pos-rel" ng-class="{'md-whiteframe-2dp':editImageOn, 'dragOn':divClass,'light-gray':editImageOn}" layout="column" drag-and-drop>
+                                                <div class="w-280 p-40 h-375 pos-rel" ng-class="{'md-whiteframe-2dp':editImageOn, 'dragOn':divClass,'light-gray':editImageOn}"
+                                                    layout="column" drag-and-drop>
                                                     <div class="text-right close-logo" ng-if="editImageOn">
-                                                        <md-button class="md-icon-button" ng-click="editCompanyCancel()"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
+                                                        <md-button class="md-icon-button" ng-click="editCompanyCancel()">
+                                                            <md-icon md-font-icon="icon-close"></md-icon>
+                                                        </md-button>
                                                     </div>
                                                     <div flex layout="column" layout-align="center center" class="product-preview" ng-if="!editImageOn" ng-click="editCompanyLogoInit()">
                                                         <span class="op-5">Company logo</span>
@@ -260,34 +256,37 @@
                                                                 <img ng-src="{{cropper.croppedImage}}" />
                                                             </div>
                                                         </div>
-                                                        <p class="fs-12 text-center"><b>Note : </b>Images with alpha details (transparent) may result unexpected outcomes.</p>
+                                                        <p class="fs-12 text-center">
+                                                            <b>Note : </b>Images with alpha channel (transparent) may result
+                                                            unexpected outcomes.</p>
                                                         <label ng-show="cropper.croppedImage!=null" class="img-size-msg">[Image size : 180px X 180px]</label>
                                                     </div>
                                                     <div ng-if="editImageOn" flex layout="column" layout-align="center center" class="company-logo-preview deadElements">
-                                                        <div layout="column" layout-align="center center" class="img-up-invitation animate-fade-in-out pv-40 pos-abs" fill-height ng-if="!addedImage">
-                                                            <div flex><md-icon md-font-icon="icon-image-filter"></md-icon></div>
+                                                        <div layout="column" layout-align="center center" class="img-up-invitation animate-fade-in-out pv-40 pos-abs" fill-height
+                                                            ng-if="!addedImage">
+                                                            <div flex>
+                                                                <md-icon md-font-icon="icon-image-filter"></md-icon>
+                                                            </div>
                                                             <h3 class="font-accent mb-10">Drag and Drop</h3>
-                                                            <div><i>or</i></div>
+                                                            <div>
+                                                                <i>or</i>
+                                                            </div>
                                                             <md-button class="md-raised md-accent mt-10" ng-click="triggerImgInput()">Browse</md-button>
                                                         </div>
                                                         <div ng-if="addedImage" class="animate-fade-in-out">
-                                                            <image-cropper ng-if="addedImage" id="imageCropElement"
-                                                                           image-url="{{addedImage}}"
-                                                                           width="180"
-                                                                           height="180"
-                                                                           show-controls="true"
-                                                                           fit-on-init="true"
-                                                                           center-on-init="true"
-                                                                           api="vm.cropperApi"
-                                                                           crop-callback="vm.updateResultImage"
-                                                                           cropped-base="vm.croppedBase64"
-                                                                           check-cross-origin="false"
-                                                                           action-labels="vm.myButtonLabels"
-                                                            ></image-cropper>
+                                                            <image-cropper ng-if="addedImage" id="imageCropElement" image-url="{{addedImage}}" width="180" height="180" show-controls="true"
+                                                                fit-on-init="true" center-on-init="true" api="vm.cropperApi"
+                                                                crop-callback="vm.updateResultImage" cropped-base="vm.croppedBase64"
+                                                                check-cross-origin="false" action-labels="vm.myButtonLabels"></image-cropper>
                                                         </div>
                                                         <div ng-if="addedImage" layout="row" layout-align="space-between center" class="mt-10 actions">
-                                                            <md-button layout="row" layout-align="center center" ng-click="retryImageUpload()" md-ink-ripple><i class="material-icons m-0">undo</i><md-tooltip>Retry</md-tooltip></md-button>
-                                                            <md-button layout="row" layout-align="center center" class="md-raised md-accent" ng-click="vm.doneImageCropping()"><i class="material-icons m-0">done</i></md-button>
+                                                            <md-button layout="row" layout-align="center center" ng-click="retryImageUpload()" md-ink-ripple>
+                                                                <i class="material-icons m-0">undo</i>
+                                                                <md-tooltip>Retry</md-tooltip>
+                                                            </md-button>
+                                                            <md-button layout="row" layout-align="center center" class="md-raised md-accent" ng-click="vm.doneImageCropping()">
+                                                                <i class="material-icons m-0">done</i>
+                                                            </md-button>
                                                         </div>
                                                         <input type="file" id="productImageInput" image="cropper.sourceImage" style="display:none" />
                                                         <!--<div class="img-size-msg">[Maximum size : 180px X 180px]</div>-->
@@ -331,9 +330,13 @@
                                                             </div>
                                                         </md-input-container>
                                                     </div>
-                                                    <div layout="row" layout-align="end center" class="pos-rel more-collapse"
-                                                         ng-style="showAdditionalUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
-                                                        <md-button class="md-icon-button m-0" ng-click="toggleAdditionalUserDetails()"><md-icon md-font-icon="icon-chevron-down" ng-if="!showAdditionalUserInfo"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="showAdditionalUserInfo"></md-icon> </md-button><label ng-if="showAdditionalUserInfo">Less</label><label ng-if="!showAdditionalUserInfo">Additional details</label>
+                                                    <div layout="row" layout-align="end center" class="pos-rel more-collapse" ng-style="showAdditionalUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                                        <md-button class="md-icon-button m-0" ng-click="toggleAdditionalUserDetails()">
+                                                            <md-icon md-font-icon="icon-chevron-down" ng-if="!showAdditionalUserInfo"></md-icon>
+                                                            <md-icon md-font-icon="icon-chevron-up" ng-if="showAdditionalUserInfo"></md-icon>
+                                                        </md-button>
+                                                        <label ng-if="showAdditionalUserInfo">Less</label>
+                                                        <label ng-if="!showAdditionalUserInfo">Additional details</label>
                                                     </div>
                                                     <div ng-show="showAdditionalUserInfo">
                                                         <div class="title">
@@ -366,7 +369,7 @@
                                                         <div class="title">
                                                             <md-input-container class="md-block mb-0" flex>
                                                                 <label>City</label>
-                                                                <input name="city" type="" ng-model="template.city"  ng-maxlength="30">
+                                                                <input name="city" type="" ng-model="template.city" ng-maxlength="30">
                                                                 <div ng-messages="vm.generalForm.city.$error">
                                                                     <div ng-message="maxlength">City has to be less than 30 characters long</div>
                                                                 </div>
@@ -443,7 +446,7 @@
                                     <div layout="row">
                                         <md-input-container flex class="full no-bottom">
                                             <label>Greeting</label>
-                                            <input name="greeting" type="text" ng-model="footerDet.greeting" ng-maxlength="140"/>
+                                            <input name="greeting" type="text" ng-model="footerDet.greeting" ng-maxlength="140" />
                                             <div ng-messages="vm.generalForm.greeting.$error">
                                                 <div ng-message="maxlength">Greeting has to be less than 140 characters long</div>
                                             </div>
@@ -452,7 +455,7 @@
                                     <div layout="row">
                                         <md-input-container flex class="full top no-bottom">
                                             <label>Terms & Conditions</label>
-                                            <input name="disclaimer" type="text" ng-model="footerDet.disclaimer" ng-maxlength="140"/>
+                                            <input name="disclaimer" type="text" ng-model="footerDet.disclaimer" ng-maxlength="140" />
                                             <div ng-messages="vm.generalForm.disclaimer.$error">
                                                 <div ng-message="maxlength">Disclaimer has to be less than 140 characters long</div>
                                             </div>
@@ -520,15 +523,19 @@
                                         <md-card-title>
                                             <div layout="row" layout-align="space-between center" flex>
                                                 <div layout="row" layout-align="start center">
-                                                    <md-icon md-font-icon="icon-map"></md-icon> <h3>Plan change fee</h3>
+                                                    <md-icon md-font-icon="icon-map"></md-icon>
+                                                    <h3>Plan change fee</h3>
                                                 </div>
-                                                <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="openPlanChangeView(true)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                                <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="openPlanChangeView(true)">
+                                                    <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                             </div>
                                         </md-card-title>
                                         <div layout="column" class="slider-popup animate-slide-down" md-whiteframe="4dp" ng-show="planChangeView">
                                             <div class="header-bar text-right" layout="row" layout-align="space-between center">
                                                 <h3>New plan change fee</h3>
-                                                <md-button class="md-icon-button" ng-click="planChangeView = false"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
+                                                <md-button class="md-icon-button" ng-click="planChangeView = false">
+                                                    <md-icon md-font-icon="icon-close"></md-icon>
+                                                </md-button>
                                             </div>
                                             <div class="p-20">
                                                 <div layout="row" flex>
@@ -556,7 +563,7 @@
                                                             <label>Change Fee</label>
                                                             <input name="planFee" type="number" ng-required="true" ng-model="changePlanFee.fee" ng-maxlength="15">
                                                             <div ng-messages="vm.planChangeFeeForm.planFee.$error">
-                                                                <div ng-message="maxlength">Change must be between  1-15 digits</div>
+                                                                <div ng-message="maxlength">Change must be between 1-15 digits</div>
                                                             </div>
                                                         </md-input-container>
                                                     </div>
@@ -579,7 +586,8 @@
                                                 <md-progress-circular></md-progress-circular>
                                             </div>
                                             <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="planChangeFeeList.length == 0">
-                                                <span><md-icon md-font-icon="icon-information-outline"></md-icon> No plan change fee has been added yet</span>
+                                                <span>
+                                                    <md-icon md-font-icon="icon-information-outline"></md-icon> No plan change fee has been added yet</span>
                                             </div>
                                             <div flex class="carded-dashboard-list">
                                                 <div layout="row" class="action-row" ng-repeat="item in planChangeFeeList" ng-click="null" layout-align="start center" ng-class="{'editable-action-row': item.editItem}">
@@ -594,7 +602,7 @@
                                                     <span ng-if="!item.editItem" flex>{{item.planTo}}</span>
                                                     <span ng-if="item.editItem" flex="30">
                                                         <md-select flex ng-required="true" ng-model="item.planTo" ms-scroll>
-                                                        <!--<md-option value="Services" ng-selected="true">Services</md-option>-->
+                                                            <!--<md-option value="Services" ng-selected="true">Services</md-option>-->
                                                             <md-option ng-repeat="plan in planKeyAttributesList" ng-disabled="plan.code==item.planFrom" ng-value="plan.code">{{plan.name}}</md-option>
                                                         </md-select>
                                                     </span>
@@ -612,19 +620,21 @@
                                                     <div ng-if="item.editItem" flex="5"></div>
                                                     <span flex="10" layout="row" layout-align="end center">
                                                         <md-button class="md-icon-button" aria-label="Edit" ng-click="editPlanChangeFee(item)" ng-if="!item.editItem">
-                                                        <md-icon md-font-icon="icon-pencil"></md-icon>
-                                                        <md-tooltip>Edit</md-tooltip>
-                                                      </md-button>
-                                                      <md-button ng-disabled="planChangeFeeUpdateSubmitted" class="md-raised md-accent button-xs" ng-click="updatingPlanChangeFee(item,$index)" ng-if="item.editItem">Save
-                                                      </md-button>
-                                                      <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditPlanChangeFee(item)" ng-if="item.editItem">
-                                                        <md-icon md-font-icon="icon-close"></md-icon>
-                                                        <md-tooltip>Cancel</md-tooltip>
-                                                      </md-button>
-                                                      <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deletingPlanChangeFee(item)" ng-if="!item.editItem" show-gt-sm>
-                                                        <md-icon md-font-icon="icon-close-circle"></md-icon>
-                                                        <md-tooltip>Delete</md-tooltip>
-                                                      </md-button>
+                                                            <md-icon md-font-icon="icon-pencil"></md-icon>
+                                                            <md-tooltip>Edit</md-tooltip>
+                                                        </md-button>
+                                                        <md-button ng-disabled="planChangeFeeUpdateSubmitted" class="md-raised md-accent button-xs" ng-click="updatingPlanChangeFee(item,$index)"
+                                                            ng-if="item.editItem">Save
+                                                        </md-button>
+                                                        <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditPlanChangeFee(item)" ng-if="item.editItem">
+                                                            <md-icon md-font-icon="icon-close"></md-icon>
+                                                            <md-tooltip>Cancel</md-tooltip>
+                                                        </md-button>
+                                                        <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deletingPlanChangeFee(item)" ng-if="!item.editItem"
+                                                            show-gt-sm>
+                                                            <md-icon md-font-icon="icon-close-circle"></md-icon>
+                                                            <md-tooltip>Delete</md-tooltip>
+                                                        </md-button>
                                                     </span>
                                                 </div>
                                             </div>
@@ -640,15 +650,19 @@
                                         <md-card-title>
                                             <div layout="row" layout-align="space-between center" flex>
                                                 <div layout="row" layout-align="start center">
-                                                    <md-icon md-font-icon="icon-map"></md-icon> <h3>Unit of measure</h3>
+                                                    <md-icon md-font-icon="icon-map"></md-icon>
+                                                    <h3>Unit of measure</h3>
                                                 </div>
-                                                <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addUOMView = true"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                                <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addUOMView = true">
+                                                    <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                             </div>
                                         </md-card-title>
                                         <div layout="column" class="slider-popup animate-slide-down w-500" md-whiteframe="4dp" ng-show="addUOMView">
                                             <div class="header-bar text-right" layout="row" layout-align="space-between center">
                                                 <h3>New unit of measure</h3>
-                                                <md-button class="md-icon-button" ng-click="addUOMView = false"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
+                                                <md-button class="md-icon-button" ng-click="addUOMView = false">
+                                                    <md-icon md-font-icon="icon-close"></md-icon>
+                                                </md-button>
                                             </div>
                                             <div class="p-20">
                                                 <div layout="row" flex>
@@ -677,7 +691,8 @@
                                                 <md-progress-circular></md-progress-circular>
                                             </div>
                                             <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="UOMs.length == 0">
-                                                <span><md-icon md-font-icon="icon-information-outline"></md-icon> No UOM has been added yet</span>
+                                                <span>
+                                                    <md-icon md-font-icon="icon-information-outline"></md-icon> No UOM has been added yet</span>
                                             </div>
                                             <div flex class="carded-dashboard-list">
                                                 <div layout="row" class="action-row" ng-repeat="uom in UOMs" ng-click="null" layout-align="start center" ng-class="{'editable-action-row': uom.editItem}">
@@ -699,12 +714,13 @@
                                                             <md-tooltip>Edit</md-tooltip>
                                                         </md-button>
                                                         <md-button ng-disabled="updateUomDisabled" class="md-raised md-accent button-xs" ng-click="updateUOM(editUnit,$index)" ng-if="uom.editItem">Save
-                                                      </md-button>
+                                                        </md-button>
                                                         <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditUOM(uom)" ng-if="uom.editItem">
                                                             <md-icon md-font-icon="icon-close"></md-icon>
                                                             <md-tooltip>Cancel</md-tooltip>
                                                         </md-button>
-                                                        <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="showDeleteUOMConfirm($event,uom,$index)" ng-if="!uom.editItem" show-gt-sm>
+                                                        <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="showDeleteUOMConfirm($event,uom,$index)"
+                                                            ng-if="!uom.editItem" show-gt-sm>
                                                             <md-icon md-font-icon="icon-close-circle"></md-icon>
                                                             <md-tooltip>Delete</md-tooltip>
                                                         </md-button>
@@ -789,16 +805,20 @@
                             <md-card-title>
                                 <div layout="row" layout-align="space-between center" flex>
                                     <div layout="row" layout-align="start center">
-                                        <md-icon md-font-icon="icon-scale"></md-icon> <h3>Unit of measure</h3>
+                                        <md-icon md-font-icon="icon-scale"></md-icon>
+                                        <h3>Unit of measure</h3>
                                     </div>
-                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addUOMView = true"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addUOMView = true">
+                                        <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                 </div>
                             </md-card-title>
                             <div layout="column" class="slider-popup animate-slide-down w-500" md-whiteframe="4dp" ng-show="addUOMView">
                                 <form name="vm.productUOMForm" ng-submit="addProductUOM(product.uom)" novalidate>
                                     <div class="header-bar text-right" layout="row" layout-align="space-between center">
                                         <h3>New unit of measure</h3>
-                                        <md-button class="md-icon-button" ng-click="addUOMView = false"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
+                                        <md-button class="md-icon-button" ng-click="addUOMView = false">
+                                            <md-icon md-font-icon="icon-close"></md-icon>
+                                        </md-button>
                                     </div>
                                     <div class="p-20">
                                         <div layout="row" flex>
@@ -829,38 +849,40 @@
                                         <md-progress-circular></md-progress-circular>
                                     </div>
                                     <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="UOMs.length == 0">
-                                        <span><md-icon md-font-icon="icon-information-outline"></md-icon> No UOM has been added yet</span>
+                                        <span>
+                                            <md-icon md-font-icon="icon-information-outline"></md-icon> No UOM has been added yet</span>
                                     </div>
                                     <div flex class="carded-dashboard-list">
                                         <div layout="row" class="action-row" ng-repeat="uom in UOMs" ng-click="null" layout-align="start center" ng-class="{'editable-action-row': uom.editItem}">
                                             <span ng-if="!uom.editItem" flex>{{uom.UOMCode}}</span>
                                             <span ng-if="uom.editItem" flex="30">
-                                                    <md-input-container class="md-block mb-0" flex>
-                                                        <label></label>
-                                                        <input type="text" ng-model="editUnit.UOMCode" ng-maxlength="20" required>
-                                                        <div ng-messages="vm.uomForm.$error">
-                                                            <div ng-message="maxlength">UOM must be between 1-20 characters</div>
-                                                        </div>
-                                                    </md-input-container>
-                                                </span>
+                                                <md-input-container class="md-block mb-0" flex>
+                                                    <label></label>
+                                                    <input type="text" ng-model="editUnit.UOMCode" ng-maxlength="20" required>
+                                                    <div ng-messages="vm.uomForm.$error">
+                                                        <div ng-message="maxlength">UOM must be between 1-20 characters</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </span>
                                             <span flex></span>
                                             <md-progress-circular ng-if="updateUomDisabled && uom.editItem" class="gen-save-indicator"></md-progress-circular>
                                             <span flex="10" layout="row" layout-align="end center">
-                                                    <md-button class="md-icon-button" aria-label="Edit" ng-click="displayUom(uom)" ng-if="!uom.editItem">
-                                                        <md-icon md-font-icon="icon-pencil"></md-icon>
-                                                        <md-tooltip>Edit</md-tooltip>
-                                                    </md-button>
-                                                    <md-button ng-disabled="updateUomDisabled" class="md-raised md-accent button-xs" ng-click="updateCat(editUnit)" ng-if="uom.editItem">Save
-                                                    </md-button>
-                                                        <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditUOM(uom)" ng-if="uom.editItem">
-                                                            <md-icon md-font-icon="icon-close"></md-icon>
-                                                            <md-tooltip>Cancel</md-tooltip>
-                                                        </md-button>
-                                                    <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteUOM(uom,$index)" ng-if="!uom.editItem" show-gt-sm>
-                                                        <md-icon md-font-icon="icon-close-circle"></md-icon>
-                                                        <md-tooltip>Delete</md-tooltip>
-                                                    </md-button>
-                                                </span>
+                                                <md-button class="md-icon-button" aria-label="Edit" ng-click="displayUom(uom)" ng-if="!uom.editItem">
+                                                    <md-icon md-font-icon="icon-pencil"></md-icon>
+                                                    <md-tooltip>Edit</md-tooltip>
+                                                </md-button>
+                                                <md-button ng-disabled="updateUomDisabled" class="md-raised md-accent button-xs" ng-click="updateCat(editUnit)" ng-if="uom.editItem">Save
+                                                </md-button>
+                                                <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditUOM(uom)" ng-if="uom.editItem">
+                                                    <md-icon md-font-icon="icon-close"></md-icon>
+                                                    <md-tooltip>Cancel</md-tooltip>
+                                                </md-button>
+                                                <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteUOM(uom,$index)" ng-if="!uom.editItem"
+                                                    show-gt-sm>
+                                                    <md-icon md-font-icon="icon-close-circle"></md-icon>
+                                                    <md-tooltip>Delete</md-tooltip>
+                                                </md-button>
+                                            </span>
                                         </div>
                                     </div>
                                 </form>
@@ -871,16 +893,20 @@
                             <md-card-title>
                                 <div layout="row" layout-align="space-between center" flex>
                                     <div layout="row" layout-align="start center">
-                                        <i class="material-icons">important_devices</i> <h3>Category</h3>
+                                        <i class="material-icons">important_devices</i>
+                                        <h3>Category</h3>
                                     </div>
-                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addCatView = true"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addCatView = true">
+                                        <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                 </div>
                             </md-card-title>
                             <div layout="column" class="slider-popup animate-slide-down w-500" md-whiteframe="4dp" ng-show="addCatView">
                                 <form name="vm.productCatForm" ng-submit="addCat(product.category)" novalidate>
                                     <div class="header-bar text-right" layout="row" layout-align="space-between center">
                                         <h3>New category</h3>
-                                        <md-button class="md-icon-button" ng-click="addCatView = false"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
+                                        <md-button class="md-icon-button" ng-click="addCatView = false">
+                                            <md-icon md-font-icon="icon-close"></md-icon>
+                                        </md-button>
                                     </div>
                                     <div class="p-20">
                                         <div layout="row" flex>
@@ -911,38 +937,41 @@
                                         <md-progress-circular></md-progress-circular>
                                     </div>
                                     <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="categories.length == 0">
-                                        <span><md-icon md-font-icon="icon-information-outline"></md-icon> No Category has been added yet</span>
+                                        <span>
+                                            <md-icon md-font-icon="icon-information-outline"></md-icon> No Category has been added yet</span>
                                     </div>
                                     <div flex class="carded-dashboard-list">
                                         <div layout="row" class="action-row" ng-repeat="category in categories" ng-click="null" layout-align="start center" ng-class="{'editable-action-row': category.editItem}">
                                             <span ng-if="!category.editItem" flex>{{category.RecordFieldData}}</span>
                                             <span ng-if="category.editItem" flex="30">
-                                                    <md-input-container class="md-block mb-0" flex>
-                                                        <label></label>
-                                                        <input type="text" ng-model="editCategory.RecordFieldData" ng-maxlength="20" required>
-                                                        <div ng-messages="vm.updateProductUOM.$error">
-                                                            <div ng-message="maxlength">Category must be between 1-20 characters</div>
-                                                        </div>
-                                                    </md-input-container>
-                                                </span>
+                                                <md-input-container class="md-block mb-0" flex>
+                                                    <label></label>
+                                                    <input type="text" ng-model="editCategory.RecordFieldData" ng-maxlength="20" required>
+                                                    <div ng-messages="vm.updateProductUOM.$error">
+                                                        <div ng-message="maxlength">Category must be between 1-20 characters</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </span>
                                             <span flex></span>
                                             <md-progress-circular ng-if="updateCategoryDisabled && category.editItem" class="gen-save-indicator"></md-progress-circular>
                                             <span flex="10" layout="row" layout-align="end center">
-                                                    <md-button class="md-icon-button" aria-label="Edit" ng-click="displayCat(category)" ng-if="!category.editItem">
-                                                        <md-icon md-font-icon="icon-pencil"></md-icon>
-                                                        <md-tooltip>Edit</md-tooltip>
-                                                    </md-button>
-                                                    <md-button ng-disabled="updateCategoryDisabled" class="md-raised md-accent button-xs" ng-click="updateCat(editCategory)" ng-if="category.editItem">Save
-                                                    </md-button>
-                                                        <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditCat(category)" ng-if="category.editItem">
-                                                            <md-icon md-font-icon="icon-close"></md-icon>
-                                                            <md-tooltip>Cancel</md-tooltip>
-                                                        </md-button>
-                                                    <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteCommonData(category,$index)" ng-if="!category.editItem" show-gt-sm>
-                                                        <md-icon md-font-icon="icon-close-circle"></md-icon>
-                                                        <md-tooltip>Delete</md-tooltip>
-                                                    </md-button>
-                                                </span>
+                                                <md-button class="md-icon-button" aria-label="Edit" ng-click="displayCat(category)" ng-if="!category.editItem">
+                                                    <md-icon md-font-icon="icon-pencil"></md-icon>
+                                                    <md-tooltip>Edit</md-tooltip>
+                                                </md-button>
+                                                <md-button ng-disabled="updateCategoryDisabled" class="md-raised md-accent button-xs" ng-click="updateCat(editCategory)"
+                                                    ng-if="category.editItem">Save
+                                                </md-button>
+                                                <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditCat(category)" ng-if="category.editItem">
+                                                    <md-icon md-font-icon="icon-close"></md-icon>
+                                                    <md-tooltip>Cancel</md-tooltip>
+                                                </md-button>
+                                                <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteCommonData(category,$index)"
+                                                    ng-if="!category.editItem" show-gt-sm>
+                                                    <md-icon md-font-icon="icon-close-circle"></md-icon>
+                                                    <md-tooltip>Delete</md-tooltip>
+                                                </md-button>
+                                            </span>
                                         </div>
                                     </div>
                                 </form>
@@ -953,16 +982,20 @@
                             <md-card-title>
                                 <div layout="row" layout-align="space-between center" flex>
                                     <div layout="row" layout-align="start center">
-                                        <md-icon md-font-icon="icon-watch"></md-icon> <h3>Brands</h3>
+                                        <md-icon md-font-icon="icon-watch"></md-icon>
+                                        <h3>Brands</h3>
                                     </div>
-                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addBrandView = true"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addBrandView = true">
+                                        <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                 </div>
                             </md-card-title>
                             <div layout="column" class="slider-popup animate-slide-down w-500" md-whiteframe="4dp" ng-show="addBrandView">
                                 <form name="vm.productBrandForm" ng-submit="addBrand(product.brand)" novalidate>
                                     <div class="header-bar text-right" layout="row" layout-align="space-between center">
                                         <h3>New brand</h3>
-                                        <md-button class="md-icon-button" ng-click="addBrandView = false"><md-icon md-font-icon="icon-close"></md-icon> </md-button>
+                                        <md-button class="md-icon-button" ng-click="addBrandView = false">
+                                            <md-icon md-font-icon="icon-close"></md-icon>
+                                        </md-button>
                                     </div>
                                     <div class="p-20">
                                         <div layout="row" flex>
@@ -993,7 +1026,8 @@
                                         <md-progress-circular></md-progress-circular>
                                     </div>
                                     <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="brands.length == 0">
-                                        <span><md-icon md-font-icon="icon-information-outline"></md-icon> No Category has been added yet</span>
+                                        <span>
+                                            <md-icon md-font-icon="icon-information-outline"></md-icon> No Category has been added yet</span>
                                     </div>
                                     <div flex class="carded-dashboard-list">
                                         <div layout="row" class="action-row" ng-repeat="brand in brands" ng-click="null" layout-align="start center" ng-class="{'editable-action-row': brand.editItem}">
@@ -1010,21 +1044,22 @@
                                             <span flex></span>
                                             <md-progress-circular ng-if="updateBrandDisabled && brand.editItem" class="gen-save-indicator"></md-progress-circular>
                                             <span flex="10" layout="row" layout-align="end center">
-                                                    <md-button class="md-icon-button" aria-label="Edit" ng-click="displayBrand(brand)" ng-if="!brand.editItem">
-                                                        <md-icon md-font-icon="icon-pencil"></md-icon>
-                                                        <md-tooltip>Edit</md-tooltip>
-                                                    </md-button>
-                                                    <md-button ng-disabled="updateBrandDisabled" class="md-raised md-accent button-xs" ng-click="updateBrand(editBrand)" ng-if="brand.editItem">Save
-                                                    </md-button>
-                                                        <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditBrand(brand)" ng-if="brand.editItem">
-                                                            <md-icon md-font-icon="icon-close"></md-icon>
-                                                            <md-tooltip>Cancel</md-tooltip>
-                                                        </md-button>
-                                                    <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteCommonData(brand,$index)" ng-if="!brand.editItem" show-gt-sm>
-                                                        <md-icon md-font-icon="icon-close-circle"></md-icon>
-                                                        <md-tooltip>Delete</md-tooltip>
-                                                    </md-button>
-                                                </span>
+                                                <md-button class="md-icon-button" aria-label="Edit" ng-click="displayBrand(brand)" ng-if="!brand.editItem">
+                                                    <md-icon md-font-icon="icon-pencil"></md-icon>
+                                                    <md-tooltip>Edit</md-tooltip>
+                                                </md-button>
+                                                <md-button ng-disabled="updateBrandDisabled" class="md-raised md-accent button-xs" ng-click="updateBrand(editBrand)" ng-if="brand.editItem">Save
+                                                </md-button>
+                                                <md-button class="md-icon-button action-row-remove" aria-label="Edit" ng-click="cancelEditBrand(brand)" ng-if="brand.editItem">
+                                                    <md-icon md-font-icon="icon-close"></md-icon>
+                                                    <md-tooltip>Cancel</md-tooltip>
+                                                </md-button>
+                                                <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteCommonData(brand,$index)"
+                                                    ng-if="!brand.editItem" show-gt-sm>
+                                                    <md-icon md-font-icon="icon-close-circle"></md-icon>
+                                                    <md-tooltip>Delete</md-tooltip>
+                                                </md-button>
+                                            </span>
                                         </div>
                                     </div>
                                 </form>
@@ -1267,8 +1302,12 @@
                                         <md-card flex class="input-block-gen">
                                             <md-card-title>
                                                 <div layout="row" layout-align="space-between center" flex>
-                                                    <div layout="row"><i class="material-icons">share</i> <h3>Current webhooks</h3></div>
-                                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addWebhookDialog(false)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                                    <div layout="row">
+                                                        <i class="material-icons">share</i>
+                                                        <h3>Current webhooks</h3>
+                                                    </div>
+                                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addWebhookDialog(false)">
+                                                        <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                                 </div>
                                             </md-card-title>
                                             <div class="list-header" layout="row" flex>
@@ -1281,20 +1320,21 @@
                                                         <md-progress-circular></md-progress-circular>
                                                     </div>
                                                     <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="vm.webhookList.length == 0">
-                                                        <span><md-icon md-font-icon="icon-information-outline"></md-icon> No webhook has added yet</span>
+                                                        <span>
+                                                            <md-icon md-font-icon="icon-information-outline"></md-icon> No webhook has added yet</span>
                                                     </div>
                                                     <div layout="row" class="action-row" ng-repeat="webhook in vm.webhookList" ng-click="webhookItemViewToggle(webhook)" layout-align="start center">
                                                         <span flex>{{webhook.endPoint}}</span>
                                                         <span flex="10" class="w-150" layout="row" layout-align="end center">
-                                                <md-button class="md-icon-button" aria-label="Edit" ng-click="editWebhook(webhook)">
-                                                    <md-icon md-font-icon="icon-pencil"></md-icon>
-                                                    <md-tooltip>Edit</md-tooltip>
-                                                </md-button>
-                                                <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="showDeleteWebhookConfirm($event,webhook)">
-                                                    <md-icon md-font-icon="icon-close-circle"></md-icon>
-                                                    <md-tooltip>Delete</md-tooltip>
-                                                </md-button>
-                                              </span>
+                                                            <md-button class="md-icon-button" aria-label="Edit" ng-click="editWebhook(webhook)">
+                                                                <md-icon md-font-icon="icon-pencil"></md-icon>
+                                                                <md-tooltip>Edit</md-tooltip>
+                                                            </md-button>
+                                                            <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="showDeleteWebhookConfirm($event,webhook)">
+                                                                <md-icon md-font-icon="icon-close-circle"></md-icon>
+                                                                <md-tooltip>Delete</md-tooltip>
+                                                            </md-button>
+                                                        </span>
                                                     </div>
                                                 </form>
                                             </md-card-content>
@@ -1330,7 +1370,8 @@
                                                     <md-progress-circular></md-progress-circular>
                                                 </div>
                                                 <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="vm.webhookHistoryList.length == 0">
-                                                    <span><md-icon md-font-icon="icon-information-outline"></md-icon> No history is available for webhook</span>
+                                                    <span>
+                                                        <md-icon md-font-icon="icon-information-outline"></md-icon> No history is available for webhook</span>
                                                 </div>
                                                 <div class="sub-list">
                                                     <div layout="row" class="list-item" ng-repeat="history in vm.webhookHistoryList" ng-click="" layout-align="start center">
@@ -1341,7 +1382,8 @@
                                                     </div>
                                                 </div>
                                                 <div layout="row" layout-align="center center" class="" ng-if="isMoreWebhookHistoryLoading">
-                                                    <md-button ng-click="loadWebhookHistoryListPaging()" class="md-primary" style="font-size: 12px;font-weight: 400"><md-icon md-font-icon="icon-magnify"></md-icon> More</md-button>
+                                                    <md-button ng-click="loadWebhookHistoryListPaging()" class="md-primary" style="font-size: 12px;font-weight: 400">
+                                                        <md-icon md-font-icon="icon-magnify"></md-icon> More</md-button>
                                                 </div>
                                             </md-card-content>
                                         </md-card>
@@ -1362,13 +1404,16 @@
 
                                 <form name="vm.emailTemplateView" id="emailTemplateViewForm" ng-submit="submitEmailTemplate()" flex>
                                     <div id="unit_measuers12" class="content-block p-10">
-                                        <div class="email-template" ng-repeat="emailTemplate in vm.emailTemplateList" ng-click="selectChangeTemplate(emailTemplate.url)" style="zoom: 0.4;margin:20px" ng-class="{'md-whiteframe-10dp':emailTemplate.isSelected}">
+                                        <div class="email-template" ng-repeat="emailTemplate in vm.emailTemplateList" ng-click="selectChangeTemplate(emailTemplate.url)"
+                                            style="zoom: 0.4;margin:20px" ng-class="{'md-whiteframe-10dp':emailTemplate.isSelected}">
                                             <div class="selected" ng-if="emailTemplate.isSelected">
                                                 <md-icon md-font-icon="icon-check-circle"></md-icon>
                                             </div>
                                             <div ng-include="'app/main/settings/templates/email-template-main.html'"></div>
                                             <div class="maximize-template animate-slide-down text-right">
-                                                <md-button class="md-icon-button" ng-click="maximizeTemplate(emailTemplate.name)"><md-icon md-font-icon="icon-magnify-plus" class="text-center color-accent"></md-icon></md-button>
+                                                <md-button class="md-icon-button" ng-click="maximizeTemplate(emailTemplate.name)">
+                                                    <md-icon md-font-icon="icon-magnify-plus" class="text-center color-accent"></md-icon>
+                                                </md-button>
                                             </div>
                                         </div>
                                     </div>
@@ -1384,7 +1429,8 @@
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
                                     <div layout="row" layout-align="start center">
-                                        <md-icon md-font-icon="icon-cog"></md-icon> <h3>General</h3>
+                                        <md-icon md-font-icon="icon-cog"></md-icon>
+                                        <h3>General</h3>
                                     </div>
                                 </md-card-title>
                                 <md-card-content md-whiteframe="1dp">
@@ -1411,8 +1457,12 @@
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
                                     <div layout="row" layout-align="space-between center" flex>
-                                        <div layout="row"><md-icon md-font-icon="icon-calendar"></md-icon> <h3>Due date terms</h3></div>
-                                        <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addDueDialog()"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                        <div layout="row">
+                                            <md-icon md-font-icon="icon-calendar"></md-icon>
+                                            <h3>Due date terms</h3>
+                                        </div>
+                                        <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addDueDialog()">
+                                            <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                     </div>
                                 </md-card-title>
                                 <div class="list-header" layout="row">
@@ -1426,22 +1476,23 @@
                                         <md-progress-circular></md-progress-circular>
                                     </div>
                                     <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="invoiceTerms.length == 0">
-                                        <span><md-icon md-font-icon="icon-information-outline"></md-icon> No due term has been added yet</span>
+                                        <span>
+                                            <md-icon md-font-icon="icon-information-outline"></md-icon> No due term has been added yet</span>
                                     </div>
                                     <div>
                                         <div layout="row" layout-align="start center" class="action-row" ng-repeat="term in invoiceTerms" ng-click="null">
                                             <span flex="35">{{term.termName}}</span>
                                             <span flex>{{term.termDays}}</span>
                                             <span flex="15" layout="row" layout-align="end center">
-                                        <md-button class="md-icon-button" aria-label="Edit" ng-click="displayTerm(term,$index)">
-                                          <md-icon md-font-icon="icon-pencil"></md-icon>
-                                          <md-tooltip>Edit</md-tooltip>
-                                        </md-button>
-                                        <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteTerm($index)">
-                                          <md-icon md-font-icon="icon-close-circle"></md-icon>
-                                          <md-tooltip>Delete</md-tooltip>
-                                        </md-button>
-                                      </span>
+                                                <md-button class="md-icon-button" aria-label="Edit" ng-click="displayTerm(term,$index)">
+                                                    <md-icon md-font-icon="icon-pencil"></md-icon>
+                                                    <md-tooltip>Edit</md-tooltip>
+                                                </md-button>
+                                                <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteTerm($index)">
+                                                    <md-icon md-font-icon="icon-close-circle"></md-icon>
+                                                    <md-tooltip>Delete</md-tooltip>
+                                                </md-button>
+                                            </span>
                                         </div>
                                     </div>
                                 </md-card-content>
@@ -1454,7 +1505,8 @@
                             <md-card flex class="input-block-gen">
                                 <md-card-title>
                                     <div layout="row" layout-align="start center">
-                                        <md-icon md-font-icon="icon-star"></md-icon> <h3>Other</h3>
+                                        <md-icon md-font-icon="icon-star"></md-icon>
+                                        <h3>Other</h3>
                                     </div>
                                 </md-card-title>
                                 <md-card-content style="padding: 0">
@@ -1466,7 +1518,8 @@
                                             <div flex="5"></div>
                                             <div class="content-block" flex>
                                                 <md-input-container class="md-block no-bottom" flex-gt-sm>
-                                                    <md-switch ng-disabled="editOn" ng-model="invoice.enableDiscounts" ng-change="toggleSwitch(invoice.enableDiscounts,'discount')" class="md-primary" ng-true-value="true" ng-false-value="false">
+                                                    <md-switch ng-disabled="editOn" ng-model="invoice.enableDiscounts" ng-change="toggleSwitch(invoice.enableDiscounts,'discount')"
+                                                        class="md-primary" ng-true-value="true" ng-false-value="false">
                                                     </md-switch>
                                                 </md-input-container>
                                             </div>
@@ -1479,7 +1532,8 @@
                                             <div flex="5"></div>
                                             <div class="content-block" flex>
                                                 <md-input-container class="md-block no-bottom" flex-gt-sm>
-                                                    <md-switch ng-disabled="editOn" ng-model="invoice.sendInvoice" ng-change="toggleSwitch(invoice.sendInvoice,'invoice')" class="md-primary" ng-true-value="true" ng-false-value="false">
+                                                    <md-switch ng-disabled="editOn" ng-model="invoice.sendInvoice" ng-change="toggleSwitch(invoice.sendInvoice,'invoice')" class="md-primary"
+                                                        ng-true-value="true" ng-false-value="false">
                                                     </md-switch>
                                                 </md-input-container>
                                             </div>
@@ -1494,7 +1548,8 @@
                                             </div>
                                             <div class="content-block" flex>
                                                 <md-input-container class="md-block no-bottom" flex-gt-sm>
-                                                    <md-switch ng-disabled="editOn" ng-model="invoice.allowPartialPay" ng-change="toggleSwitch(invoice.allowPartialPay,'payments')" class="md-primary" ng-true-value="true" ng-false-value="false">
+                                                    <md-switch ng-disabled="editOn" ng-model="invoice.allowPartialPay" ng-change="toggleSwitch(invoice.allowPartialPay,'payments')"
+                                                        class="md-primary" ng-true-value="true" ng-false-value="false">
                                                     </md-switch>
                                                 </md-input-container>
                                             </div>
@@ -1509,13 +1564,16 @@
                                             </div>
                                             <div class="content-block" layout="row" layout-align="start center" flex>
                                                 <md-input-container class="md-block no-bottom" flex="10">
-                                                    <md-switch ng-disabled="editOn" ng-model="invoice.enablecreditLimit" ng-change="toggleSwitch(invoice.enablecreditLimit,'creditlimit')" class="md-primary" ng-true-value="true" ng-false-value="false">
+                                                    <md-switch ng-disabled="editOn" ng-model="invoice.enablecreditLimit" ng-change="toggleSwitch(invoice.enablecreditLimit,'creditlimit')"
+                                                        class="md-primary" ng-true-value="true" ng-false-value="false">
                                                     </md-switch>
                                                 </md-input-container>
                                                 <div flex="5"></div>
                                                 <md-input-container ng-if="invoice.enablecreditLimit" class="md-block bottom" flex="50" style="top: 20px;">
                                                     <label>Default Credit Limit</label>
-                                                    <input ng-disabled="!invoice.enablecreditLimit" ng-required="invoice.enablecreditLimit" name="creditLimit" ng-pattern="" max="1000000000000000000" type="number" ng-model="invoice.creditLimit" min="0" valid-number decimal-point="general.decimalPoint" style="text-align: right">
+                                                    <input ng-disabled="!invoice.enablecreditLimit" ng-required="invoice.enablecreditLimit" name="creditLimit" ng-pattern=""
+                                                        max="1000000000000000000" type="number" ng-model="invoice.creditLimit"
+                                                        min="0" valid-number decimal-point="general.decimalPoint" style="text-align: right">
                                                     <div ng-messages="vm.invoices.creditLimit.$error">
                                                         <div ng-message="required">Default credit limit is required</div>
                                                         <div ng-message="pattern">Default credit limit is invalid</div>
@@ -1524,7 +1582,9 @@
                                                 </md-input-container>
                                                 <md-input-container ng-if="!invoice.enablecreditLimit" class="md-block bottom" flex="50" style="top: 20px;">
                                                     <label>Default Credit Limit</label>
-                                                    <input ng-disabled="!invoice.enablecreditLimit" ng-required="invoice.enablecreditLimit" name="creditLimit" ng-pattern="" max="1000000000000000000" type="number" ng-model="invoice.creditLimit" min="0" >
+                                                    <input ng-disabled="!invoice.enablecreditLimit" ng-required="invoice.enablecreditLimit" name="creditLimit" ng-pattern=""
+                                                        max="1000000000000000000" type="number" ng-model="invoice.creditLimit"
+                                                        min="0">
                                                     <div ng-messages="vm.invoices.creditLimit.$error">
                                                         <div ng-message="required">Default credit limit is required</div>
                                                         <div ng-message="pattern">Default credit limit is invalid</div>
@@ -1542,16 +1602,25 @@
                 <md-tab label="Tax" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('individual-tax')">
                     <md-content>
                         <div layout="column" layout-align="center center" class="m-20" ng-if="!vm.usingAvalaraTax">
-                            <p>You can create taxes with Avalara..</p>
-                            <md-button class="md-raised" ng-click="enableAvalaraTax()"><i class="material-icons fs-20 op-5">wifi</i> Connect to Avalara</md-button>
-                            <p><i><b>or..</b></i></p>
+                            <div layout="row" layout-align="center center">
+                                <p>You can create taxes with</p>
+                                <md-button class="md-raised h-40" ng-click="enableAvalaraTax()"><span class="integration_avalara avalar-scaled-down"></span></md-button>
+                            </div>
+                            <i>
+                                <b>or..</b>
+                            </i>
                             <span>You can create custom taxes below.</span>
                         </div>
                         <md-card class="input-block-gen">
                             <md-card-title>
                                 <div layout="row" layout-align="space-between center" flex>
-                                    <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Individual tax</h3></div>
-                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxIndAddDialog($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                    <div layout="row">
+                                        <md-icon md-font-icon="icon-percent"></md-icon>
+                                        <h3>Individual tax</h3>
+                                    </div>
+                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxIndAddDialog($event)">
+                                        <md-icon md-font-icon="icon-plus"></md-icon> ADD
+                                    </md-button>
                                 </div>
                             </md-card-title>
                             <div class="list-header" layout="row">
@@ -1564,7 +1633,8 @@
                                     <md-progress-circular></md-progress-circular>
                                 </div>
                                 <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="fixedRates.length == 0">
-                                    <span><md-icon md-font-icon="icon-information-outline"></md-icon> No tax has added yet</span>
+                                    <span>
+                                        <md-icon md-font-icon="icon-information-outline"></md-icon> No tax has added yet</span>
                                 </div>
                                 <div>
                                     <div class="action-row" layout="row" layout-align="start center" ng-repeat="fixedRate in fixedRates">
@@ -1574,7 +1644,7 @@
                                             <md-button class="md-icon-button" aria-label="Edit" ng-click="taxIndEditDialog($event,fixedRate,$index)">
                                                 <md-icon md-font-icon="icon-pencil"></md-icon>
                                                 <md-tooltip>Edit</md-tooltip>
-                                              </md-button>
+                                            </md-button>
                                             <md-button class="md-icon-button md-warn action-row-remove" aria-label="Delete" ng-click="deleteTax(fixedRate,$index)">
                                                 <md-icon md-font-icon="icon-close-circle"></md-icon>
                                                 <md-tooltip>Delete</md-tooltip>
@@ -1592,8 +1662,12 @@
                         <md-card class="input-block-gen">
                             <md-card-title>
                                 <div layout="row" layout-align="space-between center" flex>
-                                    <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Group tax</h3></div>
-                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                    <div layout="row">
+                                        <md-icon md-font-icon="icon-percent"></md-icon>
+                                        <h3>Group tax</h3>
+                                    </div>
+                                    <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)">
+                                        <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                 </div>
                             </md-card-title>
                             <div class="list-header" layout="row" flex>
@@ -1605,7 +1679,8 @@
                                     <md-progress-circular></md-progress-circular>
                                 </div>
                                 <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="taxGroupList.length == 0">
-                                    <span><md-icon md-font-icon="icon-information-outline"></md-icon> No tax group has added yet</span>
+                                    <span>
+                                        <md-icon md-font-icon="icon-information-outline"></md-icon> No tax group has added yet</span>
                                 </div>
                                 <div>
                                     <div class="action-row" layout="row" layout-align="start center" ng-repeat="taxgrp in taxGroupList">
@@ -1629,61 +1704,6 @@
                             <!--</div>-->
                             <!--</md-card-actions>-->
                         </md-card>
-                        <form id="avalaraTaxForm" name="vm.avalaraTaxForm" ng-submit="submitAvalaraTax()" novalidate ng-if="vm.usingAvalaraTax">
-                            <md-card class="input-block-gen">
-                                <md-card-title>
-                                    <div layout="row" layout-align="space-between center" flex>
-                                        <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Avalara tax</h3></div>
-                                        <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
-                                    </div>
-                                </md-card-title>
-                                <md-card-content class="p-0">
-                                    <div layout="row">
-                                        <md-input-container flex="30">
-                                            <label>Account Number</label>
-                                            <input type="text" ng-required="true" min="" name="accountNo" ng-maxlength="30" ng-model="avaTax.accountNo">
-                                            <div ng-messages="vm.avalaraTaxForm.accountNo.$error">
-                                                <div ng-message="maxlength">Account Number must be between 1-30 characters</div>
-                                            </div>
-                                        </md-input-container>
-                                    </div>
-                                    <div layout="row">
-                                        <md-input-container flex="30">
-                                            <label>License Key</label>
-                                            <input type="text" ng-required="true" min="" name="licenseKey" ng-maxlength="30" ng-model="avaTax.licenseKey">
-                                            <div ng-messages="vm.avalaraTaxForm.licenseKey.$error">
-                                                <div ng-message="maxlength">License Key must be between 1-30 characters</div>
-                                            </div>
-                                        </md-input-container>
-                                    </div>
-                                    <div layout="row">
-                                        <md-input-container flex="30">
-                                            <label>Company Code</label>
-                                            <input type="text" ng-required="true" min="" name="companyCode" ng-maxlength="30" ng-model="avaTax.companyCode">
-                                            <div ng-messages="vm.avalaraTaxForm.companyCode.$error">
-                                                <div ng-message="maxlength">Company Code must be between 1-30 characters</div>
-                                            </div>
-                                        </md-input-container>
-                                    </div>
-                                    <div layout="row">
-                                        <md-input-container>
-                                            <md-radio-group name="mode" ng-required="true" ng-model="avaTax.mode" layout="row" class="cc-switch-buttons-group">
-                                                <md-radio-button value="Development" class="cc-switch-buttons" md-ink-ripple ng-style="avaTax.mode == 'Development' ? {'z-index':'1'} : {'z-index':'0'}">Development</md-radio-button>
-                                                <md-radio-button value="Production" class="cc-switch-buttons" md-ink-ripple ng-style="avaTax.mode == 'Production' ? {'z-index':'1'} : {'z-index':'0'}">Production</md-radio-button>
-                                            </md-radio-group>
-                                        </md-input-container>
-                                    </div>
-                                    <div layout="row" class="layout-row">
-                                        <md-button ng-disabled="vm.submittedAvaTax" type="submit" form="avalaraTaxForm" style="height:40px;" class="md-raised md-accent">Save</md-button>
-                                    </div>
-                                </md-card-content>
-                                <!--<md-card-actions>-->
-                                <!--<div layout="row" class="plan_footer" layout-align="end center">-->
-                                <!--<md-button class="md-icon-button md-accent m-5" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus-circle"></md-icon><md-tooltip>Add tax</md-tooltip> </md-button>-->
-                                <!--</div>-->
-                                <!--</md-card-actions>-->
-                            </md-card>
-                        </form>
                     </md-content>
                 </md-tab>
                 <md-tab label="Payments" layout="column" layout-align="start start" ng-click="vm.settingsCategoryNavigation('payment')">
@@ -1727,8 +1747,12 @@
                                                 <md-card flex class="input-block-gen">
                                                     <md-card-title>
                                                         <div layout="row" layout-align="space-between center" flex>
-                                                            <div layout="row"><md-icon md-font-icon="icon-calendar-clock"></md-icon> <h3>Reminders</h3></div>
-                                                            <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addReminder()"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
+                                                            <div layout="row">
+                                                                <md-icon md-font-icon="icon-calendar-clock"></md-icon>
+                                                                <h3>Reminders</h3>
+                                                            </div>
+                                                            <md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="addReminder()">
+                                                                <md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>
                                                         </div>
                                                     </md-card-title>
                                                     <div class="list-header" layout="row">
@@ -1755,18 +1779,26 @@
                                                                         </div>
                                                                         <div ng-if="!invoiceReminder.isDisabled">
                                                                             <span ng-hide="invoiceReminder.ReminderType == 'OnDueDate'">
-                                                                            <span class="md-accent">{{invoiceReminder.ReminderDays}}</span>&nbsp;day<span ng-if="invoiceReminder.ReminderDays>1">s</span>&nbsp;
+                                                                                <span class="md-accent">{{invoiceReminder.ReminderDays}}</span>&nbsp;day
+                                                                                <span
+                                                                                    ng-if="invoiceReminder.ReminderDays>1">s</span>&nbsp;
                                                                             </span>
-                                                                            <span ng-if="invoiceReminder.ReminderType == 'Before'"> <b>before</b> the due date.</span>
-                                                                            <span ng-if="invoiceReminder.ReminderType == 'OnDueDate'"> <b ng-class="{'caps':invoiceReminder.ReminderType == 'OnDueDate'}">On</b> the due date.</span>
-                                                                            <span ng-if="invoiceReminder.ReminderType == 'After'"> <b>after</b> the due date.</span>
+                                                                            <span ng-if="invoiceReminder.ReminderType == 'Before'">
+                                                                                <b>before</b> the due date.</span>
+                                                                            <span ng-if="invoiceReminder.ReminderType == 'OnDueDate'">
+                                                                                <b ng-class="{'caps':invoiceReminder.ReminderType == 'OnDueDate'}">On</b> the due date.</span>
+                                                                            <span ng-if="invoiceReminder.ReminderType == 'After'">
+                                                                                <b>after</b> the due date.</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div flex="20" layout-align="end center" layout="row">
                                                                     <md-button ng-if="invoiceReminder.isDisabled" ng-click="showReminderDialog($event,$index);" class="md-accent" style="margin-right: 5px">Turn on</md-button>
                                                                     <md-button ng-if="!invoiceReminder.isDisabled" ng-click="turnOffReminder($index);" class="md-warn">Turn off</md-button>
-                                                                    <md-button ng-click="removeReminder($index)" class="md-icon-button md-warn action-row-remove"><md-icon md-font-icon="icon-close-circle"></md-icon> <md-tooltip>Delete</md-tooltip></md-button>
+                                                                    <md-button ng-click="removeReminder($index)" class="md-icon-button md-warn action-row-remove">
+                                                                        <md-icon md-font-icon="icon-close-circle"></md-icon>
+                                                                        <md-tooltip>Delete</md-tooltip>
+                                                                    </md-button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1802,7 +1834,8 @@
                                                             <i class="material-icons start-process">repeat</i>
                                                             <md-input-container class="md-block mb-0" flex="20">
                                                                 <label>Process</label>
-                                                                <input name="payment" type="text" ng-disabled="true" ng-init="retryProcess.processName='Payment'" ng-model="retryProcess.processName" ng-maxlength="30">
+                                                                <input name="payment" type="text" ng-disabled="true" ng-init="retryProcess.processName='Payment'" ng-model="retryProcess.processName"
+                                                                    ng-maxlength="30">
                                                                 <div ng-messages="vm.paymentRetryProcessForm.payment.$error">
                                                                     <div ng-message="maxlength">Process has to be less than 30 characters long</div>
                                                                 </div>
@@ -1836,7 +1869,8 @@
                                                                                 <!--<md-option ng-value="Other">Other..</md-option>-->
                                                                             </md-select>
                                                                         </md-input-container>
-                                                                        <span class="ml-10"> day<span ng-if="retryProcess.daysAfterAttempt1st>1">s</span> from the previous attempt</span>
+                                                                        <span class="ml-10"> day
+                                                                            <span ng-if="retryProcess.daysAfterAttempt1st>1">s</span> from the previous attempt</span>
                                                                     </div>
                                                                     <div layout="row" layout-align="start center">
                                                                         <span class="ml-20 fs-20">+</span>
@@ -1872,7 +1906,8 @@
                                                                                 <!--<md-option ng-value="Other">Other..</md-option>-->
                                                                             </md-select>
                                                                         </md-input-container>
-                                                                        <span class="ml-10">day<span ng-if="retryProcess.daysAfterAttempt2nd>1">s</span> from the previous attempt</span>
+                                                                        <span class="ml-10">day
+                                                                            <span ng-if="retryProcess.daysAfterAttempt2nd>1">s</span> from the previous attempt</span>
                                                                     </div>
                                                                     <div layout="row" layout-align="start center">
                                                                         <span class="ml-20 fs-20">+</span>
@@ -1908,7 +1943,8 @@
                                                                                 <!--<md-option ng-value="Other">Other..</md-option>-->
                                                                             </md-select>
                                                                         </md-input-container>
-                                                                        <span class="ml-10">day<span ng-if="retryProcess.daysAfterAttempt3rd>1">s</span> from the previous attempt</span>
+                                                                        <span class="ml-10">day
+                                                                            <span ng-if="retryProcess.daysAfterAttempt3rd>1">s</span> from the previous attempt</span>
                                                                     </div>
                                                                     <div layout="row" layout-align="start center">
                                                                         <span class="ml-20 fs-20">+</span>
@@ -2079,7 +2115,10 @@
                                                 <md-card class="input-block-gen" ng-if="retryProcess.daysAfterAttemptFinally=='Webhook'">
                                                     <md-card-title>
                                                         <div layout="row" layout-align="space-between center" flex>
-                                                            <div layout="row"><md-icon md-font-icon="icon-percent"></md-icon> <h3>Webhook Configuration</h3></div>
+                                                            <div layout="row">
+                                                                <md-icon md-font-icon="icon-percent"></md-icon>
+                                                                <h3>Webhook Configuration</h3>
+                                                            </div>
                                                             <!--<md-button class="md-raised add-item-main" layout="row" layout-align="start center" ng-click="taxGroupDialogInit($event)"><md-icon md-font-icon="icon-plus"></md-icon> ADD</md-button>-->
                                                         </div>
                                                     </md-card-title>
@@ -2120,7 +2159,9 @@
                                                         </div>
                                                         <div layout="row" ng-if="false">
                                                             <label>Headers</label>
-                                                            <span><button name="add" ng-click="addWebhookHeader()">Add</button></span>
+                                                            <span>
+                                                                <button name="add" ng-click="addWebhookHeader()">Add</button>
+                                                            </span>
                                                             <div layout="row" layout-align="start center" class="action-row" ng-repeat="header in paymentRetryWebhookHeader">
                                                                 <div flex layout="row" layout-align="start center">
                                                                     <div flex layout="row" layout-align="start center">
@@ -2134,7 +2175,9 @@
                                                                             <input type="text" style="height:100px;" ng-required="true" min="" name="value" ng-maxlength="30" ng-model="header.value">
                                                                         </md-input-container>
                                                                     </div>
-                                                                    <span><button name="add" ng-click="removeWebhookHeader(header)">Remove</button></span>
+                                                                    <span>
+                                                                        <button name="add" ng-click="removeWebhookHeader(header)">Remove</button>
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -2177,7 +2220,8 @@
                         <div flex="70">
                             <div class="payment-card" ng-repeat="gateway in currentGateways">
                                 <div>
-                                    <div layout="row" layout-align="start center" ng-class="{'not-uspported':!gateway.support && gateway.paymentGateway != 'testGateway'}" flex>
+                                    <div layout="row" layout-align="start center" ng-class="{'not-uspported':!gateway.support && gateway.paymentGateway != 'testGateway'}"
+                                        flex>
                                         <md-input-container style="margin: 0;" flex>
                                             <div class="online_{{gateway.paymentGateway | lowercase}}" ng-class="{'online_disabled': !gateway.isConnected}"></div>
                                             <!--<div>{{gateway.paymentGateway}}</div>-->
@@ -2247,17 +2291,18 @@
                                         </md-input-container>
                                     </div>
 
-                                    <div layout="row" layout-align="space-between start" ng-if="gateway.paymentGateway === 'stripe' && gateway.isConnected && showMoreUserInfo" class="p-10 solid-highlight-gray mv-20">
+                                    <div layout="row" layout-align="space-between start" ng-if="gateway.paymentGateway === 'stripe' && gateway.isConnected && showMoreUserInfo"
+                                        class="p-10 solid-highlight-gray mv-20">
                                         <div flex>
                                             <p class="mt-0 fs-16">You can also get registered with below payment methods and use it for your transactions.</p>
                                             <span style="color: #888">Select the methods you want and register.</span>
                                             <!--<div style="padding: 5px 20%">-->
-                                                <!--<md-input-container layout="row" layout-align="start center" flex>-->
-                                                    <!--<md-checkbox id="bitcoinCheckBox" ng-model="gateway.key['0'].enableBitcoin" class="m-0"></md-checkbox>-->
-                                                    <!--<div class="online_stripe_bitcoin"></div>-->
-                                                    <!--<span class="fs-20 ml-10">Bitcoin</span>-->
-                                                    <!--&lt;!&ndash;<div>{{gateway.paymentGateway}}</div>&ndash;&gt;-->
-                                                <!--</md-input-container>-->
+                                            <!--<md-input-container layout="row" layout-align="start center" flex>-->
+                                            <!--<md-checkbox id="bitcoinCheckBox" ng-model="gateway.key['0'].enableBitcoin" class="m-0"></md-checkbox>-->
+                                            <!--<div class="online_stripe_bitcoin"></div>-->
+                                            <!--<span class="fs-20 ml-10">Bitcoin</span>-->
+                                            <!--&lt;!&ndash;<div>{{gateway.paymentGateway}}</div>&ndash;&gt;-->
+                                            <!--</md-input-container>-->
                                             <!--</div>-->
                                             <div style="padding: 5px 20%">
                                                 <md-input-container layout="row" layout-align="start center" flex>
@@ -2283,14 +2328,20 @@
                                                 <input type="text" id="secretTextBox" ng-model="gateway.key['0'].plaidSecret" />
                                             </md-input-container>
                                             <div class="text-right">
-                                                <md-button id="saveStripeDetails" ng-disabled="issavePyamnetExtraDetailsClicked" ng-click="savePyamnetExtraDetails(gateway.key['0'])" class="md-accent md-accent">Register</md-button>
+                                                <md-button id="saveStripeDetails" ng-disabled="issavePyamnetExtraDetailsClicked" ng-click="savePyamnetExtraDetails(gateway.key['0'])"
+                                                    class="md-accent md-accent">Register</md-button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <md-divider class="mt-16" ng-if="$index != currentGateways.length-1"></md-divider>
                                 <div layout="row" layout-align="start center" class="more-collapse" ng-if="gateway.paymentGateway === 'stripe'" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
-                                    <md-button class="md-icon-button m-0" ng-click="contentExpandHandler()"><md-icon md-font-icon="icon-chevron-down" ng-if="!showMoreUserInfo"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="showMoreUserInfo"></md-icon> </md-button><label ng-if="showMoreUserInfo">Less</label><label ng-if="!showMoreUserInfo">More</label>
+                                    <md-button class="md-icon-button m-0" ng-click="contentExpandHandler()">
+                                        <md-icon md-font-icon="icon-chevron-down" ng-if="!showMoreUserInfo"></md-icon>
+                                        <md-icon md-font-icon="icon-chevron-up" ng-if="showMoreUserInfo"></md-icon>
+                                    </md-button>
+                                    <label ng-if="showMoreUserInfo">Less</label>
+                                    <label ng-if="!showMoreUserInfo">More</label>
                                 </div>
                             </div>
                         </div>
@@ -2310,8 +2361,10 @@
 
                                         <div flex>
                                             <ul class="small-list iconed">
-                                                <li ng-class="{'dead':!twilioConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':twilioConnected}"></md-icon> Registration</li>
-                                                <li ng-class="{'dead':!vm.usingTwilioSMS}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.usingTwilioSMS}"></md-icon> Twilio SMS configuration</li>
+                                                <li ng-class="{'dead':!twilioConnected}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':twilioConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.usingTwilioSMS}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.usingTwilioSMS}"></md-icon> Twilio SMS configuration</li>
                                             </ul>
                                         </div>
 
@@ -2341,7 +2394,7 @@
                                     <!--INTEGRATION - Additional Config-->
                                     <div layout="row" layout-align="space-between center" class="solid-highlight-gray mv-20" ng-if="integratedToolConfigHelper.twilio.moreConfig">
                                         <md-tabs md-border-bottom md-dynamic-height flex class="tabs-transparent">
-                                            <md-tab >
+                                            <md-tab>
                                                 <md-tab-label>
                                                     <md-icon md-font-icon="icon-credit-card-multiple"></md-icon>Set SMS Alerts
                                                 </md-tab-label>
@@ -2359,19 +2412,22 @@
                                                                             <label>Phone number</label>
                                                                             <input name="phone" ng-required="true" type="text" ng-model="vm.smsEvents.phone" ng-maxlength="30">
                                                                             <div ng-messages="vm.smsEvents.phone.$error">
-                                                                                <div ng-message="maxlength">Phone Number has to be less than 30 characters long</div>
+                                                                                <div ng-message="maxlength">Phone Number has to be less than 30 characters
+                                                                                    long</div>
                                                                             </div>
                                                                         </md-input-container>
                                                                     </div>
                                                                 </div>
                                                                 <div class="pos-rel">
                                                                     <div class="group-sub-head">Select the events that you want to send SMSs for</div>
-                                                                    <md-checkbox ng-model="vm.smsEvents.selectAll" ng-if="vm.smsEventList.length != 0" ng-change="vm.selectAllSmsEvents()" aria-label="Event" class="md-primary m-0">Select all events</md-checkbox>
+                                                                    <md-checkbox ng-model="vm.smsEvents.selectAll" ng-if="vm.smsEventList.length != 0" ng-change="vm.selectAllSmsEvents()" aria-label="Event"
+                                                                        class="md-primary m-0">Select all events</md-checkbox>
                                                                 </div>
                                                             </div>
                                                             <md-content class="ph-16" ms-scroll>
                                                                 <div class="msg-empty-list" ng-if="vm.smsEventList.length == 0">
-                                                                    <span><md-icon md-font-icon="icon-information-outline"></md-icon> No event is available</span>
+                                                                    <span>
+                                                                        <md-icon md-font-icon="icon-information-outline"></md-icon> No event is available</span>
                                                                 </div>
                                                                 <div layout="row" layout-align="start center" class="pv-10" ng-repeat="event in vm.smsEventList" ng-click="null">
                                                                     <md-checkbox ng-model="event.isSelected" aria-label="Event" class="md-primary m-0">{{event.eventDesc}}</md-checkbox>
@@ -2411,7 +2467,8 @@
                                                                     <md-progress-circular></md-progress-circular>
                                                                 </div>
                                                                 <div layout="row" layout-align="center center" class="msg-empty-list" ng-if="vm.twilioSmsHistoryList.length == 0">
-                                                                    <span><md-icon md-font-icon="icon-information-outline"></md-icon> No history is available for Twilio sms</span>
+                                                                    <span>
+                                                                        <md-icon md-font-icon="icon-information-outline"></md-icon> No history is available for Twilio sms</span>
                                                                 </div>
                                                                 <div class="sub-list">
                                                                     <div layout="row" class="list-item" ng-repeat="history in vm.twilioSmsHistoryList" ng-click="" layout-align="start center">
@@ -2422,7 +2479,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div layout="row" layout-align="center center" class="" ng-if="isMoreTwilioSmsHistoryLoading">
-                                                                    <md-button ng-click="loadTwilioSMSHistory()" class="md-primary" style="font-size: 12px;font-weight: 400"><md-icon md-font-icon="icon-magnify"></md-icon> More</md-button>
+                                                                    <md-button ng-click="loadTwilioSMSHistory()" class="md-primary" style="font-size: 12px;font-weight: 400">
+                                                                        <md-icon md-font-icon="icon-magnify"></md-icon> More</md-button>
                                                                 </div>
                                                             </md-card-content>
                                                         </md-card>
@@ -2435,11 +2493,14 @@
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
-                                <div layout="row" layout-align="start center" class="more-collapse"
-                                     ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}"
-                                     ng-if="twilioConnected"
-                                >
-                                    <md-button class="md-icon-button m-0" ng-click="configExpandHandler('twilio')"><md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.twilio.moreConfig"></md-icon><md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.twilio.moreConfig"></md-icon> </md-button><label ng-if="integratedToolConfigHelper.twilio.moreConfig">Less</label><label ng-if="!integratedToolConfigHelper.twilio.moreConfig">More configuration</label>
+                                <div layout="row" layout-align="start center" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}"
+                                    ng-if="twilioConnected">
+                                    <md-button class="md-icon-button m-0" ng-click="configExpandHandler('twilio')">
+                                        <md-icon md-font-icon="icon-chevron-down" ng-if="!integratedToolConfigHelper.twilio.moreConfig"></md-icon>
+                                        <md-icon md-font-icon="icon-chevron-up" ng-if="integratedToolConfigHelper.twilio.moreConfig"></md-icon>
+                                    </md-button>
+                                    <label ng-if="integratedToolConfigHelper.twilio.moreConfig">Less</label>
+                                    <label ng-if="!integratedToolConfigHelper.twilio.moreConfig">More configuration</label>
                                 </div>
                             </div>
                             <div class="payment-card">
@@ -2452,8 +2513,10 @@
 
                                         <div flex>
                                             <ul class="small-list iconed">
-                                                <li ng-class="{'dead':!quickBookConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':quickBookConnected}"></md-icon> Registration</li>
-                                                <li ng-class="{'dead':!vm.quickBookMigrateConfigAdded}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.quickBookMigrateConfigAdded}"></md-icon> Migration Configuration</li>
+                                                <li ng-class="{'dead':!quickBookConnected}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':quickBookConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.quickBookMigrateConfigAdded}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.quickBookMigrateConfigAdded}"></md-icon> Migration Configuration</li>
                                             </ul>
                                         </div>
 
@@ -2464,7 +2527,7 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button id="quickbookId" ng-disabled="quickBookConnected"  ng-click="executeQB()">
+                                                        <md-button id="quickbookId" ng-disabled="quickBookConnected" ng-click="executeQB()">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
@@ -2577,7 +2640,9 @@
                                 <md-divider class="mt-16"></md-divider>
                                 <div layout="row" layout-align="start center" ng-if="quickBookMigrateConfigAdded" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
                                     <md-button class="md-icon-button m-0" ng-click="configExpandHandler('quickbooks')">
-                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.quickbooks.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.quickbooks.moreConfig ? 'Less' : 'More'}}</label>
+                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.quickbooks.moreConfig ? 'up' : 'down'}}"></md-icon>
+                                    </md-button>
+                                    <label>{{integratedToolConfigHelper.quickbooks.moreConfig ? 'Less' : 'More'}}</label>
                                 </div>
                             </div>
                             <div class="payment-card">
@@ -2590,8 +2655,10 @@
 
                                         <div flex>
                                             <ul class="small-list iconed">
-                                                <li ng-class="{'dead':!salesforceConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':salesforceConnected}"></md-icon> Registration</li>
-                                                <li ng-class="{'dead':!vm.salesForceMigrateConfigAdded}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.salesForceMigrateConfigAdded}"></md-icon> Migration Configuration</li>
+                                                <li ng-class="{'dead':!salesforceConnected}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':salesforceConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.salesForceMigrateConfigAdded}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.salesForceMigrateConfigAdded}"></md-icon> Migration Configuration</li>
                                             </ul>
                                         </div>
 
@@ -2627,31 +2694,31 @@
 
                                         <div class="p-16" ng-if="salesForceMigrateConfigAdded" flex>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                  <span class="iconed-label" flex="40">
-                                                      <md-icon md-font-icon="icon-account"></md-icon>
-                                                      <span>Profiles Migration Configuration:</span>
-                                                  </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-account"></md-icon>
+                                                    <span>Profiles Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.salesforceProfileValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                  <span class="iconed-label" flex="40">
-                                                      <md-icon md-font-icon="icon-package"></md-icon>
-                                                      <span>Products Migration Configuration:</span>
-                                                  </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-package"></md-icon>
+                                                    <span>Products Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.salesforceProductValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                  <span class="iconed-label" flex="40">
-                                                      <md-icon md-font-icon="icon-map"></md-icon>
-                                                      <span>Plans Migration Configuration:</span>
-                                                  </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-map"></md-icon>
+                                                    <span>Plans Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.salesforcePlanValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row">
-                                                  <span class="iconed-label" flex="40">
-                                                      <md-icon md-font-icon="icon-document"></md-icon>
-                                                      <span>Invoices Migration Configuration:</span>
-                                                  </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-document"></md-icon>
+                                                    <span>Invoices Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.salesforceInvoiceValue}}</span>
                                             </div>
                                         </div>
@@ -2664,7 +2731,9 @@
                                 <md-divider class="mt-16"></md-divider>
                                 <div layout="row" layout-align="start center" ng-if="salesForceMigrateConfigAdded" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
                                     <md-button class="md-icon-button m-0" ng-click="configExpandHandler('salesforce')">
-                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.salesforce.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.salesforce.moreConfig ? 'Less' : 'More'}}</label>
+                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.salesforce.moreConfig ? 'up' : 'down'}}"></md-icon>
+                                    </md-button>
+                                    <label>{{integratedToolConfigHelper.salesforce.moreConfig ? 'Less' : 'More'}}</label>
                                 </div>
                             </div>
                             <div class="payment-card">
@@ -2676,8 +2745,10 @@
 
                                         <div flex>
                                             <ul class="small-list iconed">
-                                                <li ng-class="{'dead':!zendeskConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':zendeskConnected}"></md-icon> Registration</li>
-                                                <li ng-class="{'dead':!vm.zendeskMigrateConfigAdded}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.zendeskMigrateConfigAdded}"></md-icon> Migration Configuration</li>
+                                                <li ng-class="{'dead':!zendeskConnected}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':zendeskConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.zendeskMigrateConfigAdded}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.zendeskMigrateConfigAdded}"></md-icon> Migration Configuration</li>
                                             </ul>
                                         </div>
 
@@ -2713,31 +2784,31 @@
 
                                         <div class="p-16" ng-if="zendeskMigrateConfigAdded" flex>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                    <span class="iconed-label" flex="40">
-                                                        <md-icon md-font-icon="icon-account"></md-icon>
-                                                        <span>Profiles Migration Configuration:</span>
-                                                    </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-account"></md-icon>
+                                                    <span>Profiles Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.zendeskProfileValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                    <span class="iconed-label" flex="40">
-                                                        <md-icon md-font-icon="icon-package"></md-icon>
-                                                        <span>Products Migration Configuration:</span>
-                                                    </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-package"></md-icon>
+                                                    <span>Products Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.zendeskProductValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                    <span class="iconed-label" flex="40">
-                                                        <md-icon md-font-icon="icon-map"></md-icon>
-                                                        <span>Plans Migration Configuration:</span>
-                                                    </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-map"></md-icon>
+                                                    <span>Plans Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.zendeskPlanValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row">
-                                                    <span class="iconed-label" flex="40">
-                                                        <md-icon md-font-icon="icon-document"></md-icon>
-                                                        <span>Invoices Migration Configuration:</span>
-                                                    </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-document"></md-icon>
+                                                    <span>Invoices Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.zendeskInvoiceValue}}</span>
                                             </div>
                                         </div>
@@ -2750,7 +2821,9 @@
                                 <md-divider class="mt-16"></md-divider>
                                 <div layout="row" layout-align="start center" ng-if="zendeskMigrateConfigAdded" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
                                     <md-button class="md-icon-button m-0" ng-click="configExpandHandler('zendesk')">
-                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.zendesk.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.zendesk.moreConfig ? 'Less' : 'More'}}</label>
+                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.zendesk.moreConfig ? 'up' : 'down'}}"></md-icon>
+                                    </md-button>
+                                    <label>{{integratedToolConfigHelper.zendesk.moreConfig ? 'Less' : 'More'}}</label>
                                 </div>
                             </div>
                             <div class="payment-card">
@@ -2762,8 +2835,10 @@
 
                                         <div flex>
                                             <ul class="small-list iconed">
-                                                <li ng-class="{'dead':!zohoConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':zohoConnected}"></md-icon> Registration</li>
-                                                <li ng-class="{'dead':!vm.zohoMigrateConfigAdded}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.zohoMigrateConfigAdded}"></md-icon> Migration Configuration</li>
+                                                <li ng-class="{'dead':!zohoConnected}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':zohoConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.zohoMigrateConfigAdded}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.zohoMigrateConfigAdded}"></md-icon> Migration Configuration</li>
                                             </ul>
                                         </div>
 
@@ -2774,7 +2849,7 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button  ng-disabled="zohoConnected" ng-click="registerIntegrationDialog('zoho', '', $event)">
+                                                        <md-button ng-disabled="zohoConnected" ng-click="registerIntegrationDialog('zoho', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
@@ -2799,31 +2874,31 @@
 
                                         <div class="p-16" ng-if="zohoMigrateConfigAdded" flex>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                      <span class="iconed-label" flex="40">
-                                                          <md-icon md-font-icon="icon-account"></md-icon>
-                                                          <span>Profiles Migration Configuration:</span>
-                                                      </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-account"></md-icon>
+                                                    <span>Profiles Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.zohoProfileValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                      <span class="iconed-label" flex="40">
-                                                          <md-icon md-font-icon="icon-package"></md-icon>
-                                                          <span>Products Migration Configuration:</span>
-                                                      </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-package"></md-icon>
+                                                    <span>Products Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.zohoProductValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row bordered-dark">
-                                                      <span class="iconed-label" flex="40">
-                                                          <md-icon md-font-icon="icon-map"></md-icon>
-                                                          <span>Plans Migration Configuration:</span>
-                                                      </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-map"></md-icon>
+                                                    <span>Plans Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.zohoPlanValue}}</span>
                                             </div>
                                             <div layout="row" class="info-grid-row">
-                                                      <span class="iconed-label" flex="40">
-                                                          <md-icon md-font-icon="icon-document"></md-icon>
-                                                          <span>Invoices Migration Configuration:</span>
-                                                      </span>
+                                                <span class="iconed-label" flex="40">
+                                                    <md-icon md-font-icon="icon-document"></md-icon>
+                                                    <span>Invoices Migration Configuration:</span>
+                                                </span>
                                                 <span flex>{{vm.migrateConfig.zohoInvoiceValue}}</span>
                                             </div>
                                         </div>
@@ -2836,7 +2911,9 @@
                                 <md-divider class="mt-16"></md-divider>
                                 <div layout="row" layout-align="start center" ng-if="zohoMigrateConfigAdded" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
                                     <md-button class="md-icon-button m-0" ng-click="configExpandHandler('zoho')">
-                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.zoho.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.zoho.moreConfig ? 'Less' : 'More'}}</label>
+                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.zoho.moreConfig ? 'up' : 'down'}}"></md-icon>
+                                    </md-button>
+                                    <label>{{integratedToolConfigHelper.zoho.moreConfig ? 'Less' : 'More'}}</label>
                                 </div>
                             </div>
                             <div class="payment-card">
@@ -2848,9 +2925,12 @@
 
                                         <div flex>
                                             <ul class="small-list iconed">
-                                                <li ng-class="{'dead':!xeroConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':xeroConnected}"></md-icon> Registration</li>
-                                                <li ng-class="{'dead':!vm.xeroConfigStored}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.xeroConfigStored}"></md-icon> Advanced configuration</li>
-                                                <li ng-class="{'dead':!vm.xeroMigrateConfigAdded}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.xeroMigrateConfigAdded}"></md-icon> Migration configuration</li>
+                                                <li ng-class="{'dead':!xeroConnected}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':xeroConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.xeroConfigStored}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.xeroConfigStored}"></md-icon> Advanced configuration</li>
+                                                <li ng-class="{'dead':!vm.xeroMigrateConfigAdded}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.xeroMigrateConfigAdded}"></md-icon> Migration configuration</li>
                                             </ul>
                                         </div>
 
@@ -2861,14 +2941,14 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button  ng-disabled="xeroConnected" ng-click="registerXeroIntegration()">
+                                                        <md-button ng-disabled="xeroConnected" ng-click="registerXeroIntegration()">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
                                                         <!--vm.xeroConfigStored  : used to disable when advanced config has stored-->
-                                                        <md-button  ng-disabled="!xeroConnected" ng-click="registerIntegrationDialog('xero', '', $event)">
+                                                        <md-button ng-disabled="!xeroConnected" ng-click="registerIntegrationDialog('xero', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Advanced Configurations
                                                         </md-button>
@@ -3046,9 +3126,12 @@
 
                                 </div>
                                 <md-divider class="mt-16"></md-divider>
-                                <div layout="row" layout-align="start center" ng-if="xeroMigrateConfigAdded || vm.xeroConfigStored" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
+                                <div layout="row" layout-align="start center" ng-if="xeroMigrateConfigAdded || vm.xeroConfigStored" class="more-collapse"
+                                    ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">
                                     <md-button class="md-icon-button m-0" ng-click="configExpandHandler('xero')">
-                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.xero.moreConfig ? 'up' : 'down'}}"></md-icon></md-button><label>{{integratedToolConfigHelper.xero.moreConfig ? 'Less' : 'More'}}</label>
+                                        <md-icon md-font-icon="icon-chevron-{{integratedToolConfigHelper.xero.moreConfig ? 'up' : 'down'}}"></md-icon>
+                                    </md-button>
+                                    <label>{{integratedToolConfigHelper.xero.moreConfig ? 'Less' : 'More'}}</label>
                                 </div>
                                 <!--<md-divider class="mt-16"></md-divider>-->
                                 <!--<div layout="row" layout-align="start center" ng-disabled="" class="more-collapse" ng-style="showMoreUserInfo ? {'bottom':'-20px'} : {'bottom':'-20px'}">-->
@@ -3064,8 +3147,10 @@
 
                                         <div flex>
                                             <ul class="small-list iconed">
-                                                <li ng-class="{'dead':!mailchimpConnected}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':mailchimpConnected}"></md-icon> Registration</li>
-                                                <li ng-class="{'dead':!vm.submittedMailChimpConfig}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.submittedMailChimpConfig}"></md-icon> Migration configuration</li>
+                                                <li ng-class="{'dead':!mailchimpConnected}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':mailchimpConnected}"></md-icon> Registration</li>
+                                                <li ng-class="{'dead':!vm.submittedMailChimpConfig}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.submittedMailChimpConfig}"></md-icon> Migration configuration</li>
                                             </ul>
                                         </div>
 
@@ -3076,13 +3161,57 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button  ng-disabled="mailchimpConnected" ng-click="registerIntegrationDialog('mailchimp', '', $event)">
+                                                        <md-button ng-disabled="mailchimpConnected" ng-click="registerIntegrationDialog('mailchimp', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
                                                             Register
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
                                                         <md-button ng-disabled="!mailchimpConnected || vm.submittedMailChimpConfig" ng-click="removeMailChimpConfig($event)">
+                                                            <md-icon md-font-icon="icon-logout"></md-icon>
+                                                            Leave
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </md-input-container>
+                                    </div>
+
+                                    <!--INTEGRATION - Additional Config-->
+                                    <!--INTEGRATION - Additional Config-->
+
+                                </div>
+                                <md-divider class="mt-16"></md-divider>
+                            </div>
+                            <div class="payment-card">
+                                <div>
+                                    <div layout="row" layout-align="start center" flex>
+                                        <md-input-container style="margin: 0;" flex>
+                                            <div class="integration_avalara" ng-class="{'online_disabled': !vm.usingAvalaraTax}"></div>
+                                        </md-input-container>
+
+                                        <div flex>
+                                            <ul class="small-list iconed">
+                                                <li ng-class="{'dead':!vm.usingAvalaraTax}">
+                                                    <md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.usingAvalaraTax}"></md-icon> Registration</li>
+                                                <!-- <li ng-class="{'dead':!vm.submittedMailChimpConfig}"><md-icon md-font-icon="icon-check" ng-class="{'md-accent':vm.submittedMailChimpConfig}"></md-icon> Migration configuration</li> -->
+                                            </ul>
+                                        </div>
+
+                                        <md-input-container class="m-0">
+                                            <md-menu>
+                                                <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                                                    <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                                                </md-button>
+                                                <md-menu-content width="4">
+                                                    <md-menu-item>
+                                                        <md-button ng-disabled="vm.usingAvalaraTax" ng-click="registerIntegrationDialog('avalara', '', $event)">
+                                                            <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
+                                                            Register
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                        <md-button ng-disabled="!vm.usingAvalaraTax" ng-click="removeAvalara($event)">
                                                             <md-icon md-font-icon="icon-logout"></md-icon>
                                                             Leave
                                                         </md-button>

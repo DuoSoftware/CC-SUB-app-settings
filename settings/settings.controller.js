@@ -1,5 +1,4 @@
-(function ()
-{
+(function () {
 	'use strict';
 	////////////////////////////////
 	// App : Settings
@@ -11,7 +10,7 @@
 	angular
 		.module('app.settings')
 		.controller('settingscontroller', settingscontroller)
-		.directive('imageResize', function($q) {
+		.directive('imageResize', function ($q) {
 			return {
 				restrict: 'A',
 				scope: {
@@ -28,7 +27,7 @@
 						var deferred = $q.defer();
 						var img = new Image();
 
-						img.onload = function() {
+						img.onload = function () {
 							deferred.resolve(img);
 						};
 						img.src = src;
@@ -63,7 +62,7 @@
 				}
 			}
 		})
-		.directive('dragAndDrop', function() {
+		.directive('dragAndDrop', function () {
 			return {
 				restrict: 'A',
 				link: function ($scope, elem, attr) {
@@ -95,10 +94,10 @@
 						var files = e.originalEvent.dataTransfer.files;
 
 						if (files && files[0]) {
-							var FR= new FileReader();
+							var FR = new FileReader();
 
-							FR.readAsDataURL( files[0] );
-							FR.addEventListener("load", function(e) {
+							FR.readAsDataURL(files[0]);
+							FR.addEventListener("load", function (e) {
 								// $timeout(function () {
 								$scope.addedImage = e.target.result;
 								$scope.$apply();
@@ -107,10 +106,10 @@
 							});
 						}
 
-						if(files.length > 0) {
+						if (files.length > 0) {
 							$scope.productImgChanged = true;
-							var splitIndex=files[0].name.lastIndexOf('.');
-							$scope.productImgFileName = files[0].name.substr(0,splitIndex);
+							var splitIndex = files[0].name.lastIndexOf('.');
+							$scope.productImgFileName = files[0].name.substr(0, splitIndex);
 							// $scope.productImgFileType = files[0].type.split("/")[1];
 							$scope.productImgFileType = 'jpg';
 							// if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
@@ -122,8 +121,7 @@
 		});
 
 	/** @ngInject */
-	function settingscontroller($window,$scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav,$rootScope,$charge,$filter,notifications,$state,$storage,$uploader,$http,logHelper,$sce)
-	{
+	function settingscontroller($window, $scope, $document, $timeout, $mdDialog, $mdMedia, $mdSidenav, $rootScope, $charge, $filter, notifications, $state, $storage, $uploader, $http, logHelper, $sce) {
 		var vm = this;
 		vm.settingsCategoryState = "default";
 		vm.sidenavActiveState = '';
@@ -161,7 +159,7 @@
 		});
 		//settingsTabs.find('md-tab-content').addClass('ms-scroll');
 
-		$scope.planChangeView=false;
+		$scope.planChangeView = false;
 
 
 		//////////
@@ -194,154 +192,150 @@
 			$scope.showTaxesFor = code;
 		}
 
-		$scope.taxGroupDialogInit = function(ev) {
+		$scope.taxGroupDialogInit = function (ev) {
 			$mdDialog.show({
 				controller: 'TaxGroupDialogController as vm',
 				templateUrl: 'app/main/settings/dialogs/taxGroupDialog.html',
 				targetEvent: ev,
-				clickOutsideToClose:false,
+				clickOutsideToClose: false,
 				locals: {
-					fixedRates : $scope.fixedRates,
-					taxGroupList : $scope.taxGroupList,
-					indexGrp:null,
-					groupTaxData:null,
-					code:null,
-					infoDialog : null,
-					groupTaxInfo : null
+					fixedRates: $scope.fixedRates,
+					taxGroupList: $scope.taxGroupList,
+					indexGrp: null,
+					groupTaxData: null,
+					code: null,
+					infoDialog: null,
+					groupTaxInfo: null
 				}
-			}).then(function(answer) {
-			}, function() {
+			}).then(function (answer) {
+			}, function () {
 			});
 		};
 
-		$scope.taxGroupEditDialog = function(ev, groupTaxData,index,code) {
+		$scope.taxGroupEditDialog = function (ev, groupTaxData, index, code) {
 			$mdDialog.show({
 				controller: 'TaxGroupDialogController as vm',
 				templateUrl: 'app/main/settings/dialogs/taxGroupDialog.html',
 				targetEvent: ev,
-				clickOutsideToClose:false,
+				clickOutsideToClose: false,
 				locals: {
-					fixedRates : $scope.fixedRates,
-					taxGroupList : $scope.taxGroupList,
-					indexGrp:index,
-					groupTaxData:groupTaxData,
-					code:code,
-					infoDialog : null,
-					groupTaxInfo : null
+					fixedRates: $scope.fixedRates,
+					taxGroupList: $scope.taxGroupList,
+					indexGrp: index,
+					groupTaxData: groupTaxData,
+					code: code,
+					infoDialog: null,
+					groupTaxInfo: null
 				}
-			}).then(function(answer) {
-			}, function() {
+			}).then(function (answer) {
+			}, function () {
 			});
 		};
 
-		$scope.taxGroupInfoDialog = function(ev, groupTaxData,index,code) {
+		$scope.taxGroupInfoDialog = function (ev, groupTaxData, index, code) {
 
 			$mdDialog.show({
 				controller: 'TaxGroupDialogController as vm',
 				templateUrl: 'app/main/settings/dialogs/taxGroupInfoDialog.html',
 				targetEvent: ev,
-				clickOutsideToClose:false,
+				clickOutsideToClose: false,
 				locals: {
-					fixedRates : $scope.fixedRates,
-					taxGroupList : null,
-					indexGrp:index,
-					groupTaxData:groupTaxData,
-					code:code,
-					infoDialog : null,
-					groupTaxInfo : null
+					fixedRates: $scope.fixedRates,
+					taxGroupList: null,
+					indexGrp: index,
+					groupTaxData: groupTaxData,
+					code: code,
+					infoDialog: null,
+					groupTaxInfo: null
 				}
-			}).then(function(answer) {
-			}, function() {
+			}).then(function (answer) {
+			}, function () {
 			});
 		};
 
-		$scope.taxIndAddDialog = function(ev) {
+		$scope.taxIndAddDialog = function (ev) {
 			$mdDialog.show({
 				controller: 'TaxIndividualDialogController as vm',
 				templateUrl: 'app/main/settings/dialogs/taxIndividDialog.html',
 				targetEvent: ev,
-				clickOutsideToClose:false,
+				clickOutsideToClose: false,
 				locals: {
-					fixedRates : $scope.fixedRates,
-					fixedRate:null,
-					index:null,
-					dialogInfo : null,
-					general : $scope.general
+					fixedRates: $scope.fixedRates,
+					fixedRate: null,
+					index: null,
+					dialogInfo: null,
+					general: $scope.general
 				}
-			}).then(function(answer) {
-			}, function() {
+			}).then(function (answer) {
+			}, function () {
 			});
 		};
 
-		$scope.taxIndEditDialog = function(ev,fixedRate,index) {
+		$scope.taxIndEditDialog = function (ev, fixedRate, index) {
 			$mdDialog.show({
 				controller: 'TaxIndividualDialogController as vm',
 				templateUrl: 'app/main/settings/dialogs/taxIndividDialog.html',
 				targetEvent: ev,
-				clickOutsideToClose:false,
+				clickOutsideToClose: false,
 				locals: {
-					fixedRates : $scope.fixedRates,
-					fixedRate:fixedRate,
-					index:index,
-					dialogInfo : null,
-					general : $scope.general
+					fixedRates: $scope.fixedRates,
+					fixedRate: fixedRate,
+					index: index,
+					dialogInfo: null,
+					general: $scope.general
 				}
-			}).then(function(answer) {
-			}, function() {
+			}).then(function (answer) {
+			}, function () {
 			});
 		};
 
-		$scope.taxInfoDialog = function(ev,fixedRate,index) {
+		$scope.taxInfoDialog = function (ev, fixedRate, index) {
 			$mdDialog.show({
 				controller: 'TaxIndividualDialogController',
 				templateUrl: 'app/main/settings/dialogs/taxInfoDialog.html',
 				targetEvent: ev,
-				clickOutsideToClose:false,
+				clickOutsideToClose: false,
 				locals: {
-					fixedRates : $scope.fixedRates,
-					fixedRate:fixedRate,
-					index:index,
-					dialogInfo : null,
-					general : $scope.general
+					fixedRates: $scope.fixedRates,
+					fixedRate: fixedRate,
+					index: index,
+					dialogInfo: null,
+					general: $scope.general
 				}
-			}).then(function(answer) {
-			}, function() {
+			}).then(function (answer) {
+			}, function () {
 			});
 		};
 
-		function setPreviewLayout(){
+		function setPreviewLayout() {
 
 		}
 
 		// Watch screen size to activate responsive read pane
-		$scope.$watch(function ()
-		{
+		$scope.$watch(function () {
 			return $mdMedia('gt-md');
-		}, function (current)
-		{
+		}, function (current) {
 			vm.responsiveReadPane = !current;
 		});
 
 		// Watch screen size to activate dynamic height on tabs
-		$scope.$watch(function ()
-		{
+		$scope.$watch(function () {
 			return $mdMedia('xs');
-		}, function (current)
-		{
+		}, function (current) {
 			vm.dynamicHeight = current;
 		});
 
 		$scope.$watch(function () {
 			var elem = document.querySelector('#billingFrqCurrency');
 			var elem2 = document.querySelector('#billingFrqCurrencyEdit');
-			if(elem != null){
-				if(elem.innerText == "$0"){
+			if (elem != null) {
+				if (elem.innerText == "$0") {
 					var innerCurr = elem.innerText.split('0')[0];
 					elem.innerText = innerCurr;
 				}
 			}
-			if(elem2 != null){
-				if(elem2.innerText == "$0"){
+			if (elem2 != null) {
+				if (elem2.innerText == "$0") {
 					var innerCurr = elem2.innerText.split('0')[0];
 					elem2.innerText = innerCurr;
 				}
@@ -351,12 +345,10 @@
 		/**
 		 * Close read pane
 		 */
-		function settingsCategoryNavigation(state)
-		{
+		function settingsCategoryNavigation(state) {
 			vm.settingsCategoryState = state;
 			vm.sidenavActiveState = state;
-			switch(state)
-			{
+			switch (state) {
 				case 'plans':
 					$scope.loadPlanAttributes();
 					break;
@@ -394,7 +386,7 @@
 					$scope.loadTwilioSMSConfig();
 					$scope.openIntergrationConfigs();
 					break;
-				default :
+				default:
 					break;
 
 			}
@@ -407,21 +399,17 @@
 		/**
 		 * Close read pane
 		 */
-		function closeReadPane()
-		{
-			if ( angular.isDefined(vm.responsiveReadPane) && vm.responsiveReadPane )
-			{
+		function closeReadPane() {
+			if (angular.isDefined(vm.responsiveReadPane) && vm.responsiveReadPane) {
 				vm.activeProductPaneIndex = 0;
 
-				$timeout(function ()
-				{
+				$timeout(function () {
 					vm.scrollEl.scrollTop(vm.scrollPos);
 				}, 650);
 			}
 		}
 
-		function toggleSidenav(sidenavId)
-		{
+		function toggleSidenav(sidenavId) {
 			$mdSidenav(sidenavId).toggle();
 		}
 
@@ -434,86 +422,82 @@
 		 * General tab started
 		 */
 		$rootScope.selectedProduct = {};
-		$scope.changeProduct={};
-		$scope.general={};
-		$scope.status="true";
+		$scope.changeProduct = {};
+		$scope.general = {};
+		$scope.status = "true";
 		$scope.taxes = ['10', '20', '30', '40'];
-		$scope.currencies=[];
-		$scope.baseCurrencyDet=[];
-		$scope.currencyFormatDet=[];
-		$scope.timezoneDet=[];
-		$scope.dateformatDet=[];
-		$scope.frequentCurrencies=[];
+		$scope.currencies = [];
+		$scope.baseCurrencyDet = [];
+		$scope.currencyFormatDet = [];
+		$scope.timezoneDet = [];
+		$scope.dateformatDet = [];
+		$scope.frequentCurrencies = [];
 		$scope.selectFixed = true;
 
-		$scope.currencyFormat=['######.##','###,###.##','### ###.##'];
-		$scope.timezones=['Zone 1','Zone 2'];
-		$scope.dateformats=['DateFormat 1','DateFormat 2'];
-		$scope.languages=[];
-		$scope.papersizes=['A4','B5','A2'];
-		$scope.userCurrencies=[];
-		$scope.isPreview=false;
-		$scope.template={}
-		$scope.footerDet={};
-		$scope.footerDet.greeting='Thank you for your business';
-		$scope.footerDet.disclaimer='';
+		$scope.currencyFormat = ['######.##', '###,###.##', '### ###.##'];
+		$scope.timezones = ['Zone 1', 'Zone 2'];
+		$scope.dateformats = ['DateFormat 1', 'DateFormat 2'];
+		$scope.languages = [];
+		$scope.papersizes = ['A4', 'B5', 'A2'];
+		$scope.userCurrencies = [];
+		$scope.isPreview = false;
+		$scope.template = {}
+		$scope.footerDet = {};
+		$scope.footerDet.greeting = 'Thank you for your business';
+		$scope.footerDet.disclaimer = '';
 
 		//$scope.template.companyName="Company Name";
 
-		$charge.settings().currencies().success(function(data) {
+		$charge.settings().currencies().success(function (data) {
 			//
 			for (var key in data) {
-				var dataRec=data[key];
+				var dataRec = data[key];
 				$scope.currencies.push(dataRec);
 			}
 			//
 			//console.log(data);
-		}).error(function(data) {
+		}).error(function (data) {
 			//console.log(data);
 		})
 
-		$charge.settings().languages().success(function(data) {
+		$charge.settings().languages().success(function (data) {
 			//
 			//for (var key in data) {
 			//    $scope.languages.push(key);
 			//}
-			var arr = $.map(data, function(el) { return el; })
-			for(var i=0;i<arr.length;i++)
-			{
+			var arr = $.map(data, function (el) { return el; })
+			for (var i = 0; i < arr.length; i++) {
 				$scope.languages.push(arr[i]);
 			}
 			//console.log(data);
-		}).error(function(data) {
+		}).error(function (data) {
 			//console.log(data);
 		})
 
 		var self = this;
-		self.selectedItem  = null;
-		self.searchText    = null;
+		self.selectedItem = null;
+		self.searchText = null;
 		//self.querySearch   = querySearch;
 
-		$scope.querySearch =function (query) {
+		$scope.querySearch = function (query) {
 
 			//Custom Filter
 			//
-			var results=[];
-			for (var i = 0; i< $scope.currencies.length;  ++i){
+			var results = [];
+			for (var i = 0; i < $scope.currencies.length; ++i) {
 				//console.log($scope.allBanks[i].value.value);
 				//
-				if($scope.currencies[i].code.toLowerCase().indexOf(query.toLowerCase()) !=-1)
-				{
-					if($scope.currencies[i].code.toLowerCase().startsWith(query.toLowerCase()))
-					{
+				if ($scope.currencies[i].code.toLowerCase().indexOf(query.toLowerCase()) != -1) {
+					if ($scope.currencies[i].code.toLowerCase().startsWith(query.toLowerCase())) {
 						results.push($scope.currencies[i]);
 					}
 				}
 			}
 			return results;
 		}
-		$scope.setBaseCurrency=function(ev)
-		{
+		$scope.setBaseCurrency = function (ev) {
 			//
-			if(ev!=undefined) {
+			if (ev != undefined) {
 
 				$scope.general.baseCurrency = ev.code;
 				// self.searchText = null;
@@ -522,20 +506,18 @@
 
 
 		var self = this;
-		self.searchCurrency    = null;
+		self.searchCurrency = null;
 		//self.queryCurrency   = queryCurrency;
 
-		$scope.queryCurrency=function(query) {
+		$scope.queryCurrency = function (query) {
 
 			//Custom Filter
-			var results=[];
-			for (var i = 0; i<$scope.currencies.length; ++i){
+			var results = [];
+			for (var i = 0; i < $scope.currencies.length; ++i) {
 				//console.log($scope.allBanks[i].value.value);
 				//
-				if($scope.currencies[i].code.toLowerCase().indexOf(query.toLowerCase()) !=-1)
-				{
-					if($scope.currencies[i].code.toLowerCase().startsWith(query.toLowerCase()))
-					{
+				if ($scope.currencies[i].code.toLowerCase().indexOf(query.toLowerCase()) != -1) {
+					if ($scope.currencies[i].code.toLowerCase().startsWith(query.toLowerCase())) {
 						results.push($scope.currencies[i]);
 					}
 
@@ -544,27 +526,27 @@
 			return results;
 		}
 
-		$scope.addCurrencyDialog = function() {
+		$scope.addCurrencyDialog = function () {
 			$mdDialog.show({
 				controller: 'addCurrencyController as vm',
 				templateUrl: 'app/main/settings/dialogs/prompt-add-currency.html',
-				clickOutsideToClose:false,
-				locals:{
-					addCurrency : $scope.addCurrency,
-					searchCurrency : self.searchCurrency,
-					queryCurrency : $scope.queryCurrency
+				clickOutsideToClose: false,
+				locals: {
+					addCurrency: $scope.addCurrency,
+					searchCurrency: self.searchCurrency,
+					queryCurrency: $scope.queryCurrency
 				}
 			});
 		};
 
-		$scope.general.userCurrency="";
-		$scope.general.currencyName="";
-		$scope.addCurrency= function (ev) {
+		$scope.general.userCurrency = "";
+		$scope.general.currencyName = "";
+		$scope.addCurrency = function (ev) {
 
-			if(ev!=undefined) {
-				var currencyDet = $filter('filter')($scope.userCurrencies, {code: ev.code})[0];
-				if(currencyDet==null || currencyDet==undefined) {
-					if($scope.general.baseCurrency!=ev.code) {
+			if (ev != undefined) {
+				var currencyDet = $filter('filter')($scope.userCurrencies, { code: ev.code })[0];
+				if (currencyDet == null || currencyDet == undefined) {
+					if ($scope.general.baseCurrency != ev.code) {
 						$scope.general.userCurrency = $scope.general.userCurrency + " " + ev.code;
 						$scope.general.currencyName = $scope.general.currencyName == "" ? ev.name : $scope.general.currencyName + "," + ev.name;
 
@@ -572,21 +554,20 @@
 						self.searchCurrency = null;
 						$mdDialog.hide();
 					}
-					else
-					{
+					else {
 						notifications.toast("Base currency cannot be added.", "error");
-						self.searchCurrency    = null;
+						self.searchCurrency = null;
 						$mdDialog.hide();
 					}
 				}
 				else {
 					notifications.toast("Currency Code " + ev.code + " has been already added.", "error");
-					self.searchCurrency    = null;
+					self.searchCurrency = null;
 				}
 			}
 		}
 
-		$scope.clearFields= function () {
+		$scope.clearFields = function () {
 			//self.searchText= "";
 			//self.searchCurrency="";
 			//$scope.general.baseCurrency="";
@@ -602,7 +583,7 @@
 			//$scope.template.companyPhone="";
 			//$scope.template.companyEmail="";
 			//$scope.template.companyLogoPreview=[];
-			$state.go($state.current, {}, {reload: true});
+			$state.go($state.current, {}, { reload: true });
 		}
 
 		//$scope.clearTaxField= function () {
@@ -624,66 +605,65 @@
 
 
 
-		var isBaseCurrency=false,isCurrencyFormat=false,isTimeZone=false,isDateFormat=false,isFrequentCurrency=false,isFrequentCurrencyName=false,isDecimalPoint=false;
-		$scope.isDeleted=false;
+		var isBaseCurrency = false, isCurrencyFormat = false, isTimeZone = false, isDateFormat = false, isFrequentCurrency = false, isFrequentCurrencyName = false, isDecimalPoint = false;
+		$scope.isDeleted = false;
 		$scope.isAllGenLoaded = false;
 		$scope.allGenLoaded = false;
 		var tempCurrencyCodes;
 		var tempCurrencyNames;
 		$scope.gen1Loading = false;
-		$charge.settingsapp().getDuobaseValuesByTableName("CTS_GeneralAttributes").success(function(data) {
-			isBaseCurrency=true;
-			isCurrencyFormat=true;
-			isDecimalPoint=true;
-			isTimeZone=true;
-			isDateFormat=true;
-			isFrequentCurrency=true;
-			isFrequentCurrencyName=true;
-			$scope.isAllGenLoaded=true;
+		$charge.settingsapp().getDuobaseValuesByTableName("CTS_GeneralAttributes").success(function (data) {
+			isBaseCurrency = true;
+			isCurrencyFormat = true;
+			isDecimalPoint = true;
+			isTimeZone = true;
+			isDateFormat = true;
+			isFrequentCurrency = true;
+			isFrequentCurrencyName = true;
+			$scope.isAllGenLoaded = true;
 			//
-			$scope.baseCurrencyDet=data[0];
-			$scope.general.baseCurrency=data[0].RecordFieldData;
+			$scope.baseCurrencyDet = data[0];
+			$scope.general.baseCurrency = data[0].RecordFieldData;
 
 			$scope.loadOnlinePaymentRegistration(); // load gateways
 
-			$scope.UIbaseCurrency=angular.copy($scope.general.baseCurrency);
-			$scope.baseCurrency=vm.baseCurrency = data[0].RecordFieldData;
-			$scope.general.GURecID=data[0].GuRecID;
+			$scope.UIbaseCurrency = angular.copy($scope.general.baseCurrency);
+			$scope.baseCurrency = vm.baseCurrency = data[0].RecordFieldData;
+			$scope.general.GURecID = data[0].GuRecID;
 			//$scope.isAllGenLoaded.push("ok");
 
-			$scope.currencyFormatDet=data[1];
-			$scope.general.currencyFormat=data[1].RecordFieldData;
+			$scope.currencyFormatDet = data[1];
+			$scope.general.currencyFormat = data[1].RecordFieldData;
 			//$scope.isAllGenLoaded.push("ok");
 
-			$scope.decimalPointDet=data[6];
-			$scope.general.decimalPoint=parseInt(data[6].RecordFieldData);
+			$scope.decimalPointDet = data[6];
+			$scope.general.decimalPoint = parseInt(data[6].RecordFieldData);
 			//$scope.isAllGenLoaded.push("ok");
 
-			$scope.timezoneDet=data[2];
-			$scope.general.timezone=data[2].RecordFieldData;
+			$scope.timezoneDet = data[2];
+			$scope.general.timezone = data[2].RecordFieldData;
 			// $scope.isAllGenLoaded.push("ok");
 
-			$scope.dateformatDet=data[3];
-			$scope.general.dateFormat=data[3].RecordFieldData;
+			$scope.dateformatDet = data[3];
+			$scope.general.dateFormat = data[3].RecordFieldData;
 			//$scope.isAllGenLoaded.push("ok");
 
 
-			tempCurrencyCodes=[];
+			tempCurrencyCodes = [];
 			//
-			$scope.frequentCurrencies=data[4];
-			$scope.general.userCurrency=data[4].RecordFieldData;
-			tempCurrencyCodes=data[4].RecordFieldData.trimLeft().split(" ");
-			var currencyCode=data[4];
+			$scope.frequentCurrencies = data[4];
+			$scope.general.userCurrency = data[4].RecordFieldData;
+			tempCurrencyCodes = data[4].RecordFieldData.trimLeft().split(" ");
+			var currencyCode = data[4];
 
-			tempCurrencyNames=[];
-			$scope.userCurrencies=[];
-			var currencyNames=data[5];
-			$scope.frequentCurrencyNames=data[5];
-			$scope.general.currencyName=data[5].RecordFieldData;
-			tempCurrencyNames=data[5].RecordFieldData.trimLeft().split(",");
-			for(var i=0;i<tempCurrencyCodes.length;i++)
-			{
-				if(tempCurrencyCodes!="") {
+			tempCurrencyNames = [];
+			$scope.userCurrencies = [];
+			var currencyNames = data[5];
+			$scope.frequentCurrencyNames = data[5];
+			$scope.general.currencyName = data[5].RecordFieldData;
+			tempCurrencyNames = data[5].RecordFieldData.trimLeft().split(",");
+			for (var i = 0; i < tempCurrencyCodes.length; i++) {
+				if (tempCurrencyCodes != "") {
 					$scope.userCurrencies.push({
 						code: tempCurrencyCodes[i],
 						name: tempCurrencyNames[i],
@@ -695,15 +675,15 @@
 			//$scope.isAllGenLoaded.push("ok");
 			$scope.gen1Loading = true;
 
-		}).error(function(data) {
-			isBaseCurrency=false;
-			isCurrencyFormat=false;
-			isDecimalPoint=false;
-			isTimeZone=false;
-			isDateFormat=false;
-			isFrequentCurrency=false;
-			isFrequentCurrencyName=false;
-			$scope.isAllGenLoaded=false;
+		}).error(function (data) {
+			isBaseCurrency = false;
+			isCurrencyFormat = false;
+			isDecimalPoint = false;
+			isTimeZone = false;
+			isDateFormat = false;
+			isFrequentCurrency = false;
+			isFrequentCurrencyName = false;
+			$scope.isAllGenLoaded = false;
 			$scope.gen1Loading = true;
 			$scope.loadOnlinePaymentRegistration();
 		})
@@ -730,45 +710,40 @@
 		$scope.dataSyncEnabled = 0;
 		$scope.settingsSyncData = [];
 
-		$charge.searchhelper().getTenantSyncData(getCurrentDomain()).success(function(data) {
+		$charge.searchhelper().getTenantSyncData(getCurrentDomain()).success(function (data) {
 			//
-			if(data.status)
-			{
-				if(data.data.length != 0)
-				{
+			if (data.status) {
+				if (data.data.length != 0) {
 					$scope.dataSyncInitialized = true;
 					$scope.dataSyncEnabled = data.data[0].SyncEnable;
 					$scope.settingsSyncData = data.data;
 				}
-				else
-				{
+				else {
 					$scope.dataSyncInitialized = false;
 				}
 			}
-		}).error(function(data) {
+		}).error(function (data) {
 
 
 		})
 
-		$scope.syncSettingsChanged = function (syncEnable,syncData) {
+		$scope.syncSettingsChanged = function (syncEnable, syncData) {
 			var syncUpdateObj = {
-				"userId":syncData[0].userId,
-				"syncToDomain":getCurrentDomain(),
-				"SyncEnable":syncEnable
+				"userId": syncData[0].userId,
+				"syncToDomain": getCurrentDomain(),
+				"SyncEnable": syncEnable
 			}
 
-			$charge.searchhelper().updateSyncTenantSettings(syncUpdateObj).success(function(data) {
+			$charge.searchhelper().updateSyncTenantSettings(syncUpdateObj).success(function (data) {
 				//
-				if(data.status)
-				{
+				if (data.status) {
 					notifications.toast("Settings Sync Updated", "success");
 				}
-				else
-				{
+				else {
 					notifications.toast("Settings Sync Updating failed", "error");
 					syncEnable = !syncEnable;
 				}
-			}).error(function(data) {
+			}).error(function (data) {
 				notifications.toast("Settings Sync Updating failed", "error");
 				syncEnable = !syncEnable;
 			})
@@ -873,7 +848,7 @@
 		//  $scope.isAllGenLoaded.push("ok");
 		//})
 
-		$scope.allGenLoadedCount=0;
+		$scope.allGenLoadedCount = 0;
 		//$scope.$watch(function () {
 		//  if($scope.isAllGenLoaded==true && $rootScope.firstLoginDitected==false){
 		//    $scope.allGenLoaded = true;
@@ -894,7 +869,7 @@
 			ctx.canvas.height = 180;
 			var img = new Image();
 			img.setAttribute('crossOrigin', 'anonymous');
-			img.onload = function() {
+			img.onload = function () {
 				ctx.drawImage(img, 0, 0);
 				$scope.cropper.croppedImage = $scope.template.croppedLogo = canvas.toDataURL("image/jpeg", "");
 				$scope.productImgFileName = 'dummy_logo';
@@ -904,37 +879,37 @@
 			img.src = 'https://ccresourcegrpdisks974.blob.core.windows.net/b2c/images/dummy_logo.jpg';
 		};
 
-		var isTemplateDet=false;
-		$scope.template.companyLogo=[];
-		$scope.template.croppedLogo="";
+		var isTemplateDet = false;
+		$scope.template.companyLogo = [];
+		$scope.template.croppedLogo = "";
 		$scope.gen2Loading = false;
-		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function(data) {
-			isTemplateDet=true;
+		$charge.settingsapp().getDuobaseValuesByTableName("CTS_CompanyAttributes").success(function (data) {
+			isTemplateDet = true;
 			//
-			$scope.template.companyDet=data;
-			$scope.template.companyName=data[0].RecordFieldData;
-			$scope.template.companyAddress=data[1].RecordFieldData;
+			$scope.template.companyDet = data;
+			$scope.template.companyName = data[0].RecordFieldData;
+			$scope.template.companyAddress = data[1].RecordFieldData;
 
 			var address = $scope.template.companyAddress.split('|');
-			if(address.length === 7){
-				$scope.template.line1=address[0];
-				$scope.template.line2=address[1];
-				$scope.template.line3=address[2];
-				$scope.template.city=address[3];
-				$scope.template.region=address[4];
-				$scope.template.country=address[5];
-				$scope.template.postalCode=address[6];
+			if (address.length === 7) {
+				$scope.template.line1 = address[0];
+				$scope.template.line2 = address[1];
+				$scope.template.line3 = address[2];
+				$scope.template.city = address[3];
+				$scope.template.region = address[4];
+				$scope.template.country = address[5];
+				$scope.template.postalCode = address[6];
 			}
 
 
-			$scope.template.companyPhone=data[2].RecordFieldData;
-			$scope.template.companyEmail=data[3].RecordFieldData;
-			$scope.template.companyLogoPreview=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
-			$scope.template.croppedLogo=(data[4].RecordFieldData=="")?"":data[4].RecordFieldData=="Array"?"":data[4].RecordFieldData;
+			$scope.template.companyPhone = data[2].RecordFieldData;
+			$scope.template.companyEmail = data[3].RecordFieldData;
+			$scope.template.companyLogoPreview = (data[4].RecordFieldData == "") ? "" : data[4].RecordFieldData == "Array" ? "" : data[4].RecordFieldData;
+			$scope.template.croppedLogo = (data[4].RecordFieldData == "") ? "" : data[4].RecordFieldData == "Array" ? "" : data[4].RecordFieldData;
 
 			$rootScope.companyDetailsPublic = $scope.template;
-			if($scope.template.croppedLogo!=""){
-				vm.isEditable=true;
+			if ($scope.template.croppedLogo != "") {
+				vm.isEditable = true;
 				//$http({
 				//  method: 'GET',
 				//  url: $scope.template.croppedLogo
@@ -943,32 +918,32 @@
 				//}, function errorCallback(response) {
 				//
 				//});
-				if($scope.template.croppedLogo.split('/')[$scope.template.croppedLogo.split('/').length-1].split('.')[0] == 'dummy_logo'){
-					$timeout(function(){
+				if ($scope.template.croppedLogo.split('/')[$scope.template.croppedLogo.split('/').length - 1].split('.')[0] == 'dummy_logo') {
+					$timeout(function () {
 						$scope.tempCompanyLogo = $scope.template.croppedLogo;
 						$scope.editImageOn = true;
-					},0);
+					}, 0);
 				}
-				$scope.cropper.croppedImage=$scope.template.croppedLogo;
-				$rootScope.companyLogoPublic=$scope.template.croppedLogo;
+				$scope.cropper.croppedImage = $scope.template.croppedLogo;
+				$rootScope.companyLogoPublic = $scope.template.croppedLogo;
 				$scope.gen2Loading = true;
 			}
-			else{
+			else {
 				$scope.exportDummyLogo();
-				$timeout(function(){
+				$timeout(function () {
 					$scope.tempCompanyLogo = $scope.template.croppedLogo;
 					$scope.editImageOn = true;
-				},0);
+				}, 0);
 				$scope.gen2Loading = true;
 			}
 			//vm.previewLayout = 'row';
-			$scope.template.GURecID=data[0].GuRecID;
-		}).error(function(data) {
+			$scope.template.GURecID = data[0].GuRecID;
+		}).error(function (data) {
 			$scope.exportDummyLogo();
-			$timeout(function(){
+			$timeout(function () {
 				$scope.editImageOn = true;
-			},0);
-			isDateFormat=false;
+			}, 0);
+			isDateFormat = false;
 			$scope.gen2Loading = true;
 		})
 
@@ -977,30 +952,30 @@
 		}
 
 
-		var isFooterDet=false;
-		$charge.settingsapp().getDuobaseValuesByTableName("CTS_FooterAttributes").success(function(data) {
-			isFooterDet=true;
+		var isFooterDet = false;
+		$charge.settingsapp().getDuobaseValuesByTableName("CTS_FooterAttributes").success(function (data) {
+			isFooterDet = true;
 			//
-			$scope.footerDet.footersDet=data;
-			$scope.footerDet.greeting=data[0].RecordFieldData;
-			$scope.footerDet.disclaimer=data[1].RecordFieldData!=""?atob(data[1].RecordFieldData):"";
-			$scope.footerDet.GURecID=data[0].GuRecID;
-		}).error(function(data) {
-			isFooterDet=false;
+			$scope.footerDet.footersDet = data;
+			$scope.footerDet.greeting = data[0].RecordFieldData;
+			$scope.footerDet.disclaimer = data[1].RecordFieldData != "" ? atob(data[1].RecordFieldData) : "";
+			$scope.footerDet.GURecID = data[0].GuRecID;
+		}).error(function (data) {
+			isFooterDet = false;
 		})
 
 
 
-		$charge.subscription().getTranCount().success(function(data) {
-			$scope.transactionCount=data['count'];
+		$charge.subscription().getTranCount().success(function (data) {
+			$scope.transactionCount = data['count'];
 			//
 
-		}).error(function(data) {
+		}).error(function (data) {
 
-			$scope.infoJson= {};
-			$scope.infoJson.message =JSON.stringify(data);
-			$scope.infoJson.app ='settings';
-			logHelper.error( $scope.infoJson);
+			$scope.infoJson = {};
+			$scope.infoJson.message = JSON.stringify(data);
+			$scope.infoJson.app = 'settings';
+			logHelper.error($scope.infoJson);
 
 		})
 
@@ -1108,7 +1083,7 @@
 		//}
 
 
-		$scope.deleteGeneral= function () {
+		$scope.deleteGeneral = function () {
 
 			$charge.settingsapp().deleteCommmon($scope.general.GURecID).success(function (data) {
 
@@ -1117,64 +1092,64 @@
 					"FieldName": "BaseCurrency",
 					"RecordFieldData": $scope.general.baseCurrency
 				},
-					{
-						"RecordName": "CTS_GeneralAttributes",
-						"FieldName": "CurrencyFormat",
-						"RecordFieldData": $scope.general.currencyFormat
-					},
-					{
-						"RecordName": "CTS_GeneralAttributes",
-						"FieldName": "TimeZone",
-						"RecordFieldData": $scope.general.timezone
-					},
-					{
-						"RecordName": "CTS_GeneralAttributes",
-						"FieldName": "DateFormat",
-						"RecordFieldData": $scope.general.dateFormat
-					},
-					{
-						"RecordName": "CTS_GeneralAttributes",
-						"FieldName": "FrequentCurrencies",
-						"RecordFieldData": $scope.general.userCurrency
-					},
-					{
-						"RecordName": "CTS_GeneralAttributes",
-						"FieldName": "FrequentCurrencyNames",
-						"RecordFieldData": $scope.general.currencyName
-					},
-					{
-						"RecordName": "CTS_GeneralAttributes",
-						"FieldName": "DecimalPointLength",
-						"RecordFieldData": $scope.general.decimalPoint
-					}]
-				$charge.settingsapp().insertBulkDuoBaseValues(req).success(function(data) {
+				{
+					"RecordName": "CTS_GeneralAttributes",
+					"FieldName": "CurrencyFormat",
+					"RecordFieldData": $scope.general.currencyFormat
+				},
+				{
+					"RecordName": "CTS_GeneralAttributes",
+					"FieldName": "TimeZone",
+					"RecordFieldData": $scope.general.timezone
+				},
+				{
+					"RecordName": "CTS_GeneralAttributes",
+					"FieldName": "DateFormat",
+					"RecordFieldData": $scope.general.dateFormat
+				},
+				{
+					"RecordName": "CTS_GeneralAttributes",
+					"FieldName": "FrequentCurrencies",
+					"RecordFieldData": $scope.general.userCurrency
+				},
+				{
+					"RecordName": "CTS_GeneralAttributes",
+					"FieldName": "FrequentCurrencyNames",
+					"RecordFieldData": $scope.general.currencyName
+				},
+				{
+					"RecordName": "CTS_GeneralAttributes",
+					"FieldName": "DecimalPointLength",
+					"RecordFieldData": $scope.general.decimalPoint
+				}]
+				$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 					localStorage.removeItem('firstLogin');
 					localStorage.setItem("firstLogin", $scope.general.baseCurrency);
 					//notifications.toast("General records have been updated.", "success");
 					$scope.deleteCompanyProfile();
 				}).error(function (data) {
 					notifications.toast("Error occured while updating General Record.", "error");
-					$scope.generalSubmit=false;
+					$scope.generalSubmit = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
 			}).error(function (data) {
-				$scope.generalSubmit=false;
+				$scope.generalSubmit = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
 		}
 
-		$scope.updateGeneralCheckProcess= function () {
+		$scope.updateGeneralCheckProcess = function () {
 
-			if($scope.cropper.croppedImage!=null && $scope.cropper.croppedImage!="" && $scope.productImgChanged) {
+			if ($scope.cropper.croppedImage != null && $scope.cropper.croppedImage != "" && $scope.productImgChanged) {
 				//angular.forEach($scope.template.companyLogo, function (obj) {
 				var uploadImageObj = {
 					"base64Image": $scope.cropper.croppedImage,
@@ -1184,123 +1159,122 @@
 					"fileType": "image"
 				}
 				$charge.storage().storeImage(uploadImageObj).success(function (data) {
-					$scope.template.croppedLogo=data.fileUrl;
-					$scope.productImgChanged=false;
+					$scope.template.croppedLogo = data.fileUrl;
+					$scope.productImgChanged = false;
 					$scope.updateGeneralRecords();
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
-					$scope.infoJson.app ='settings';
-					logHelper.info( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = $scope.productImgFileName + ' Company logo uploaded';
+					$scope.infoJson.app = 'settings';
+					logHelper.info($scope.infoJson);
 
 				}).error(function (data) {
 					//console.log(data);
 					notifications.toast("Error occured while uploading Company logo.", "error");
 					$scope.generalSubmit = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
 			}
-			else
-			{
+			else {
 				$scope.updateGeneralRecords();
 			}
 		}
 
-		$scope.updateGeneralRecords= function () {
+		$scope.updateGeneralRecords = function () {
 
 			$scope.template.companyAddress = "";
 
-			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
-			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
-			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
-			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
-			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
-			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
+			$scope.template.companyAddress = $scope.template.line1 ? $scope.template.line1.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? "|" + $scope.template.line2.trim() : "|";
+			$scope.template.companyAddress += $scope.template.line3 ? "|" + $scope.template.line3.trim() : "|";
+			$scope.template.companyAddress += $scope.template.city ? "|" + $scope.template.city.trim() : "|";
+			$scope.template.companyAddress += $scope.template.region ? "|" + $scope.template.region.trim() : "|";
+			$scope.template.companyAddress += $scope.template.country ? "|" + $scope.template.country.trim() : "|";
+			$scope.template.companyAddress += $scope.template.postalCode ? "|" + $scope.template.postalCode.trim() : "|";
 
-			var updateData=[{
+			var updateData = [{
 				"RowID": $scope.baseCurrencyDet.RowID,
 				"RecordFieldData": $scope.general.baseCurrency
 			},
-				{
-					"RowID": $scope.currencyFormatDet.RowID,
-					"RecordFieldData": $scope.general.currencyFormat
-				},
-				{
-					"RowID": $scope.timezoneDet.RowID,
-					"RecordFieldData": $scope.general.timezone
-				},
-				{
-					"RowID": $scope.dateformatDet.RowID,
-					"RecordFieldData": $scope.general.dateFormat
-				},
-				{
-					"RowID": $scope.frequentCurrencies.RowID,
-					"RecordFieldData": $scope.general.userCurrency
-				},
-				{
-					"RowID": $scope.frequentCurrencyNames.RowID,
-					"RecordFieldData": $scope.general.currencyName
-				},
-				{
-					"RowID": $scope.decimalPointDet.RowID,
-					"RecordFieldData": $scope.general.decimalPoint
-				},
-				{
-					"RowID": $scope.template.companyDet[0].RowID,
-					"RecordFieldData": $scope.template.companyName
-				},
-				{
-					"RowID": $scope.template.companyDet[1].RowID,
-					"RecordFieldData": $scope.template.companyAddress
-				},
-				{
-					"RowID": $scope.template.companyDet[2].RowID,
-					"RecordFieldData": $scope.template.companyPhone
-				},
-				{
-					"RowID": $scope.template.companyDet[3].RowID,
-					"RecordFieldData": $scope.template.companyEmail
-				},
-				{
-					"RowID": $scope.template.companyDet[4].RowID,
-					"RecordFieldData": $scope.template.croppedLogo
-				},
-				{
-					"RowID": $scope.footerDet.footersDet[0].RowID,
-					"RecordFieldData": $scope.footerDet.greeting==undefined?"":$scope.footerDet.greeting
-				},
-				{
-					"RowID": $scope.footerDet.footersDet[1].RowID,
-					"RecordFieldData": $scope.footerDet.disclaimer==undefined?"":btoa($scope.footerDet.disclaimer)
-				}]
+			{
+				"RowID": $scope.currencyFormatDet.RowID,
+				"RecordFieldData": $scope.general.currencyFormat
+			},
+			{
+				"RowID": $scope.timezoneDet.RowID,
+				"RecordFieldData": $scope.general.timezone
+			},
+			{
+				"RowID": $scope.dateformatDet.RowID,
+				"RecordFieldData": $scope.general.dateFormat
+			},
+			{
+				"RowID": $scope.frequentCurrencies.RowID,
+				"RecordFieldData": $scope.general.userCurrency
+			},
+			{
+				"RowID": $scope.frequentCurrencyNames.RowID,
+				"RecordFieldData": $scope.general.currencyName
+			},
+			{
+				"RowID": $scope.decimalPointDet.RowID,
+				"RecordFieldData": $scope.general.decimalPoint
+			},
+			{
+				"RowID": $scope.template.companyDet[0].RowID,
+				"RecordFieldData": $scope.template.companyName
+			},
+			{
+				"RowID": $scope.template.companyDet[1].RowID,
+				"RecordFieldData": $scope.template.companyAddress
+			},
+			{
+				"RowID": $scope.template.companyDet[2].RowID,
+				"RecordFieldData": $scope.template.companyPhone
+			},
+			{
+				"RowID": $scope.template.companyDet[3].RowID,
+				"RecordFieldData": $scope.template.companyEmail
+			},
+			{
+				"RowID": $scope.template.companyDet[4].RowID,
+				"RecordFieldData": $scope.template.croppedLogo
+			},
+			{
+				"RowID": $scope.footerDet.footersDet[0].RowID,
+				"RecordFieldData": $scope.footerDet.greeting == undefined ? "" : $scope.footerDet.greeting
+			},
+			{
+				"RowID": $scope.footerDet.footersDet[1].RowID,
+				"RecordFieldData": $scope.footerDet.disclaimer == undefined ? "" : btoa($scope.footerDet.disclaimer)
+			}]
 
-			$charge.settingsapp().updateGeneralDataByRowId(updateData).success(function(data) {
+			$charge.settingsapp().updateGeneralDataByRowId(updateData).success(function (data) {
 				localStorage.removeItem('firstLogin');
 				localStorage.setItem("firstLogin", $scope.general.baseCurrency);
 				notifications.toast("General records have been updated.", "success");
-				$scope.template.companyLogo=[];
-				$scope.productImgChanged=false;
-				$scope.generalSubmit=false;
-				$state.go($state.current, {}, {reload: true});
+				$scope.template.companyLogo = [];
+				$scope.productImgChanged = false;
+				$scope.generalSubmit = false;
+				$state.go($state.current, {}, { reload: true });
 
-				$scope.infoJson= {};
-				$scope.infoJson.message ='General records have been updated';
-				$scope.infoJson.app ='settings';
-				logHelper.info( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = 'General records have been updated';
+				$scope.infoJson.app = 'settings';
+				logHelper.info($scope.infoJson);
 			}).error(function (data) {
 				notifications.toast("Error occured while updating General Record.", "error");
-				$scope.template.companyLogo=[];
-				$scope.generalSubmit=false;
+				$scope.template.companyLogo = [];
+				$scope.generalSubmit = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
@@ -1344,20 +1318,20 @@
 				files = this.files;
 
 				if (this.files && this.files[0]) {
-					var FR= new FileReader();
+					var FR = new FileReader();
 
-					FR.readAsDataURL( this.files[0] );
-					FR.addEventListener("load", function(e) {
+					FR.readAsDataURL(this.files[0]);
+					FR.addEventListener("load", function (e) {
 						$timeout(function () {
 							$scope.addedImage = e.target.result;
-						},0);
+						}, 0);
 					});
 				}
 
-				if(files.length > 0) {
+				if (files.length > 0) {
 					$scope.productImgChanged = true;
-					var splitIndex=files[0].name.lastIndexOf('.');
-					$scope.productImgFileName = files[0].name.substr(0,splitIndex);
+					var splitIndex = files[0].name.lastIndexOf('.');
+					$scope.productImgFileName = files[0].name.substr(0, splitIndex);
 					// $scope.productImgFileType = files[0].type.split("/")[1];
 					$scope.productImgFileType = 'jpg';
 					// if($scope.productImgFileType == 'jpeg'){$scope.productImgFileType = "jpg";}
@@ -1366,7 +1340,7 @@
 		}
 
 		$scope.$watch(function () {
-			angular.element('#dragZone').bind('dragover', function(e){
+			angular.element('#dragZone').bind('dragover', function (e) {
 				// console.log('Over');
 			})
 		});
@@ -1382,7 +1356,7 @@
 
 		$scope.editCompanyLogoInit = function () {
 			$scope.tempCompanyLogo = angular.copy($scope.cropper.croppedImage);
-			$timeout(function(){
+			$timeout(function () {
 				$scope.editImageOn = true;
 				//$scope.cropper.croppedImage ? $scope.addedImage = $scope.cropper.croppedImage : $scope.addedImage=false;
 			});
@@ -1390,14 +1364,14 @@
 
 		$scope.editCompanyCancel = function () {
 			$scope.cropper.croppedImage = $scope.tempCompanyLogo;
-			$timeout(function(){
+			$timeout(function () {
 				$scope.editImageOn = false;
 				$scope.addedImage = false;
 			});
 		};
 
 		$scope.retryImageUpload = function () {
-			$timeout(function(){
+			$timeout(function () {
 				$scope.editImageOn = false;
 				$scope.editImageOn = true;
 				$scope.addedImage = false;
@@ -1414,21 +1388,21 @@
 			crop: ''
 		};
 
-		vm.updateResultImage = function(base64) {
+		vm.updateResultImage = function (base64) {
 			vm.resultImage = base64;
 			$scope.cropper.croppedImage = vm.resultImage;
 			$scope.$apply();
 		};
 
-		vm.doneImageCropping = function(cropperApi) {
+		vm.doneImageCropping = function (cropperApi) {
 			// angular.element('#imageCropElement').trigger('Cropped');
-			$timeout(function(){
+			$timeout(function () {
 				$scope.editImageOn = false;
 				$scope.addedImage = false;
 			});
 		};
 
-		vm.cropperApi = function(cropperApi) {
+		vm.cropperApi = function (cropperApi) {
 			cropperApi.zoomOut(1.01);
 			cropperApi.zoomIn(1.01);
 			cropperApi.fit();
@@ -1440,36 +1414,34 @@
 
 		//Image Uploader===================================
 
-		$scope.saveGeneralCheck = function() {
-			$scope.generalSubmit=true;
+		$scope.saveGeneralCheck = function () {
+			$scope.generalSubmit = true;
 			$charge.tenant().checkTenantReady().success(function (data) {
-				if(data.status)
-				{
-					$scope.generalSubmit=false;
+				if (data.status) {
+					$scope.generalSubmit = false;
 					$scope.saveGeneral();
 				}
-				else
-				{
+				else {
 					$scope.saveGeneralCheck();
 				}
 			}).error(function (data) {
 				notifications.toast("Building your company still on process. Please try again in few minutes", "error");
 				$scope.generalSubmit = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			});
 		}
 
-		$scope.generalSubmit=false;
+		$scope.generalSubmit = false;
 		$scope.imgWidth = "";
 		$scope.imgHeight = "";
-		$scope.saveGeneral = function() {
+		$scope.saveGeneral = function () {
 
-			if(vm.generalForm.$valid==true) {
-				$scope.generalSubmit=true;
+			if (vm.generalForm.$valid == true) {
+				$scope.generalSubmit = true;
 				if (!isBaseCurrency && !isCurrencyFormat && !isTimeZone && !isDateFormat && !isFrequentCurrency && !isFrequentCurrencyName && !isTemplateDet && !isDecimalPoint && !isFooterDet) {
 
 					$scope.generalFields = [];
@@ -1596,7 +1568,7 @@
 								"fileType": "image"
 							}
 							$charge.storage().storeImage(uploadImageObj).success(function (data) {
-								$scope.template.companyLogo=data.fileUrl;
+								$scope.template.companyLogo = data.fileUrl;
 
 								$scope.saveCompanyProfile();
 								var req = {
@@ -1634,31 +1606,31 @@
 									$charge.settingsapp().store(req).success(function (data) {
 										notifications.toast("General records has been saved.", "success");
 										$scope.generalSubmit = false;
-										$state.go($state.current, {}, {reload: true});
+										$state.go($state.current, {}, { reload: true });
 										$rootScope.$broadcast('base_available');
 										$rootScope.firstLoginDitected = false;
 
-										$scope.infoJson= {};
-										$scope.infoJson.message ='General records has been saved';
-										$scope.infoJson.app ='settings';
-										logHelper.info( $scope.infoJson);
+										$scope.infoJson = {};
+										$scope.infoJson.message = 'General records has been saved';
+										$scope.infoJson.app = 'settings';
+										logHelper.info($scope.infoJson);
 									}).error(function (data) {
 										notifications.toast("Error occured while saving company profile.", "error");
 										$scope.generalSubmit = false;
 
-										$scope.infoJson= {};
-										$scope.infoJson.message =JSON.stringify(data);
-										$scope.infoJson.app ='settings';
-										logHelper.error( $scope.infoJson);
+										$scope.infoJson = {};
+										$scope.infoJson.message = JSON.stringify(data);
+										$scope.infoJson.app = 'settings';
+										logHelper.error($scope.infoJson);
 
 										$charge.settingsapp().deleteGeneralData().success(function (data) {
 											//console.log("Settings Rollback..");
 										}).error(function (data) {
 											//console.log("Settings Rollback failed");
-											$scope.infoJson= {};
-											$scope.infoJson.message =JSON.stringify(data);
-											$scope.infoJson.app ='settings';
-											logHelper.error( $scope.infoJson);
+											$scope.infoJson = {};
+											$scope.infoJson.message = JSON.stringify(data);
+											$scope.infoJson.app = 'settings';
+											logHelper.error($scope.infoJson);
 										});
 
 									});
@@ -1666,19 +1638,19 @@
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
 
-									$scope.infoJson= {};
-									$scope.infoJson.message =JSON.stringify(data);
-									$scope.infoJson.app ='settings';
-									logHelper.error( $scope.infoJson);
+									$scope.infoJson = {};
+									$scope.infoJson.message = JSON.stringify(data);
+									$scope.infoJson.app = 'settings';
+									logHelper.error($scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
 									}).error(function (data) {
 										//console.log("Settings Rollback failed");
-										$scope.infoJson= {};
-										$scope.infoJson.message =JSON.stringify(data);
-										$scope.infoJson.app ='settings';
-										logHelper.error( $scope.infoJson);
+										$scope.infoJson = {};
+										$scope.infoJson.message = JSON.stringify(data);
+										$scope.infoJson.app = 'settings';
+										logHelper.error($scope.infoJson);
 									});
 
 								});
@@ -1686,19 +1658,19 @@
 								//console.log(data);
 								$scope.generalSubmit = false;
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
 								}).error(function (data) {
 									//console.log("Settings Rollback failed");
-									$scope.infoJson= {};
-									$scope.infoJson.message =JSON.stringify(data);
-									$scope.infoJson.app ='settings';
-									logHelper.error( $scope.infoJson);
+									$scope.infoJson = {};
+									$scope.infoJson.message = JSON.stringify(data);
+									$scope.infoJson.app = 'settings';
+									logHelper.error($scope.infoJson);
 								});
 
 							})
@@ -1803,7 +1775,7 @@
 								$charge.settingsapp().store(req).success(function (data) {
 									notifications.toast("General records has been saved.", "success");
 									$scope.generalSubmit = false;
-									$state.go($state.current, {}, {reload: true});
+									$state.go($state.current, {}, { reload: true });
 									$rootScope.firstLoginDitected = false;
 									$rootScope.$broadcast('base_available');
 									// $charge.settingsapp().deleteGeneralData().success(function (data) {
@@ -1811,27 +1783,27 @@
 									// }).error(function (data) {
 									// 	console.log("Settings Rollback failed");
 									// });
-									$scope.infoJson= {};
-									$scope.infoJson.message ='General records has been saved';
-									$scope.infoJson.app ='settings';
-									logHelper.info( $scope.infoJson);
+									$scope.infoJson = {};
+									$scope.infoJson.message = 'General records has been saved';
+									$scope.infoJson.app = 'settings';
+									logHelper.info($scope.infoJson);
 								}).error(function (data) {
 									notifications.toast("Error occured while saving company profile.", "error");
 									$scope.generalSubmit = false;
 
-									$scope.infoJson= {};
-									$scope.infoJson.message =JSON.stringify(data);
-									$scope.infoJson.app ='settings';
-									logHelper.error( $scope.infoJson);
+									$scope.infoJson = {};
+									$scope.infoJson.message = JSON.stringify(data);
+									$scope.infoJson.app = 'settings';
+									logHelper.error($scope.infoJson);
 
 									$charge.settingsapp().deleteGeneralData().success(function (data) {
 										//console.log("Settings Rollback..");
 									}).error(function (data) {
 										//console.log("Settings Rollback failed");
-										$scope.infoJson= {};
-										$scope.infoJson.message =JSON.stringify(data);
-										$scope.infoJson.app ='settings';
-										logHelper.error( $scope.infoJson);
+										$scope.infoJson = {};
+										$scope.infoJson.message = JSON.stringify(data);
+										$scope.infoJson.app = 'settings';
+										logHelper.error($scope.infoJson);
 									});
 
 								});
@@ -1839,19 +1811,19 @@
 								notifications.toast("Error occured while saving company profile.", "error");
 								$scope.generalSubmit = false;
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 
 								$charge.settingsapp().deleteGeneralData().success(function (data) {
 									//console.log("Settings Rollback..");
 								}).error(function (data) {
 									//console.log("Settings Rollback failed");
-									$scope.infoJson= {};
-									$scope.infoJson.message =JSON.stringify(data);
-									$scope.infoJson.app ='settings';
-									logHelper.error( $scope.infoJson);
+									$scope.infoJson = {};
+									$scope.infoJson.message = JSON.stringify(data);
+									$scope.infoJson.app = 'settings';
+									logHelper.error($scope.infoJson);
 								});
 
 							});
@@ -1863,19 +1835,19 @@
 						notifications.toast("Error occured while saving general records.", "error");
 						$scope.generalSubmit = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 
 						$charge.settingsapp().deleteGeneralData().success(function (data) {
 							//console.log("Settings Rollback..");
 						}).error(function (data) {
 							//console.log("Settings Rollback failed");
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						});
 
 					})
@@ -1929,13 +1901,13 @@
 
 			$scope.template.companyAddress = "";
 
-			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
-			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
-			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
-			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
-			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
-			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
+			$scope.template.companyAddress = $scope.template.line1 ? $scope.template.line1.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? "|" + $scope.template.line2.trim() : "|";
+			$scope.template.companyAddress += $scope.template.line3 ? "|" + $scope.template.line3.trim() : "|";
+			$scope.template.companyAddress += $scope.template.city ? "|" + $scope.template.city.trim() : "|";
+			$scope.template.companyAddress += $scope.template.region ? "|" + $scope.template.region.trim() : "|";
+			$scope.template.companyAddress += $scope.template.country ? "|" + $scope.template.country.trim() : "|";
+			$scope.template.companyAddress += $scope.template.postalCode ? "|" + $scope.template.postalCode.trim() : "|";
 
 
 			$scope.companyFieldValues.push({
@@ -1989,9 +1961,9 @@
 			});
 		}
 
-		$scope.deleteCompanyProfile= function () {
+		$scope.deleteCompanyProfile = function () {
 			$charge.settingsapp().deleteCommmon($scope.template.GURecID).success(function (data) {
-				if($scope.cropper.croppedImage!=null && $scope.cropper.croppedImage!="") {
+				if ($scope.cropper.croppedImage != null && $scope.cropper.croppedImage != "") {
 					//angular.forEach($scope.template.companyLogo, function (obj) {
 					var uploadImageObj = {
 						"base64Image": $scope.cropper.croppedImage,
@@ -2001,22 +1973,22 @@
 						"fileType": "image"
 					}
 					$charge.storage().storeImage(uploadImageObj).success(function (data) {
-						$scope.template.croppedLogo=data.fileUrl;
+						$scope.template.croppedLogo = data.fileUrl;
 						$scope.insertCompanyIndividual();
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =$scope.productImgFileName+' Company logo uploaded';
-						$scope.infoJson.app ='settings';
-						logHelper.info( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = $scope.productImgFileName + ' Company logo uploaded';
+						$scope.infoJson.app = 'settings';
+						logHelper.info($scope.infoJson);
 
 					}).error(function (data) {
 						//console.log(data);
 						$scope.generalSubmit = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					})
 
 					//$uploader.uploadMedia("CCCompanyImage", $scope.cropper.croppedImage, $scope.productImgFileName);
@@ -2046,77 +2018,76 @@
 					//}
 					//});
 				}
-				else
-				{
-					$scope.template.companyLogo=$scope.template.Preview;
+				else {
+					$scope.template.companyLogo = $scope.template.Preview;
 					$scope.insertCompanyIndividual();
 				}
 			}).error(function (data) {
 				notifications.toast("Error occured while updating Company Record.", "error");
-				$scope.template.companyLogo=[];
-				$scope.generalSubmit=false;
+				$scope.template.companyLogo = [];
+				$scope.generalSubmit = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		$scope.insertCompanyIndividual= function () {
+		$scope.insertCompanyIndividual = function () {
 
 			$scope.template.companyAddress = "";
 
-			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "|";
-			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "|";
-			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "|";
-			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "|";
-			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "|";
-			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "|";
+			$scope.template.companyAddress = $scope.template.line1 ? $scope.template.line1.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? "|" + $scope.template.line2.trim() : "|";
+			$scope.template.companyAddress += $scope.template.line3 ? "|" + $scope.template.line3.trim() : "|";
+			$scope.template.companyAddress += $scope.template.city ? "|" + $scope.template.city.trim() : "|";
+			$scope.template.companyAddress += $scope.template.region ? "|" + $scope.template.region.trim() : "|";
+			$scope.template.companyAddress += $scope.template.country ? "|" + $scope.template.country.trim() : "|";
+			$scope.template.companyAddress += $scope.template.postalCode ? "|" + $scope.template.postalCode.trim() : "|";
 
 
 
-			var req =[{
-				"RecordName":"CTS_CompanyAttributes",
-				"FieldName":"CompanyName",
-				"RecordFieldData":$scope.template.companyName
+			var req = [{
+				"RecordName": "CTS_CompanyAttributes",
+				"FieldName": "CompanyName",
+				"RecordFieldData": $scope.template.companyName
 			},
-				{
-					"RecordName":"CTS_CompanyAttributes",
-					"FieldName":"CompanyAddress",
-					"RecordFieldData":$scope.template.companyAddress
-				},
-				{
-					"RecordName":"CTS_CompanyAttributes",
-					"FieldName":"CompanyPhoneNo",
-					"RecordFieldData":$scope.template.companyPhone
-				},
-				{
-					"RecordName":"CTS_CompanyAttributes",
-					"FieldName":"CompanyEmail",
-					"RecordFieldData":$scope.template.companyEmail
-				},
-				{
-					"RecordName":"CTS_CompanyAttributes",
-					"FieldName":"CompanyLogo",
-					"RecordFieldData":$scope.template.croppedLogo
-				}]
+			{
+				"RecordName": "CTS_CompanyAttributes",
+				"FieldName": "CompanyAddress",
+				"RecordFieldData": $scope.template.companyAddress
+			},
+			{
+				"RecordName": "CTS_CompanyAttributes",
+				"FieldName": "CompanyPhoneNo",
+				"RecordFieldData": $scope.template.companyPhone
+			},
+			{
+				"RecordName": "CTS_CompanyAttributes",
+				"FieldName": "CompanyEmail",
+				"RecordFieldData": $scope.template.companyEmail
+			},
+			{
+				"RecordName": "CTS_CompanyAttributes",
+				"FieldName": "CompanyLogo",
+				"RecordFieldData": $scope.template.croppedLogo
+			}]
 			//
-			$charge.settingsapp().insertBulkDuoBaseValues(req).success(function(data) {
+			$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 				//notifications.toast("General records have been updated.", "success");
 				//$state.go($state.current, {}, {reload: true});
-				$scope.template.companyLogo=[];
+				$scope.template.companyLogo = [];
 				$scope.deleteFooter();
 				//$scope.generalSubmit=false;
 			}).error(function (data) {
 				notifications.toast("Error occured while updating Company Record.", "error");
-				$scope.generalSubmit=false;
+				$scope.generalSubmit = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
@@ -2138,7 +2109,7 @@
 			});
 			$scope.footerFieldValues.push({
 				"RowID": "",
-				"RecordFieldData": $scope.footerDet.greeting==undefined?"":$scope.footerDet.greeting,
+				"RecordFieldData": $scope.footerDet.greeting == undefined ? "" : $scope.footerDet.greeting,
 				"ColumnIndex": "0"
 			});
 			$scope.footerFields.push({
@@ -2150,76 +2121,75 @@
 			});
 			$scope.footerFieldValues.push({
 				"RowID": "",
-				"RecordFieldData": $scope.footerDet.disclaimer==undefined?"":btoa($scope.footerDet.disclaimer),
+				"RecordFieldData": $scope.footerDet.disclaimer == undefined ? "" : btoa($scope.footerDet.disclaimer),
 				"ColumnIndex": "1"
 			});
 		}
 
-		$scope.deleteFooter= function () {
+		$scope.deleteFooter = function () {
 			$charge.settingsapp().deleteCommmon($scope.footerDet.GURecID).success(function (data) {
 				//
 				$scope.insertFooterIndividual();
 			}).error(function (data) {
 				notifications.toast("Error occured while updating Footer Record.", "error");
-				$scope.generalSubmit=false;
+				$scope.generalSubmit = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		$scope.insertFooterIndividual= function () {
-			var req =[{
-				"RecordName":"CTS_FooterAttributes",
-				"FieldName":"Greeting",
-				"RecordFieldData":$scope.footerDet.greeting==undefined?"":$scope.footerDet.greeting
+		$scope.insertFooterIndividual = function () {
+			var req = [{
+				"RecordName": "CTS_FooterAttributes",
+				"FieldName": "Greeting",
+				"RecordFieldData": $scope.footerDet.greeting == undefined ? "" : $scope.footerDet.greeting
 			},
-				{
-					"RecordName":"CTS_FooterAttributes",
-					"FieldName":"Disclaimer",
-					"RecordFieldData":$scope.footerDet.disclaimer==undefined?"":btoa($scope.footerDet.disclaimer)
-				}]
+			{
+				"RecordName": "CTS_FooterAttributes",
+				"FieldName": "Disclaimer",
+				"RecordFieldData": $scope.footerDet.disclaimer == undefined ? "" : btoa($scope.footerDet.disclaimer)
+			}]
 			//
-			$charge.settingsapp().insertBulkDuoBaseValues(req).success(function(data) {
+			$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 				notifications.toast("General records have been updated.", "success");
-				$scope.generalSubmit=false;
-				$state.go($state.current, {}, {reload: true});
+				$scope.generalSubmit = false;
+				$state.go($state.current, {}, { reload: true });
 
-				$scope.infoJson= {};
-				$scope.infoJson.message ='General records have been updated';
-				$scope.infoJson.app ='settings';
-				logHelper.info( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = 'General records have been updated';
+				$scope.infoJson.app = 'settings';
+				logHelper.info($scope.infoJson);
 			}).error(function (data) {
 				notifications.toast("Error occured while updating Footer Record.", "error");
-				$scope.generalSubmit=false;
+				$scope.generalSubmit = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		$scope.deletePreferred= function (ev,index) {
-			$scope.general.userCurrency="";
-			$scope.general.currencyName="";
-			for(var i=0;i<$scope.userCurrencies.length;i++) {
-				if ($scope.userCurrencies[i].code!=ev.code) {
+		$scope.deletePreferred = function (ev, index) {
+			$scope.general.userCurrency = "";
+			$scope.general.currencyName = "";
+			for (var i = 0; i < $scope.userCurrencies.length; i++) {
+				if ($scope.userCurrencies[i].code != ev.code) {
 					$scope.general.userCurrency = $scope.general.userCurrency + " " + $scope.userCurrencies[i].code;
 					$scope.general.currencyName = $scope.general.currencyName == "" ? $scope.userCurrencies[i].name : $scope.general.currencyName + "," + $scope.userCurrencies[i].name;
 				}
-				else
-				{
+				else {
 					$scope.general.userCurrency.trimRight();
 					$scope.general.currencyName.trimRight(",");
 				}
 			}
 
-			$scope.userCurrencies.splice(index,1);
-			tempCurrencyNames.splice(index,1);
-			tempCurrencyCodes.splice(index,1);
+			$scope.userCurrencies.splice(index, 1);
+			tempCurrencyNames.splice(index, 1);
+			tempCurrencyCodes.splice(index, 1);
 
 		}
 
@@ -2234,34 +2204,34 @@
 		 *  Preference tab start
 		 */
 
-		var skip=0;
-		var take=100;
-		$scope.content={};
-		$scope.product={};
-		$scope.inventory={};
-		$scope.plan={};
-		$scope.content.enableDiscounts=false;
+		var skip = 0;
+		var take = 100;
+		$scope.content = {};
+		$scope.product = {};
+		$scope.inventory = {};
+		$scope.plan = {};
+		$scope.content.enableDiscounts = false;
 		$scope.toggleDiscNo = true;
-		$scope.content.sendInvoice=false;
-		$scope.toggleInvoiceNo=true;
-		$scope.content.sendReminder=false;
-		$scope.toggleReminderNo=true;
-		$scope.content.allowPartialPay=false;
-		$scope.togglePaymentsNo=true;
-		$scope.content.enableDiscountsQuote=false;
-		$scope.tgDiscQuoteNo=true;
-		$scope.content.sendInvoiceQuote=false;
-		$scope.tgInvoiceQuoteNo=true;
+		$scope.content.sendInvoice = false;
+		$scope.toggleInvoiceNo = true;
+		$scope.content.sendReminder = false;
+		$scope.toggleReminderNo = true;
+		$scope.content.allowPartialPay = false;
+		$scope.togglePaymentsNo = true;
+		$scope.content.enableDiscountsQuote = false;
+		$scope.tgDiscQuoteNo = true;
+		$scope.content.sendInvoiceQuote = false;
+		$scope.tgInvoiceQuoteNo = true;
 		$scope.categories = [];
 		$scope.taxes = ['10', '20', '30', '40'];
 		$scope.brands = [];
-		$scope.stores=[];
-		$scope.planTypeList=[];
-		$scope.UOMs=[];
-		$scope.editCategory="";
+		$scope.stores = [];
+		$scope.planTypeList = [];
+		$scope.UOMs = [];
+		$scope.editCategory = "";
 		$scope.updateEnable = false;
 
-		$scope.editCat=false;
+		$scope.editCat = false;
 		//$charge.uom().getAllUOM('Product_123').success(function(data) {
 		//  $scope.UOMs=[];
 		//  //
@@ -2307,77 +2277,74 @@
 		$scope.loadingProductCategories = true;
 		$scope.loadingProductBrands = true;
 		$scope.loadingProductUMOs = true;
-		$scope.loadProductAttributes= function () {
+		$scope.loadProductAttributes = function () {
 
-			$charge.uom().getAllUOM('Product_123').success(function(data) {
-				$scope.UOMs=[];
+			$charge.uom().getAllUOM('Product_123').success(function (data) {
+				$scope.UOMs = [];
 				//console.log(data);
-				for(var i=0;i<data.length;i++)
-				{
+				for (var i = 0; i < data.length; i++) {
 					//
 					$scope.UOMs.push(data[i]);
 					//
 				}
 				$scope.loadingProductUMOs = false;
-			}).error(function(data) {
+			}).error(function (data) {
 				//  console.log(data);
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 				$scope.loadingProductUMOs = false;
 			})
 
-			$rootScope.isCategoryLoaded=false;
-			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes","Category").success(function(data) {
-				$scope.categories=[];
-				$rootScope.isCategoryLoaded=true;
-				for(var i=0;i<data.length;i++)
-				{
+			$rootScope.isCategoryLoaded = false;
+			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes", "Category").success(function (data) {
+				$scope.categories = [];
+				$rootScope.isCategoryLoaded = true;
+				for (var i = 0; i < data.length; i++) {
 					$scope.categories.push(data[i]);
 				}
 				$scope.loadingProductCategories = false;
-			}).error(function(data) {
+			}).error(function (data) {
 				console.log(data);
-				$rootScope.isCategoryLoaded=false;
+				$rootScope.isCategoryLoaded = false;
 				$scope.loadingProductCategories = false;
 			})
 
-			$rootScope.isBrandLoaded=false;
-			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes","Brand").success(function(data) {
-				$scope.brands=[];
-				$rootScope.isBrandLoaded=true;
+			$rootScope.isBrandLoaded = false;
+			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes", "Brand").success(function (data) {
+				$scope.brands = [];
+				$rootScope.isBrandLoaded = true;
 				//console.log(data);
-				for(var i=0;i<data.length;i++)
-				{
+				for (var i = 0; i < data.length; i++) {
 					//
 					$scope.brands.push(data[i]);
 				}
 				$scope.loadingProductBrands = false;
-			}).error(function(data) {
+			}).error(function (data) {
 				console.log(data);
-				$rootScope.isBrandLoaded=false;
+				$rootScope.isBrandLoaded = false;
 				$scope.loadingProductBrands = false;
 			})
 
 		}
 
-		var skipPlanChangeFee=0;
-		var takePlanChangeFee=100;
+		var skipPlanChangeFee = 0;
+		var takePlanChangeFee = 100;
 		$scope.loadingPlanChangeFee = false;
-		$scope.planChangeFeeList=[];
+		$scope.planChangeFeeList = [];
 
-		var skipPlanKeyAttributes=0;
-		var takePlanKeyAttributes=100;
+		var skipPlanKeyAttributes = 0;
+		var takePlanKeyAttributes = 100;
 		$scope.loadingPlanKeyAttributes = true;
-		$scope.planKeyAttributesList=[];
+		$scope.planKeyAttributesList = [];
 
 		$scope.BaseCurrencyPlanChangeFee = "";
 		$scope.currencyRate = 1;
 
 		$scope.isPlanTypeLoaded = false;
 
-		$scope.loadPlanAttributes= function () {
+		$scope.loadPlanAttributes = function () {
 			//$charge.settingsapp().getDuobaseValuesByTableName("CTS_CommonAttributes").success(function(data) {
 			//  $scope.categories=[];
 			//  $rootScope.isCategoryLoaded=true;
@@ -2400,28 +2367,27 @@
 			//  $rootScope.isBrandLoaded=false;
 			//})
 			//
-			$charge.uom().getAllUOM('Plan_123').success(function(data) {
-				$scope.UOMs=[];
+			$charge.uom().getAllUOM('Plan_123').success(function (data) {
+				$scope.UOMs = [];
 				//console.log(data);
-				for(var i=0;i<data.length;i++)
-				{
+				for (var i = 0; i < data.length; i++) {
 					//
 					$scope.UOMs.push(data[i]);
 					//
 				}
-			}).error(function(data) {
+			}).error(function (data) {
 				//  console.log(data);
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 				var length = data.length;
 				//
-				$scope.planTypeList=[];
-				$rootScope.isPlanTypeLoaded=true;
+				$scope.planTypeList = [];
+				$rootScope.isPlanTypeLoaded = true;
 				for (var i = 0; i < length; i++) {
 					for (var j = 0; j < data[i].length; j++) {
 						var obj = data[i][j];
@@ -2433,25 +2399,23 @@
 				}
 				$scope.isPlanTypeLoaded = true;
 			}).error(function (data) {
-				$rootScope.isPlanTypeLoaded=false;
+				$rootScope.isPlanTypeLoaded = false;
 				$scope.isPlanTypeLoaded = true;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
-			skipPlanKeyAttributes=0;
+			skipPlanKeyAttributes = 0;
 			$scope.loadingPlanKeyAttributes = true;
-			$scope.planKeyAttributesList=[];
+			$scope.planKeyAttributesList = [];
 
-			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
-			{
+			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes, takePlanKeyAttributes, 'desc').success(function (data) {
 				//console.log(data);
 
-				if($scope.loadingPlanKeyAttributes)
-				{
+				if ($scope.loadingPlanKeyAttributes) {
 					skipPlanKeyAttributes += takePlanKeyAttributes;
 
 					for (var i = 0; i < data.length; i++) {
@@ -2460,91 +2424,83 @@
 
 					$scope.loadingPlanKeyAttributes = false;
 
-					if(data.length<takePlanKeyAttributes){
+					if (data.length < takePlanKeyAttributes) {
 
 					}
-					else
-					{
+					else {
 						$scope.loadPlanKeyAttributesPaging();
 					}
 
 				}
 
-			}).error(function(data)
-			{
+			}).error(function (data) {
 				$scope.loadingPlanKeyAttributes = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
-			skipPlanChangeFee=0;
+			skipPlanChangeFee = 0;
 			$scope.loadingPlanChangeFee = true;
-			$scope.planChangeFeeList=[];
+			$scope.planChangeFeeList = [];
 
-			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
-			{
+			$charge.plan().allPlanChangeFees(skipPlanChangeFee, takePlanChangeFee, 'desc').success(function (data) {
 				//console.log(data);
 
-				if($scope.loadingPlanChangeFee)
-				{
+				if ($scope.loadingPlanChangeFee) {
 					skipPlanChangeFee += takePlanChangeFee;
 
 					for (var i = 0; i < data.length; i++) {
-						data[i].editItem=false;
+						data[i].editItem = false;
 						$scope.planChangeFeeList.push(data[i]);
 					}
 
 					$scope.loadingPlanChangeFee = false;
 
-					if(data.length<takePlanChangeFee){
+					if (data.length < takePlanChangeFee) {
 
 					}
-					else
-					{
+					else {
 						$scope.loadPlanChangeFeePaging();
 					}
 
 				}
 
-			}).error(function(data)
-			{
+			}).error(function (data) {
 				$scope.loadingPlanChangeFee = false;
 				$scope.planChangeFeeList = [];
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
-			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes","BaseCurrency").success(function(data) {
-				$scope.BaseCurrencyPlanChangeFee=data[0].RecordFieldData;
+			$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_GeneralAttributes", "BaseCurrency").success(function (data) {
+				$scope.BaseCurrencyPlanChangeFee = data[0].RecordFieldData;
 				//console.log($scope.BaseCurrencyPlanChangeFee);
 				//$scope.selectedCurrency = $scope.BaseCurrency;
 
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
-				$scope.BaseCurrencyPlanChangeFee="USD";
+				$scope.BaseCurrencyPlanChangeFee = "USD";
 				//$scope.selectedCurrency = $scope.BaseCurrency;
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
 		}
 
-		$scope.loadPlanKeyAttributesPaging= function () {
+		$scope.loadPlanKeyAttributesPaging = function () {
 			$scope.loadingPlanKeyAttributes = true;
-			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes,takePlanKeyAttributes,'desc').success(function(data)
-			{
+			$charge.plan().allPlanKeyAttributes(skipPlanKeyAttributes, takePlanKeyAttributes, 'desc').success(function (data) {
 				//console.log(data);
 
-				if($scope.loadingPlanKeyAttributes)
-				{
+				if ($scope.loadingPlanKeyAttributes) {
 					skipPlanKeyAttributes += takePlanKeyAttributes;
 
 					for (var i = 0; i < data.length; i++) {
@@ -2553,136 +2509,126 @@
 
 					$scope.loadingPlanKeyAttributes = false;
 
-					if(data.length<takePlanKeyAttributes){
+					if (data.length < takePlanKeyAttributes) {
 
 					}
-					else
-					{
+					else {
 						$scope.loadPlanKeyAttributesPaging();
 					}
 
 				}
 
-			}).error(function(data)
-			{
+			}).error(function (data) {
 				$scope.loadingPlanKeyAttributes = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		$scope.loadPlanChangeFeePaging= function () {
+		$scope.loadPlanChangeFeePaging = function () {
 			$scope.loadingPlanChangeFee = true;
-			$charge.plan().allPlanChangeFees(skipPlanChangeFee,takePlanChangeFee,'desc').success(function(data)
-			{
+			$charge.plan().allPlanChangeFees(skipPlanChangeFee, takePlanChangeFee, 'desc').success(function (data) {
 				//console.log(data);
 
-				if($scope.loadingPlanChangeFee)
-				{
+				if ($scope.loadingPlanChangeFee) {
 					skipPlanChangeFee += takePlanChangeFee;
 
 					for (var i = 0; i < data.length; i++) {
-						data[i].editItem=false;
+						data[i].editItem = false;
 						$scope.planChangeFeeList.push(data[i]);
 					}
 
 					$scope.loadingPlanChangeFee = false;
 
-					if(data.length<takePlanChangeFee){
+					if (data.length < takePlanChangeFee) {
 
 					}
-					else
-					{
+					else {
 						$scope.loadPlanChangeFeePaging();
 					}
 
 				}
 
-			}).error(function(data)
-			{
+			}).error(function (data) {
 				//$scope.planChangeFeeList = false;
 				$scope.loadingPlanChangeFee = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		vm.webhookEventList=[];
-		var skipAllEventsWH=0;
-		var takeAllEventsWH=100;
+		vm.webhookEventList = [];
+		var skipAllEventsWH = 0;
+		var takeAllEventsWH = 100;
 
-		vm.webhookList=[];
-		var skipAllWebhooks=0;
-		var takeAllWebhooks=100;
+		vm.webhookList = [];
+		var skipAllWebhooks = 0;
+		var takeAllWebhooks = 100;
 		$scope.loadingEventsWH = true;
 		$scope.loadingWebhooks = true;
-		vm.tempUsedEventsList=[];
+		vm.tempUsedEventsList = [];
 
-		vm.webhookHistoryList=[];
-		var skipAllWebhookHistory=0;
-		var takeAllWebhookHistory=100;
+		vm.webhookHistoryList = [];
+		var skipAllWebhookHistory = 0;
+		var takeAllWebhookHistory = 100;
 		$scope.loadingWebhookHistory = true;
 		$scope.isMoreWebhookHistoryLoading = true;
 
-		$scope.loadWebhooksAttributes= function () {
+		$scope.loadWebhooksAttributes = function () {
 
-			vm.webhookEventList=[];
-			skipAllEventsWH=0;
+			vm.webhookEventList = [];
+			skipAllEventsWH = 0;
 			$scope.loadingEventsWH = true;
 			$scope.loadingWebhooks = true;
 
-			vm.tempUsedEventsList=[];
+			vm.tempUsedEventsList = [];
 
-			$charge.webhook().allEvents(skipAllEventsWH,takeAllEventsWH,'asc').success(function (data) {
+			$charge.webhook().allEvents(skipAllEventsWH, takeAllEventsWH, 'asc').success(function (data) {
 				//console.log(data);
 				//
-				if($scope.loadingEventsWH)
-				{
+				if ($scope.loadingEventsWH) {
 					skipAllEventsWH += takeAllEventsWH;
 
 					for (var i = 0; i < data.length; i++) {
-						data[i].isAlreadyUsed=false;
+						data[i].isAlreadyUsed = false;
 						vm.webhookEventList.push(data[i]);
 					}
 					$scope.loadingEventsWH = false;
 
-					if(vm.tempUsedEventsList.length!=0 && !$scope.loadingWebhooks)
-					{
+					if (vm.tempUsedEventsList.length != 0 && !$scope.loadingWebhooks) {
 						$scope.checkAlreadyUsedEvents();
 					}
 				}
 			}).error(function (data) {
 				//console.log(data);
-				vm.webhookEventList=[];
+				vm.webhookEventList = [];
 				$scope.loadingEventsWH = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
-			vm.webhookList=[];
-			skipAllWebhooks=0;
+			vm.webhookList = [];
+			skipAllWebhooks = 0;
 
-			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc','website').success(function (data) {
+			$charge.webhook().allWebhooks(skipAllWebhooks, takeAllWebhooks, 'desc', 'website').success(function (data) {
 				//console.log(data);
 				//
-				if($scope.loadingWebhooks)
-				{
+				if ($scope.loadingWebhooks) {
 					skipAllWebhooks += takeAllWebhooks;
 
 					for (var i = 0; i < data.length; i++) {
-						data[i].showEvents=false;
-						if(data[i].eventCodes!="" && data[i].eventCodes!=null && data[i].eventCodes!="null")
-						{
-							data[i].eventCodes=JSON.parse(data[i].eventCodes);
+						data[i].showEvents = false;
+						if (data[i].eventCodes != "" && data[i].eventCodes != null && data[i].eventCodes != "null") {
+							data[i].eventCodes = JSON.parse(data[i].eventCodes);
 							for (var j = 0; j < data[i].eventCodes.length; j++) {
 								vm.tempUsedEventsList.push(data[i].eventCodes[j]);
 							}
@@ -2692,36 +2638,34 @@
 					}
 
 					$scope.loadingWebhooks = false;
-					if(data.length<takeAllWebhooks){
-						if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH)
-						{
+					if (data.length < takeAllWebhooks) {
+						if (vm.webhookEventList.length != 0 && !$scope.loadingEventsWH) {
 							$scope.checkAlreadyUsedEvents();
 						}
 					}
-					else{
+					else {
 						$scope.loadWebhookListPaging();
 					}
 				}
 			}).error(function (data) {
 				//console.log(data);
-				vm.webhookList=[];
+				vm.webhookList = [];
 				$scope.loadingWebhooks = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
 
-			vm.webhookHistoryList=[];
-			skipAllWebhookHistory=0;
+			vm.webhookHistoryList = [];
+			skipAllWebhookHistory = 0;
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
-			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc','website').success(function (data) {
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory, takeAllWebhookHistory, 'desc', 'website').success(function (data) {
 				//console.log(data);
-				if($scope.loadingWebhookHistory)
-				{
+				if ($scope.loadingWebhookHistory) {
 					skipAllWebhookHistory += takeAllWebhookHistory;
 
 					for (var i = 0; i < data.length; i++) {
@@ -2729,8 +2673,7 @@
 					}
 					$scope.loadingWebhookHistory = false;
 
-					if(data.length<takeAllWebhookHistory)
-					{
+					if (data.length < takeAllWebhookHistory) {
 						$scope.isMoreWebhookHistoryLoading = false;
 					}
 
@@ -2738,31 +2681,29 @@
 
 			}).error(function (data) {
 				//console.log(data);
-				vm.webhookHistoryList=[];
+				vm.webhookHistoryList = [];
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
 		}
 
-		$scope.loadWebhookListPaging= function () {
+		$scope.loadWebhookListPaging = function () {
 			$scope.loadingWebhooks = true;
-			$charge.webhook().allWebhooks(skipAllWebhooks,takeAllWebhooks,'desc','website').success(function (data) {
+			$charge.webhook().allWebhooks(skipAllWebhooks, takeAllWebhooks, 'desc', 'website').success(function (data) {
 				//console.log(data);
-				if($scope.loadingWebhooks)
-				{
+				if ($scope.loadingWebhooks) {
 					skipAllWebhooks += takeAllWebhooks;
 
 					for (var i = 0; i < data.length; i++) {
-						data[i].showEvents=false;
-						if(data[i].eventCodes!="" && data[i].eventCodes!=null && data[i].eventCodes!="null")
-						{
-							data[i].eventCodes=JSON.parse(data[i].eventCodes);
+						data[i].showEvents = false;
+						if (data[i].eventCodes != "" && data[i].eventCodes != null && data[i].eventCodes != "null") {
+							data[i].eventCodes = JSON.parse(data[i].eventCodes);
 							for (var j = 0; j < data[i].eventCodes.length; j++) {
 								vm.tempUsedEventsList.push(data[i].eventCodes[j]);
 							}
@@ -2772,9 +2713,8 @@
 					}
 
 					$scope.loadingWebhooks = false;
-					if(data.length<takeAllWebhooks){
-						if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH)
-						{
+					if (data.length < takeAllWebhooks) {
+						if (vm.webhookEventList.length != 0 && !$scope.loadingEventsWH) {
 							$scope.checkAlreadyUsedEvents();
 						}
 					}
@@ -2782,38 +2722,35 @@
 			}).error(function (data) {
 				//console.log(data);
 				$scope.loadingWebhooks = false;
-				if(vm.webhookEventList.length!=0 && !$scope.loadingEventsWH && vm.tempUsedEventsList.length!=0)
-				{
+				if (vm.webhookEventList.length != 0 && !$scope.loadingEventsWH && vm.tempUsedEventsList.length != 0) {
 					$scope.checkAlreadyUsedEvents();
 				}
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		$scope.checkAlreadyUsedEvents= function () {
+		$scope.checkAlreadyUsedEvents = function () {
 			for (var i = 0; i < vm.webhookEventList.length; i++) {
-				vm.webhookEventList[i].isAlreadyUsed=false;
-				var tempEvent=vm.webhookEventList[i].eventType;
+				vm.webhookEventList[i].isAlreadyUsed = false;
+				var tempEvent = vm.webhookEventList[i].eventType;
 				for (var j = 0; j < vm.tempUsedEventsList.length; j++) {
-					if(tempEvent==vm.tempUsedEventsList[j])
-					{
-						vm.webhookEventList[i].isAlreadyUsed=true;
+					if (tempEvent == vm.tempUsedEventsList[j]) {
+						vm.webhookEventList[i].isAlreadyUsed = true;
 					}
 				}
 			}
 		};
 
-		$scope.loadWebhookHistoryListPaging= function () {
+		$scope.loadWebhookHistoryListPaging = function () {
 			$scope.loadingWebhookHistory = true;
 			$scope.isMoreWebhookHistoryLoading = true;
-			$charge.webhook().allWebhookHistory(skipAllWebhookHistory,takeAllWebhookHistory,'desc','website').success(function (data) {
+			$charge.webhook().allWebhookHistory(skipAllWebhookHistory, takeAllWebhookHistory, 'desc', 'website').success(function (data) {
 				//console.log(data);
-				if($scope.loadingWebhookHistory)
-				{
+				if ($scope.loadingWebhookHistory) {
 					skipAllWebhookHistory += takeAllWebhookHistory;
 
 					for (var i = 0; i < data.length; i++) {
@@ -2821,8 +2758,7 @@
 					}
 					$scope.loadingWebhookHistory = false;
 
-					if(data.length<takeAllWebhookHistory)
-					{
+					if (data.length < takeAllWebhookHistory) {
 						$scope.isMoreWebhookHistoryLoading = false;
 					}
 
@@ -2830,25 +2766,25 @@
 
 			}).error(function (data) {
 				//console.log(data);
-				vm.webhookHistoryList=[];
+				vm.webhookHistoryList = [];
 				$scope.loadingWebhookHistory = false;
 				$scope.isMoreWebhookHistoryLoading = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 		vm.closeDialog = function () {
 			for (var j = 0; j < vm.webhookEventList.length; j++) {
-				vm.webhookEventList[i].isSelected=false;
+				vm.webhookEventList[i].isSelected = false;
 			}
 			$timeout(function () {
-				vm.webhook={};
-				vm.webhook.type=false;
-				vm.webhook.mode="Live";
+				vm.webhook = {};
+				vm.webhook.type = false;
+				vm.webhook.mode = "Live";
 			});
 			// vm.webhookTypeChange("custom");
 			//
@@ -2857,77 +2793,72 @@
 			// vm.tempUsedEventsList=[];
 
 			$mdDialog.hide();
-			vm.enabledEditWH=false;
+			vm.enabledEditWH = false;
 		};
 
-		$scope.resetWebhook= function () {
-			vm.webhook={};
-			vm.webhook.type="custom";
-			vm.webhook.mode="Live";
+		$scope.resetWebhook = function () {
+			vm.webhook = {};
+			vm.webhook.type = "custom";
+			vm.webhook.mode = "Live";
 			vm.webhookTypeChange(true);
 
-			vm.webhookList=[];
-			skipAllWebhooks=0;
-			vm.tempUsedEventsList=[];
+			vm.webhookList = [];
+			skipAllWebhooks = 0;
+			vm.tempUsedEventsList = [];
 			$scope.loadWebhookListPaging();
 
-			vm.enabledEditWH=false;
+			vm.enabledEditWH = false;
 		};
 
-		vm.submitWebhook= function (editing) {
-			if(!editing)
-			{
+		vm.submitWebhook = function (editing) {
+			if (!editing) {
 				if (vm.webHooks.$valid == true) {
 					vm.webhookSubmitted = true;
 
-					var webhookObj={};
-					var tempEventsSelected=false;
-					webhookObj.endPoint=vm.webhook.endPoint;
-					webhookObj.type="website";
-					webhookObj.createdDate=new Date();
-					webhookObj.isEnabled=true;
-					webhookObj.eventCodes=[];
+					var webhookObj = {};
+					var tempEventsSelected = false;
+					webhookObj.endPoint = vm.webhook.endPoint;
+					webhookObj.type = "website";
+					webhookObj.createdDate = new Date();
+					webhookObj.isEnabled = true;
+					webhookObj.eventCodes = [];
 
 					for (var i = 0; i < vm.webhookEventList.length; i++) {
-						if(vm.webhookEventList[i].isSelected)
-						{
+						if (vm.webhookEventList[i].isSelected) {
 							webhookObj.eventCodes.push(vm.webhookEventList[i].eventType);
-							tempEventsSelected=true;
+							tempEventsSelected = true;
 						}
 					}
 
-					if(tempEventsSelected)
-					{
+					if (tempEventsSelected) {
 						$charge.webhook().createWH(webhookObj).success(function (data) {
 							//console.log(data);
 							//
-							if(data.error=="00000")
-							{
+							if (data.error == "00000") {
 								notifications.toast("Webhook Created Successfully", "success");
-								vm.webhook={};
-								vm.webhook.type="custom";
-								vm.webhook.mode="Live";
+								vm.webhook = {};
+								vm.webhook.type = "custom";
+								vm.webhook.mode = "Live";
 								vm.webhookTypeChange("custom");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =vm.webhook.endPoint+' Webhook Created Successfully';
-								$scope.infoJson.app ='settings';
-								logHelper.info( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = vm.webhook.endPoint + ' Webhook Created Successfully';
+								$scope.infoJson.app = 'settings';
+								logHelper.info($scope.infoJson);
 
-								vm.webhookList=[];
-								skipAllWebhooks=0;
-								vm.tempUsedEventsList=[];
+								vm.webhookList = [];
+								skipAllWebhooks = 0;
+								vm.tempUsedEventsList = [];
 								$mdDialog.hide();
 								$scope.loadWebhookListPaging();
 							}
-							else
-							{
+							else {
 								notifications.toast("Webhook Creation Failed", "error");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -2936,66 +2867,60 @@
 							//console.log(data);
 							vm.webhookSubmitted = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}
-					else
-					{
+					else {
 						notifications.toast("Select Events for the Webhook", "error");
 						vm.webhookSubmitted = false;
 					}
 
 				}
 			}
-			else
-			{
+			else {
 				if (vm.webHooks.$valid == true) {
 					vm.webhookSubmitted = true;
 
-					var webhookObj={};
-					var tempEventsSelected=false;
-					webhookObj.guWebhookId=vm.webhook.guWebhookId;
-					webhookObj.endPoint=vm.webhook.endPoint;
-					webhookObj.type="website";
-					webhookObj.createdDate=new Date();
-					webhookObj.isEnabled=true;
-					webhookObj.eventCodes=[];
+					var webhookObj = {};
+					var tempEventsSelected = false;
+					webhookObj.guWebhookId = vm.webhook.guWebhookId;
+					webhookObj.endPoint = vm.webhook.endPoint;
+					webhookObj.type = "website";
+					webhookObj.createdDate = new Date();
+					webhookObj.isEnabled = true;
+					webhookObj.eventCodes = [];
 
 					for (var i = 0; i < vm.webhookEventList.length; i++) {
-						if(vm.webhookEventList[i].isSelected)
-						{
+						if (vm.webhookEventList[i].isSelected) {
 							webhookObj.eventCodes.push(vm.webhookEventList[i].eventType);
-							tempEventsSelected=true;
+							tempEventsSelected = true;
 						}
 					}
 
-					if(tempEventsSelected)
-					{
+					if (tempEventsSelected) {
 						$charge.webhook().updateWH(webhookObj).success(function (data) {
 							//console.log(data);
 							//
-							if(data.error=="00000")
-							{
+							if (data.error == "00000") {
 								notifications.toast("Webhook Updated Successfully", "success");
 								$scope.resetWebhook();
 								$mdDialog.hide();
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =vm.webhook.endPoint+' Webhook Updated Successfully';
-								$scope.infoJson.app ='settings';
-								logHelper.info( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = vm.webhook.endPoint + ' Webhook Updated Successfully';
+								$scope.infoJson.app = 'settings';
+								logHelper.info($scope.infoJson);
 							}
-							else
-							{
+							else {
 								notifications.toast("Webhook Updating Failed", "error");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.webhookSubmitted = false;
@@ -3004,14 +2929,13 @@
 							//console.log(data);
 							vm.webhookSubmitted = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}
-					else
-					{
+					else {
 						notifications.toast("Select Events for the Webhook", "error");
 						vm.webhookSubmitted = false;
 					}
@@ -3020,19 +2944,18 @@
 			}
 		}
 
-		$scope.addWebhookDialog = function(isEdit) {
+		$scope.addWebhookDialog = function (isEdit) {
 			// if(isEdit){
 			// 	vm.enabledEditWH = true;
 			// }
 			vm.webhook.type = false;
 			for (var i = 0; i < vm.webhookEventList.length; i++) {
-				vm.webhookEventList[i].isAlreadyUsed=false;
-				if(!isEdit)vm.webhookEventList[i].isSelected=false;
-				var tempEvent=vm.webhookEventList[i].eventType;
+				vm.webhookEventList[i].isAlreadyUsed = false;
+				if (!isEdit) vm.webhookEventList[i].isSelected = false;
+				var tempEvent = vm.webhookEventList[i].eventType;
 				for (var j = 0; j < vm.tempUsedEventsList.length; j++) {
-					if(tempEvent==vm.tempUsedEventsList[j] && !vm.webhookEventList[i].isSelected)
-					{
-						vm.webhookEventList[i].isAlreadyUsed=true;
+					if (tempEvent == vm.tempUsedEventsList[j] && !vm.webhookEventList[i].isSelected) {
+						vm.webhookEventList[i].isAlreadyUsed = true;
 					}
 				}
 			}
@@ -3042,7 +2965,7 @@
 				},
 				controllerAs: 'vm',
 				templateUrl: 'app/main/settings/dialogs/webhooks/prompt-add-webhook.html',
-				clickOutsideToClose:false
+				clickOutsideToClose: false
 				// locals:{
 				// 	// submitWebhook:$scope.submitWebhook,
 				// 	skipAllWebhooks:$scope.skipAllWebhooks,
@@ -3059,31 +2982,29 @@
 			});
 		};
 
-		vm.enabledEditWH=false;
-		$scope.editWebhook= function (webhook) {
+		vm.enabledEditWH = false;
+		$scope.editWebhook = function (webhook) {
 			//$scope.resetWebhook();
 			// vm.webhookTypeChange("custom");
 			// $scope.checkAlreadyUsedEvents();
-			vm.enabledEditWH=true;
-			vm.webhook.guWebhookId=webhook.guWebhookId;
-			vm.webhook.endPoint=webhook.endPoint;
-			vm.webhook.type=webhook.type;
+			vm.enabledEditWH = true;
+			vm.webhook.guWebhookId = webhook.guWebhookId;
+			vm.webhook.endPoint = webhook.endPoint;
+			vm.webhook.type = webhook.type;
 			for (var a = 0; a < vm.webhookEventList.length; a++) {
-				vm.webhookEventList[a].isAlreadyUsed=false;
-				vm.webhookEventList[a].isSelected=false;
+				vm.webhookEventList[a].isAlreadyUsed = false;
+				vm.webhookEventList[a].isSelected = false;
 				for (var b = 0; b < vm.tempUsedEventsList.length; b++) {
-					if(vm.webhookEventList[a].eventType==vm.tempUsedEventsList[b])
-					{
-						vm.webhookEventList[a].isAlreadyUsed=true;
+					if (vm.webhookEventList[a].eventType == vm.tempUsedEventsList[b]) {
+						vm.webhookEventList[a].isAlreadyUsed = true;
 					}
 				}
 			}
 			for (var i = 0; i < webhook.eventCodes.length; i++) {
 				for (var j = 0; j < vm.webhookEventList.length; j++) {
-					if(webhook.eventCodes[i]==vm.webhookEventList[j].eventType)
-					{
-						vm.webhookEventList[j].isSelected=true;
-						vm.webhookEventList[j].isAlreadyUsed=false;
+					if (webhook.eventCodes[i] == vm.webhookEventList[j].eventType) {
+						vm.webhookEventList[j].isSelected = true;
+						vm.webhookEventList[j].isAlreadyUsed = false;
 					}
 				}
 			}
@@ -3093,30 +3014,29 @@
 				},
 				controllerAs: 'vm',
 				templateUrl: 'app/main/settings/dialogs/webhooks/prompt-add-webhook.html',
-				clickOutsideToClose:false
+				clickOutsideToClose: false
 			});
 		};
 
-		vm.emailTemplateList=[];
-		var skipAllEmailTemplates=0;
-		var takeAllEmailTemplates=100;
+		vm.emailTemplateList = [];
+		var skipAllEmailTemplates = 0;
+		var takeAllEmailTemplates = 100;
 		$scope.loadingEmailTemplates = true;
 
-		$scope.loadEmailTemplateAttributes= function () {
-			vm.emailTemplateList=[];
-			skipAllEmailTemplates=0;
+		$scope.loadEmailTemplateAttributes = function () {
+			vm.emailTemplateList = [];
+			skipAllEmailTemplates = 0;
 			$scope.loadingEmailTemplates = true;
 
 			$charge.storage().allTemplates().success(function (data) {
 				//console.log(data);
 				//
-				if($scope.loadingEmailTemplates)
-				{
+				if ($scope.loadingEmailTemplates) {
 					for (var i = 0; i < data.result.length; i++) {
 						vm.emailTemplateList.push({
-							url:data.result[i],
-							name:data.result[i].split('/')[data.result[i].split('/').length-1].split('.')[0],
-							isSelected:false
+							url: data.result[i],
+							name: data.result[i].split('/')[data.result[i].split('/').length - 1].split('.')[0],
+							isSelected: false
 						});
 					}
 
@@ -3125,36 +3045,36 @@
 				}
 			}).error(function (data) {
 				//console.log(data);
-				vm.emailTemplateList=[];
+				vm.emailTemplateList = [];
 				$scope.loadingEmailTemplates = false;
 			})
 		}
 
 		$scope.defaultEmailTemplate = "";
-		$scope.defaultEmailTemplateID="";
+		$scope.defaultEmailTemplateID = "";
 
-		$scope.getDefaultEmailTemplate= function () {
+		$scope.getDefaultEmailTemplate = function () {
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_EmailTemplates", "TemplateUrl").success(function (data) {
 				//
-				$scope.defaultEmailTemplate=data[0][0].RecordFieldData;
-				$scope.defaultEmailTemplateID=data[0][0].GuRecID;
+				$scope.defaultEmailTemplate = data[0][0].RecordFieldData;
+				$scope.defaultEmailTemplateID = data[0][0].GuRecID;
 				$scope.selectChangeTemplate($scope.defaultEmailTemplate);
 
 			}).error(function (data) {
 				$scope.defaultEmailTemplate = "";
 				$scope.loadingEmailTemplates = false;
-				if(data == '204')vm.emailTemplateList[0].isSelected = true;
+				if (data == '204') vm.emailTemplateList[0].isSelected = true;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 
-		$rootScope.isStoreLoaded=false;
-		$rootScope.isPlanTypeLoaded=false;
+		$rootScope.isStoreLoaded = false;
+		$rootScope.isPlanTypeLoaded = false;
 		//$scope.inventory={};
 		//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes","Store").success(function(data) {
 		//  $scope.stores=[];
@@ -3169,12 +3089,12 @@
 		//  $rootScope.isStoreLoaded=false;
 		//})
 
-		$scope.loadInventoryAttributes= function () {
+		$scope.loadInventoryAttributes = function () {
 			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 				var length = data.length;
 				//
-				$scope.stores=[];
-				$rootScope.isStoreLoaded=true;
+				$scope.stores = [];
+				$rootScope.isStoreLoaded = true;
 				for (var i = 0; i < length; i++) {
 					for (var j = 0; j < data[i].length; j++) {
 						var obj = data[i][j];
@@ -3189,33 +3109,32 @@
 					}
 				}
 			}).error(function (data) {
-				$rootScope.isStoreLoaded=false;
+				$rootScope.isStoreLoaded = false;
 			})
 		}
 
 
 
 		$scope.addBrandDisabled = false;
-		$scope.addBrand = function()
-		{
-			var ev=$scope.product.brand;
+		$scope.addBrand = function () {
+			var ev = $scope.product.brand;
 			$scope.addBrandDisabled = true;
-			if(ev!=null && ev!="") {
-				var isDuplicateBrand=false;
-				if($scope.brands.length!=0) {
+			if (ev != null && ev != "") {
+				var isDuplicateBrand = false;
+				if ($scope.brands.length != 0) {
 
 					for (var i = 0; i < $scope.brands.length; i++) {
 						if ($scope.brands[i].RecordFieldData == ev) {
-							isDuplicateBrand=true;
+							isDuplicateBrand = true;
 							notifications.toast("Brand is already exist.", "error");
-							$scope.product.brand="";
+							$scope.product.brand = "";
 							$scope.addBrandDisabled = false;
 
 							break;
 						}
 					}
 				}
-				if(!isDuplicateBrand) {
+				if (!isDuplicateBrand) {
 					if ($rootScope.isBrandLoaded) {
 						var req = {
 							"RecordName": "CTS_CommonAttributes",
@@ -3303,26 +3222,26 @@
 					}
 				}
 			}
-			else{
+			else {
 				$scope.addBrandDisabled = false;
-				notifications.toast("Brand cannot be empty" , "error");
+				notifications.toast("Brand cannot be empty", "error");
 			}
 		}
 
-		$scope.editBra=false;
+		$scope.editBra = false;
 		$scope.editBrand = '';
 		$scope.updateBraEnable = false;
 
-		$scope.displayBrand= function (brand) {
-			$scope.editBra=true;
+		$scope.displayBrand = function (brand) {
+			$scope.editBra = true;
 			brand.editItem = true;
-			$scope.displayBrandCode=brand.RecordFieldData;
+			$scope.displayBrandCode = brand.RecordFieldData;
 			$scope.editBrand = angular.copy(brand);
 			$scope.updateBraEnable = true;
 
 		}
 
-		$scope.submitBrands= function () {
+		$scope.submitBrands = function () {
 			if (vm.brands.$valid == true) {
 				//
 				if (!$scope.updateBraEnable) {
@@ -3335,27 +3254,26 @@
 		}
 
 		$scope.updateBrandDisabled = false;
-		$scope.updateBrand= function () {
-			var commondata=$scope.editBrand;
+		$scope.updateBrand = function () {
+			var commondata = $scope.editBrand;
 			$scope.updateBrandDisabled = true;
-			var req= {
-				"GURecID":commondata.GuRecID,
-				"RowID":commondata.RowID,
-				"RecordFieldData":commondata.RecordFieldData,
-				"FieldID":commondata.FieldID,
-				"ColumnIndex":commondata.ColumnIndex,
-				"FieldName":commondata.FieldName
+			var req = {
+				"GURecID": commondata.GuRecID,
+				"RowID": commondata.RowID,
+				"RecordFieldData": commondata.RecordFieldData,
+				"FieldID": commondata.FieldID,
+				"ColumnIndex": commondata.ColumnIndex,
+				"FieldName": commondata.FieldName
 			}
-			var countBrand=0;
+			var countBrand = 0;
 			for (var i = 0; i < $scope.brands.length; i++) {
 				if ($scope.brands[i].RecordFieldData == commondata.RecordFieldData) {
-					if($scope.displayBrandCode!=commondata.RecordFieldData)
-					{
+					if ($scope.displayBrandCode != commondata.RecordFieldData) {
 						countBrand++;
 					}
 				}
 			}
-			if(countBrand==0) {
+			if (countBrand == 0) {
 				$charge.settingsapp().update(req).success(function (data) {
 					//
 					if (data.count > 0) {
@@ -3383,15 +3301,14 @@
 					$scope.updateBrandDisabled = false;
 				})
 			}
-			else
-			{
+			else {
 				notifications.toast("Brand is already exist.", "error");
 				$scope.updateBrandDisabled = false;
 				$scope.editBrand.RecordFieldData = $scope.displayBrandCode;
 			}
 		}
 
-		$scope.submitStore= function () {
+		$scope.submitStore = function () {
 			if (vm.stores.$valid == true) {
 				//
 				if (!$scope.editInventory) {
@@ -3404,25 +3321,24 @@
 		}
 
 		$scope.addInventoryDisabled = false;
-		$scope.addStore = function()
-		{
+		$scope.addStore = function () {
 			$scope.addInventoryDisabled = true;
 
-			var ev=$scope.inventory.store;
-			if(ev!=null && ev!="") {
-				var isDuplicateStore=false;
-				if($scope.stores.length!=0) {
+			var ev = $scope.inventory.store;
+			if (ev != null && ev != "") {
+				var isDuplicateStore = false;
+				if ($scope.stores.length != 0) {
 					for (var i = 0; i < $scope.stores.length; i++) {
 						if ($scope.stores[i].RecordFieldData == ev) {
-							isDuplicateStore=true;
+							isDuplicateStore = true;
 							notifications.toast("Store is already exist.", "error");
-							$scope.inventory.store="";
+							$scope.inventory.store = "";
 							$scope.addInventoryDisabled = false;
 							break;
 						}
 					}
 				}
-				if(!isDuplicateStore) {
+				if (!isDuplicateStore) {
 					if ($rootScope.isStoreLoaded) {
 						var req = {
 							"RecordName": "CTS_InventoryAttributes",
@@ -3449,8 +3365,8 @@
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 								var length = data.length;
 								//
-								$scope.stores=[];
-								$rootScope.isStoreLoaded=true;
+								$scope.stores = [];
+								$rootScope.isStoreLoaded = true;
 								for (var i = 0; i < length; i++) {
 									for (var j = 0; j < data[i].length; j++) {
 										var obj = data[i][j];
@@ -3525,22 +3441,22 @@
 						$charge.settingsapp().store(req).success(function (data) {
 							$rootScope.isStoreLoaded = true;
 							notifications.toast("Store has been added.", "success");
-//                $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
-//                  $scope.stores = [];
-//                  for (var i = 0; i < data.length; i++) {
-//                    $scope.stores.push(data[i]);
-//                  }
-//                  $scope.inventory.store = "";
-////$mdDialog.hide($scope.stores);
-//                }).error(function (data) {
-//                  console.log(data);
-//                })
+							//                $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
+							//                  $scope.stores = [];
+							//                  for (var i = 0; i < data.length; i++) {
+							//                    $scope.stores.push(data[i]);
+							//                  }
+							//                  $scope.inventory.store = "";
+							////$mdDialog.hide($scope.stores);
+							//                }).error(function (data) {
+							//                  console.log(data);
+							//                })
 
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 								var length = data.length;
 								//
-								$scope.stores=[];
-								$rootScope.isStoreLoaded=true;
+								$scope.stores = [];
+								$rootScope.isStoreLoaded = true;
 								for (var i = 0; i < length; i++) {
 									for (var j = 0; j < data[i].length; j++) {
 										var obj = data[i][j];
@@ -3568,67 +3484,66 @@
 					}
 				}
 			}
-			else{
+			else {
 				$scope.addInventoryDisabled = false;
-				notifications.toast("Store cannot be empty" , "error");
+				notifications.toast("Store cannot be empty", "error");
 			}
 
 		}
 
-		$scope.editInventory=false;
+		$scope.editInventory = false;
 		$scope.updateInven = '';
 		$scope.updateInventoryDisabled = false;
 
-		$scope.editInven= function (store) {
-			$scope.editInventory=true;
-			$scope.displayStoreCode=store.RecordFieldData;
+		$scope.editInven = function (store) {
+			$scope.editInventory = true;
+			$scope.displayStoreCode = store.RecordFieldData;
 			$scope.updateInven = angular.copy(store);
 		}
 
-		$scope.updateStore=function (commondata) {
-			var commondata=$scope.updateInven;
+		$scope.updateStore = function (commondata) {
+			var commondata = $scope.updateInven;
 			$scope.updateInventoryDisabled = true;
-			var req= {
-				"GURecID":commondata.GuRecID,
-				"RowID":commondata.RowID,
-				"RecordFieldData":commondata.RecordFieldData,
-				"FieldID":commondata.FieldID,
-				"ColumnIndex":commondata.ColumnIndex,
-				"FieldName":commondata.FieldName
+			var req = {
+				"GURecID": commondata.GuRecID,
+				"RowID": commondata.RowID,
+				"RecordFieldData": commondata.RecordFieldData,
+				"FieldID": commondata.FieldID,
+				"ColumnIndex": commondata.ColumnIndex,
+				"FieldName": commondata.FieldName
 			}
-			var countStore=0;
+			var countStore = 0;
 			for (var i = 0; i < $scope.stores.length; i++) {
 				if ($scope.stores[i].RecordFieldData == commondata.RecordFieldData) {
-					if($scope.displayStoreCode!=commondata.RecordFieldData)
-					{
+					if ($scope.displayStoreCode != commondata.RecordFieldData) {
 						countStore++;
 					}
 				}
 			}
-			if(countStore==0) {
+			if (countStore == 0) {
 				$charge.settingsapp().update(req).success(function (data) {
 
 					if (data.count > 0) {
 						notifications.toast("Store has been updated.", "success");
-//              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
-//                $scope.stores = [];
-//                for (var i = 0; i < data.length; i++) {
-//                  $scope.stores.push(data[i]);
-//                }
-//                $scope.editInventory = !$scope.editInventory;
-//                $scope.updateInven = "";
-//                $scope.updateInventoryDisabled = false;
-////$mdDialog.hide($scope.stores);
-//              }).error(function (data) {
-//                console.log(data);
-//                $scope.updateInventoryDisabled = false;
-//              })
+						//              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
+						//                $scope.stores = [];
+						//                for (var i = 0; i < data.length; i++) {
+						//                  $scope.stores.push(data[i]);
+						//                }
+						//                $scope.editInventory = !$scope.editInventory;
+						//                $scope.updateInven = "";
+						//                $scope.updateInventoryDisabled = false;
+						////$mdDialog.hide($scope.stores);
+						//              }).error(function (data) {
+						//                console.log(data);
+						//                $scope.updateInventoryDisabled = false;
+						//              })
 
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "Store,DefaultStockLevel").success(function (data) {
 							var length = data.length;
 							//
-							$scope.stores=[];
-							$rootScope.isStoreLoaded=true;
+							$scope.stores = [];
+							$rootScope.isStoreLoaded = true;
 							for (var i = 0; i < length; i++) {
 								for (var j = 0; j < data[i].length; j++) {
 									var obj = data[i][j];
@@ -3660,30 +3575,29 @@
 					$scope.updateInventoryDisabled = false;
 				})
 			}
-			else
-			{
-				notifications.toast("Store is already exist" , "error");
+			else {
+				notifications.toast("Store is already exist", "error");
 				$scope.updateInventoryDisabled = false;
 				$scope.updateInven.RecordFieldData = $scope.displayStoreCode;
 			}
 		}
 
-		$scope.deleteAdditionalInv= function (ev) {
-			$charge.settingsapp().delete(ev).success(function(data) {
+		$scope.deleteAdditionalInv = function (ev) {
+			$charge.settingsapp().delete(ev).success(function (data) {
 				//
-			}).error(function(data) {
+			}).error(function (data) {
 
 			})
 		}
-		$scope.saveAdditionalInventory= function () {
-			var ev=$scope.inventory.store;
-			var isDuplicateStore=false;
-			if($scope.stores.length!=0) {
-				isDuplicateStore=true;
+		$scope.saveAdditionalInventory = function () {
+			var ev = $scope.inventory.store;
+			var isDuplicateStore = false;
+			if ($scope.stores.length != 0) {
+				isDuplicateStore = true;
 			}
 			if (isDuplicateStore) {
-				if(vm.inventoryform.$valid == true) {
-					$scope.stockLevelDisabled=true;
+				if (vm.inventoryform.$valid == true) {
+					$scope.stockLevelDisabled = true;
 					if ($scope.inventory.defaultstockDetails != undefined || $scope.inventory.defaultstockDetails != null)
 						$scope.deleteAdditionalInv($scope.inventory.defaultstockDetails);
 					var req = {
@@ -3695,12 +3609,12 @@
 					$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 						//console.log(data);
 						if ($scope.inventory.defaultstockDetails != undefined || $scope.inventory.defaultstockDetails != null) {
-							if($scope.inventory.defaultstockDetails.RecordFieldData!="") {
+							if ($scope.inventory.defaultstockDetails.RecordFieldData != "") {
 								notifications.toast("Default stock level has been updated.", "success");
 							}
 							else {
 								notifications.toast("Default stock level has been added.", "success");
-								$scope.inventory.defaultstockDetails.RecordFieldData=$scope.inventory.defaultstocklevel;
+								$scope.inventory.defaultstockDetails.RecordFieldData = $scope.inventory.defaultstocklevel;
 							}
 						}
 						else
@@ -3709,8 +3623,8 @@
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InventoryAttributes", "DefaultStockLevel").success(function (data) {
 							var length = data.length;
 							$scope.inventory.defaultstocklevel = parseInt(data[0][0].RecordFieldData);
-							$scope.inventory.defaultstockDetails=data[0][0];
-							$scope.stockLevelDisabled=false;
+							$scope.inventory.defaultstockDetails = data[0][0];
+							$scope.stockLevelDisabled = false;
 						}).error(function (data) {
 						})
 
@@ -3726,48 +3640,48 @@
 				notifications.toast("Please add store before saving default stock level.", "success");
 			}
 		}
-		$scope.editUom=false;
+		$scope.editUom = false;
 		$scope.editUnit = '';
 		$scope.updateUomEnable = false;
 
-		$scope.displayUom= function (uom) {
+		$scope.displayUom = function (uom) {
 			//console.log(ev);
-			$scope.editUom=true;
-			uom.editItem=true;
-			$scope.displayUOMCode=uom.UOMCode;
+			$scope.editUom = true;
+			uom.editItem = true;
+			$scope.displayUOMCode = uom.UOMCode;
 			$scope.editUnit = angular.copy(uom);
 			$scope.updateUomEnable = true;
 
 		}
 
-		$scope.cancelEditUOM= function (uom) {
+		$scope.cancelEditUOM = function (uom) {
 			//console.log(ev);
-			$timeout(function(){
-				uom.editItem=false;
+			$timeout(function () {
+				uom.editItem = false;
 			});
 		};
 
 
 		$scope.updateUomDisabled = false;
-		$scope.updateUOM= function () {
-			var uom= $scope.editUnit;
+		$scope.updateUOM = function () {
+			var uom = $scope.editUnit;
 			$scope.updateUomDisabled = true;
 			var req = {
-				"GUUOMID":uom.GUUOMID,
-				"GUTranID":uom.GUTranID,
-				"CommitStatus":uom.CommitStatus,
-				"UOMCode":uom.UOMCode
+				"GUUOMID": uom.GUUOMID,
+				"GUTranID": uom.GUTranID,
+				"CommitStatus": uom.CommitStatus,
+				"UOMCode": uom.UOMCode
 			}
-			var countUOM=0;
+			var countUOM = 0;
 			for (var i = 0; i < $scope.UOMs.length; i++) {
 				if ($scope.UOMs[i].UOMCode == uom.UOMCode) {
-					if($scope.displayUOMCode!=uom.UOMCode) {
+					if ($scope.displayUOMCode != uom.UOMCode) {
 						countUOM++;
 					}
 				}
 			}
 
-			if(countUOM==0) {
+			if (countUOM == 0) {
 				$charge.uom().updateUOM(req).success(function (data) {
 
 					if (data.count > 0) {
@@ -3789,10 +3703,10 @@
 							//console.log(data);
 							$scope.updateUomDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					} else {
 						$scope.editUnit = "";
@@ -3804,33 +3718,32 @@
 					$scope.updateUomDisabled = false;
 				})
 			}
-			else
-			{
-				notifications.toast("UOM is already exist" , "error");
+			else {
+				notifications.toast("UOM is already exist", "error");
 				$scope.updateUomDisabled = false;
 				$scope.editUnit.UOMCode = $scope.displayUOMCode;
 			}
 		}
 
-		$scope.updateProductUOM= function () {
-			var uom= $scope.editUnit;
+		$scope.updateProductUOM = function () {
+			var uom = $scope.editUnit;
 			$scope.updateUomDisabled = true;
 			var req = {
-				"GUUOMID":uom.GUUOMID,
-				"GUTranID":uom.GUTranID,
-				"CommitStatus":uom.CommitStatus,
-				"UOMCode":uom.UOMCode
+				"GUUOMID": uom.GUUOMID,
+				"GUTranID": uom.GUTranID,
+				"CommitStatus": uom.CommitStatus,
+				"UOMCode": uom.UOMCode
 			}
-			var countUOM=0;
+			var countUOM = 0;
 			for (var i = 0; i < $scope.UOMs.length; i++) {
 				if ($scope.UOMs[i].UOMCode == uom.UOMCode) {
-					if($scope.displayUOMCode!=uom.UOMCode) {
+					if ($scope.displayUOMCode != uom.UOMCode) {
 						countUOM++;
 					}
 				}
 			}
 
-			if(countUOM==0) {
+			if (countUOM == 0) {
 				$charge.uom().updateUOM(req).success(function (data) {
 
 					if (data.count > 0) {
@@ -3852,10 +3765,10 @@
 							//console.log(data);
 							$scope.updateUomDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					} else {
 						$scope.editUnit = "";
@@ -3867,15 +3780,14 @@
 					$scope.updateUomDisabled = false;
 				})
 			}
-			else
-			{
-				notifications.toast("UOM is already exist" , "error");
+			else {
+				notifications.toast("UOM is already exist", "error");
 				$scope.updateUomDisabled = false;
 				$scope.editUnit.UOMCode = $scope.displayUOMCode;
 			}
 		}
 
-		$scope.submitUOM = function() {
+		$scope.submitUOM = function () {
 			if (vm.unitOfMeasure.$valid == true) {
 				//
 				if (!$scope.updateUomEnable) {
@@ -3888,7 +3800,7 @@
 		}
 
 		$scope.addUomDisabled = false;
-		$scope.addUOM= function () {
+		$scope.addUOM = function () {
 			var ev = $scope.plan.uom;
 			$scope.addUomDisabled = true;
 
@@ -3940,31 +3852,31 @@
 							//console.log(data);
 							$scope.addUomDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 						//if(data.IsSuccess) {
 						//  console.log(data);
 						//}
 					}).error(function (data) {
 						//console.log(data);
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					})
 				}
 			}
-			else{
+			else {
 				notifications.toast("UOM cannot be empty", "error");
 				$scope.addUomDisabled = false;
 			}
 
 		}
 
-		$scope.addProductUOM= function () {
+		$scope.addProductUOM = function () {
 			var ev = $scope.product.uom;
 			$scope.addUomDisabled = true;
 
@@ -4016,31 +3928,31 @@
 							//console.log(data);
 							$scope.addUomDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 						//if(data.IsSuccess) {
 						//  console.log(data);
 						//}
 					}).error(function (data) {
 						//console.log(data);
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					})
 				}
 			}
-			else{
+			else {
 				notifications.toast("UOM cannot be empty", "error");
 				$scope.addUomDisabled = false;
 			}
 
 		}
 
-		$scope.submitPlan= function (state) {
+		$scope.submitPlan = function (state) {
 			$scope.updateUomEnable = state;
 			if (vm.planType.$valid == true) {
 				//
@@ -4053,56 +3965,55 @@
 			}
 		}
 
-		$scope.addPlanDialog = function() {
+		$scope.addPlanDialog = function () {
 			$mdDialog.show({
 				controller: 'addPlanController as vm',
 				templateUrl: 'app/main/settings/dialogs/plans/prompt-add-plan.html',
-				clickOutsideToClose:false,
-				locals:{
-					submitPlan : $scope.submitPlan,
-					plan : $scope.plan,
-					editUnit:null,
-					updateUomEnable:false,
-					addUomDisabled:$scope.addUomDisabled
+				clickOutsideToClose: false,
+				locals: {
+					submitPlan: $scope.submitPlan,
+					plan: $scope.plan,
+					editUnit: null,
+					updateUomEnable: false,
+					addUomDisabled: $scope.addUomDisabled
 				}
 			});
 		};
 
-		$scope.editPlanDialog = function(plantype) {
+		$scope.editPlanDialog = function (plantype) {
 			$mdDialog.show({
 				controller: 'addPlanController as vm',
 				templateUrl: 'app/main/settings/dialogs/plans/prompt-add-plan.html',
-				clickOutsideToClose:false,
-				locals:{
-					submitPlan : $scope.submitPlan,
-					plan : $scope.plan,
-					editUnit:plantype,
-					updateUomEnable:true,
-					addUomDisabled:$scope.addUomDisabled
+				clickOutsideToClose: false,
+				locals: {
+					submitPlan: $scope.submitPlan,
+					plan: $scope.plan,
+					editUnit: plantype,
+					updateUomEnable: true,
+					addUomDisabled: $scope.addUomDisabled
 				}
 			});
 		};
 
 		$scope.addUomDisabled = false;
-		$scope.addPlan = function()
-		{
+		$scope.addPlan = function () {
 			$scope.addUomDisabled = true;
 
-			var ev=$scope.plan.plantype;
-			if(ev!=null && ev!="") {
-				var isDuplicatePlanType=false;
-				if($scope.planTypeList.length!=0) {
+			var ev = $scope.plan.plantype;
+			if (ev != null && ev != "") {
+				var isDuplicatePlanType = false;
+				if ($scope.planTypeList.length != 0) {
 					for (var i = 0; i < $scope.planTypeList.length; i++) {
 						if ($scope.planTypeList[i].RecordFieldData == ev) {
-							isDuplicatePlanType=true;
+							isDuplicatePlanType = true;
 							notifications.toast("Type is already exist.", "error");
-							$scope.plan.plantype="";
+							$scope.plan.plantype = "";
 							$scope.addUomDisabled = false;
 							break;
 						}
 					}
 				}
-				if(!isDuplicatePlanType) {
+				if (!isDuplicatePlanType) {
 					if ($rootScope.isPlanTypeLoaded) {
 						var req = {
 							"RecordName": "CTS_PlanAttributes",
@@ -4115,10 +4026,10 @@
 							notifications.toast("Type has been added.", "success");
 							$mdDialog.hide();
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =ev+' Type has been added';
-							$scope.infoJson.app ='settings';
-							logHelper.info( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = ev + ' Type has been added';
+							$scope.infoJson.app = 'settings';
+							logHelper.info($scope.infoJson);
 							//$charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//  $scope.stores = [];
 							//  for (var i = 0; i < data.length; i++) {
@@ -4134,8 +4045,8 @@
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 								var length = data.length;
 								//
-								$scope.planTypeList=[];
-								$rootScope.isPlanTypeLoaded=true;
+								$scope.planTypeList = [];
+								$rootScope.isPlanTypeLoaded = true;
 								for (var i = 0; i < length; i++) {
 									for (var j = 0; j < data[i].length; j++) {
 										var obj = data[i][j];
@@ -4147,29 +4058,29 @@
 								}
 								$scope.plan.plantype = "";
 							}).error(function (data) {
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							})
 
-							if (data.error=="00000") {
+							if (data.error == "00000") {
 								//console.log(data);
 								$scope.addUomDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							}
 						}).error(function (data) {
 							//console.log(data);
 							$scope.addUomDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}
 					else {
@@ -4205,10 +4116,10 @@
 							notifications.toast("Type has been added.", "success");
 							$mdDialog.hide();
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =ev+' Type has been added';
-							$scope.infoJson.app ='settings';
-							logHelper.info( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = ev + ' Type has been added';
+							$scope.infoJson.app = 'settings';
+							logHelper.info($scope.infoJson);
 							//                $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
 							//                  $scope.stores = [];
 							//                  for (var i = 0; i < data.length; i++) {
@@ -4223,8 +4134,8 @@
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 								var length = data.length;
 								//
-								$scope.planTypeList=[];
-								$rootScope.isPlanTypeLoaded=true;
+								$scope.planTypeList = [];
+								$rootScope.isPlanTypeLoaded = true;
 								for (var i = 0; i < length; i++) {
 									for (var j = 0; j < data[i].length; j++) {
 										var obj = data[i][j];
@@ -4236,13 +4147,13 @@
 								}
 								$scope.plan.plantype = "";
 							}).error(function (data) {
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							})
 
-							if (data[0].error=="00000") {
+							if (data[0].error == "00000") {
 								//console.log(data);
 								$scope.addUomDisabled = false;
 								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
@@ -4251,86 +4162,85 @@
 							//console.log(data);
 							$scope.addUomDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}
 				}
 			}
-			else{
+			else {
 				$scope.addUomDisabled = false;
-				notifications.toast("Type cannot be empty" , "error");
+				notifications.toast("Type cannot be empty", "error");
 			}
 
 		}
 
-		$scope.editUom=false;
+		$scope.editUom = false;
 		$scope.editUnit = '';
 		$scope.updateUomEnable = false;
 
-		$scope.editPlan= function (plan) {
+		$scope.editPlan = function (plan) {
 			//$scope.editInventory=true;
 			//$scope.displayStoreCode=plan.RecordFieldData;
 			//$scope.updateInven = angular.copy(plan);
 
-			$scope.editUom=true;
-			$scope.displayUOMCode=plan.RecordFieldData;
+			$scope.editUom = true;
+			$scope.displayUOMCode = plan.RecordFieldData;
 			$scope.editUnit = angular.copy(plan);
 			$scope.updateUomEnable = true;
 		}
 
 		$scope.updateUomDisabled = false;
-		$scope.updatePlan=function (commondata) {
-			var commondata=$scope.editUnit;
+		$scope.updatePlan = function (commondata) {
+			var commondata = $scope.editUnit;
 			$scope.updateUomDisabled = true;
-			var req= {
-				"GURecID":commondata.GuRecID,
-				"RowID":commondata.RowID,
-				"RecordFieldData":commondata.RecordFieldData,
-				"FieldID":commondata.FieldID,
-				"ColumnIndex":commondata.ColumnIndex,
-				"FieldName":commondata.FieldName
+			var req = {
+				"GURecID": commondata.GuRecID,
+				"RowID": commondata.RowID,
+				"RecordFieldData": commondata.RecordFieldData,
+				"FieldID": commondata.FieldID,
+				"ColumnIndex": commondata.ColumnIndex,
+				"FieldName": commondata.FieldName
 			}
-			var countPlan=0;
+			var countPlan = 0;
 			for (var i = 0; i < $scope.planTypeList.length; i++) {
 				if ($scope.planTypeList[i].RecordFieldData == commondata.RecordFieldData) {
-					if($scope.displayUOMCode!=commondata.RecordFieldData)
-					{
+					if ($scope.displayUOMCode != commondata.RecordFieldData) {
 						countPlan++;
 					}
 				}
 			}
-			if(countPlan==0) {
+			if (countPlan == 0) {
 				$charge.settingsapp().update(req).success(function (data) {
 
 					if (data.count > 0) {
 						notifications.toast("Type has been updated.", "success");
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =commondata.RecordFieldData+' Type has been updated';
-						$scope.infoJson.app ='settings';
-						logHelper.info( $scope.infoJson);
-//              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
-//                $scope.stores = [];
-//                for (var i = 0; i < data.length; i++) {
-//                  $scope.stores.push(data[i]);
-//                }
-//                $scope.editInventory = !$scope.editInventory;
-//                $scope.updateInven = "";
-//                $scope.updateInventoryDisabled = false;
-////$mdDialog.hide($scope.stores);
-//              }).error(function (data) {
-//                console.log(data);
-//                $scope.updateInventoryDisabled = false;
-//              })
+						$scope.infoJson = {};
+						$scope.infoJson.message = commondata.RecordFieldData + ' Type has been updated';
+						$scope.infoJson.app = 'settings';
+						logHelper.info($scope.infoJson);
+						//              $charge.commondata().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_InventoryAttributes", "Store").success(function (data) {
+						//                $scope.stores = [];
+						//                for (var i = 0; i < data.length; i++) {
+						//                  $scope.stores.push(data[i]);
+						//                }
+						//                $scope.editInventory = !$scope.editInventory;
+						//                $scope.updateInven = "";
+						//                $scope.updateInventoryDisabled = false;
+						////$mdDialog.hide($scope.stores);
+						//              }).error(function (data) {
+						//                console.log(data);
+						//                $scope.updateInventoryDisabled = false;
+						//              })
 
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PlanAttributes", "PlanType").success(function (data) {
 							var length = data.length;
 							//
-							$scope.planTypeList=[];
-							$rootScope.isPlanTypeLoaded=true;
+							$scope.planTypeList = [];
+							$rootScope.isPlanTypeLoaded = true;
 							for (var i = 0; i < length; i++) {
 								for (var j = 0; j < data[i].length; j++) {
 									var obj = data[i][j];
@@ -4349,10 +4259,10 @@
 							$scope.updateUomDisabled = false;
 							$mdDialog.hide();
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 						$scope.updateUomEnable = false;
 					}
@@ -4368,33 +4278,32 @@
 					$scope.updateUomDisabled = false;
 					$scope.updateUomEnable = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
 			}
-			else
-			{
-				notifications.toast("Type already exist" , "error");
+			else {
+				notifications.toast("Type already exist", "error");
 				$scope.updateUomDisabled = false;
 				$scope.updateUomEnable = false;
 				$scope.editUnit.RecordFieldData = $scope.displayUOMCode;
 			}
 		}
 
-		$scope.deletePlan= function (ev,index) {
+		$scope.deletePlan = function (ev, index) {
 
-			$charge.settingsapp().delete(ev).success(function(data) {
+			$charge.settingsapp().delete(ev).success(function (data) {
 				//
-				$scope.planTypeList.splice(index,1);
-			}).error(function(data) {
+				$scope.planTypeList.splice(index, 1);
+			}).error(function (data) {
 				//console.log(data);
 			})
 		}
 
 
-		$scope.changePlanFee={};
+		$scope.changePlanFee = {};
 
 		$scope.openPlanChangeView = function () {
 			vm.planChangeFeeForm.$setPristine();
@@ -4402,238 +4311,211 @@
 			$scope.planChangeView = true;
 		}
 
-		$scope.submitPlanChangeFee= function () {
+		$scope.submitPlanChangeFee = function () {
 
-			if(vm.planChangeFeeForm.$valid){
-				$scope.planChangeFeeSubmitted=true;
+			if (vm.planChangeFeeForm.$valid) {
+				$scope.planChangeFeeSubmitted = true;
 
-				$scope.changePlanFee.currency=$scope.BaseCurrencyPlanChangeFee;
-				$scope.changePlanFee.rate=$scope.currencyRate;
+				$scope.changePlanFee.currency = $scope.BaseCurrencyPlanChangeFee;
+				$scope.changePlanFee.rate = $scope.currencyRate;
 
-				var planChangeFeeDuplicate=false;
+				var planChangeFeeDuplicate = false;
 
-				for(var i = 0; i < $scope.planChangeFeeList.length; i++)
-				{
-					if($scope.planChangeFeeList[i].planFrom==$scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo==$scope.changePlanFee.planTo)
-					{
-						planChangeFeeDuplicate=true;
+				for (var i = 0; i < $scope.planChangeFeeList.length; i++) {
+					if ($scope.planChangeFeeList[i].planFrom == $scope.changePlanFee.planFrom && $scope.planChangeFeeList[i].planTo == $scope.changePlanFee.planTo) {
+						planChangeFeeDuplicate = true;
 						break;
 					}
 				}
 
-				if(!planChangeFeeDuplicate)
-				{
-					$charge.plan().createPlanChangeFee($scope.changePlanFee).success(function(data)
-					{
-						if(data.response=="succeeded")
-						{
-							notifications.toast("Successfully plan change fee created","success");
-							$scope.planChangeFeeSubmitted=false;
-							$scope.changePlanFee={};
+				if (!planChangeFeeDuplicate) {
+					$charge.plan().createPlanChangeFee($scope.changePlanFee).success(function (data) {
+						if (data.response == "succeeded") {
+							notifications.toast("Successfully plan change fee created", "success");
+							$scope.planChangeFeeSubmitted = false;
+							$scope.changePlanFee = {};
 
-							$scope.infoJson= {};
-							$scope.infoJson.message ='Successfully plan change fee created';
-							$scope.infoJson.app ='settings';
-							logHelper.info( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = 'Successfully plan change fee created';
+							$scope.infoJson.app = 'settings';
+							logHelper.info($scope.infoJson);
 
-							skipPlanChangeFee=0;
-							$scope.planChangeFeeList=[];
+							skipPlanChangeFee = 0;
+							$scope.planChangeFeeList = [];
 							$scope.loadPlanChangeFeePaging();
 							vm.planChangeFeeForm.$setPristine();
 							vm.planChangeFeeForm.$setUntouched();
-							$scope.planChangeView=false;
+							$scope.planChangeView = false;
 						}
-						else
-						{
-							notifications.toast("Plan change fee creation failed","error");
-							$scope.planChangeFeeSubmitted=false;
-							$scope.planChangeView=false;
+						else {
+							notifications.toast("Plan change fee creation failed", "error");
+							$scope.planChangeFeeSubmitted = false;
+							$scope.planChangeView = false;
 						}
-					}).error(function(data)
-					{
-						notifications.toast("Plan change fee creation failed","error");
-						$scope.planChangeFeeSubmitted=false;
-						$scope.planChangeView=false;
+					}).error(function (data) {
+						notifications.toast("Plan change fee creation failed", "error");
+						$scope.planChangeFeeSubmitted = false;
+						$scope.planChangeView = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					})
 				}
-				else
-				{
-					notifications.toast("Duplicate Change Plans","error");
-					$scope.planChangeFeeSubmitted=false;
-					$scope.changePlanFee.planFrom="";
-					$scope.changePlanFee.planTo="";
+				else {
+					notifications.toast("Duplicate Change Plans", "error");
+					$scope.planChangeFeeSubmitted = false;
+					$scope.changePlanFee.planFrom = "";
+					$scope.changePlanFee.planTo = "";
 				}
-			}else{
+			} else {
 				angular.element('#planChangeFeeForm').find('.ng-invalid:visible:first').focus();
 			}
 		}
 
 
 
-		$scope.planChangeFeeItemOriginal=[];
-		$scope.editPlanChangeFee= function (plan) {
+		$scope.planChangeFeeItemOriginal = [];
+		$scope.editPlanChangeFee = function (plan) {
 			//$scope.cancelEditPlanChangeFee($scope.planChangeFeeItemOriginal);
 
-			$scope.planChangeFeeItemOriginal=angular.copy(plan);
-			plan.editItem=true;
+			$scope.planChangeFeeItemOriginal = angular.copy(plan);
+			plan.editItem = true;
 
 		}
 
-		$scope.cancelEditPlanChangeFee= function (plan) {
+		$scope.cancelEditPlanChangeFee = function (plan) {
 
-			plan.editItem=false;
-			plan.planFrom=angular.copy($scope.planChangeFeeItemOriginal.planFrom);
-			plan.planTo=angular.copy($scope.planChangeFeeItemOriginal.planTo);
-			plan.fee=angular.copy($scope.planChangeFeeItemOriginal.fee);
+			plan.editItem = false;
+			plan.planFrom = angular.copy($scope.planChangeFeeItemOriginal.planFrom);
+			plan.planTo = angular.copy($scope.planChangeFeeItemOriginal.planTo);
+			plan.fee = angular.copy($scope.planChangeFeeItemOriginal.fee);
 			//plan.editItem=false;
 		}
 
-		$scope.updatingPlanChangeFee= function (updatePlan, index) {
+		$scope.updatingPlanChangeFee = function (updatePlan, index) {
 
-			$scope.planChangeFeeUpdateSubmitted=true;
+			$scope.planChangeFeeUpdateSubmitted = true;
 
-			var planChangeFeeUpdateDuplicate=false;
-			var planChangeFeeUpdateInvalid=false;
+			var planChangeFeeUpdateDuplicate = false;
+			var planChangeFeeUpdateInvalid = false;
 
-			for(var i = 0; i < $scope.planChangeFeeList.length; i++)
-			{
-				if(index==i)
-				{
+			for (var i = 0; i < $scope.planChangeFeeList.length; i++) {
+				if (index == i) {
 
 				}
-				else if($scope.planChangeFeeList[i].planFrom==updatePlan.planFrom && $scope.planChangeFeeList[i].planTo==updatePlan.planTo)
-				{
-					planChangeFeeUpdateDuplicate=true;
+				else if ($scope.planChangeFeeList[i].planFrom == updatePlan.planFrom && $scope.planChangeFeeList[i].planTo == updatePlan.planTo) {
+					planChangeFeeUpdateDuplicate = true;
 					break;
 				}
 			}
-			if(updatePlan.planFrom=="" || updatePlan.planTo=="" || updatePlan.fee=="" || updatePlan.fee==undefined)
-			{
-				planChangeFeeUpdateInvalid=true;
-				$scope.planChangeFeeUpdateSubmitted=false;
+			if (updatePlan.planFrom == "" || updatePlan.planTo == "" || updatePlan.fee == "" || updatePlan.fee == undefined) {
+				planChangeFeeUpdateInvalid = true;
+				$scope.planChangeFeeUpdateSubmitted = false;
 			}
 
-			if(!planChangeFeeUpdateDuplicate && !planChangeFeeUpdateInvalid)
-			{
-				$charge.plan().updatePlanChangeFee(updatePlan).success(function(data)
-				{
-					if(data.response=="succeeded")
-					{
-						notifications.toast("Successfully Plan Change Fee Updated","success");
-						$scope.planChangeFeeUpdateSubmitted=false;
+			if (!planChangeFeeUpdateDuplicate && !planChangeFeeUpdateInvalid) {
+				$charge.plan().updatePlanChangeFee(updatePlan).success(function (data) {
+					if (data.response == "succeeded") {
+						notifications.toast("Successfully Plan Change Fee Updated", "success");
+						$scope.planChangeFeeUpdateSubmitted = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message ='Successfully Plan Change Fee Updated';
-						$scope.infoJson.app ='settings';
-						logHelper.info( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = 'Successfully Plan Change Fee Updated';
+						$scope.infoJson.app = 'settings';
+						logHelper.info($scope.infoJson);
 
-						skipPlanChangeFee=0;
-						$scope.planChangeFeeList=[];
+						skipPlanChangeFee = 0;
+						$scope.planChangeFeeList = [];
 						$scope.loadPlanChangeFeePaging();
 
 					}
-					else
-					{
-						notifications.toast("Plan Change Fee Updating Failed","error");
-						$scope.planChangeFeeUpdateSubmitted=false;
+					else {
+						notifications.toast("Plan Change Fee Updating Failed", "error");
+						$scope.planChangeFeeUpdateSubmitted = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					}
-				}).error(function(data)
-				{
-					notifications.toast("Plan Change Fee Updating Failed","error");
-					$scope.planChangeFeeUpdateSubmitted=false;
+				}).error(function (data) {
+					notifications.toast("Plan Change Fee Updating Failed", "error");
+					$scope.planChangeFeeUpdateSubmitted = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
 			}
-			else
-			{
-				if(planChangeFeeUpdateInvalid)
-				{
-					notifications.toast("Invalid Change Plan Details","error");
+			else {
+				if (planChangeFeeUpdateInvalid) {
+					notifications.toast("Invalid Change Plan Details", "error");
 				}
-				else
-				{
-					notifications.toast("Duplicate Change Plans","error");
+				else {
+					notifications.toast("Duplicate Change Plans", "error");
 				}
-				$scope.planChangeFeeUpdateSubmitted=false;
+				$scope.planChangeFeeUpdateSubmitted = false;
 			}
 		}
 
-		$scope.deletingPlanChangeFee= function (plan) {
+		$scope.deletingPlanChangeFee = function (plan) {
 
-			$charge.plan().deletePlanChangeFee(plan.guChangeFeeID).success(function(data)
-			{
-				if(data.response=="succeeded")
-				{
-					notifications.toast("Successfully Plan Change Fee Deleted","success");
+			$charge.plan().deletePlanChangeFee(plan.guChangeFeeID).success(function (data) {
+				if (data.response == "succeeded") {
+					notifications.toast("Successfully Plan Change Fee Deleted", "success");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message ='Successfully Plan Change Fee Deleted';
-					$scope.infoJson.app ='settings';
-					logHelper.info( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = 'Successfully Plan Change Fee Deleted';
+					$scope.infoJson.app = 'settings';
+					logHelper.info($scope.infoJson);
 
-					skipPlanChangeFee=0;
-					$scope.planChangeFeeList=[];
+					skipPlanChangeFee = 0;
+					$scope.planChangeFeeList = [];
 					$scope.loadPlanChangeFeePaging();
 
 				}
-				else
-				{
-					notifications.toast("Plan Change Fee Deleting Failed","error");
+				else {
+					notifications.toast("Plan Change Fee Deleting Failed", "error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				}
-			}).error(function(data)
-			{
-				notifications.toast("Plan Change Fee Deleting Failed","error");
+			}).error(function (data) {
+				notifications.toast("Plan Change Fee Deleting Failed", "error");
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 
 		}
 
-		$scope.tempSelectedWebhook=[];
-		$scope.webhookItemViewToggle= function (event) {
-			if($scope.tempSelectedWebhook!=[] && $scope.tempSelectedWebhook!=event)
-			{
-				$scope.tempSelectedWebhook.showEvents=false;
+		$scope.tempSelectedWebhook = [];
+		$scope.webhookItemViewToggle = function (event) {
+			if ($scope.tempSelectedWebhook != [] && $scope.tempSelectedWebhook != event) {
+				$scope.tempSelectedWebhook.showEvents = false;
 			}
-			$scope.tempSelectedWebhook=event;
+			$scope.tempSelectedWebhook = event;
 
-			if(event.showEvents)
-			{
-				event.showEvents=!event.showEvents;
+			if (event.showEvents) {
+				event.showEvents = !event.showEvents;
 			}
-			else
-			{
-				event.showEvents=!event.showEvents;
+			else {
+				event.showEvents = !event.showEvents;
 			}
 		}
 
 
-		vm.webhook={};
+		vm.webhook = {};
 		vm.webhookSubmitted = false;
 
-		$scope.showDeleteWebhookConfirm = function(ev,webhook) {
+		$scope.showDeleteWebhookConfirm = function (ev, webhook) {
 			// Appending dialog to document.body to cover sidenav in docs app
 			var confirm = $mdDialog.confirm()
 				.title('Would you like to delete this Webhook?')
@@ -4643,59 +4525,54 @@
 				.ok('Please do it!')
 				.cancel('No!');
 
-			$mdDialog.show(confirm).then(function() {
+			$mdDialog.show(confirm).then(function () {
 				$scope.deleteWebhook(webhook);
-			}, function() {
+			}, function () {
 
 			});
 		};
 
-		$scope.deleteWebhook= function (webhook) {
+		$scope.deleteWebhook = function (webhook) {
 			//$scope.resetWebhook();
-			var webhookID=webhook.guWebhookId;
+			var webhookID = webhook.guWebhookId;
 			$charge.webhook().deleteWebhookByID(webhookID).success(function (data) {
-				if(data.error=="00000")
-				{
+				if (data.error == "00000") {
 					notifications.toast("Webhook has Deleted Successfully", "success");
 					$scope.resetWebhook();
 
-					$scope.infoJson= {};
-					$scope.infoJson.message ='Webhook has Deleted Successfully';
-					$scope.infoJson.app ='settings';
-					logHelper.info( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = 'Webhook has Deleted Successfully';
+					$scope.infoJson.app = 'settings';
+					logHelper.info($scope.infoJson);
 				}
-				else
-				{
+				else {
 					notifications.toast("Webhook Deleting Failed", "error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				}
 			}).error(function (data) {
 				//console.log(data);
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 		vm.webhookTypeChange = function (type) {
 			for (var i = 0; i < vm.webhookEventList.length; i++) {
-				if(type==true)
-				{
-					if(!vm.webhookEventList[i].isAlreadyUsed)
-					{
-						vm.webhookEventList[i].isSelected=true;
-						vm.webhookEventList[i].isDisabled=false;
+				if (type == true) {
+					if (!vm.webhookEventList[i].isAlreadyUsed) {
+						vm.webhookEventList[i].isSelected = true;
+						vm.webhookEventList[i].isDisabled = false;
 					}
 				}
-				else if(type==false)
-				{
-					vm.webhookEventList[i].isSelected=false;
-					vm.webhookEventList[i].isDisabled=false;
+				else if (type == false) {
+					vm.webhookEventList[i].isSelected = false;
+					vm.webhookEventList[i].isDisabled = false;
 				}
 			}
 		};
@@ -4714,15 +4591,13 @@
 		// 	$scope.enabledEditWH=false;
 		// }
 
-		$scope.selectChangeTemplate= function (template) {
+		$scope.selectChangeTemplate = function (template) {
 			for (var i = 0; i < vm.emailTemplateList.length; i++) {
-				if(vm.emailTemplateList[i].url!=template)
-				{
-					vm.emailTemplateList[i].isSelected=false;
+				if (vm.emailTemplateList[i].url != template) {
+					vm.emailTemplateList[i].isSelected = false;
 				}
-				else
-				{
-					vm.emailTemplateList[i].isSelected=true;
+				else {
+					vm.emailTemplateList[i].isSelected = true;
 				}
 			}
 			$scope.loadingEmailTemplates = false;
@@ -4735,8 +4610,8 @@
 			$mdDialog.show({
 				controller: 'MaximizeTemplateController',
 				templateUrl: 'app/main/settings/dialogs/email-templates-full/emailTemplateFull.html',
-				clickOutsideToClose:false,
-				locals:{
+				clickOutsideToClose: false,
+				locals: {
 					selectedTemplateView: template,
 					template: $scope.template,
 					footerDet: $scope.footerDet,
@@ -4749,25 +4624,22 @@
 			$mdDialog.hide();
 		};
 
-		vm.emailTemplateSubmitted=false;
+		vm.emailTemplateSubmitted = false;
 
-		$scope.submitEmailTemplate= function () {
-			vm.emailTemplateSubmitted=true;
-			var tempEmailTemplateSelected=false;
-			var tempEmailTemplate="";
+		$scope.submitEmailTemplate = function () {
+			vm.emailTemplateSubmitted = true;
+			var tempEmailTemplateSelected = false;
+			var tempEmailTemplate = "";
 			for (var i = 0; i < vm.emailTemplateList.length; i++) {
-				if(vm.emailTemplateList[i].isSelected)
-				{
-					tempEmailTemplate=vm.emailTemplateList[i].url;
-					tempEmailTemplateSelected=true;
+				if (vm.emailTemplateList[i].isSelected) {
+					tempEmailTemplate = vm.emailTemplateList[i].url;
+					tempEmailTemplateSelected = true;
 					break;
 				}
 			}
 
-			if(tempEmailTemplateSelected)
-			{
-				if($scope.defaultEmailTemplate!="")
-				{
+			if (tempEmailTemplateSelected) {
+				if ($scope.defaultEmailTemplate != "") {
 					$charge.settingsapp().deleteCommmon($scope.defaultEmailTemplateID).success(function (data) {
 						var req = {
 							"RecordName": "CTS_EmailTemplates",
@@ -4777,57 +4649,56 @@
 
 						$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 							notifications.toast("Template has been Set", "success");
-							$scope.defaultEmailTemplate=angular.copy(tempEmailTemplate);
-							vm.emailTemplateSubmitted=false;
+							$scope.defaultEmailTemplate = angular.copy(tempEmailTemplate);
+							vm.emailTemplateSubmitted = false;
 						}).error(function (data) {
 							//console.log(data);
 							notifications.toast("Template Saving Error", "error");
-							vm.emailTemplateSubmitted=false;
+							vm.emailTemplateSubmitted = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
-						vm.emailTemplateSubmitted=false;
+						vm.emailTemplateSubmitted = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					})
 
 				}
-				else
-				{
-					var req={
-						"GURecID":"123",
-						"RecordType":"CTS_EmailTemplates",
-						"OperationalStatus":"Active",
-						"RecordStatus":"Active",
-						"Cache":"CTS_EmailTemplates",
-						"Separate":"Test",
-						"RecordName":"CTS_EmailTemplates",
-						"GuTranID":"12345",
-						"RecordCultureName":"CTS_EmailTemplates",
-						"RecordCode":"CTS_EmailTemplates",
-						"commonDatafieldDetails":[
+				else {
+					var req = {
+						"GURecID": "123",
+						"RecordType": "CTS_EmailTemplates",
+						"OperationalStatus": "Active",
+						"RecordStatus": "Active",
+						"Cache": "CTS_EmailTemplates",
+						"Separate": "Test",
+						"RecordName": "CTS_EmailTemplates",
+						"GuTranID": "12345",
+						"RecordCultureName": "CTS_EmailTemplates",
+						"RecordCode": "CTS_EmailTemplates",
+						"commonDatafieldDetails": [
 							{
-								"FieldCultureName":"TemplateUrl",
-								"FieldID":"124",
-								"FieldName":"TemplateUrl",
-								"FieldType":"TemplateUrlType",
-								"ColumnIndex":"0"
+								"FieldCultureName": "TemplateUrl",
+								"FieldID": "124",
+								"FieldName": "TemplateUrl",
+								"FieldType": "TemplateUrlType",
+								"ColumnIndex": "0"
 							}
 						],
-						"commonDataValueDetails":[
+						"commonDataValueDetails": [
 							{
-								"RowID":"1452",
-								"RecordFieldData":tempEmailTemplate,
-								"ColumnIndex":"0"
+								"RowID": "1452",
+								"RecordFieldData": tempEmailTemplate,
+								"ColumnIndex": "0"
 							}
 						]
 
@@ -4835,32 +4706,31 @@
 
 					$charge.settingsapp().store(req).success(function (data) {
 						notifications.toast("Template has Set", "success");
-						$scope.defaultEmailTemplate=angular.copy(tempEmailTemplate);
-						vm.emailTemplateSubmitted=false;
+						$scope.defaultEmailTemplate = angular.copy(tempEmailTemplate);
+						vm.emailTemplateSubmitted = false;
 
 					}).error(function (data) {
 						//console.log(data);
 						notifications.toast("Template Saving Error", "error");
-						vm.emailTemplateSubmitted=false;
+						vm.emailTemplateSubmitted = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					})
 				}
 
 
 			}
-			else
-			{
+			else {
 				notifications.toast("Please select a Template", "error");
-				vm.emailTemplateSubmitted=false;
+				vm.emailTemplateSubmitted = false;
 			}
 		}
 
 		$scope.addCategoryDisabled = false;
-		$scope.submitCategories = function() {
+		$scope.submitCategories = function () {
 			if (vm.categories.$valid == true) {
 				//
 				if (!$scope.updateCatEnable) {
@@ -4871,26 +4741,25 @@
 				}
 			}
 		}
-		$scope.addCat = function()
-		{
-			var ev=$scope.product.category;
+		$scope.addCat = function () {
+			var ev = $scope.product.category;
 			$scope.addCategoryDisabled = true;
 
-			if(ev!=null && ev!="") {
-				var isDuplicateCat=false;
-				if($scope.categories.length!=0) {
+			if (ev != null && ev != "") {
+				var isDuplicateCat = false;
+				if ($scope.categories.length != 0) {
 					for (var i = 0; i < $scope.categories.length; i++) {
 						if ($scope.categories[i].RecordFieldData == ev) {
-							isDuplicateCat=true;
+							isDuplicateCat = true;
 							notifications.toast("Category is already exist.", "error");
-							$scope.product.category="";
+							$scope.product.category = "";
 							$scope.addCategoryDisabled = false;
 							$scope.addCatView = false;
 							break;
 						}
 					}
 				}
-				if(!isDuplicateCat) {
+				if (!isDuplicateCat) {
 					if ($rootScope.isCategoryLoaded) {
 						var req = {
 							"RecordName": "CTS_CommonAttributes",
@@ -4908,11 +4777,11 @@
 								$scope.product.category = "";
 								$scope.addCategoryDisabled = false;
 								$scope.addCatView = false;
-//$mdDialog.hide($scope.categories);
+								//$mdDialog.hide($scope.categories);
 							}).error(function (data) {
 								$scope.addCategoryDisabled = false;
 								$scope.addCatView = false;
-//console.log(data);
+								//console.log(data);
 							})
 
 							//if(data.IsSuccess) {
@@ -4922,7 +4791,7 @@
 						}).error(function (data) {
 							$scope.addCategoryDisabled = false;
 							$scope.addCatView = false;
-//console.log(data);
+							//console.log(data);
 						})
 					}
 					else {
@@ -4964,18 +4833,18 @@
 								$scope.product.category = "";
 								$scope.addCategoryDisabled = false;
 								$scope.addCatView = false;
-//$mdDialog.hide($scope.categories);
+								//$mdDialog.hide($scope.categories);
 							}).error(function (data) {
 								$scope.addCategoryDisabled = false;
 								$scope.addCatView = false;
-//console.log(data);
+								//console.log(data);
 							})
 
 							if (data.IsSuccess) {
 								//console.log(data);
 								$scope.addCategoryDisabled = false;
 								$scope.addCatView = false;
-//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
+								//notifications.toast("Record Inserted, Product ID " + data.Data[0].ID , "success");
 							}
 						}).error(function (data) {
 							//console.log(data);
@@ -4984,34 +4853,34 @@
 					}
 				}
 			}
-			else{
+			else {
 				$scope.addCategoryDisabled = false;
-				notifications.toast("Category cannot be empty" , "error");
+				notifications.toast("Category cannot be empty", "error");
 			}
 		}
 
 		$scope.updateCategoryDisabled = false;
-		$scope.updateCat= function () {
-			var commondata=$scope.editCategory;
+		$scope.updateCat = function () {
+			var commondata = $scope.editCategory;
 			$scope.updateCategoryDisabled = true;
 
-			var req= {
-				"GURecID":commondata.GuRecID,
-				"RowID":commondata.RowID,
-				"RecordFieldData":commondata.RecordFieldData,
-				"FieldID":commondata.FieldID,
-				"ColumnIndex":commondata.ColumnIndex,
-				"FieldName":commondata.FieldName
+			var req = {
+				"GURecID": commondata.GuRecID,
+				"RowID": commondata.RowID,
+				"RecordFieldData": commondata.RecordFieldData,
+				"FieldID": commondata.FieldID,
+				"ColumnIndex": commondata.ColumnIndex,
+				"FieldName": commondata.FieldName
 			}
-			var countCat=0;
+			var countCat = 0;
 			for (var i = 0; i < $scope.categories.length; i++) {
 				if ($scope.categories[i].RecordFieldData == commondata.RecordFieldData) {
-					if($scope.displayCategoryCode!=commondata.RecordFieldData) {
+					if ($scope.displayCategoryCode != commondata.RecordFieldData) {
 						countCat++;
 					}
 				}
 			}
-			if(countCat==0) {
+			if (countCat == 0) {
 				$charge.settingsapp().update(req).success(function (data) {
 					//
 					if (data.count > 0) {
@@ -5038,57 +4907,56 @@
 					$scope.updateCategoryDisabled = false;
 				})
 			}
-			else
-			{
+			else {
 				notifications.toast("Category is already exist", "error");
 				$scope.updateCategoryDisabled = false;
 				$scope.editCategory.RecordFieldData = $scope.displayCategoryCode;
 			}
 		}
 
-		$scope.displayCat= function (category) {
-			$scope.displayCategoryCode=category.RecordFieldData;
+		$scope.displayCat = function (category) {
+			$scope.displayCategoryCode = category.RecordFieldData;
 			$scope.editCategory = angular.copy(category);
 			$scope.updateCatEnable = true;
 			category.editItem = true;
 		}
 
-		$scope.cancelEditCat= function (category) {
-			$timeout(function(){
-				category.editItem=false;
+		$scope.cancelEditCat = function (category) {
+			$timeout(function () {
+				category.editItem = false;
 			});
 		}
 
-		$scope.cancelEditBrand= function (brand) {
-			$timeout(function(){
-				brand.editItem=false;
+		$scope.cancelEditBrand = function (brand) {
+			$timeout(function () {
+				brand.editItem = false;
 			});
 		}
 
-		$scope.deleteCommonData= function (ev,index) {
+		$scope.deleteCommonData = function (ev, index) {
 			//
-			$charge.settingsapp().delete(ev).success(function(data) {
+			$charge.settingsapp().delete(ev).success(function (data) {
 				//
-				if(ev.ColumnIndex=="0")
-					$scope.categories.splice(index,1);
-				else if(ev.ColumnIndex=="1")
-					$scope.brands.splice(index,1);
-			}).error(function(data) {
+				if (ev.ColumnIndex == "0")
+					$scope.categories.splice(index, 1);
+				else if (ev.ColumnIndex == "1")
+					$scope.brands.splice(index, 1);
+			}).error(function (data) {
 				//console.log(data);
 			})
 		}
 
-		$scope.deleteStore= function (ev,index) {
+		$scope.deleteStore = function (ev, index) {
 
-			$charge.settingsapp().delete(ev).success(function(data) {
+			$charge.settingsapp().delete(ev).success(function (data) {
 				//
-				$scope.stores.splice(index,1);
-			}).error(function(data) {
+				$scope.stores.splice(index, 1);
+			}).error(function (data) {
 				//console.log(data);
 			})
 		}
 
-		$scope.showDeleteUOMConfirm = function(ev,uom,index) {
+		$scope.showDeleteUOMConfirm = function (ev, uom, index) {
 			// Appending dialog to document.body to cover sidenav in docs app
 			var confirm = $mdDialog.confirm()
 				.title('Would you like to delete this UOM?')
@@ -5098,34 +4966,34 @@
 				.ok('Please do it!')
 				.cancel('No!');
 
-			$mdDialog.show(confirm).then(function() {
-				$scope.deleteUOM(uom,index);
-			}, function() {
+			$mdDialog.show(confirm).then(function () {
+				$scope.deleteUOM(uom, index);
+			}, function () {
 
 			});
 		};
 
-		$scope.deleteUOM= function (ev,index) {
+		$scope.deleteUOM = function (ev, index) {
 			//
-			$charge.uom().delete(ev.GUUOMID).success(function(data) {
+			$charge.uom().delete(ev.GUUOMID).success(function (data) {
 				//
-				$scope.UOMs.splice(index,1);
+				$scope.UOMs.splice(index, 1);
 				notifications.toast("UOM has been deleted successfully", "success");
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
 				notifications.toast("UOM deleting Failed", "error");
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 
 
 		//Invoice Pane
-		$scope.invoice={};
+		$scope.invoice = {};
 		//$scope.invoice.invoicePrefix="";
 		//$scope.invoice.prefixLength="";
 		//$scope.invoice.enableDiscounts=0;
@@ -5134,38 +5002,37 @@
 		//$scope.invoice.allowPartialPay=0;
 		//$scope.invoice.firstReminder="";
 		//$scope.invoice.RecurrReminder="";
-		$scope.invoiceSettings=[];
-		$scope.invoiceTerms=[];
-		$scope.editOn=false;
-		var isInvoiceLoaded=false;
+		$scope.invoiceSettings = [];
+		$scope.invoiceTerms = [];
+		$scope.editOn = false;
+		var isInvoiceLoaded = false;
 
-		$scope.editInvoice=true;
+		$scope.editInvoice = true;
 		$scope.updateInv = '';
 
 
-		$scope.invoiceReminders=[];
+		$scope.invoiceReminders = [];
 
 		$scope.addReminder = function () {
 			var existingReminder = $scope.invoiceReminders[$scope.invoiceReminders.length - 1];
-			var index=existingReminder!=undefined?existingReminder.No:0;
+			var index = existingReminder != undefined ? existingReminder.No : 0;
 			$scope.addNewReminder(index);
 		}
 
 		$scope.removeReminder = function (index) {
-			if($scope.invoiceReminders.length!=1) {
+			if ($scope.invoiceReminders.length != 1) {
 				$scope.invoiceReminders.splice(index, 1);
 			}
 		}
 
 		//var reminderCount=0;
-		$scope.addNewReminder=function(index)
-		{
+		$scope.addNewReminder = function (index) {
 			index++;
-			var reminder={};
-			reminder.isDisabled=true;
-			reminder.No=index;
-			reminder.ReminderDays=0;
-			reminder.ReminderType='';
+			var reminder = {};
+			reminder.isDisabled = true;
+			reminder.No = index;
+			reminder.ReminderDays = 0;
+			reminder.ReminderType = '';
 			$scope.invoiceReminders.push(reminder);
 		}
 
@@ -5201,23 +5068,22 @@
 
 		}
 
-		$scope.showReminderDialog = function(ev,index)
-		{
+		$scope.showReminderDialog = function (ev, index) {
 			$mdDialog.show({
 				controller: 'ReminderDialogController as vm',
 				templateUrl: 'app/main/settings/dialogs/reminderDialog.html',
 				parent: angular.element(document.body),
 				targetEvent: ev,
-				clickOutsideToClose:true,
+				clickOutsideToClose: true,
 				locals: {
-					reminderTypeDefault:'Before',
-					rowIndex:index,
-					reminderCon:$scope.invoiceReminders[index],
+					reminderTypeDefault: 'Before',
+					rowIndex: index,
+					reminderCon: $scope.invoiceReminders[index],
 					showReminderInfo: $scope.showReminderInfo
 				}
 			})
-				.then(function(reminders) {
-					if(reminders!=undefined) {
+				.then(function (reminders) {
+					if (reminders != undefined) {
 						$scope.invoiceReminders[reminders.reminderIndex]['ReminderDays'] = reminders.ReminderDays;
 						$scope.invoiceReminders[reminders.reminderIndex]['ReminderType'] = reminders.ReminderType;
 						$scope.invoiceReminders[reminders.reminderIndex]['isDisabled'] = reminders.isDisabled;
@@ -5226,14 +5092,14 @@
 
 		}
 
-		$scope.turnOffReminder= function (index) {
+		$scope.turnOffReminder = function (index) {
 			//
-			$scope.invoiceReminders[index]['isDisabled']=!$scope.invoiceReminders[index]['isDisabled'];
+			$scope.invoiceReminders[index]['isDisabled'] = !$scope.invoiceReminders[index]['isDisabled'];
 		}
 
-		$scope.editInv= function () {
+		$scope.editInv = function () {
 			//console.log(ev);
-			$scope.editInvoice=true;
+			$scope.editInvoice = true;
 			$scope.updateInv = "invoice";
 			//$mdDialog.show({
 			//  controller: 'updateCatCtrl',
@@ -5247,37 +5113,36 @@
 			//    $scope.categories=categories;
 			//  })
 		}
-		$scope.invoice.prefixLength=0;
-		$scope.loadInvoiceAttributes= function () {
+		$scope.invoice.prefixLength = 0;
+		$scope.loadInvoiceAttributes = function () {
 			$scope.dueTermsLoaded = false;
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,InvoiceTerms,CreditLimit").success(function(data) {
-				var length=data.length;
-				for(var i=0;i<length;i++)
-				{
-					var obj=data[i][0];
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes", "InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,InvoiceTerms,CreditLimit").success(function (data) {
+				var length = data.length;
+				for (var i = 0; i < length; i++) {
+					var obj = data[i][0];
 					$scope.invoiceSettings.push(data[i][0]);
-					if(obj.ColumnIndex=="0") {
+					if (obj.ColumnIndex == "0") {
 						$scope.invoice.invoicePrefix = obj.RecordFieldData;
-						$scope.invoicePrefix=obj.RecordFieldData;
+						$scope.invoicePrefix = obj.RecordFieldData;
 					}
-					if(obj.ColumnIndex=="1") {
+					if (obj.ColumnIndex == "1") {
 						$scope.invoice.prefixLength = parseInt(obj.RecordFieldData);
 					}
-					if(obj.ColumnIndex=="2") {
+					if (obj.ColumnIndex == "2") {
 						$scope.invoice.enableDiscounts = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleDiscYes=true : $scope.toggleDiscYes=false : $scope.toggleDiscYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleDiscYes = true : $scope.toggleDiscYes = false : $scope.toggleDiscYes = false;
 					}
-					if(obj.ColumnIndex=="3") {
+					if (obj.ColumnIndex == "3") {
 						$scope.invoice.sendInvoice = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleInvoiceYes=true : $scope.toggleInvoiceYes=false : $scope.toggleInvoiceYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleInvoiceYes = true : $scope.toggleInvoiceYes = false : $scope.toggleInvoiceYes = false;
 					}
-					if(obj.ColumnIndex=="4") {
+					if (obj.ColumnIndex == "4") {
 						$scope.invoice.sendReminder = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleReminderYes=true : $scope.toggleReminderYes=false : $scope.toggleReminderYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleReminderYes = true : $scope.toggleReminderYes = false : $scope.toggleReminderYes = false;
 					}
-					if(obj.ColumnIndex=="5") {
+					if (obj.ColumnIndex == "5") {
 						$scope.invoice.allowPartialPay = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes=true : $scope.togglePaymentsYes=false : $scope.togglePaymentsYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes = true : $scope.togglePaymentsYes = false : $scope.togglePaymentsYes = false;
 					}
 					// if(obj.ColumnIndex=="6") {
 					// 	$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
@@ -5287,120 +5152,115 @@
 					// 	$scope.invoice.RecurrReminder = obj.RecordFieldData;
 					// }
 					if (obj.ColumnIndex == "8") {
-						$scope.invoiceTerms = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[{
-								"termName":"NET-15",
-								"termDays":"15"
-							},{
-								"termName":"NET-30",
-								"termDays":"30"
-							}];
+						$scope.invoiceTerms = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [{
+							"termName": "NET-15",
+							"termDays": "15"
+						}, {
+							"termName": "NET-30",
+							"termDays": "30"
+						}];
 					}
-					if(obj.ColumnIndex=="9")
-					{
-						$scope.invoice.enablecreditLimit=obj.RecordFieldData != "" ?obj.RecordFieldData <0?false:true:false;
-						$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit==true ? parseFloat(obj.RecordFieldData) : "";
-						obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
+					if (obj.ColumnIndex == "9") {
+						$scope.invoice.enablecreditLimit = obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? false : true : false;
+						$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit == true ? parseFloat(obj.RecordFieldData) : "";
+						obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? $scope.toggleCreditLimitYes = false : $scope.toggleCreditLimitYes = true : $scope.toggleCreditLimitYes = false;
 					}
 				}
 				//
 				$scope.dueTermsLoaded = true;
-				isInvoiceLoaded=true;
-				if($scope.invoiceTerms.length==0)
+				isInvoiceLoaded = true;
+				if ($scope.invoiceTerms.length == 0)
 					$scope.addNewReminder(0);
 				//
-			}).error(function(data) {
+			}).error(function (data) {
 				$scope.dueTermsLoaded = true;
-				isInvoiceLoaded=false;
+				isInvoiceLoaded = false;
 				$scope.invoiceTerms = [{
-					"termName":"NET-15",
-					"termDays":"15"
-				},{
-					"termName":"NET-30",
-					"termDays":"30"
+					"termName": "NET-15",
+					"termDays": "15"
+				}, {
+					"termName": "NET-30",
+					"termDays": "30"
 				}];
 				$scope.addNewReminder(0);
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 
-		$scope.clearInvoiceFields= function () {
-			if($scope.invoiceSettings.length!=0)
-			{
-				for(var i=0;i<$scope.invoiceSettings.length;i++)
-				{
+		$scope.clearInvoiceFields = function () {
+			if ($scope.invoiceSettings.length != 0) {
+				for (var i = 0; i < $scope.invoiceSettings.length; i++) {
 					//var obj=data[i][0];
-					var obj=$scope.invoiceSettings[i];
-					if(obj.ColumnIndex=="0") {
+					var obj = $scope.invoiceSettings[i];
+					if (obj.ColumnIndex == "0") {
 						$scope.invoice.invoicePrefix = obj.RecordFieldData;
-						$scope.invoicePrefix=obj.RecordFieldData;
+						$scope.invoicePrefix = obj.RecordFieldData;
 					}
-					if(obj.ColumnIndex=="1") {
+					if (obj.ColumnIndex == "1") {
 						$scope.invoice.prefixLength = parseInt(obj.RecordFieldData);
 					}
-					if(obj.ColumnIndex=="2") {
+					if (obj.ColumnIndex == "2") {
 						$scope.invoice.enableDiscounts = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleDiscYes=true : $scope.toggleDiscYes=false : $scope.toggleDiscYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleDiscYes = true : $scope.toggleDiscYes = false : $scope.toggleDiscYes = false;
 					}
-					if(obj.ColumnIndex=="3") {
+					if (obj.ColumnIndex == "3") {
 						$scope.invoice.sendInvoice = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleInvoiceYes=true : $scope.toggleInvoiceYes=false : $scope.toggleInvoiceYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleInvoiceYes = true : $scope.toggleInvoiceYes = false : $scope.toggleInvoiceYes = false;
 					}
-					if(obj.ColumnIndex=="4") {
+					if (obj.ColumnIndex == "4") {
 						$scope.invoice.sendReminder = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleReminderYes=true : $scope.toggleReminderYes=false : $scope.toggleReminderYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.toggleReminderYes = true : $scope.toggleReminderYes = false : $scope.toggleReminderYes = false;
 					}
-					if(obj.ColumnIndex=="5") {
+					if (obj.ColumnIndex == "5") {
 						$scope.invoice.allowPartialPay = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes=true : $scope.togglePaymentsYes=false : $scope.togglePaymentsYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes = true : $scope.togglePaymentsYes = false : $scope.togglePaymentsYes = false;
 					}
-					if(obj.ColumnIndex=="6") {
-						$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-						$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+					if (obj.ColumnIndex == "6") {
+						$scope.invoice.firstReminder = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
+						$scope.invoiceReminders = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
 					}
-					if(obj.ColumnIndex=="7") {
+					if (obj.ColumnIndex == "7") {
 						$scope.invoice.RecurrReminder = obj.RecordFieldData;
 					}
 					if (obj.ColumnIndex == "8") {
-						$scope.invoiceTerms = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[{
-								"termName":"NET-15",
-								"termDays":"15"
-							},{
-								"termName":"NET-30",
-								"termDays":"30"
-							}];
+						$scope.invoiceTerms = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [{
+							"termName": "NET-15",
+							"termDays": "15"
+						}, {
+							"termName": "NET-30",
+							"termDays": "30"
+						}];
 					}
-					if(obj.ColumnIndex=="9")
-					{
-						$scope.invoice.enablecreditLimit=obj.RecordFieldData != "" ?obj.RecordFieldData <0?false:true:false;
-						$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit==true ? parseFloat(obj.RecordFieldData) : "";
-						obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
+					if (obj.ColumnIndex == "9") {
+						$scope.invoice.enablecreditLimit = obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? false : true : false;
+						$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit == true ? parseFloat(obj.RecordFieldData) : "";
+						obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? $scope.toggleCreditLimitYes = false : $scope.toggleCreditLimitYes = true : $scope.toggleCreditLimitYes = false;
 					}
 				}
-				isInvoiceLoaded=true;
-				$scope.invoice={};
+				isInvoiceLoaded = true;
+				$scope.invoice = {};
 			}
-			else
-			{
+			else {
 				vm.invoices.$setPristine();
 				vm.invoices.$setUntouched();
-				$scope.invoice={};
-				isInvoiceLoaded=false;
+				$scope.invoice = {};
+				isInvoiceLoaded = false;
 			}
 
 		}
 
 
-		$scope.toggleEditInvoice= function () {
-			$scope.editOn=!$scope.editOn;
+		$scope.toggleEditInvoice = function () {
+			$scope.editOn = !$scope.editOn;
 		}
-		$scope.toggleSwitch= function (ev,ctrl) {
+		$scope.toggleSwitch = function (ev, ctrl) {
 			//
-			if(ctrl=="discount") {
+			if (ctrl == "discount") {
 				if (ev) {
 					$scope.toggleDiscYes = true;
 					$scope.toggleDiscNo = false;
@@ -5410,7 +5270,7 @@
 					$scope.toggleDiscYes = false;
 				}
 			}
-			else if(ctrl=="invoice") {
+			else if (ctrl == "invoice") {
 				if (ev) {
 					$scope.toggleInvoiceYes = true;
 					$scope.toggleInvoiceNo = false;
@@ -5420,7 +5280,7 @@
 					$scope.toggleInvoiceYes = false;
 				}
 			}
-			else if(ctrl=="reminder") {
+			else if (ctrl == "reminder") {
 				if (ev) {
 					$scope.toggleReminderYes = true;
 					$scope.toggleReminderNo = false;
@@ -5430,7 +5290,7 @@
 					$scope.toggleReminderYes = false;
 				}
 			}
-			else if(ctrl=="payments") {
+			else if (ctrl == "payments") {
 				if (ev) {
 					$scope.togglePaymentsYes = true;
 					$scope.togglePaymentsNo = false;
@@ -5440,7 +5300,7 @@
 					$scope.togglePaymentsYes = false;
 				}
 			}
-			else if(ctrl=="creditlimit") {
+			else if (ctrl == "creditlimit") {
 				if (ev) {
 					$scope.toggleCreditLimitYes = true;
 					$scope.toggleCreditLimitNo = false;
@@ -5450,7 +5310,7 @@
 					$scope.toggleCreditLimitYes = false;
 				}
 			}
-			else if(ctrl=="quotationDiscount") {
+			else if (ctrl == "quotationDiscount") {
 				if (ev) {
 					$scope.tgDiscQuoteYes = true;
 					$scope.tgDiscQuoteNo = false;
@@ -5460,7 +5320,7 @@
 					$scope.tgDiscQuoteYes = false;
 				}
 			}
-			else if(ctrl=="quotationSendMail") {
+			else if (ctrl == "quotationSendMail") {
 				if (ev) {
 					$scope.tgInvoiceQuoteYes = true;
 					$scope.tgInvoiceQuoteNo = false;
@@ -5472,125 +5332,117 @@
 			}
 		}
 
-		$scope.addTerm= function (ev) {
-			if($scope.invoiceTerms.length!=0)
-			{
-				for(var i=0;i<$scope.invoiceTerms.length;i++)
-				{
-					if($scope.invoiceTerms[i].termName==ev.termName)
-					{
+		$scope.addTerm = function (ev) {
+			if ($scope.invoiceTerms.length != 0) {
+				for (var i = 0; i < $scope.invoiceTerms.length; i++) {
+					if ($scope.invoiceTerms[i].termName == ev.termName) {
 						notifications.toast("Term has been already added.", "error");
 						break;
 					}
-					else if(ev.NoOfDays !== parseInt(ev.NoOfDays, 10))
-					{
+					else if (ev.NoOfDays !== parseInt(ev.NoOfDays, 10)) {
 						notifications.toast("Number of days are invalid.", "error");
-						$scope.invoice.NoOfDays=1;
+						$scope.invoice.NoOfDays = 1;
 						break;
 					}
-					else
-					{
+					else {
 						$scope.invoiceTerms.push({
-							"termName":ev.termName,
-							"termDays":ev.NoOfDays
+							"termName": ev.termName,
+							"termDays": ev.NoOfDays
 						})
 						$mdDialog.hide();
-						$scope.invoice.termName="";
-						$scope.invoice.NoOfDays="";
+						$scope.invoice.termName = "";
+						$scope.invoice.NoOfDays = "";
 						break;
 					}
 				}
 			}
-			else
-			{
+			else {
 				$scope.invoiceTerms.push({
-					"termName":ev.termName,
-					"termDays":ev.NoOfDays
+					"termName": ev.termName,
+					"termDays": ev.NoOfDays
 				})
 				$mdDialog.hide();
-				$scope.invoice.termName="";
-				$scope.invoice.NoOfDays="";
+				$scope.invoice.termName = "";
+				$scope.invoice.NoOfDays = "";
 			}
 		}
 
 		var selectedIndex;
-		$scope.updateTerm= function (ev) {
-			if(selectedIndex!=undefined || selectedIndex!=null)
-			{
-				$scope.invoiceTerms.splice(selectedIndex,1);
+		$scope.updateTerm = function (ev) {
+			if (selectedIndex != undefined || selectedIndex != null) {
+				$scope.invoiceTerms.splice(selectedIndex, 1);
 				$scope.invoiceTerms.push({
-					"termName":ev.termName,
-					"termDays":ev.NoOfDays
+					"termName": ev.termName,
+					"termDays": ev.NoOfDays
 				})
 				$mdDialog.hide();
-				selectedIndex=undefined;
-				$scope.invoice.termName="";
-				$scope.invoice.NoOfDays=0;
+				selectedIndex = undefined;
+				$scope.invoice.termName = "";
+				$scope.invoice.NoOfDays = 0;
 			}
 		}
 		$scope.updateTermEnable = false;
-		$scope.addDueDialog = function() {
+		$scope.addDueDialog = function () {
 			$mdDialog.show({
 				controller: 'addDueController as vm',
 				templateUrl: 'app/main/settings/dialogs/invoice/prompt-add-due.html',
-				clickOutsideToClose:false,
-				locals:{
-					addTerm : $scope.addTerm,
-					updateTerm : $scope.updateTerm,
-					invoiceTerms : $scope.invoiceTerms,
-					invoice : $scope.invoice,
-					updateTermEnable : null
+				clickOutsideToClose: false,
+				locals: {
+					addTerm: $scope.addTerm,
+					updateTerm: $scope.updateTerm,
+					invoiceTerms: $scope.invoiceTerms,
+					invoice: $scope.invoice,
+					updateTermEnable: null
 				}
 			});
 		};
-		$scope.displayTerm= function (termObj,index) {
-			$scope.invoice.termName=termObj.termName;
-			$scope.invoice.NoOfDays=parseInt(termObj.termDays);
+		$scope.displayTerm = function (termObj, index) {
+			$scope.invoice.termName = termObj.termName;
+			$scope.invoice.NoOfDays = parseInt(termObj.termDays);
 			$scope.updateTermEnable = true;
-			selectedIndex=index;
+			selectedIndex = index;
 			$mdDialog.show({
 				controller: 'addDueController as vm',
 				templateUrl: 'app/main/settings/dialogs/invoice/prompt-add-due.html',
-				clickOutsideToClose:false,
-				locals:{
-					addTerm : null,
-					updateTerm : $scope.updateTerm,
-					invoiceTerms : null,
-					updateTermEnable : $scope.updateTermEnable,
-					invoice : $scope.invoice
+				clickOutsideToClose: false,
+				locals: {
+					addTerm: null,
+					updateTerm: $scope.updateTerm,
+					invoiceTerms: null,
+					updateTermEnable: $scope.updateTermEnable,
+					invoice: $scope.invoice
 				}
 			});
 		}
 
 
-		$scope.deleteTerm= function (index) {
-			$scope.invoiceTerms.splice(index,1);
+		$scope.deleteTerm = function (index) {
+			$scope.invoiceTerms.splice(index, 1);
 		}
 
-		$scope.deleteInvoiceSettings= function (ev) {
+		$scope.deleteInvoiceSettings = function (ev) {
 			//
-			$charge.settingsapp().delete(ev).success(function(data) {
+			$charge.settingsapp().delete(ev).success(function (data) {
 
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		vm.invoiceSubmit=false;
+		vm.invoiceSubmit = false;
 		$scope.addTermsDisabled = false;
-		$scope.saveInvoice= function () {
+		$scope.saveInvoice = function () {
 			//$scope.invoice.invoicePrefix=$scope.invoice.invoicePrefix!=undefined?$scope.invoice.invoicePrefix:"";
-			if(vm.invoices.$valid == true)
-			{
+			if (vm.invoices.$valid == true) {
 				$scope.addTermsDisabled = true;
 
-				vm.invoiceSubmit=true;
+				vm.invoiceSubmit = true;
 
-				if(isInvoiceLoaded) {
+				if (isInvoiceLoaded) {
 					//var address = $filter('filter')($scope.invoiceSettings, { RecordFieldData: invoice.person_name })[0];
 					if ($scope.invoicePrefix == $scope.invoice.invoicePrefix) {
 						for (var i = 0; i < $scope.invoiceSettings.length; i++) {
@@ -5600,56 +5452,56 @@
 						var req = [{
 							"RecordName": "CTS_InvoiceAttributes",
 							"FieldName": "InvoicePrefix",
-							"RecordFieldData": $scope.invoice.invoicePrefix==undefined?"":$scope.invoice.invoicePrefix
+							"RecordFieldData": $scope.invoice.invoicePrefix == undefined ? "" : $scope.invoice.invoicePrefix
 						},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "PrefixLength",
-								"RecordFieldData": $scope.invoice.prefixLength==undefined?0:$scope.invoice.prefixLength
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "EnableDiscount",
-								"RecordFieldData": $scope.invoice.enableDiscounts == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "SIVEA",
-								"RecordFieldData": $scope.invoice.sendInvoice == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "SREOP",
-								"RecordFieldData": $scope.invoice.sendReminder == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "PartialPayments",
-								"RecordFieldData": $scope.invoice.allowPartialPay == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "FirstReminder",
-								"RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "RecurringReminder",
-								"RecordFieldData": $scope.invoice.RecurrReminder
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "InvoiceTerms",
-								"RecordFieldData": $scope.invoiceTerms.length!=0?JSON.stringify($scope.invoiceTerms):""
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "CreditLimit",
-								"RecordFieldData": $scope.invoice.enablecreditLimit==true?$scope.invoice.creditLimit:-1
-							}]
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "PrefixLength",
+							"RecordFieldData": $scope.invoice.prefixLength == undefined ? 0 : $scope.invoice.prefixLength
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "EnableDiscount",
+							"RecordFieldData": $scope.invoice.enableDiscounts == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "SIVEA",
+							"RecordFieldData": $scope.invoice.sendInvoice == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "SREOP",
+							"RecordFieldData": $scope.invoice.sendReminder == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "PartialPayments",
+							"RecordFieldData": $scope.invoice.allowPartialPay == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "FirstReminder",
+							"RecordFieldData": $scope.invoiceReminders.length != 0 ? JSON.stringify($scope.invoiceReminders) : ""
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "RecurringReminder",
+							"RecordFieldData": $scope.invoice.RecurrReminder
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "InvoiceTerms",
+							"RecordFieldData": $scope.invoiceTerms.length != 0 ? JSON.stringify($scope.invoiceTerms) : ""
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "CreditLimit",
+							"RecordFieldData": $scope.invoice.enablecreditLimit == true ? $scope.invoice.creditLimit : -1
+						}]
 						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
-							vm.invoiceSubmit=false;
+							vm.invoiceSubmit = false;
 							notifications.toast("Invoice settings has been applied.", "success");
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes", "InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,FirstReminder,RecurringReminder,InvoiceTerms,CreditLimit").success(function (data) {
 								$scope.invoiceSettings = [];
@@ -5684,56 +5536,54 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes = true : $scope.togglePaymentsYes = false : $scope.togglePaymentsYes = false;
 									}
 									if (obj.ColumnIndex == "6") {
-										$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-										$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+										$scope.invoice.firstReminder = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
+										$scope.invoiceReminders = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
 									}
 									if (obj.ColumnIndex == "7") {
 										$scope.invoice.RecurrReminder = obj.RecordFieldData;
 									}
 									if (obj.ColumnIndex == "8") {
-										$scope.invoiceTerms = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[{
-												"termName":"NET-15",
-												"termDays":"15"
-											},{
-												"termName":"NET-30",
-												"termDays":"30"
-											}];
+										$scope.invoiceTerms = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [{
+											"termName": "NET-15",
+											"termDays": "15"
+										}, {
+											"termName": "NET-30",
+											"termDays": "30"
+										}];
 									}
-									if(obj.ColumnIndex=="9")
-									{
-										$scope.invoice.enablecreditLimit=obj.RecordFieldData != "" ?obj.RecordFieldData <0?false:true:false;
-										$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit==true ? parseFloat(obj.RecordFieldData) : "";
-										obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
+									if (obj.ColumnIndex == "9") {
+										$scope.invoice.enablecreditLimit = obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? false : true : false;
+										$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit == true ? parseFloat(obj.RecordFieldData) : "";
+										obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? $scope.toggleCreditLimitYes = false : $scope.toggleCreditLimitYes = true : $scope.toggleCreditLimitYes = false;
 									}
 								}
 								//
 								isInvoiceLoaded = true;
-								if($scope.invoiceTerms.length==0)
+								if ($scope.invoiceTerms.length == 0)
 									$scope.addNewReminder(0);
 								$scope.addTermsDisabled = false;
-//
+								//
 							}).error(function (data) {
 								$scope.addTermsDisabled = false;
 								isInvoiceLoaded = false;
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
-							vm.invoiceSubmit=false;
+							vm.invoiceSubmit = false;
 							$scope.addTermsDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}
-					else
-					{
+					else {
 						//if($scope.transactionCount== 0)
 						//{
 						for (var i = 0; i < $scope.invoiceSettings.length; i++) {
@@ -5745,55 +5595,55 @@
 							"FieldName": "InvoicePrefix",
 							"RecordFieldData": $scope.invoice.invoicePrefix
 						},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "PrefixLength",
-								"RecordFieldData": $scope.invoice.prefixLength
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "EnableDiscount",
-								"RecordFieldData": $scope.invoice.enableDiscounts == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "SIVEA",
-								"RecordFieldData": $scope.invoice.sendInvoice == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "SREOP",
-								"RecordFieldData": $scope.invoice.sendReminder == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "PartialPayments",
-								"RecordFieldData": $scope.invoice.allowPartialPay == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "FirstReminder",
-								"RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "RecurringReminder",
-								"RecordFieldData": $scope.invoice.RecurrReminder
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "InvoiceTerms",
-								"RecordFieldData": $scope.invoiceTerms.length!=0?JSON.stringify($scope.invoiceTerms):""
-							},
-							{
-								"RecordName": "CTS_InvoiceAttributes",
-								"FieldName": "CreditLimit",
-								"RecordFieldData": $scope.invoice.enablecreditLimit==true?$scope.invoice.creditLimit:-1
-							}]
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "PrefixLength",
+							"RecordFieldData": $scope.invoice.prefixLength
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "EnableDiscount",
+							"RecordFieldData": $scope.invoice.enableDiscounts == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "SIVEA",
+							"RecordFieldData": $scope.invoice.sendInvoice == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "SREOP",
+							"RecordFieldData": $scope.invoice.sendReminder == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "PartialPayments",
+							"RecordFieldData": $scope.invoice.allowPartialPay == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "FirstReminder",
+							"RecordFieldData": $scope.invoiceReminders.length != 0 ? JSON.stringify($scope.invoiceReminders) : ""
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "RecurringReminder",
+							"RecordFieldData": $scope.invoice.RecurrReminder
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "InvoiceTerms",
+							"RecordFieldData": $scope.invoiceTerms.length != 0 ? JSON.stringify($scope.invoiceTerms) : ""
+						},
+						{
+							"RecordName": "CTS_InvoiceAttributes",
+							"FieldName": "CreditLimit",
+							"RecordFieldData": $scope.invoice.enablecreditLimit == true ? $scope.invoice.creditLimit : -1
+						}]
 						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Invoice settings has been applied.", "success");
-							vm.invoiceSubmit=false;
+							vm.invoiceSubmit = false;
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes", "InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,FirstReminder,RecurringReminder,InvoiceTerms,CreditLimit").success(function (data) {
 								$scope.invoiceSettings = [];
 								var length = data.length;
@@ -5827,52 +5677,51 @@
 										obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes = true : $scope.togglePaymentsYes = false : $scope.togglePaymentsYes = false;
 									}
 									if (obj.ColumnIndex == "6") {
-										$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-										$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+										$scope.invoice.firstReminder = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
+										$scope.invoiceReminders = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
 									}
 									if (obj.ColumnIndex == "7") {
 										$scope.invoice.RecurrReminder = obj.RecordFieldData;
 									}
 									if (obj.ColumnIndex == "8") {
-										$scope.invoiceTerms = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[{
-												"termName":"NET-15",
-												"termDays":"15"
-											},{
-												"termName":"NET-30",
-												"termDays":"30"
-											}];
+										$scope.invoiceTerms = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [{
+											"termName": "NET-15",
+											"termDays": "15"
+										}, {
+											"termName": "NET-30",
+											"termDays": "30"
+										}];
 									}
-									if(obj.ColumnIndex=="9")
-									{
-										$scope.invoice.enablecreditLimit=obj.RecordFieldData != "" ?obj.RecordFieldData <0?false:true:false;
-										$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit==true ? parseFloat(obj.RecordFieldData) : "";
-										obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
+									if (obj.ColumnIndex == "9") {
+										$scope.invoice.enablecreditLimit = obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? false : true : false;
+										$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit == true ? parseFloat(obj.RecordFieldData) : "";
+										obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? $scope.toggleCreditLimitYes = false : $scope.toggleCreditLimitYes = true : $scope.toggleCreditLimitYes = false;
 									}
 								}
 								//
 								isInvoiceLoaded = true;
-								if($scope.invoiceTerms.length==0)
+								if ($scope.invoiceTerms.length == 0)
 									$scope.addNewReminder(0);
 								$scope.addTermsDisabled = false;
-//
+								//
 							}).error(function (data) {
 								isInvoiceLoaded = false;
 								$scope.addTermsDisabled = false;
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
-							vm.invoiceSubmit=false;
+							vm.invoiceSubmit = false;
 							$scope.addTermsDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 						//}
 						//else
@@ -5883,147 +5732,146 @@
 						//}
 					}
 				}
-				else
-				{
+				else {
 
-					var req= {
-						"GURecID":"",
-						"RecordType":"CTS_InvoiceAttributes",
-						"OperationalStatus":"Active",
-						"RecordStatus":"Active",
-						"Cache":"CTS_InvoiceAttributes",
-						"Separate":"Test",
-						"RecordName":"CTS_InvoiceAttributes",
-						"GuTranID":"12345",
-						"RecordCultureName":"CTS_InvoiceAttributes",
-						"RecordCode":"CTS_InvoiceAttributes",
-						"commonDatafieldDetails":[
+					var req = {
+						"GURecID": "",
+						"RecordType": "CTS_InvoiceAttributes",
+						"OperationalStatus": "Active",
+						"RecordStatus": "Active",
+						"Cache": "CTS_InvoiceAttributes",
+						"Separate": "Test",
+						"RecordName": "CTS_InvoiceAttributes",
+						"GuTranID": "12345",
+						"RecordCultureName": "CTS_InvoiceAttributes",
+						"RecordCode": "CTS_InvoiceAttributes",
+						"commonDatafieldDetails": [
 							{
-								"FieldCultureName":"EnableDiscount",
-								"FieldID":"",
-								"FieldName":"EnableDiscount",
-								"FieldType":"EnableDiscountType",
-								"ColumnIndex":"2"
+								"FieldCultureName": "EnableDiscount",
+								"FieldID": "",
+								"FieldName": "EnableDiscount",
+								"FieldType": "EnableDiscountType",
+								"ColumnIndex": "2"
 							},
 							{
-								"FieldCultureName":"InvoicePrefix",
-								"FieldID":"",
-								"FieldName":"InvoicePrefix",
-								"FieldType":"InvoicePrefixType",
-								"ColumnIndex":"0"
+								"FieldCultureName": "InvoicePrefix",
+								"FieldID": "",
+								"FieldName": "InvoicePrefix",
+								"FieldType": "InvoicePrefixType",
+								"ColumnIndex": "0"
 							},
 							{
-								"FieldCultureName":"PrefixLength",
-								"FieldID":"",
-								"FieldName":"PrefixLength",
-								"FieldType":"PrefixLengthType",
-								"ColumnIndex":"1"
+								"FieldCultureName": "PrefixLength",
+								"FieldID": "",
+								"FieldName": "PrefixLength",
+								"FieldType": "PrefixLengthType",
+								"ColumnIndex": "1"
 							},
 							{
-								"FieldCultureName":"SIVEA",
-								"FieldID":"",
-								"FieldName":"SIVEA",
-								"FieldType":"SIVEAType",
-								"ColumnIndex":"3"
+								"FieldCultureName": "SIVEA",
+								"FieldID": "",
+								"FieldName": "SIVEA",
+								"FieldType": "SIVEAType",
+								"ColumnIndex": "3"
 							},
 							{
-								"FieldCultureName":"SREOP",
-								"FieldID":"",
-								"FieldName":"SREOP",
-								"FieldType":"SREOPType",
-								"ColumnIndex":"4"
+								"FieldCultureName": "SREOP",
+								"FieldID": "",
+								"FieldName": "SREOP",
+								"FieldType": "SREOPType",
+								"ColumnIndex": "4"
 							},
 							{
-								"FieldCultureName":"PartialPayments",
-								"FieldID":"",
-								"FieldName":"PartialPayments",
-								"FieldType":"PartialPaymentsType",
-								"ColumnIndex":"5"
+								"FieldCultureName": "PartialPayments",
+								"FieldID": "",
+								"FieldName": "PartialPayments",
+								"FieldType": "PartialPaymentsType",
+								"ColumnIndex": "5"
 							},
 							{
-								"FieldCultureName":"FirstReminder",
-								"FieldID":"",
-								"FieldName":"FirstReminder",
-								"FieldType":"FirstReminderType",
-								"ColumnIndex":"6"
+								"FieldCultureName": "FirstReminder",
+								"FieldID": "",
+								"FieldName": "FirstReminder",
+								"FieldType": "FirstReminderType",
+								"ColumnIndex": "6"
 							},
 							{
-								"FieldCultureName":"RecurringReminder",
-								"FieldID":"",
-								"FieldName":"RecurringReminder",
-								"FieldType":"RecurringReminderType",
-								"ColumnIndex":"7"
+								"FieldCultureName": "RecurringReminder",
+								"FieldID": "",
+								"FieldName": "RecurringReminder",
+								"FieldType": "RecurringReminderType",
+								"ColumnIndex": "7"
 							},
 							{
-								"FieldCultureName":"InvoiceTerms",
-								"FieldID":"",
-								"FieldName":"InvoiceTerms",
-								"FieldType":"InvoiceTermsType",
-								"ColumnIndex":"8"
+								"FieldCultureName": "InvoiceTerms",
+								"FieldID": "",
+								"FieldName": "InvoiceTerms",
+								"FieldType": "InvoiceTermsType",
+								"ColumnIndex": "8"
 							},
 							{
-								"FieldCultureName":"CreditLimit",
-								"FieldID":"",
-								"FieldName":"CreditLimit",
-								"FieldType":"CreditLimitType",
-								"ColumnIndex":"9"
+								"FieldCultureName": "CreditLimit",
+								"FieldID": "",
+								"FieldName": "CreditLimit",
+								"FieldType": "CreditLimitType",
+								"ColumnIndex": "9"
 							}],
-						"commonDataValueDetails":[
+						"commonDataValueDetails": [
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoice.enableDiscounts,
-								"ColumnIndex":"2"
+								"RowID": "",
+								"RecordFieldData": $scope.invoice.enableDiscounts,
+								"ColumnIndex": "2"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoice.invoicePrefix,
-								"ColumnIndex":"0"
+								"RowID": "",
+								"RecordFieldData": $scope.invoice.invoicePrefix,
+								"ColumnIndex": "0"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoice.prefixLength,
-								"ColumnIndex":"1"
+								"RowID": "",
+								"RecordFieldData": $scope.invoice.prefixLength,
+								"ColumnIndex": "1"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoice.sendInvoice,
-								"ColumnIndex":"3"
+								"RowID": "",
+								"RecordFieldData": $scope.invoice.sendInvoice,
+								"ColumnIndex": "3"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoice.sendReminder,
-								"ColumnIndex":"4"
+								"RowID": "",
+								"RecordFieldData": $scope.invoice.sendReminder,
+								"ColumnIndex": "4"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoice.allowPartialPay,
-								"ColumnIndex":"5"
+								"RowID": "",
+								"RecordFieldData": $scope.invoice.allowPartialPay,
+								"ColumnIndex": "5"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):"",
-								"ColumnIndex":"6"
+								"RowID": "",
+								"RecordFieldData": $scope.invoiceReminders.length != 0 ? JSON.stringify($scope.invoiceReminders) : "",
+								"ColumnIndex": "6"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoice.RecurrReminder,
-								"ColumnIndex":"7"
+								"RowID": "",
+								"RecordFieldData": $scope.invoice.RecurrReminder,
+								"ColumnIndex": "7"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoiceTerms.length!=0?JSON.stringify($scope.invoiceTerms):"",
-								"ColumnIndex":"8"
+								"RowID": "",
+								"RecordFieldData": $scope.invoiceTerms.length != 0 ? JSON.stringify($scope.invoiceTerms) : "",
+								"ColumnIndex": "8"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData": $scope.invoice.enablecreditLimit==true?$scope.invoice.creditLimit:-1,
-								"ColumnIndex":"9"
+								"RowID": "",
+								"RecordFieldData": $scope.invoice.enablecreditLimit == true ? $scope.invoice.creditLimit : -1,
+								"ColumnIndex": "9"
 							}]
 					}
 
-					$charge.settingsapp().store(req).success(function(data) {
+					$charge.settingsapp().store(req).success(function (data) {
 						//console.log(data);
-						vm.invoiceSubmit=false;
+						vm.invoiceSubmit = false;
 						notifications.toast("Invoice settings has been applied.", "success");
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes", "InvoicePrefix,PrefixLength,EnableDiscount,SIVEA,SREOP,PartialPayments,FirstReminder,RecurringReminder,InvoiceTerms,CreditLimit").success(function (data) {
 							$scope.invoiceSettings = [];
@@ -6033,7 +5881,7 @@
 								$scope.invoiceSettings.push(data[i][0]);
 								if (obj.ColumnIndex == "0") {
 									$scope.invoice.invoicePrefix = obj.RecordFieldData;
-									$scope.invoicePrefix=obj.RecordFieldData;
+									$scope.invoicePrefix = obj.RecordFieldData;
 									localStorage.setItem("invoicePrefix", obj.RecordFieldData);
 								}
 								if (obj.ColumnIndex == "1") {
@@ -6057,46 +5905,45 @@
 									obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.togglePaymentsYes = true : $scope.togglePaymentsYes = false : $scope.togglePaymentsYes = false;
 								}
 								if (obj.ColumnIndex == "6") {
-									$scope.invoice.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-									$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+									$scope.invoice.firstReminder = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
+									$scope.invoiceReminders = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
 								}
 								if (obj.ColumnIndex == "7") {
 									$scope.invoice.RecurrReminder = obj.RecordFieldData;
 								}
 								if (obj.ColumnIndex == "8") {
-									$scope.invoiceTerms = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):"";
+									$scope.invoiceTerms = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : "";
 								}
-								if(obj.ColumnIndex=="9")
-								{
-									$scope.invoice.enablecreditLimit=obj.RecordFieldData != "" ?obj.RecordFieldData <0?false:true:false;
-									$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit==true ? parseFloat(obj.RecordFieldData) : "";
-									obj.RecordFieldData != "" ? obj.RecordFieldData <0 ? $scope.toggleCreditLimitYes=false : $scope.toggleCreditLimitYes=true : $scope.toggleCreditLimitYes=false;
+								if (obj.ColumnIndex == "9") {
+									$scope.invoice.enablecreditLimit = obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? false : true : false;
+									$scope.invoice.creditLimit = $scope.invoice.enablecreditLimit == true ? parseFloat(obj.RecordFieldData) : "";
+									obj.RecordFieldData != "" ? obj.RecordFieldData < 0 ? $scope.toggleCreditLimitYes = false : $scope.toggleCreditLimitYes = true : $scope.toggleCreditLimitYes = false;
 								}
 							}
 							//
 							isInvoiceLoaded = true;
-							if($scope.invoiceTerms.length==0)
+							if ($scope.invoiceTerms.length == 0)
 								$scope.addNewReminder(0);
 							$scope.addTermsDisabled = false;
-//
+							//
 						}).error(function (data) {
 							isInvoiceLoaded = false;
 							$scope.addTermsDisabled = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
-					}).error(function(data) {
+					}).error(function (data) {
 						//console.log(data);
-						vm.invoiceSubmit=false;
+						vm.invoiceSubmit = false;
 						$scope.addTermsDisabled = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					})
 				}
 			}
@@ -6104,12 +5951,12 @@
 		}
 
 
-		$scope.quotation={};
-		vm.quotationSubmit=false;
-		$scope.saveQuotation= function () {
+		$scope.quotation = {};
+		vm.quotationSubmit = false;
+		$scope.saveQuotation = function () {
 
-			if(vm.quotations.$valid==true) {
-				vm.quotationSubmit=true;
+			if (vm.quotations.$valid == true) {
+				vm.quotationSubmit = true;
 				if (isQuotationLoaded) {
 					if ($scope.quotationPrefix == $scope.quotation.quotationPrefix) {
 						for (var i = 0; i < $scope.quotationSettings.length; i++) {
@@ -6121,25 +5968,25 @@
 							"FieldName": "QuotationPrefix",
 							"RecordFieldData": $scope.quotation.quotationPrefix
 						},
-							{
-								"RecordName": "CTS_QuotationAttributes",
-								"FieldName": "QuotationPrefixLength",
-								"RecordFieldData": $scope.quotation.prefixLength
-							},
-							{
-								"RecordName": "CTS_QuotationAttributes",
-								"FieldName": "QuotationEnableDiscount",
-								"RecordFieldData": $scope.quotation.enableDiscounts == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_QuotationAttributes",
-								"FieldName": "QuotationSIVEA",
-								"RecordFieldData": $scope.quotation.sendQuotation == true ? 1 : 0
-							}]
+						{
+							"RecordName": "CTS_QuotationAttributes",
+							"FieldName": "QuotationPrefixLength",
+							"RecordFieldData": $scope.quotation.prefixLength
+						},
+						{
+							"RecordName": "CTS_QuotationAttributes",
+							"FieldName": "QuotationEnableDiscount",
+							"RecordFieldData": $scope.quotation.enableDiscounts == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_QuotationAttributes",
+							"FieldName": "QuotationSIVEA",
+							"RecordFieldData": $scope.quotation.sendQuotation == true ? 1 : 0
+						}]
 						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Quotation settings has been applied.", "success");
-							vm.quotationSubmit=false;
+							vm.quotationSubmit = false;
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_QuotationAttributes", "QuotationPrefix,QuotationPrefixLength,QuotationEnableDiscount,QuotationSIVEA").success(function (data) {
 								$scope.quotationSettings = [];
 								var length = data.length;
@@ -6173,7 +6020,7 @@
 							})
 						}).error(function (data) {
 							//console.log(data);
-							vm.quotationSubmit=false;
+							vm.quotationSubmit = false;
 						})
 					}
 					else {
@@ -6187,25 +6034,25 @@
 							"FieldName": "QuotationPrefix",
 							"RecordFieldData": $scope.quotation.quotationPrefix
 						},
-							{
-								"RecordName": "CTS_QuotationAttributes",
-								"FieldName": "QuotationPrefixLength",
-								"RecordFieldData": $scope.quotation.prefixLength
-							},
-							{
-								"RecordName": "CTS_QuotationAttributes",
-								"FieldName": "QuotationEnableDiscount",
-								"RecordFieldData": $scope.quotation.enableDiscounts == true ? 1 : 0
-							},
-							{
-								"RecordName": "CTS_QuotationAttributes",
-								"FieldName": "QuotationSIVEA",
-								"RecordFieldData": $scope.quotation.sendQuotation == true ? 1 : 0
-							}]
+						{
+							"RecordName": "CTS_QuotationAttributes",
+							"FieldName": "QuotationPrefixLength",
+							"RecordFieldData": $scope.quotation.prefixLength
+						},
+						{
+							"RecordName": "CTS_QuotationAttributes",
+							"FieldName": "QuotationEnableDiscount",
+							"RecordFieldData": $scope.quotation.enableDiscounts == true ? 1 : 0
+						},
+						{
+							"RecordName": "CTS_QuotationAttributes",
+							"FieldName": "QuotationSIVEA",
+							"RecordFieldData": $scope.quotation.sendQuotation == true ? 1 : 0
+						}]
 						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Quotation settings has been applied.", "success");
-							vm.quotationSubmit=false;
+							vm.quotationSubmit = false;
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_QuotationAttributes", "QuotationPrefix,QuotationPrefixLength,QuotationEnableDiscount,QuotationSIVEA").success(function (data) {
 								$scope.quotationSettings = [];
 								var length = data.length;
@@ -6239,7 +6086,7 @@
 							})
 						}).error(function (data) {
 							//console.log(data);
-							vm.quotationSubmit=false;
+							vm.quotationSubmit = false;
 						})
 						//}
 						//else {
@@ -6316,7 +6163,7 @@
 
 					$charge.settingsapp().store(req).success(function (data) {
 						//console.log(data);
-						vm.quotationSubmit=false;
+						vm.quotationSubmit = false;
 						notifications.toast("Quotation settings has been applied.", "success");
 
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_QuotationAttributes", "QuotationPrefix,QuotationPrefixLength,QuotationEnableDiscount,QuotationSIVEA").success(function (data) {
@@ -6351,32 +6198,32 @@
 						})
 					}).error(function (data) {
 						//console.log(data);
-						vm.quotationSubmit=false;
+						vm.quotationSubmit = false;
 					})
 				}
 			}
 		}
 
 
-		$scope.deleteQuotationSettings= function (ev) {
+		$scope.deleteQuotationSettings = function (ev) {
 			//
-			$charge.settingsapp().delete(ev).success(function(data) {
+			$charge.settingsapp().delete(ev).success(function (data) {
 
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
 			})
 		}
 
-		$scope.clearQuotation= function () {
-			$scope.quotation.quotationPrefix="";
-			$scope.quotation.prefixLength="";
-			$scope.tgDiscQuoteYes=false;
-			$scope.tgInvoiceQuoteYes=false;
+		$scope.clearQuotation = function () {
+			$scope.quotation.quotationPrefix = "";
+			$scope.quotation.prefixLength = "";
+			$scope.tgDiscQuoteYes = false;
+			$scope.tgInvoiceQuoteYes = false;
 		}
 
-		$scope.toggleQuotSwitch= function (ev,ctrl) {
+		$scope.toggleQuotSwitch = function (ev, ctrl) {
 			//
-			if(ctrl=="discount") {
+			if (ctrl == "discount") {
 				if (ev) {
 					$scope.tgDiscQuoteYes = true;
 					$scope.tgDiscQuoteNo = false;
@@ -6386,7 +6233,7 @@
 					$scope.tgDiscQuoteYes = false;
 				}
 			}
-			else if(ctrl=="quotation") {
+			else if (ctrl == "quotation") {
 				if (ev) {
 					$scope.tgInvoiceQuoteYes = true;
 					$scope.tgInvoiceQuoteNo = false;
@@ -6398,72 +6245,68 @@
 			}
 		}
 
-		var isQuotationLoaded=false;
-		$scope.quotationSettings=[];
+		var isQuotationLoaded = false;
+		$scope.quotationSettings = [];
 
-		$scope.loadQuotationAttributes= function () {
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_QuotationAttributes","QuotationPrefix,QuotationPrefixLength,QuotationEnableDiscount,QuotationSIVEA").success(function(data) {
-				var length=data.length;
-				for(var i=0;i<length;i++)
-				{
-					var obj=data[i][0];
+		$scope.loadQuotationAttributes = function () {
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_QuotationAttributes", "QuotationPrefix,QuotationPrefixLength,QuotationEnableDiscount,QuotationSIVEA").success(function (data) {
+				var length = data.length;
+				for (var i = 0; i < length; i++) {
+					var obj = data[i][0];
 					$scope.quotationSettings.push(data[i][0]);
-					if(obj.ColumnIndex=="0") {
+					if (obj.ColumnIndex == "0") {
 						$scope.quotation.quotationPrefix = obj.RecordFieldData;
-						$scope.quotationPrefix=obj.RecordFieldData;
+						$scope.quotationPrefix = obj.RecordFieldData;
 					}
-					if(obj.ColumnIndex=="1") {
+					if (obj.ColumnIndex == "1") {
 						$scope.quotation.prefixLength = parseInt(obj.RecordFieldData);
 					}
-					if(obj.ColumnIndex=="2") {
+					if (obj.ColumnIndex == "2") {
 						$scope.quotation.enableDiscounts = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgDiscQuoteYes=true : $scope.tgDiscQuoteYes=false : $scope.tgDiscQuoteYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgDiscQuoteYes = true : $scope.tgDiscQuoteYes = false : $scope.tgDiscQuoteYes = false;
 					}
-					if(obj.ColumnIndex=="3") {
+					if (obj.ColumnIndex == "3") {
 						$scope.quotation.sendQuotation = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes=true : $scope.tgInvoiceQuoteYes=false : $scope.tgInvoiceQuoteYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes = true : $scope.tgInvoiceQuoteYes = false : $scope.tgInvoiceQuoteYes = false;
 					}
 				}
 				//
-				isQuotationLoaded=true;
+				isQuotationLoaded = true;
 				//
-			}).error(function(data) {
-				isQuotationLoaded=false;
+			}).error(function (data) {
+				isQuotationLoaded = false;
 			})
 		}
 
 
-		$scope.clearQuotationFields= function () {
-			if($scope.quotationSettings.length!=0)
-			{
-				for(var i=0;i<$scope.quotationSettings.length;i++)
-				{
+		$scope.clearQuotationFields = function () {
+			if ($scope.quotationSettings.length != 0) {
+				for (var i = 0; i < $scope.quotationSettings.length; i++) {
 					//var obj=data[i][0];
-					var obj=$scope.quotationSettings[i];
-					if(obj.ColumnIndex=="0") {
+					var obj = $scope.quotationSettings[i];
+					if (obj.ColumnIndex == "0") {
 						$scope.quotation.quotationPrefix = obj.RecordFieldData;
-						$scope.quotationPrefix=obj.RecordFieldData;
+						$scope.quotationPrefix = obj.RecordFieldData;
 					}
-					if(obj.ColumnIndex=="1") {
+					if (obj.ColumnIndex == "1") {
 						$scope.quotation.prefixLength = parseInt(obj.RecordFieldData);
 					}
-					if(obj.ColumnIndex=="2") {
+					if (obj.ColumnIndex == "2") {
 						$scope.quotation.enableDiscounts = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgDiscQuoteYes=true : $scope.tgDiscQuoteYes=false : $scope.tgDiscQuoteYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgDiscQuoteYes = true : $scope.tgDiscQuoteYes = false : $scope.tgDiscQuoteYes = false;
 					}
-					if(obj.ColumnIndex=="3") {
+					if (obj.ColumnIndex == "3") {
 						$scope.quotation.sendQuotation = obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? true : false : false;
-						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes=true : $scope.tgInvoiceQuoteYes=false : $scope.tgInvoiceQuoteYes=false;
+						obj.RecordFieldData != "" ? obj.RecordFieldData == 1 ? $scope.tgInvoiceQuoteYes = true : $scope.tgInvoiceQuoteYes = false : $scope.tgInvoiceQuoteYes = false;
 					}
 				}
-				isQuotationLoaded=true;
+				isQuotationLoaded = true;
 			}
-			else
-			{
+			else {
 				vm.quotations.$setPristine();
 				vm.quotations.$setUntouched();
-				$scope.quotation={};
-				isQuotationLoaded=false;
+				$scope.quotation = {};
+				isQuotationLoaded = false;
 			}
 
 		}
@@ -6471,11 +6314,11 @@
 
 
 		//Payment tab
-		$scope.payment={};
-		vm.paymentSubmit=false;
-		$scope.savePayment= function () {
-			if(vm.payments.$valid==true) {
-				vm.paymentSubmit=true;
+		$scope.payment = {};
+		vm.paymentSubmit = false;
+		$scope.savePayment = function () {
+			if (vm.payments.$valid == true) {
+				vm.paymentSubmit = true;
 				if (isPaymentLoaded) {
 					if ($scope.paymentPrefix == $scope.payment.paymentPrefix) {
 						for (var i = 0; i < $scope.paymentSettings.length; i++) {
@@ -6487,24 +6330,24 @@
 							"FieldName": "PaymentPrefix",
 							"RecordFieldData": $scope.payment.paymentPrefix
 						},
-							{
-								"RecordName": "CTS_PaymentAttributes",
-								"FieldName": "PaymentPrefixLength",
-								"RecordFieldData": $scope.payment.prefixLength
-							},
-							{
-								"RecordName": "CTS_PaymentAttributes",
-								"FieldName": "FirstReminder",
-								"RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
-							},
-							{
-								"RecordName": "CTS_PaymentAttributes",
-								"FieldName": "RecurringReminder",
-								"RecordFieldData": $scope.payment.RecurrReminder
-							}]
+						{
+							"RecordName": "CTS_PaymentAttributes",
+							"FieldName": "PaymentPrefixLength",
+							"RecordFieldData": $scope.payment.prefixLength
+						},
+						{
+							"RecordName": "CTS_PaymentAttributes",
+							"FieldName": "FirstReminder",
+							"RecordFieldData": $scope.invoiceReminders.length != 0 ? JSON.stringify($scope.invoiceReminders) : ""
+						},
+						{
+							"RecordName": "CTS_PaymentAttributes",
+							"FieldName": "RecurringReminder",
+							"RecordFieldData": $scope.payment.RecurrReminder
+						}]
 						//
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
-							vm.paymentSubmit=false;
+							vm.paymentSubmit = false;
 							notifications.toast("Payment settings has been applied.", "success");
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 								$scope.paymentSettings = [];
@@ -6523,8 +6366,8 @@
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
 									if (obj.ColumnIndex == "2") {
-										$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-										$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+										$scope.payment.firstReminder = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
+										$scope.invoiceReminders = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
 									}
 									if (obj.ColumnIndex == "3") {
 										$scope.payment.RecurrReminder = obj.RecordFieldData;
@@ -6536,19 +6379,19 @@
 							}).error(function (data) {
 								isPaymentLoaded = false;
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
-							vm.paymentSubmit=false;
+							vm.paymentSubmit = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}
 					else {
@@ -6562,25 +6405,25 @@
 							"FieldName": "PaymentPrefix",
 							"RecordFieldData": $scope.payment.paymentPrefix
 						},
-							{
-								"RecordName": "CTS_PaymentAttributes",
-								"FieldName": "PaymentPrefixLength",
-								"RecordFieldData": $scope.payment.prefixLength
-							},
-							{
-								"RecordName": "CTS_PaymentAttributes",
-								"FieldName": "FirstReminder",
-								"RecordFieldData": $scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):""
-							},
-							{
-								"RecordName": "CTS_PaymentAttributes",
-								"FieldName": "RecurringReminder",
-								"RecordFieldData": $scope.payment.RecurrReminder
-							}]
+						{
+							"RecordName": "CTS_PaymentAttributes",
+							"FieldName": "PaymentPrefixLength",
+							"RecordFieldData": $scope.payment.prefixLength
+						},
+						{
+							"RecordName": "CTS_PaymentAttributes",
+							"FieldName": "FirstReminder",
+							"RecordFieldData": $scope.invoiceReminders.length != 0 ? JSON.stringify($scope.invoiceReminders) : ""
+						},
+						{
+							"RecordName": "CTS_PaymentAttributes",
+							"FieldName": "RecurringReminder",
+							"RecordFieldData": $scope.payment.RecurrReminder
+						}]
 
 						$charge.settingsapp().insertBulkDuoBaseValues(req).success(function (data) {
 							notifications.toast("Payment settings has been applied.", "success");
-							vm.paymentSubmit=false;
+							vm.paymentSubmit = false;
 							$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 								$scope.paymentSettings = [];
 								var length = data.length;
@@ -6598,8 +6441,8 @@
 										localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 									}
 									if (obj.ColumnIndex == "2") {
-										$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-										$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+										$scope.payment.firstReminder = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
+										$scope.invoiceReminders = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
 									}
 									if (obj.ColumnIndex == "3") {
 										$scope.payment.RecurrReminder = obj.RecordFieldData;
@@ -6611,19 +6454,19 @@
 							}).error(function (data) {
 								isPaymentLoaded = false;
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							})
 						}).error(function (data) {
 							//console.log(data);
-							vm.paymentSubmit=false;
+							vm.paymentSubmit = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 						//}
 						//else {
@@ -6662,18 +6505,18 @@
 								"ColumnIndex": "1"
 							},
 							{
-								"FieldCultureName":"FirstReminder",
-								"FieldID":"",
-								"FieldName":"FirstReminder",
-								"FieldType":"FirstReminderType",
-								"ColumnIndex":"2"
+								"FieldCultureName": "FirstReminder",
+								"FieldID": "",
+								"FieldName": "FirstReminder",
+								"FieldType": "FirstReminderType",
+								"ColumnIndex": "2"
 							},
 							{
-								"FieldCultureName":"RecurringReminder",
-								"FieldID":"",
-								"FieldName":"RecurringReminder",
-								"FieldType":"RecurringReminderType",
-								"ColumnIndex":"3"
+								"FieldCultureName": "RecurringReminder",
+								"FieldID": "",
+								"FieldName": "RecurringReminder",
+								"FieldType": "RecurringReminderType",
+								"ColumnIndex": "3"
 							}],
 						"commonDataValueDetails": [
 							{
@@ -6687,21 +6530,21 @@
 								"ColumnIndex": "1"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.invoiceReminders.length!=0?JSON.stringify($scope.invoiceReminders ):"",
-								"ColumnIndex":"2"
+								"RowID": "",
+								"RecordFieldData": $scope.invoiceReminders.length != 0 ? JSON.stringify($scope.invoiceReminders) : "",
+								"ColumnIndex": "2"
 							},
 							{
-								"RowID":"",
-								"RecordFieldData":$scope.payment.RecurrReminder,
-								"ColumnIndex":"3"
+								"RowID": "",
+								"RecordFieldData": $scope.payment.RecurrReminder,
+								"ColumnIndex": "3"
 							}]
 					}
 
 					$charge.settingsapp().store(req).success(function (data) {
 						//console.log(data);
 						notifications.toast("Payment settings has been applied.", "success");
-						vm.paymentSubmit=false;
+						vm.paymentSubmit = false;
 
 						$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
 							$scope.paymentSettings = [];
@@ -6719,8 +6562,8 @@
 									localStorage.setItem("PaymentPrefixLength", obj.RecordFieldData);
 								}
 								if (obj.ColumnIndex == "2") {
-									$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-									$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+									$scope.payment.firstReminder = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
+									$scope.invoiceReminders = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
 								}
 								if (obj.ColumnIndex == "3") {
 									$scope.payment.RecurrReminder = obj.RecordFieldData;
@@ -6732,17 +6575,17 @@
 						}).error(function (data) {
 							isPaymentLoaded = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}).error(function (data) {
 						//console.log(data);
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
-						logHelper.error( $scope.infoJson);
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
+						logHelper.error($scope.infoJson);
 					})
 
 
@@ -6751,30 +6594,29 @@
 		}
 
 
-		var isPaymentLoaded=false;
-		$scope.paymentSettings=[];
+		var isPaymentLoaded = false;
+		$scope.paymentSettings = [];
 
-		$scope.PaymentRetryUpdating=false;
+		$scope.PaymentRetryUpdating = false;
 
-		$scope.loadPaymentAttributes= function () {
+		$scope.loadPaymentAttributes = function () {
 			$scope.remindersInPaymentLoaded = false;
-			$scope.invoiceReminders=[];
-			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes","PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function(data) {
-				var length=data.length;
-				for(var i=0;i<length;i++)
-				{
-					var obj=data[i][0];
+			$scope.invoiceReminders = [];
+			$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_PaymentAttributes", "PaymentPrefix,PaymentPrefixLength,FirstReminder,RecurringReminder").success(function (data) {
+				var length = data.length;
+				for (var i = 0; i < length; i++) {
+					var obj = data[i][0];
 					$scope.paymentSettings.push(data[i][0]);
-					if(obj.ColumnIndex=="0") {
+					if (obj.ColumnIndex == "0") {
 						$scope.payment.paymentPrefix = obj.RecordFieldData;
-						$scope.paymentPrefix=obj.RecordFieldData;
+						$scope.paymentPrefix = obj.RecordFieldData;
 					}
-					if(obj.ColumnIndex=="1") {
+					if (obj.ColumnIndex == "1") {
 						$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 					}
 					if (obj.ColumnIndex == "2") {
-						$scope.payment.firstReminder = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
-						$scope.invoiceReminders = obj.RecordFieldData!=""?JSON.parse(obj.RecordFieldData):[];
+						$scope.payment.firstReminder = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
+						$scope.invoiceReminders = obj.RecordFieldData != "" ? JSON.parse(obj.RecordFieldData) : [];
 					}
 					if (obj.ColumnIndex == "3") {
 						$scope.payment.RecurrReminder = obj.RecordFieldData;
@@ -6782,17 +6624,17 @@
 				}
 				$scope.remindersInPaymentLoaded = true;
 				//
-				isPaymentLoaded=true;
+				isPaymentLoaded = true;
 				//
-			}).error(function(data) {
+			}).error(function (data) {
 				$scope.addNewReminder(0);
 				$scope.remindersInPaymentLoaded = true;
-				isPaymentLoaded=false;
+				isPaymentLoaded = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 			//$scope.remindersInPaymentLoaded = false;
 			//$charge.settingsapp().getDuobaseFieldsByTableNameAndFieldName("CTS_InvoiceAttributes","FirstReminder,RecurringReminder").success(function(data) {
@@ -6816,201 +6658,184 @@
 			//});
 
 
-			$scope.PaymentRetryUpdating=false;
+			$scope.PaymentRetryUpdating = false;
 
-			$charge.notification().getProcessByCode("Payment").success(function(data) {
+			$charge.notification().getProcessByCode("Payment").success(function (data) {
 				//console.log(data);
 
-				$scope.retryProcess={};
-				$scope.retryProcess.processCode="Payment";
-				$scope.retryProcess.processName="Payment";
-				for(var i=0;i<data.actions.length;i++)
-				{
-					var actionObj=data.actions[i];
-					if(actionObj.actionIndex==0)
-					{
-						$scope.retryProcess.daysAfterAttempt1st=actionObj.daysAfterAttempt;
-						$scope.retryProcess.emailNotification1st=actionObj.emailNotification==1?true:false;
+				$scope.retryProcess = {};
+				$scope.retryProcess.processCode = "Payment";
+				$scope.retryProcess.processName = "Payment";
+				for (var i = 0; i < data.actions.length; i++) {
+					var actionObj = data.actions[i];
+					if (actionObj.actionIndex == 0) {
+						$scope.retryProcess.daysAfterAttempt1st = actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification1st = actionObj.emailNotification == 1 ? true : false;
 					}
-					else if(actionObj.actionIndex==1)
-					{
-						$scope.retryProcess.daysAfterAttempt2nd=actionObj.daysAfterAttempt;
-						$scope.retryProcess.emailNotification2nd=actionObj.emailNotification==1?true:false;
+					else if (actionObj.actionIndex == 1) {
+						$scope.retryProcess.daysAfterAttempt2nd = actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification2nd = actionObj.emailNotification == 1 ? true : false;
 					}
-					else if(actionObj.actionIndex==2)
-					{
-						$scope.retryProcess.daysAfterAttempt3rd=actionObj.daysAfterAttempt;
-						$scope.retryProcess.emailNotification3rd=actionObj.emailNotification==1?true:false;
+					else if (actionObj.actionIndex == 2) {
+						$scope.retryProcess.daysAfterAttempt3rd = actionObj.daysAfterAttempt;
+						$scope.retryProcess.emailNotification3rd = actionObj.emailNotification == 1 ? true : false;
 					}
-					else if(actionObj.actionIndex==3)
-					{
-						$scope.retryProcess.daysAfterAttemptFinally=actionObj.processAction;
-						$scope.retryProcess.emailNotificationFinally=actionObj.emailNotification==1?true:false;
-						if(actionObj.processAction=="Webhook")
-						{
+					else if (actionObj.actionIndex == 3) {
+						$scope.retryProcess.daysAfterAttemptFinally = actionObj.processAction;
+						$scope.retryProcess.emailNotificationFinally = actionObj.emailNotification == 1 ? true : false;
+						if (actionObj.processAction == "Webhook") {
 							$scope.retryProcess.endpoint = actionObj.Webhook.endpoint;
 							$scope.retryProcess.method = actionObj.Webhook.method;
 						}
 					}
 				}
 
-				$scope.PaymentRetryUpdating=true;
+				$scope.PaymentRetryUpdating = true;
 
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
-				if(data==204)
-				{
-					$scope.PaymentRetryUpdating=false;
+				if (data == 204) {
+					$scope.PaymentRetryUpdating = false;
 				}
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 
-		$scope.clearPaymentFields= function () {
-			if($scope.paymentSettings.length!=0)
-			{
-				for(var i=0;i<$scope.paymentSettings.length;i++)
-				{
+		$scope.clearPaymentFields = function () {
+			if ($scope.paymentSettings.length != 0) {
+				for (var i = 0; i < $scope.paymentSettings.length; i++) {
 					//var obj=data[i][0];
-					var obj=$scope.paymentSettings[i];
-					if(obj.ColumnIndex=="0") {
+					var obj = $scope.paymentSettings[i];
+					if (obj.ColumnIndex == "0") {
 						$scope.payment.paymentPrefix = obj.RecordFieldData;
-						$scope.paymentPrefix=obj.RecordFieldData;
+						$scope.paymentPrefix = obj.RecordFieldData;
 					}
-					if(obj.ColumnIndex=="1") {
+					if (obj.ColumnIndex == "1") {
 						$scope.payment.prefixLength = parseInt(obj.RecordFieldData);
 					}
 				}
-				isPaymentLoaded=true;
+				isPaymentLoaded = true;
 			}
-			else
-			{
+			else {
 				vm.payments.$setPristine();
 				vm.payments.$setUntouched();
-				$scope.payment={};
-				isPaymentLoaded=false;
+				$scope.payment = {};
+				isPaymentLoaded = false;
 			}
 
 		}
 
-		$scope.deletePaymentSettings= function (ev) {
+		$scope.deletePaymentSettings = function (ev) {
 			//
-			$charge.settingsapp().delete(ev).success(function(data) {
+			$charge.settingsapp().delete(ev).success(function (data) {
 
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 
-		$scope.retryProcess={};
-		$scope.paymentRetrySubmitted=false;
-		$scope.submitPaymentRetryProcess= function () {
-			$scope.paymentRetrySubmitted=true;
+		$scope.retryProcess = {};
+		$scope.paymentRetrySubmitted = false;
+		$scope.submitPaymentRetryProcess = function () {
+			$scope.paymentRetrySubmitted = true;
 
-			$scope.retryProcess.processCode="Payment";
-			$scope.retryProcess.actions=[];
+			$scope.retryProcess.processCode = "Payment";
+			$scope.retryProcess.actions = [];
 
-			var actionObj1={};
-			var actionObj2={};
-			var actionObj3={};
-			var actionObj4={};
-			actionObj1.actionIndex=0;
-			actionObj1.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt1st;
-			actionObj1.processAction="Retry";
-			actionObj1.emailNotification=$scope.retryProcess.emailNotification1st;
+			var actionObj1 = {};
+			var actionObj2 = {};
+			var actionObj3 = {};
+			var actionObj4 = {};
+			actionObj1.actionIndex = 0;
+			actionObj1.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt1st;
+			actionObj1.processAction = "Retry";
+			actionObj1.emailNotification = $scope.retryProcess.emailNotification1st;
 			$scope.retryProcess.actions.push(actionObj1);
 
-			actionObj2.actionIndex=1;
-			actionObj2.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt2nd;
-			actionObj2.processAction="Retry";
-			actionObj2.emailNotification=$scope.retryProcess.emailNotification2nd;
+			actionObj2.actionIndex = 1;
+			actionObj2.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt2nd;
+			actionObj2.processAction = "Retry";
+			actionObj2.emailNotification = $scope.retryProcess.emailNotification2nd;
 			$scope.retryProcess.actions.push(actionObj2);
 
-			actionObj3.actionIndex=2;
-			actionObj3.daysAfterAttempt=$scope.retryProcess.daysAfterAttempt3rd;
-			actionObj3.processAction="Retry";
-			actionObj3.emailNotification=$scope.retryProcess.emailNotification3rd;
+			actionObj3.actionIndex = 2;
+			actionObj3.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt3rd;
+			actionObj3.processAction = "Retry";
+			actionObj3.emailNotification = $scope.retryProcess.emailNotification3rd;
 			$scope.retryProcess.actions.push(actionObj3);
 
-			actionObj4.actionIndex=3;
-			actionObj4.daysAfterAttempt=0;
-			actionObj4.processAction=$scope.retryProcess.daysAfterAttemptFinally;
-			if(actionObj4.processAction=="Webhook")
-			{
+			actionObj4.actionIndex = 3;
+			actionObj4.daysAfterAttempt = 0;
+			actionObj4.processAction = $scope.retryProcess.daysAfterAttemptFinally;
+			if (actionObj4.processAction == "Webhook") {
 				actionObj4.Webhook = {
-					"endpoint":$scope.retryProcess.endpoint,
-					"method":$scope.retryProcess.method
+					"endpoint": $scope.retryProcess.endpoint,
+					"method": $scope.retryProcess.method
 				}
 			}
-			actionObj4.emailNotification=$scope.retryProcess.emailNotificationFinally;
+			actionObj4.emailNotification = $scope.retryProcess.emailNotificationFinally;
 			$scope.retryProcess.actions.push(actionObj4);
 
-			if(!$scope.PaymentRetryUpdating)
-			{
-				$charge.notification().createRetryProcess($scope.retryProcess).success(function(data) {
+			if (!$scope.PaymentRetryUpdating) {
+				$charge.notification().createRetryProcess($scope.retryProcess).success(function (data) {
 					//console.log(data);delmonispi@deyom.com kerkudatru@deyom.com
-					if(data.response=="succeeded")
-					{
-						notifications.toast("Successfully Payment Retry Configuration Saved","success");
-						$scope.paymentRetrySubmitted=false;
+					if (data.response == "succeeded") {
+						notifications.toast("Successfully Payment Retry Configuration Saved", "success");
+						$scope.paymentRetrySubmitted = false;
 
-						$scope.PaymentRetryUpdating=true;
+						$scope.PaymentRetryUpdating = true;
 
 					}
-					else
-					{
-						notifications.toast("Payment Retry Configuration Saving Failed","error");
-						$scope.paymentRetrySubmitted=false;
+					else {
+						notifications.toast("Payment Retry Configuration Saving Failed", "error");
+						$scope.paymentRetrySubmitted = false;
 					}
 
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Payment Retry Configuration Saving Failed","error");
-					$scope.paymentRetrySubmitted=false;
+					notifications.toast("Payment Retry Configuration Saving Failed", "error");
+					$scope.paymentRetrySubmitted = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
 			}
-			else
-			{
-				$charge.notification().updateRetryProcess($scope.retryProcess).success(function(data) {
+			else {
+				$charge.notification().updateRetryProcess($scope.retryProcess).success(function (data) {
 					//console.log(data);
-					if(data.response=="succeeded")
-					{
-						notifications.toast("Successfully Payment Retry Configuration Updated","success");
-						$scope.paymentRetrySubmitted=false;
+					if (data.response == "succeeded") {
+						notifications.toast("Successfully Payment Retry Configuration Updated", "success");
+						$scope.paymentRetrySubmitted = false;
 
-						$scope.PaymentRetryUpdating=true;
+						$scope.PaymentRetryUpdating = true;
 
 					}
-					else
-					{
-						notifications.toast("Payment Retry Configuration Updating Failed","error");
-						$scope.paymentRetrySubmitted=false;
+					else {
+						notifications.toast("Payment Retry Configuration Updating Failed", "error");
+						$scope.paymentRetrySubmitted = false;
 					}
 
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Payment Retry Configuration Updating Failed","error");
-					$scope.paymentRetrySubmitted=false;
+					notifications.toast("Payment Retry Configuration Updating Failed", "error");
+					$scope.paymentRetrySubmitted = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
 			}
 
@@ -7023,11 +6848,11 @@
 		 * Payments start
 		 */
 
-		$scope.editPayment=false;
+		$scope.editPayment = false;
 		$scope.updatePay = '';
 
-		$scope.editPay= function () {
-			$scope.editPayment=true;
+		$scope.editPay = function () {
+			$scope.editPayment = true;
 			$scope.updatePay = "Payment";
 		}
 
@@ -7035,41 +6860,41 @@
 		 * Tax tab start
 		 */
 
-		$scope.upadateGroupTax=false;
+		$scope.upadateGroupTax = false;
 		$scope.updateGT = '';
 
-		$scope.editGroupTax= function () {
-			$scope.upadateGroupTax=true;
+		$scope.editGroupTax = function () {
+			$scope.upadateGroupTax = true;
 			$scope.updateGT = {
 				group_name: "Group Name",
 				base_currency: "Base Currency"
 			};
 		}
 
-		var skip= 0,take=100;
-		var skipGrp= 0,takeGrp=100;
-		var response="";
+		var skip = 0, take = 100;
+		var skipGrp = 0, takeGrp = 100;
+		var response = "";
 
 		$scope.fixedRates = [];
-		$scope.taxGroupList=[];
-		$scope.slabRates=[];
+		$scope.taxGroupList = [];
+		$scope.slabRates = [];
 
 		$scope.isIndTaxLoaded = true;
-		$scope.loadIndividualTaxes= function () {
+		$scope.loadIndividualTaxes = function () {
 			$scope.isIndTaxLoaded = false;
-			$charge.tax().all(skip,take,"asc").success(function(data) {
+			$charge.tax().all(skip, take, "asc").success(function (data) {
 				//
 				skip += take;
-				if(response=="") {
+				if (response == "") {
 					//if($scope.loading) {
 					// returned data contains an array of 2 sentences
 					for (var i = 0; i < data.length; i++) {
-						if(data[i].taxtype=="1")
-							data[i].taxtype="Fixed";
-						else if(data[i].taxtype=="0")
-							data[i].taxtype="Slab";
+						if (data[i].taxtype == "1")
+							data[i].taxtype = "Fixed";
+						else if (data[i].taxtype == "0")
+							data[i].taxtype = "Slab";
 
-						data[i].taxState=false;
+						data[i].taxState = false;
 						$scope.fixedRates.push(data[i]);
 
 					}
@@ -7081,26 +6906,26 @@
 					// $scope.isSpinnerShown=false;
 					//}
 				}
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
-				response=data;
+				response = data;
 				$timeout(function () {
 					$scope.isIndTaxLoaded = true;
 				});
 				// $scope.isSpinnerShown=false;
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 		$scope.isGrpTaxLoaded = false;
-		$scope.loadTaxGrps= function () {
-			$charge.tax().allgroups(skipGrp,takeGrp,"asc").success(function(data) {
+		$scope.loadTaxGrps = function () {
+			$charge.tax().allgroups(skipGrp, takeGrp, "asc").success(function (data) {
 				//
 				skipGrp += takeGrp;
-				if(response=="") {
+				if (response == "") {
 					//if($scope.loading) {
 					// returned data contains an array of 2 sentences
 					for (var i = 0; i < data.length; i++) {
@@ -7113,77 +6938,91 @@
 					// $scope.isSpinnerShown=false;
 					//}
 				}
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
 				$scope.isGrpTaxLoaded = true;
-				response=data;
+				response = data;
 				// $scope.isSpinnerShown=false;
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 		vm.usingAvalaraTax = false;
-		$scope.avaTax = {};
+		vm.avaTax = {
+			mode: 'Development'
+		};
 		vm.submittedAvaTax = false;
 
-		$scope.enableAvalaraTax= function () {
-			vm.usingAvalaraTax = true;
+		$scope.enableAvalaraTax = function () {
+			$scope.mainNavSelected = 8;
+			$("#tab-content-8").scrollTop($("#tab-content-8")[0].scrollHeight);
+			$timeout(function(){
+				$scope.registerIntegrationDialog('avalara', '', null);
+			}, 800);
 		}
 
-		$scope.loadAvalaraTaxes= function () {
-			$charge.ccapi().getAvalaraTax().success(function(data) {
+		$scope.loadAvalaraTaxes = function () {
+			$charge.ccapi().getAvalaraTax().success(function (data) {
 				//
-				if(data!=undefined && data!=null && data!="") {
+				if (data != undefined && data != null && data != "") {
 					vm.usingAvalaraTax = true;
-					$scope.avaTax=data;
-
+					vm.avaTax = data;
+					vm.avalaraIntegrateUILoading = false;
 				}
-				else{
+				else {
 					vm.usingAvalaraTax = false;
+					vm.avalaraIntegrateUILoading = false;
 				}
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
 				vm.usingAvalaraTax = false;
 				// $scope.isSpinnerShown=false;
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
+				vm.avalaraIntegrateUILoading = false;
 			})
 		}
 
-		$scope.submitAvalaraTax= function () {
-			vm.submittedAvaTax = true;
-			var avalaraTaxObj = {
-				"accountNo":$scope.avaTax.accountNo,
-				"licenseKey":$scope.avaTax.licenseKey,
-				"companyCode":$scope.avaTax.companyCode,
-				"mode":$scope.avaTax.mode,
-				"serviceUrl":"https://development.avalara.net"
+		$scope.avalaraConnected = false;
+		vm.submitAvalaraTax = function () {
+			if (vm.avalaraTaxForm.$valid) {
+				vm.submittedAvaTax = true;
+				var avalaraTaxObj = {
+					"accountNo": vm.avaTax.accountNo,
+					"licenseKey": vm.avaTax.licenseKey,
+					"companyCode": vm.avaTax.companyCode,
+					"mode": vm.avaTax.mode,
+					"serviceUrl": "https://development.avalara.net"
+				}
+				$charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function (data) {
+					//
+					if (data.result) {
+						notifications.toast("Successfully Connected to Avalara", "success");
+						$mdDialog.hide();
+						$scope.avalaraConnected = true;
+					}
+					else {
+						notifications.toast("Connecting to Avalara failed", "error");
+					}
+					vm.submittedAvaTax = false;
+				}).error(function (data) {
+					//console.log(data);
+					notifications.toast("Connecting to Avalara failed", "error");
+					vm.submittedAvaTax = false;
+					// $scope.isSpinnerShown=false;
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
+				})
+			}else{
+				angular.element('#avalaraTaxForm').find('.ng-invalid:visible:first').focus();
 			}
-			$charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function(data) {
-				//
-				if(data.result) {
-					notifications.toast("Successfully Connected to Avalara","success");
-
-				}
-				else{
-					notifications.toast("Connecting to Avalara failed","error");
-				}
-				vm.submittedAvaTax = false;
-			}).error(function(data) {
-				//console.log(data);
-				notifications.toast("Connecting to Avalara failed","error");
-				vm.submittedAvaTax = false;
-				// $scope.isSpinnerShown=false;
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
-			})
 		}
 
 
@@ -7191,12 +7030,11 @@
 		vm.usingTwilioSMS = false;
 		vm.twilioSMSConfig = {};
 
-		$scope.loadTwilioSMSConfig= function () {
+		$scope.loadTwilioSMSConfig = function () {
 			vm.twilioIntegrateUILoading = true;
-			$charge.twiliosms().getTwilioAccount().success(function(data) {
+			$charge.twiliosms().getTwilioAccount().success(function (data) {
 				//
-				if(data.connected)
-				{
+				if (data.connected) {
 					vm.usingTwilioSMS = true;
 					$scope.twilioConnected = true;
 					vm.editTwilioConfigEnabled = false;
@@ -7205,11 +7043,10 @@
 					$scope.loadSmsEvents();
 					$scope.loadTwilioSMSHistory();
 				}
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log(data);
 				// $scope.isSpinnerShown=false;
-				if(data.connected)
-				{
+				if (data.connected) {
 					vm.usingTwilioSMS = true;
 					$scope.twilioConnected = true;
 					vm.editTwilioConfigEnabled = false;
@@ -7218,34 +7055,32 @@
 					$scope.loadSmsEvents();
 					$scope.loadTwilioSMSHistory();
 				}
-				else
-				{
+				else {
 					vm.usingTwilioSMS = false;
 					$scope.twilioConnected = false;
 					vm.twilioSMSConfig = {};
 
 					vm.twilioIntegrateUILoading = false;
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				}
 			});
 		}
 
-		vm.twilioSmsHistoryList=[];
-		var skipAllTwilioSmsHistory=0;
-		var takeAllTwilioSmsHistory=100;
+		vm.twilioSmsHistoryList = [];
+		var skipAllTwilioSmsHistory = 0;
+		var takeAllTwilioSmsHistory = 100;
 		$scope.isMoreTwilioSmsHistoryLoading = true;
 
-		$scope.loadTwilioSMSHistory= function () {
+		$scope.loadTwilioSMSHistory = function () {
 			$scope.loadingTwilioSmsHistory = true;
-			takeAllTwilioSmsHistory=100;
+			takeAllTwilioSmsHistory = 100;
 
-			$charge.webhook().allWebhookHistory(skipAllTwilioSmsHistory,takeAllTwilioSmsHistory,'desc','sms').success(function (data) {
+			$charge.webhook().allWebhookHistory(skipAllTwilioSmsHistory, takeAllTwilioSmsHistory, 'desc', 'sms').success(function (data) {
 				//console.log(data);
-				if($scope.loadingTwilioSmsHistory)
-				{
+				if ($scope.loadingTwilioSmsHistory) {
 					skipAllTwilioSmsHistory += takeAllTwilioSmsHistory;
 
 					for (var i = 0; i < data.length; i++) {
@@ -7253,8 +7088,7 @@
 					}
 					$scope.loadingTwilioSmsHistory = false;
 
-					if(data.length<takeAllTwilioSmsHistory)
-					{
+					if (data.length < takeAllTwilioSmsHistory) {
 						$scope.isMoreTwilioSmsHistoryLoading = false;
 					}
 
@@ -7266,47 +7100,46 @@
 				$scope.loadingTwilioSmsHistory = false;
 				$scope.isMoreTwilioSmsHistoryLoading = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
 		vm.editTwilioConfigEnabled = false;
-		$scope.editTwilioConfig= function () {
+		$scope.editTwilioConfig = function () {
 			vm.editTwilioConfigEnabled = !vm.editTwilioConfigEnabled;
 		}
 
 		vm.submittedTwilioConfig = false;
-		$scope.submitTwilioConfig= vm.submitTwilioConfig = function () {
-			if(vm.twilioSmsForm.$valid==true) {
+		$scope.submitTwilioConfig = vm.submitTwilioConfig = function () {
+			if (vm.twilioSmsForm.$valid == true) {
 				vm.submittedTwilioConfig = true;
 
 				var twilioConfObj = vm.twilioSMSConfig;
-				$charge.twiliosms().createTwilioAccount(twilioConfObj).success(function(data) {
+				$charge.twiliosms().createTwilioAccount(twilioConfObj).success(function (data) {
 					//
-					if(data.status)
-					{
-						notifications.toast("Successfully Twilio SMS alerts Configured","success");
+					if (data.status) {
+						notifications.toast("Successfully Twilio SMS alerts Configured", "success");
 						$mdDialog.hide();
 						$scope.loadTwilioSMSConfig();
 					}
 					vm.submittedTwilioConfig = false;
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Twilio SMS configuration failed","error");
+					notifications.toast("Twilio SMS configuration failed", "error");
 					vm.submittedTwilioConfig = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
 			}
 		}
 
-		$scope.removeTwilioConfig= function (ev) {
+		$scope.removeTwilioConfig = function (ev) {
 
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to Remove this account?')
@@ -7316,52 +7149,50 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
+			$mdDialog.show(confirm).then(function () {
 				vm.submittedTwilioConfig = true;
-				var twilioConfAccId = vm.twilioSMSConfig.accountsid != undefined?vm.twilioSMSConfig.accountsid:"";
-				$charge.twiliosms().removeTwilioAccount(twilioConfAccId).success(function(data) {
+				var twilioConfAccId = vm.twilioSMSConfig.accountsid != undefined ? vm.twilioSMSConfig.accountsid : "";
+				$charge.twiliosms().removeTwilioAccount(twilioConfAccId).success(function (data) {
 					//
-					if(data.status)
-					{
-						notifications.toast("Successfully Twilio account removed","success");
+					if (data.status) {
+						notifications.toast("Successfully Twilio account removed", "success");
 						$scope.loadTwilioSMSConfig();
 					}
 					vm.submittedTwilioConfig = false;
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Twilio account removing failed","error");
+					notifications.toast("Twilio account removing failed", "error");
 					vm.submittedTwilioConfig = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
 
 		$scope.loadingSmsEvents = true;
-		vm.smsEvents={};
-		vm.smsEventList=[];
-		vm.smsEvents.selectAll=false;
+		vm.smsEvents = {};
+		vm.smsEventList = [];
+		vm.smsEvents.selectAll = false;
 		vm.smsEventCreated = false;
-		$scope.loadSmsEvents= function () {
+		$scope.loadSmsEvents = function () {
 			$scope.loadingSmsEvents = true;
-			vm.smsEvents.selectAll=false;
-			vm.smsEventList=[];
+			vm.smsEvents.selectAll = false;
+			vm.smsEventList = [];
 			var skipSmsEvents = 0;
 			var takeSmsEvents = 100;
-			$charge.webhook().allEvents(skipSmsEvents,takeSmsEvents,'asc').success(function (data) {
+			$charge.webhook().allEvents(skipSmsEvents, takeSmsEvents, 'asc').success(function (data) {
 				//console.log(data);
 				//
-				if($scope.loadingSmsEvents)
-				{
+				if ($scope.loadingSmsEvents) {
 					skipSmsEvents += takeSmsEvents;
 
 					for (var i = 0; i < data.length; i++) {
-						data[i].isSelected=false;
+						data[i].isSelected = false;
 						vm.smsEventList.push(data[i]);
 					}
 					vm.selectAllSmsEvents();
@@ -7370,30 +7201,28 @@
 				}
 			}).error(function (data) {
 				//console.log(data);
-				vm.smsEventList=[];
+				vm.smsEventList = [];
 				$scope.loadingSmsEvents = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		$scope.loadSmsEventDetails= function () {
+		$scope.loadSmsEventDetails = function () {
 			$scope.loadingEventDetails = true;
 			vm.smsEventCreated = false;
 			var skipEventDetails = 0;
 			var takeEventDetails = 100;
-			$charge.webhook().allWebhooks(skipEventDetails,takeEventDetails,'desc','sms').success(function (data) {
+			$charge.webhook().allWebhooks(skipEventDetails, takeEventDetails, 'desc', 'sms').success(function (data) {
 				//console.log(data);
 				//
-				if($scope.loadingEventDetails)
-				{
+				if ($scope.loadingEventDetails) {
 					skipEventDetails += takeEventDetails;
 
-					if(data[0].type=="sms")
-					{
+					if (data[0].type == "sms") {
 						vm.smsEventCreated = true;
 					}
 
@@ -7402,12 +7231,11 @@
 					vm.smsEvents.type = data[0].type;
 					vm.smsEvents.createdDate = data[0].createdDate;
 					vm.smsEvents.isEnabled = data[0].isEnabled;
-					data[0].eventCodes=JSON.parse(data[0].eventCodes);
+					data[0].eventCodes = JSON.parse(data[0].eventCodes);
 					for (var j = 0; j < data[0].eventCodes.length; j++) {
 						for (var k = 0; k < vm.smsEventList.length; k++) {
-							if(data[0].eventCodes[j]==vm.smsEventList[k].eventType)
-							{
-								vm.smsEventList[k].isSelected=true;
+							if (data[0].eventCodes[j] == vm.smsEventList[k].eventType) {
+								vm.smsEventList[k].isSelected = true;
 							}
 						}
 					}
@@ -7418,76 +7246,69 @@
 				//console.log(data);
 				$scope.loadingEventDetails = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			})
 		}
 
-		vm.selectAllSmsEvents= function () {
-			if(vm.smsEvents.selectAll)
-			{
+		vm.selectAllSmsEvents = function () {
+			if (vm.smsEvents.selectAll) {
 				for (var i = 0; i < vm.smsEventList.length; i++) {
-					vm.smsEventList[i].isSelected=true;
+					vm.smsEventList[i].isSelected = true;
 				}
 			}
-			else
-			{
+			else {
 				for (var i = 0; i < vm.smsEventList.length; i++) {
-					vm.smsEventList[i].isSelected=false;
+					vm.smsEventList[i].isSelected = false;
 				}
 			}
 		}
 
-		vm.submitSmsEvents= function () {
-			if(!vm.smsEventCreated)
-			{
+		vm.submitSmsEvents = function () {
+			if (!vm.smsEventCreated) {
 				if (vm.smsEventsForm.$valid == true) {
 					vm.smsEventsSubmitted = true;
 
-					var smsEventsObj={};
-					var tempEventsSelected=false;
-					smsEventsObj.endPoint=vm.smsEvents.phone;
-					smsEventsObj.type="sms";
-					smsEventsObj.createdDate=new Date();
-					smsEventsObj.isEnabled=true;
-					smsEventsObj.eventCodes=[];
+					var smsEventsObj = {};
+					var tempEventsSelected = false;
+					smsEventsObj.endPoint = vm.smsEvents.phone;
+					smsEventsObj.type = "sms";
+					smsEventsObj.createdDate = new Date();
+					smsEventsObj.isEnabled = true;
+					smsEventsObj.eventCodes = [];
 
 					for (var i = 0; i < vm.smsEventList.length; i++) {
-						if(vm.smsEventList[i].isSelected)
-						{
+						if (vm.smsEventList[i].isSelected) {
 							smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
-							tempEventsSelected=true;
+							tempEventsSelected = true;
 						}
 					}
 
-					if(tempEventsSelected)
-					{
+					if (tempEventsSelected) {
 						$charge.webhook().createWH(smsEventsObj).success(function (data) {
 							//console.log(data);
 							//
-							if(data.error=="00000")
-							{
+							if (data.error == "00000") {
 								notifications.toast("SMS alerts set Successfully", "success");
 								vm.smsEvents.guWebhookId = data.guWebhookId;
 								vm.smsEvents.type = "sms";
 								vm.smsEvents.createdDate = new Date();
 								vm.smsEvents.isEnabled = true;
 
-								$scope.infoJson= {};
-								$scope.infoJson.message ='SMS alerts set Successfully';
-								$scope.infoJson.app ='settings';
-								logHelper.info( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = 'SMS alerts set Successfully';
+								$scope.infoJson.app = 'settings';
+								logHelper.info($scope.infoJson);
 							}
-							else
-							{
+							else {
 								notifications.toast("SMS alerts set Failed", "error");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.smsEventsSubmitted = false;
@@ -7495,64 +7316,58 @@
 							//console.log(data);
 							vm.smsEventsSubmitted = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}
-					else
-					{
+					else {
 						notifications.toast("Select Events for set SMS alerts", "error");
 						vm.smsEventsSubmitted = false;
 					}
 
 				}
 			}
-			else
-			{
+			else {
 				if (vm.smsEventsForm.$valid == true) {
 					vm.smsEventsSubmitted = true;
 
-					var smsEventsObj={};
-					var tempEventsSelected=false;
-					smsEventsObj.guWebhookId=vm.smsEvents.guWebhookId;
-					smsEventsObj.endPoint=vm.smsEvents.phone;
-					smsEventsObj.type="sms";
-					smsEventsObj.createdDate=new Date();
-					smsEventsObj.isEnabled=true;
-					smsEventsObj.eventCodes=[];
+					var smsEventsObj = {};
+					var tempEventsSelected = false;
+					smsEventsObj.guWebhookId = vm.smsEvents.guWebhookId;
+					smsEventsObj.endPoint = vm.smsEvents.phone;
+					smsEventsObj.type = "sms";
+					smsEventsObj.createdDate = new Date();
+					smsEventsObj.isEnabled = true;
+					smsEventsObj.eventCodes = [];
 
 					for (var i = 0; i < vm.smsEventList.length; i++) {
-						if(vm.smsEventList[i].isSelected)
-						{
+						if (vm.smsEventList[i].isSelected) {
 							smsEventsObj.eventCodes.push(vm.smsEventList[i].eventType);
-							tempEventsSelected=true;
+							tempEventsSelected = true;
 						}
 					}
 
-					if(tempEventsSelected)
-					{
+					if (tempEventsSelected) {
 						$charge.webhook().updateWH(smsEventsObj).success(function (data) {
 							//console.log(data);
 							//
-							if(data.error=="00000")
-							{
+							if (data.error == "00000") {
 								notifications.toast("SMS alerts Updated Successfully", "success");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message ='SMS alerts Updated Successfully';
-								$scope.infoJson.app ='settings';
-								logHelper.info( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = 'SMS alerts Updated Successfully';
+								$scope.infoJson.app = 'settings';
+								logHelper.info($scope.infoJson);
 							}
-							else
-							{
+							else {
 								notifications.toast("SMS alerts Updating Failed", "error");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
-								logHelper.error( $scope.infoJson);
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
+								logHelper.error($scope.infoJson);
 							}
 							//$scope.webhook={};
 							vm.smsEventsSubmitted = false;
@@ -7560,14 +7375,13 @@
 							//console.log(data);
 							vm.smsEventsSubmitted = false;
 
-							$scope.infoJson= {};
-							$scope.infoJson.message =JSON.stringify(data);
-							$scope.infoJson.app ='settings';
-							logHelper.error( $scope.infoJson);
+							$scope.infoJson = {};
+							$scope.infoJson.message = JSON.stringify(data);
+							$scope.infoJson.app = 'settings';
+							logHelper.error($scope.infoJson);
 						})
 					}
-					else
-					{
+					else {
 						notifications.toast("Select Events for Set SMS alerts", "error");
 						vm.smsEventsSubmitted = false;
 					}
@@ -7578,37 +7392,36 @@
 		// TWILIO - END =======================================================================
 
 
-		$scope.quickBookConnected=false;
-		$scope.quickBookConfig={};
-		$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =false;
-		vm.quickbooksConfig={};
-		$scope.salesforceConnected=false;
-		$scope.salesforceConfig={};
-		$scope.zendeskConnected=false;
-		$scope.zendeskConfig={};
-		$scope.zohoConnected=false;
-		$scope.zohoConfig={};
-		$scope.xeroConnected=false;
+		$scope.quickBookConnected = false;
+		$scope.quickBookConfig = {};
+		$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded = false;
+		vm.quickbooksConfig = {};
+		$scope.salesforceConnected = false;
+		$scope.salesforceConfig = {};
+		$scope.zendeskConnected = false;
+		$scope.zendeskConfig = {};
+		$scope.zohoConnected = false;
+		$scope.zohoConfig = {};
+		$scope.xeroConnected = false;
 		//$scope.xeroConfig={};
-		vm.xeroConfig={};
-		$scope.mailchimpConnected=false;
+		vm.xeroConfig = {};
+		$scope.mailchimpConnected = false;
 		vm.mailchimpConfigContent = {};
 
-		$scope.openIntergrationConfigs= function () {
+		$scope.openIntergrationConfigs = function () {
 
-			vm.quickbooksConfig={};
-			vm.migrateConfig={};
+			vm.quickbooksConfig = {};
+			vm.migrateConfig = {};
 
 			vm.quickbooksIntegrateUILoading = true;
 			$charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
-				if(data.connected)
-				{
-					$scope.quickBookConnected=true;
+				if (data.connected) {
+					$scope.quickBookConnected = true;
 					$scope.quickBookConfig = data.data;
 					// angular.element("#quickbookId").empty();
 
-					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationQuickbooksAttributes").success(function(data) {
-						$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
+					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationQuickbooksAttributes").success(function (data) {
+						$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded = true;
 						vm.quickbooksConfig.GuRecID = data[0].GuRecID;
 						vm.quickbooksConfig.selectedMigrateProfileValue = data[0].RecordFieldData;
 						vm.quickbooksConfig.selectedMigrateProductValue = data[1].RecordFieldData;
@@ -7618,7 +7431,7 @@
 						vm.quickbooksIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
-						$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =false;
+						$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded = false;
 
 						vm.quickbooksConfig.GuRecID = "";
 						vm.quickbooksConfig.selectedMigrateProfileValue = "";
@@ -7630,9 +7443,8 @@
 					})
 
 				}
-				else
-				{
-					$scope.quickBookConnected=false;
+				else {
+					$scope.quickBookConnected = false;
 
 					$charge.quickbooks().getQuickbooksConfig().success(function (data) {
 						// angular.element("#quickbookId").empty();
@@ -7653,20 +7465,19 @@
 
 			}).error(function (data) {
 				//console.log(data);
-				$scope.quickBookConnected=false;
+				$scope.quickBookConnected = false;
 				vm.quickbooksIntegrateUILoading = false;
 			})
 
 			vm.salesforceIntegrateUILoading = true;
 			$charge.salesforce().checkSalesforceConnected(getCurrentDomain()).success(function (data) {
-				if(data.connected)
-				{
-					$scope.salesforceConnected=true;
+				if (data.connected) {
+					$scope.salesforceConnected = true;
 					$scope.salesforceConfig = data.data;
 					// angular.element("#salesforceId").empty();
 
-					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationSalesForceAttributes").success(function(data) {
-						$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
+					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationSalesForceAttributes").success(function (data) {
+						$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded = true;
 						vm.migrateConfig.salesforceGuRecID = data[0].GuRecID;
 						vm.migrateConfig.salesforceProfileValue = data[0].RecordFieldData;
 						vm.migrateConfig.salesforceProductValue = data[1].RecordFieldData;
@@ -7676,7 +7487,7 @@
 						vm.salesforceIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
-						$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =false;
+						$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded = false;
 
 						vm.migrateConfig.salesforceGuRecID = "";
 						vm.migrateConfig.salesforceProfileValue = "";
@@ -7687,9 +7498,8 @@
 						vm.salesforceIntegrateUILoading = false;
 					})
 				}
-				else
-				{
-					$scope.salesforceConnected=false;
+				else {
+					$scope.salesforceConnected = false;
 
 					$charge.salesforce().getSalesforceConfig().success(function (data) {
 						// angular.element("#salesforceId").empty();
@@ -7707,19 +7517,18 @@
 
 			}).error(function (data) {
 				//console.log(data);
-				$scope.salesforceConnected=false;
+				$scope.salesforceConnected = false;
 				vm.salesforceIntegrateUILoading = false;
 			});
 
 			vm.zendeskIntegrateUILoading = true;
 			$charge.zendesk().checkZendeskConnected(getCurrentDomain()).success(function (data) {
-				if(data.connected)
-				{
-					$scope.zendeskConnected=true;
+				if (data.connected) {
+					$scope.zendeskConnected = true;
 					$scope.zendeskConfig = data.data;
 
-					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationZendeskAttributes").success(function(data) {
-						$scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded =true;
+					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationZendeskAttributes").success(function (data) {
+						$scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded = true;
 						vm.migrateConfig.zendeskGuRecID = data[0].GuRecID;
 						vm.migrateConfig.zendeskProfileValue = data[0].RecordFieldData;
 						vm.migrateConfig.zendeskProductValue = data[1].RecordFieldData;
@@ -7729,7 +7538,7 @@
 						vm.zendeskIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
-						$scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded =false;
+						$scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded = false;
 
 						vm.migrateConfig.zendeskGuRecID = "";
 						vm.migrateConfig.zendeskProfileValue = "";
@@ -7740,28 +7549,26 @@
 						vm.zendeskIntegrateUILoading = false;
 					})
 				}
-				else
-				{
-					$scope.zendeskConnected=false;
+				else {
+					$scope.zendeskConnected = false;
 					vm.zendeskConfigContent = {};
 					vm.zendeskIntegrateUILoading = false;
 				}
 
 			}).error(function (data) {
 				//console.log(data);
-				$scope.zendeskConnected=false;
+				$scope.zendeskConnected = false;
 				vm.zendeskIntegrateUILoading = false;
 			})
 
 			vm.zohoIntegrateUILoading = true;
 			$charge.zoho().checkZohoConnected().success(function (data) {
-				if(data.status)
-				{
-					$scope.zohoConnected=true;
+				if (data.status) {
+					$scope.zohoConnected = true;
 					$scope.zohoConfig = data.guOrganizationId;
 
-					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationZohoAttributes").success(function(data) {
-						$scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded =true;
+					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationZohoAttributes").success(function (data) {
+						$scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded = true;
 						vm.migrateConfig.zohoGuRecID = data[0].GuRecID;
 						vm.migrateConfig.zohoProfileValue = data[0].RecordFieldData;
 						vm.migrateConfig.zohoProductValue = data[1].RecordFieldData;
@@ -7771,7 +7578,7 @@
 						vm.zohoIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
-						$scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded =false;
+						$scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded = false;
 
 						vm.migrateConfig.zohoGuRecID = "";
 						vm.migrateConfig.zohoProfileValue = "";
@@ -7782,9 +7589,8 @@
 						vm.zohoIntegrateUILoading = false;
 					})
 				}
-				else
-				{
-					$scope.zohoConnected=false;
+				else {
+					$scope.zohoConnected = false;
 					vm.zohoConfigContent = {};
 
 					vm.zohoIntegrateUILoading = false;
@@ -7792,19 +7598,18 @@
 
 			}).error(function (data) {
 				//console.log(data);
-				$scope.zohoConnected=false;
+				$scope.zohoConnected = false;
 				vm.zohoIntegrateUILoading = false;
 			})
 
 			vm.xeroIntegrateUILoading = true;
 			$charge.xero().checkXeroConnected().success(function (data) {
-				if(data.Results)
-				{
-					$scope.xeroConnected=true;
+				if (data.Results) {
+					$scope.xeroConnected = true;
 					//$scope.xeroConfig = data.guOrganizationId;
 
-					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationXeroAttributes").success(function(data) {
-						$scope.xeroMigrateConfigAdded = vm.xeroMigrateConfigAdded =true;
+					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationXeroAttributes").success(function (data) {
+						$scope.xeroMigrateConfigAdded = vm.xeroMigrateConfigAdded = true;
 						vm.migrateConfig.xeroGuRecID = data[0].GuRecID;
 						vm.migrateConfig.xeroProfileValue = data[0].RecordFieldData;
 						vm.migrateConfig.xeroProductValue = data[1].RecordFieldData;
@@ -7814,7 +7619,7 @@
 						vm.xeroIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
-						$scope.xeroMigrateConfigAdded = vm.xeroMigrateConfigAdded =false;
+						$scope.xeroMigrateConfigAdded = vm.xeroMigrateConfigAdded = false;
 
 						vm.migrateConfig.xeroGuRecID = "";
 						vm.migrateConfig.xeroProfileValue = "";
@@ -7825,9 +7630,8 @@
 						vm.xeroIntegrateUILoading = false;
 					})
 				}
-				else
-				{
-					$scope.xeroConnected=false;
+				else {
+					$scope.xeroConnected = false;
 					vm.xeroConfigContent = {};
 
 					vm.xeroIntegrateUILoading = false;
@@ -7835,7 +7639,7 @@
 
 			}).error(function (data) {
 				//console.log(data);
-				$scope.xeroConnected=false;
+				$scope.xeroConnected = false;
 				vm.xeroIntegrateUILoading = false;
 			});
 
@@ -7843,8 +7647,7 @@
 			vm.xeroConfigCurrencyMatched = true;
 			$charge.xero().getConfigurations().success(function (data) {
 				vm.xeroConfigContent = data;
-				if(vm.xeroConfigContent.invoiceAccount != null && vm.xeroConfigContent.invoiceAccountCode != null && vm.xeroConfigContent.paymentAccount != null && vm.xeroConfigContent.paymentAccountCode != null)
-				{
+				if (vm.xeroConfigContent.invoiceAccount != null && vm.xeroConfigContent.invoiceAccountCode != null && vm.xeroConfigContent.paymentAccount != null && vm.xeroConfigContent.paymentAccountCode != null) {
 					vm.xeroConfigStored = true;
 				}
 
@@ -7857,13 +7660,12 @@
 			vm.mailchimpConfigStored = true;
 			vm.mailchimpIntegrateUILoading = true;
 			$charge.mailchimp().checkMailChimpConnected().success(function (data) {
-				if(data.status)
-				{
-					$scope.mailchimpConnected=true;
+				if (data.status) {
+					$scope.mailchimpConnected = true;
 					$scope.mailchimpConfig = data;
 
-					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationMailChimpAttributes").success(function(data) {
-						$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =true;
+					$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationMailChimpAttributes").success(function (data) {
+						$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded = true;
 						vm.migrateConfig.mailchimpGuRecID = data[0].GuRecID;
 						vm.migrateConfig.mailchimpProfileValue = data[0].RecordFieldData;
 						vm.migrateConfig.mailchimpProductValue = data[1].RecordFieldData;
@@ -7873,7 +7675,7 @@
 						vm.mailchimpIntegrateUILoading = false;
 					}).error(function (data) {
 						//console.log(data);
-						$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =false;
+						$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded = false;
 
 						vm.migrateConfig.mailchimpGuRecID = "";
 						vm.migrateConfig.mailchimpProfileValue = "";
@@ -7884,9 +7686,8 @@
 						vm.mailchimpIntegrateUILoading = false;
 					})
 				}
-				else
-				{
-					$scope.mailchimpConnected=false;
+				else {
+					$scope.mailchimpConnected = false;
 					vm.mailchimpConfigContent = {};
 
 					vm.mailchimpIntegrateUILoading = false;
@@ -7894,10 +7695,13 @@
 
 			}).error(function (data) {
 				//console.log(data);
-				$scope.mailchimpConnected=false;
+				$scope.mailchimpConnected = false;
 				vm.mailchimpConfigContent = {};
 				vm.mailchimpIntegrateUILoading = false;
 			})
+
+			vm.avalaraIntegrateUILoading = true;
+			$scope.loadAvalaraTaxes();
 		}
 
 		$scope.executeSf = function (url) {
@@ -7905,15 +7709,15 @@
 
 			var sfcounter = 0;
 			function sfStatWatcher() {
-				if(sfcounter < 20){
+				if (sfcounter < 20) {
 					checkSFState(function (stat, data) {
-						if(stat){
-							$scope.salesforceConnected=true;
+						if (stat) {
+							$scope.salesforceConnected = true;
 							$scope.salesforceConfig = data.data;
 							// angular.element("#salesforceId").empty();
 
-							$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationSalesForceAttributes").success(function(data) {
-								$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
+							$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationSalesForceAttributes").success(function (data) {
+								$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded = true;
 								vm.migrateConfig.salesforceGuRecID = data[0].GuRecID;
 								vm.migrateConfig.salesforceProfileValue = data[0].RecordFieldData;
 								vm.migrateConfig.salesforceProductValue = data[1].RecordFieldData;
@@ -7923,7 +7727,7 @@
 								vm.salesforceIntegrateUILoading = false;
 							}).error(function (data) {
 								//console.log(data);
-								$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =false;
+								$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded = false;
 
 								vm.migrateConfig.salesforceGuRecID = "";
 								vm.migrateConfig.salesforceProfileValue = "";
@@ -7937,7 +7741,7 @@
 							clearInterval(sfTimer);
 						}
 					});
-				}else{
+				} else {
 					notifications.toast('Error', 'Salseforce registration failed');
 					clearInterval(sfTimer);
 				}
@@ -7953,15 +7757,15 @@
 
 			var qbcounter = 0;
 			function qbStatWatcher() {
-				if(qbcounter < 20){
+				if (qbcounter < 20) {
 					checkSFState(function (stat, data) {
-						if(stat){
-							$scope.quickBookConnected=true;
+						if (stat) {
+							$scope.quickBookConnected = true;
 							$scope.quickBookConfig = data.data;
 							// angular.element("#quickbookId").empty();
 
-							$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationQuickbooksAttributes").success(function(data) {
-								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
+							$charge.settingsapp().getDuobaseValuesByTableName("CTS_IntergrationQuickbooksAttributes").success(function (data) {
+								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded = true;
 								vm.quickbooksConfig.GuRecID = data[0].GuRecID;
 								vm.quickbooksConfig.selectedMigrateProfileValue = data[0].RecordFieldData;
 								vm.quickbooksConfig.selectedMigrateProductValue = data[1].RecordFieldData;
@@ -7971,7 +7775,7 @@
 								vm.quickbooksIntegrateUILoading = false;
 							}).error(function (data) {
 								//console.log(data);
-								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =false;
+								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded = false;
 
 								vm.quickbooksConfig.GuRecID = "";
 								vm.quickbooksConfig.selectedMigrateProfileValue = "";
@@ -7985,7 +7789,7 @@
 							clearInterval(qbTimer);
 						}
 					});
-				}else{
+				} else {
 					notifications.toast('Error', 'Quickbooks registration failed');
 					clearInterval(qbTimer);
 				}
@@ -7998,9 +7802,9 @@
 
 		function checkSFState(callback) {
 			$charge.salesforce().checkSalesforceConnected(getCurrentDomain()).success(function (data) {
-				if(data.connected){
+				if (data.connected) {
 					callback(true, data);
-				}else{
+				} else {
 					callback(false, null);
 				}
 			}).error(function (res) {
@@ -8010,9 +7814,9 @@
 
 		function checkQBState(callback) {
 			$charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
-				if(data.connected){
+				if (data.connected) {
 					callback(true, data);
-				}else{
+				} else {
 					callback(false, null);
 				}
 			}).error(function (res) {
@@ -8029,26 +7833,19 @@
 				vm.xeroConfigInvoiceList = [];
 				vm.xeroConfigPaymentList = [];
 
-				for(var i=0;i<data.length;i++)
-				{
-					if(data[i].EnablePaymentsToAccount)
-					{
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].EnablePaymentsToAccount) {
 						vm.xeroConfigPaymentList.push(data[i]);
-						if(vm.xeroConfigContent.paymentAccount != null && vm.xeroConfigContent.paymentAccountCode != null)
-						{
-							if(vm.xeroConfigContent.paymentAccount == data[i].Name)
-							{
+						if (vm.xeroConfigContent.paymentAccount != null && vm.xeroConfigContent.paymentAccountCode != null) {
+							if (vm.xeroConfigContent.paymentAccount == data[i].Name) {
 								vm.xeroConfig.paymentAccount = data[i];
 							}
 						}
 					}
-					else
-					{
+					else {
 						vm.xeroConfigInvoiceList.push(data[i]);
-						if(vm.xeroConfigContent.invoiceAccount != null && vm.xeroConfigContent.invoiceAccountCode != null)
-						{
-							if(vm.xeroConfigContent.invoiceAccount == data[i].Name)
-							{
+						if (vm.xeroConfigContent.invoiceAccount != null && vm.xeroConfigContent.invoiceAccountCode != null) {
+							if (vm.xeroConfigContent.invoiceAccount == data[i].Name) {
 								vm.xeroConfig.invoiceAccount = data[i];
 							}
 						}
@@ -8060,19 +7857,15 @@
 					vm.xeroConfigCurrencies = data;
 					vm.xeroConfigCurrencyString = "";
 
-					for(var i =0;i<vm.xeroConfigCurrencies.length;i++)
-					{
-						if(i!=(vm.xeroConfigCurrencies.length-1))
-						{
-							vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code+", ";
+					for (var i = 0; i < vm.xeroConfigCurrencies.length; i++) {
+						if (i != (vm.xeroConfigCurrencies.length - 1)) {
+							vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code + ", ";
 						}
-						else
-						{
+						else {
 							vm.xeroConfigCurrencyString = vm.xeroConfigCurrencyString + vm.xeroConfigCurrencies[i].Code;
 						}
 
-						if(vm.xeroConfigCurrencies[i].Code==vm.baseCurrency)
-						{
+						if (vm.xeroConfigCurrencies[i].Code == vm.baseCurrency) {
 							vm.xeroConfigCurrencyMatched = true;
 						}
 					}
@@ -8113,16 +7906,14 @@
 		vm.migrationConfigSubmitted = false;
 		vm.activeQuickbooksConfig = 0;
 		vm.submitMigrationConfig = function (tool) {
-			if(vm.migrationConfigForm.$valid==true) {
+			if (vm.migrationConfigForm.$valid == true) {
 				vm.migrationConfigSubmitted = true;
 
-				if(getExtensionMode()!="live")
-				{
-					notifications.toast("Please upgrade your tenant to 'Live' for Migrate data!","error");
+				if (getExtensionMode() != "live") {
+					notifications.toast("Please upgrade your tenant to 'Live' for Migrate data!", "error");
 					vm.migrationConfigSubmitted = false;
 				}
-				else
-				{
+				else {
 					var migrateProfilesObj = vm.migrationConfig.migrationProfiles;
 					var migrateProductsObj = vm.migrationConfig.migrationProducts;
 					var migratePlansObj = vm.migrationConfig.migrationPlans;
@@ -8134,8 +7925,7 @@
 					var queue = "";
 					var req = {};
 
-					if(tool=="Quickbooks")
-					{
+					if (tool == "Quickbooks") {
 						$scope.integrationConfigFields.push({
 							"FieldCultureName": "QuickbooksMigrateProfiles",
 							"FieldID": "",
@@ -8202,8 +7992,7 @@
 
 						queue = "quickbook";
 					}
-					else if(tool=="Xero")
-					{
+					else if (tool == "Xero") {
 						$scope.integrationConfigFields.push({
 							"FieldCultureName": "XeroMigrateProfiles",
 							"FieldID": "",
@@ -8270,8 +8059,7 @@
 
 						queue = "xero";
 					}
-					else if(tool=="SalesForce")
-					{
+					else if (tool == "SalesForce") {
 						$scope.integrationConfigFields.push({
 							"FieldCultureName": "SalesForceMigrateProfiles",
 							"FieldID": "",
@@ -8338,8 +8126,7 @@
 
 						queue = "salesforce";
 					}
-					else if(tool=="Zendesk")
-					{
+					else if (tool == "Zendesk") {
 						$scope.integrationConfigFields.push({
 							"FieldCultureName": "ZendeskMigrateProfiles",
 							"FieldID": "",
@@ -8406,8 +8193,7 @@
 
 						queue = "zendesk";
 					}
-					else if(tool=="Zoho")
-					{
+					else if (tool == "Zoho") {
 						$scope.integrationConfigFields.push({
 							"FieldCultureName": "ZohoMigrateProfiles",
 							"FieldID": "",
@@ -8474,8 +8260,7 @@
 
 						queue = "zohobooks";
 					}
-					else if(tool=="MailChimp")
-					{
+					else if (tool == "MailChimp") {
 						$scope.integrationConfigFields.push({
 							"FieldCultureName": "MailChimpMigrateProfiles",
 							"FieldID": "",
@@ -8560,58 +8345,52 @@
 
 					$charge.settingsapp().store(req).success(function (data) {
 						//
-						notifications.toast(tool+" configurations updated","success");
+						notifications.toast(tool + " configurations updated", "success");
 						vm.migrationConfigSubmitted = false;
 						vm.closeDialog();
 
-						if(tool=="Quickbooks")
-						{
-							$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =true;
+						if (tool == "Quickbooks") {
+							$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded = true;
 
 							vm.quickbooksConfig.selectedMigrateProfileValue = vm.migrationConfig.migrationProfiles;
 							vm.quickbooksConfig.selectedMigrateProductValue = vm.migrationConfig.migrationProducts;
 							vm.quickbooksConfig.selectedMigratePlanValue = vm.migrationConfig.migrationPlans;
 							vm.quickbooksConfig.selectedMigrateInvoiceValue = vm.migrationConfig.migrationInvoices;
 						}
-						else if(tool=="Xero")
-						{
-							$scope.xeroMigrateConfigAdded = vm.xeroBookMigrateConfigAdded =true;
+						else if (tool == "Xero") {
+							$scope.xeroMigrateConfigAdded = vm.xeroBookMigrateConfigAdded = true;
 
 							vm.migrateConfig.xeroProfileValue = vm.migrationConfig.migrationProfiles;
 							vm.migrateConfig.xeroProductValue = vm.migrationConfig.migrationProducts;
 							vm.migrateConfig.xeroPlanValue = vm.migrationConfig.migrationPlans;
 							vm.migrateConfig.xeroInvoiceValue = vm.migrationConfig.migrationInvoices;
 						}
-						else if(tool=="SalesForce")
-						{
-							$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =true;
+						else if (tool == "SalesForce") {
+							$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded = true;
 
 							vm.migrateConfig.salesforceProfileValue = vm.migrationConfig.migrationProfiles;
 							vm.migrateConfig.salesforceProductValue = vm.migrationConfig.migrationProducts;
 							vm.migrateConfig.salesforcePlanValue = vm.migrationConfig.migrationPlans;
 							vm.migrateConfig.salesforceInvoiceValue = vm.migrationConfig.migrationInvoices;
 						}
-						else if(tool=="Zendesk")
-						{
-							$scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded =true;
+						else if (tool == "Zendesk") {
+							$scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded = true;
 
 							vm.migrateConfig.zendeskProfileValue = vm.migrationConfig.migrationProfiles;
 							vm.migrateConfig.zendeskProductValue = vm.migrationConfig.migrationProducts;
 							vm.migrateConfig.zendeskPlanValue = vm.migrationConfig.migrationPlans;
 							vm.migrateConfig.zendeskInvoiceValue = vm.migrationConfig.migrationInvoices;
 						}
-						else if(tool=="Zoho")
-						{
-							$scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded =true;
+						else if (tool == "Zoho") {
+							$scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded = true;
 
 							vm.migrateConfig.zohoProfileValue = vm.migrationConfig.migrationProfiles;
 							vm.migrateConfig.zohoProductValue = vm.migrationConfig.migrationProducts;
 							vm.migrateConfig.zohoPlanValue = vm.migrationConfig.migrationPlans;
 							vm.migrateConfig.zohoInvoiceValue = vm.migrationConfig.migrationInvoices;
 						}
-						else if(tool=="MailChimp")
-						{
-							$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =true;
+						else if (tool == "MailChimp") {
+							$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded = true;
 
 							vm.migrateConfig.mailchimpProfileValue = vm.migrationConfig.migrationProfiles;
 							vm.migrateConfig.mailchimpProductValue = vm.migrationConfig.migrationProducts;
@@ -8620,86 +8399,82 @@
 						}
 
 
-						if(migrateProfilesObj=="Migrate Existing Profiles")
-						{
+						if (migrateProfilesObj == "Migrate Existing Profiles") {
 							$charge.profile().integrationProfileSync(queue).success(function (data) {
 								//
 								var responseSyncProfiles = data;
-								notifications.toast(responseSyncProfiles.syncedProfiles+"/"+responseSyncProfiles.profiles+" Profiles migrated to "+tool,"success");
+								notifications.toast(responseSyncProfiles.syncedProfiles + "/" + responseSyncProfiles.profiles + " Profiles migrated to " + tool, "success");
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
-								notifications.toast("Profiles migration to "+tool+" failed","error");
+								notifications.toast("Profiles migration to " + tool + " failed", "error");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
 
-						if(migrateProductsObj=="Migrate Existing Products")
-						{
+						if (migrateProductsObj == "Migrate Existing Products") {
 							$charge.product().integrationProductSync(queue).success(function (data) {
 								//
 								var responseSyncProducts = data;
-								notifications.toast(responseSyncProducts.syncedProducts+"/"+responseSyncProducts.products+" Products migrated to "+tool,"success");
+								notifications.toast(responseSyncProducts.syncedProducts + "/" + responseSyncProducts.products + " Products migrated to " + tool, "success");
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
-								notifications.toast("Products migration to "+tool+" failed","error");
+								notifications.toast("Products migration to " + tool + " failed", "error");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
 
-						if(migratePlansObj=="Migrate Existing Plans")
-						{
+						if (migratePlansObj == "Migrate Existing Plans") {
 							$charge.plan().integrationPlanSync(queue).success(function (data) {
 								//
 								var responseSyncPlans = data;
-								notifications.toast(responseSyncPlans.length+" Plans migrated to "+tool,"success");
+								notifications.toast(responseSyncPlans.length + " Plans migrated to " + tool, "success");
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
-								notifications.toast("Plans migration to "+tool+" failed","error");
+								notifications.toast("Plans migration to " + tool + " failed", "error");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
 
-						if(migrateInvoicesObj=="Migrate Existing Invoices")
-						{
+						if (migrateInvoicesObj == "Migrate Existing Invoices") {
 							$charge.invoicing().integrationInvoiceSync(queue).success(function (data) {
 								//
 								var responseSyncInvoices = data;
-								notifications.toast(responseSyncInvoices.data.syncedData+"/"+responseSyncInvoices.data.invoices+" Invoices migrated to "+tool,"success");
+								notifications.toast(responseSyncInvoices.data.syncedData + "/" + responseSyncInvoices.data.invoices + " Invoices migrated to " + tool, "success");
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
-								notifications.toast("Invoices migration to "+tool+" failed","error");
+								notifications.toast("Invoices migration to " + tool + " failed", "error");
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
 
-					}).error(function(data) {
+					}).error(function (data) {
 						//console.log(data);
-						notifications.toast(tool+" configurations failed","error");
+						notifications.toast(tool + " configurations failed", "error");
 						vm.migrationConfigSubmitted = false;
 
-						$scope.infoJson= {};
-						$scope.infoJson.message =JSON.stringify(data);
-						$scope.infoJson.app ='settings';
+						$scope.infoJson = {};
+						$scope.infoJson.message = JSON.stringify(data);
+						$scope.infoJson.app = 'settings';
 						// logHelper.error( $scope.infoJson);
 					})
 				}
@@ -8707,7 +8482,7 @@
 			}
 		}
 
-		$scope.removeQuickbooksConfig = vm.removeQuickbooksConfig= function (ev) {
+		$scope.removeQuickbooksConfig = vm.removeQuickbooksConfig = function (ev) {
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to Remove Quickbooks account?')
 				.textContent('You cannot revert this account once you delete it!')
@@ -8716,30 +8491,28 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
+			$mdDialog.show(confirm).then(function () {
 				vm.submittedQuickbooks = true;
 				var quickbookKey = {
-					"realmId":$scope.quickBookConfig
+					"realmId": $scope.quickBookConfig
 				}
-				$charge.quickbooks().deleteQuickbooksConfig(quickbookKey).success(function(data) {
+				$charge.quickbooks().deleteQuickbooksConfig(quickbookKey).success(function (data) {
 					//
-					if(data.status)
-					{
-						notifications.toast("Successfully Quickbooks account removed","success");
+					if (data.status) {
+						notifications.toast("Successfully Quickbooks account removed", "success");
 
-						if(vm.quickbooksConfig.GuRecID!="" && vm.quickbooksConfig.GuRecID!=undefined)
-						{
+						if (vm.quickbooksConfig.GuRecID != "" && vm.quickbooksConfig.GuRecID != undefined) {
 							$charge.settingsapp().deleteCommmon(vm.quickbooksConfig.GuRecID).success(function (data) {
 
 								var quickbooksConfigCleared = data;
-								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded =false;
+								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded = false;
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
@@ -8747,22 +8520,22 @@
 						$scope.openIntergrationConfigs();
 					}
 					vm.submittedQuickbooks = false;
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Quickbooks account removing failed","error");
+					notifications.toast("Quickbooks account removing failed", "error");
 					vm.submittedQuickbooks = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
 					// logHelper.error( $scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
 
-		$scope.removeSalesforceConfig= vm.removeSalesforceConfig = function (ev) {
+		$scope.removeSalesforceConfig = vm.removeSalesforceConfig = function (ev) {
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to Remove Salesforce account?')
 				.textContent('You cannot revert this account once you delete it!')
@@ -8771,31 +8544,29 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
+			$mdDialog.show(confirm).then(function () {
 				vm.submittedSalesforce = true;
 				//var salesforceKey = $scope.salesforceConfig;
 				var salesforceKey = {
-					"refreshToken":$scope.salesforceConfig
+					"refreshToken": $scope.salesforceConfig
 				}
-				$charge.salesforce().deleteSalesforceConfig(salesforceKey).success(function(data) {
+				$charge.salesforce().deleteSalesforceConfig(salesforceKey).success(function (data) {
 					//
-					if(data.status)
-					{
-						notifications.toast("Successfully Salesforce account removed","success");
+					if (data.status) {
+						notifications.toast("Successfully Salesforce account removed", "success");
 
-						if(vm.migrateConfig.salesforceGuRecID!="" && vm.migrateConfig.salesforceGuRecID!=undefined)
-						{
+						if (vm.migrateConfig.salesforceGuRecID != "" && vm.migrateConfig.salesforceGuRecID != undefined) {
 							$charge.settingsapp().deleteCommmon(vm.migrateConfig.salesforceGuRecID).success(function (data) {
 
 								var salesforceConfigCleared = data;
-								$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded =false;
+								$scope.salesForceMigrateConfigAdded = vm.salesForceMigrateConfigAdded = false;
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
@@ -8803,24 +8574,24 @@
 						$scope.openIntergrationConfigs();
 					}
 					vm.submittedSalesforce = false;
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Salesforce account removing failed","error");
+					notifications.toast("Salesforce account removing failed", "error");
 					vm.submittedSalesforce = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
 					// logHelper.error( $scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
 
 		vm.zendeskConfigContent = {};
 
-		$scope.submitZendeskConfig= vm.submitZendeskConfig = function () {
+		$scope.submitZendeskConfig = vm.submitZendeskConfig = function () {
 			if (vm.zendeskForm.$valid == true) {
 				vm.submittedZendeskConfig = true;
 
@@ -8855,7 +8626,7 @@
 			}
 		}
 
-		$scope.removeZendeskConfig= vm.removeZendeskConfig = function (ev) {
+		$scope.removeZendeskConfig = vm.removeZendeskConfig = function (ev) {
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to Remove Zendesk account?')
 				.textContent('You cannot revert this account once you delete it!')
@@ -8864,31 +8635,29 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
+			$mdDialog.show(confirm).then(function () {
 				vm.submittedZendeskConfig = true;
 				//var salesforceKey = $scope.salesforceConfig;
 				var zendeskKey = {
-					"subDomain":$scope.zendeskConfig
+					"subDomain": $scope.zendeskConfig
 				}
-				$charge.zendesk().deleteZendeskConfig(zendeskKey).success(function(data) {
+				$charge.zendesk().deleteZendeskConfig(zendeskKey).success(function (data) {
 					//
-					if(data.status)
-					{
-						notifications.toast("Successfully Zendesk account removed","success");
+					if (data.status) {
+						notifications.toast("Successfully Zendesk account removed", "success");
 
-						if(vm.migrateConfig.zendeskGuRecID!="" && vm.migrateConfig.zendeskGuRecID!=undefined)
-						{
+						if (vm.migrateConfig.zendeskGuRecID != "" && vm.migrateConfig.zendeskGuRecID != undefined) {
 							$charge.settingsapp().deleteCommmon(vm.migrateConfig.zendeskGuRecID).success(function (data) {
 
 								var zendeskConfigCleared = data;
-								$scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded =false;
+								$scope.zendeskMigrateConfigAdded = vm.zendeskMigrateConfigAdded = false;
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
@@ -8896,24 +8665,24 @@
 						$scope.openIntergrationConfigs();
 					}
 					vm.submittedZendeskConfig = false;
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Zendesk account removing failed","error");
+					notifications.toast("Zendesk account removing failed", "error");
 					vm.submittedZendeskConfig = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
 					// logHelper.error( $scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
 
 		vm.zohoConfigContent = {};
 
-		$scope.submitZohoConfig= vm.submitZohoConfig = function () {
+		$scope.submitZohoConfig = vm.submitZohoConfig = function () {
 			if (vm.zohoForm.$valid == true) {
 				vm.submittedZohoConfig = true;
 
@@ -8932,8 +8701,7 @@
 						$scope.infoJson.app = 'settings';
 						// logHelper.info($scope.infoJson);
 					}
-					else
-					{
+					else {
 						notifications.toast(data.error, "error");
 					}
 					vm.submittedZohoConfig = false;
@@ -8952,7 +8720,7 @@
 			}
 		}
 
-		$scope.removeZohoConfig= function (ev) {
+		$scope.removeZohoConfig = function (ev) {
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to Remove Zoho account?')
 				.textContent('You cannot revert this account once you delete it!')
@@ -8961,31 +8729,29 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
+			$mdDialog.show(confirm).then(function () {
 				vm.submittedZohoConfig = true;
 				//var salesforceKey = $scope.salesforceConfig;
 				var zohoKey = {
-					"organizationId":$scope.zohoConfig
+					"organizationId": $scope.zohoConfig
 				}
-				$charge.zoho().deleteZohoConfig(zohoKey).success(function(data) {
+				$charge.zoho().deleteZohoConfig(zohoKey).success(function (data) {
 					//
-					if(data.status)
-					{
-						notifications.toast("Successfully Zoho account removed","success");
+					if (data.status) {
+						notifications.toast("Successfully Zoho account removed", "success");
 
-						if(vm.migrateConfig.zohoGuRecID!="" && vm.migrateConfig.zohoGuRecID!=undefined)
-						{
+						if (vm.migrateConfig.zohoGuRecID != "" && vm.migrateConfig.zohoGuRecID != undefined) {
 							$charge.settingsapp().deleteCommmon(vm.migrateConfig.zohoGuRecID).success(function (data) {
 
 								var zohoConfigCleared = data;
-								$scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded =false;
+								$scope.zohoMigrateConfigAdded = vm.zohoMigrateConfigAdded = false;
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
@@ -8993,35 +8759,35 @@
 						$scope.openIntergrationConfigs();
 					}
 					vm.submittedZohoConfig = false;
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Zoho account removing failed","error");
+					notifications.toast("Zoho account removing failed", "error");
 					vm.submittedZohoConfig = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
 					// logHelper.error( $scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
 
-		$scope.baseUrl="";
-		$http.get('app/core/cloudcharge/js/config.json').then(function(data){
+		$scope.baseUrl = "";
+		$http.get('app/core/cloudcharge/js/config.json').then(function (data) {
 
 			//console.log(data);
-			$scope.baseUrl=data.data["xero"]["domain"];
+			$scope.baseUrl = data.data["xero"]["domain"];
 			//$scope.baseUrl=$scope.baseUrl.split('/')[2];
-		}, function(errorResponse){
+		}, function (errorResponse) {
 			//console.log(errorResponse);
-			$scope.baseUrl="";
+			$scope.baseUrl = "";
 		});
 
 		function getExtensionMode() {
 			var _st = gst("extension_mode");
-			_st=(_st=="live")?"live":"test";
+			_st = (_st == "live") ? "live" : "test";
 			return (_st != null) ? _st : "test";
 		}
 
@@ -9030,7 +8796,7 @@
 		$scope.registerXeroIntegration = function () {
 
 			//var url = "http://app.cloudcharge.com:3100/xero/connect?domain="+getCurrentDomain();
-			var url = $scope.baseUrl+"/apis.php/xeroConnect/connect?domain="+getCurrentDomain()+"&mode="+getExtensionMode();
+			var url = $scope.baseUrl + "/apis.php/xeroConnect/connect?domain=" + getCurrentDomain() + "&mode=" + getExtensionMode();
 			$window.open(
 				url, '_self'
 			);
@@ -9063,9 +8829,8 @@
 				};
 
 				$charge.xero().saveConfigurations(xeroconfigs).success(function (data) {
-					if(data.status)
-					{
-						notifications.toast("Successfully Xero configurations saved","success");
+					if (data.status) {
+						notifications.toast("Successfully Xero configurations saved", "success");
 						vm.closeDialog();
 						$scope.openIntergrationConfigs();
 						vm.submittedXeroConfig = false;
@@ -9073,14 +8838,14 @@
 
 				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Xero configurations saving failed","error");
+					notifications.toast("Xero configurations saving failed", "error");
 					vm.submittedXeroConfig = false;
 				});
 
 			}
 		}
 
-		$scope.removeXeroConfig= function (ev) {
+		$scope.removeXeroConfig = function (ev) {
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to Remove Xero account?')
 				.textContent('You cannot revert this account once you delete it!')
@@ -9089,31 +8854,29 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
+			$mdDialog.show(confirm).then(function () {
 				vm.submittedXeroConfig = true;
 				//var salesforceKey = $scope.salesforceConfig;
 				//var zohoKey = {
 				//  "organizationId":$scope.zohoConfig
 				//}
-				$charge.xero().deleteXeroConfig().success(function(data) {
+				$charge.xero().deleteXeroConfig().success(function (data) {
 					//
-					if(data.status)
-					{
-						notifications.toast("Successfully Xero account removed","success");
+					if (data.status) {
+						notifications.toast("Successfully Xero account removed", "success");
 
-						if(vm.migrateConfig.xeroGuRecID!="" && vm.migrateConfig.xeroGuRecID!=undefined)
-						{
+						if (vm.migrateConfig.xeroGuRecID != "" && vm.migrateConfig.xeroGuRecID != undefined) {
 							$charge.settingsapp().deleteCommmon(vm.migrateConfig.xeroGuRecID).success(function (data) {
 
 								var xeroConfigCleared = data;
-								$scope.xeroMigrateConfigAdded = vm.xeroBookMigrateConfigAdded =false;
+								$scope.xeroMigrateConfigAdded = vm.xeroBookMigrateConfigAdded = false;
 
-							}).error(function(data) {
+							}).error(function (data) {
 								//console.log(data);
 
-								$scope.infoJson= {};
-								$scope.infoJson.message =JSON.stringify(data);
-								$scope.infoJson.app ='settings';
+								$scope.infoJson = {};
+								$scope.infoJson.message = JSON.stringify(data);
+								$scope.infoJson.app = 'settings';
 								// logHelper.error( $scope.infoJson);
 							})
 						}
@@ -9121,17 +8884,17 @@
 						$scope.openIntergrationConfigs();
 					}
 					vm.submittedXeroConfig = false;
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("Xero account removing failed","error");
+					notifications.toast("Xero account removing failed", "error");
 					vm.submittedXeroConfig = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
 					// logHelper.error( $scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
@@ -9159,7 +8922,7 @@
 					//console.log(data);
 					vm.submittedMailChimpConfig = false;
 					vm.mailchimpConfigList = [];
-					notifications.toast("MailChimp doesn't recognized the provided key!","error");
+					notifications.toast("MailChimp doesn't recognized the provided key!", "error");
 				});
 
 			}
@@ -9172,34 +8935,32 @@
 				var mailchimpconfigs = {
 					"guListId": vm.mailchimpConfigContent.guListId,
 					"key": vm.mailchimpConfigContent.key,
-					"mergefields": [{"name":"Quantity","type":"text","tag":"QTY","public":true},
-						{"name":"Amount","type":"text","tag":"AMT","public":true},
-						{"name":"PlanCode","type":"text","tag":"PCODE","public":true}]
+					"mergefields": [{ "name": "Quantity", "type": "text", "tag": "QTY", "public": true },
+					{ "name": "Amount", "type": "text", "tag": "AMT", "public": true },
+					{ "name": "PlanCode", "type": "text", "tag": "PCODE", "public": true }]
 				};
 
 				$charge.mailchimp().registerMailChimp(mailchimpconfigs).success(function (data) {
-					if(data.status)
-					{
+					if (data.status) {
 						notifications.toast("Registered to MailChimp Successfully", "success");
 						$mdDialog.hide();
 						$scope.openIntergrationConfigs();
 					}
-					else
-					{
-						notifications.toast(data.error,"error");
+					else {
+						notifications.toast(data.error, "error");
 					}
 					vm.submittedMailChimpConfig = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					notifications.toast(data.error,"error");
+					notifications.toast(data.error, "error");
 					vm.submittedMailChimpConfig = false;
 				});
 
 			}
 		}
 
-		$scope.removeMailChimpConfig= function (ev) {
+		$scope.removeMailChimpConfig = function (ev) {
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to Remove MailChimp account?')
 				.textContent('You cannot revert this account once you delete it!')
@@ -9208,31 +8969,30 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
+			$mdDialog.show(confirm).then(function () {
 				vm.submittedMailChimpConfig = true;
 				//var salesforceKey = $scope.salesforceConfig;
-				var mailchimpkey={};
+				var mailchimpkey = {};
 
-				$charge.mailchimp().deleteMailChimpConfig(mailchimpkey).success(function(data) {
+				$charge.mailchimp().deleteMailChimpConfig(mailchimpkey).success(function (data) {
 					//
-					if(data.status)
-					{
-						notifications.toast("Successfully MailChimp account removed","success");
-						$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =false;
+					if (data.status) {
+						notifications.toast("Successfully MailChimp account removed", "success");
+						$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded = false;
 						$scope.openIntergrationConfigs();
 					}
 					vm.submittedMailChimpConfig = false;
-				}).error(function(data) {
+				}).error(function (data) {
 					//console.log(data);
-					notifications.toast("MailChimp account removing failed","error");
+					notifications.toast("MailChimp account removing failed", "error");
 					vm.submittedMailChimpConfig = false;
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
 					// logHelper.error( $scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
@@ -9240,42 +9000,39 @@
 
 		// Xero configuration
 		vm.xero = {
-			accounts : [{
+			accounts: [{
 				name: 'Sales',
 				code: 400
-			},{
+			}, {
 				name: 'Postage & Delivery',
 				code: 624
-			},{
+			}, {
 				name: '"On-Sale" Discounts',
 				code: 410
-			},{
+			}, {
 				name: 'Coupon Discounts',
 				code: 411
-			},{
+			}, {
 				name: 'Other Revenue',
 				code: 460
-			},{
+			}, {
 				name: 'Cost of Goods Sold',
 				code: 500
-			},{
+			}, {
 				name: 'Credit Card Receivable',
 				code: 121
 			}]
 		}
 		vm.toggleXeroConfigViews = function (view) {
-			if(view==1)
-			{
+			if (view == 1) {
 				if (vm.xeroConfigForm.$valid == true) {
 					vm.activeXeroConfig = view;
 				}
-				else
-				{
+				else {
 					angular.element('#xeroConfigForm').find('.ng-invalid:visible:first').focus();
 				}
 			}
-			else
-			{
+			else {
 				vm.activeXeroConfig = view;
 			}
 		}
@@ -9284,15 +9041,15 @@
 
 
 
-		$scope.editableIndTax=false;
+		$scope.editableIndTax = false;
 		$scope.editInd = '';
-		$scope.isSlug=false;
+		$scope.isSlug = false;
 
-		$scope.editIndTax= function (category, taxtype) {
-			$scope.editableIndTax=true;
+		$scope.editIndTax = function (category, taxtype) {
+			$scope.editableIndTax = true;
 			$scope.editInd = category;
-			if(taxtype == "Slug"){
-				$scope.isSlug=true;
+			if (taxtype == "Slug") {
+				$scope.isSlug = true;
 			}
 			//$mdDialog.show({
 			//  controller: 'updateCatCtrl',
@@ -9646,7 +9403,7 @@
 		//  }
 		//}
 
-		$scope.deleteTax= function (ev,index) {
+		$scope.deleteTax = function (ev, index) {
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to delete this tax?')
 				.textContent('You cannot revert a tax once you delete it!')
@@ -9655,36 +9412,35 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
-				$charge.tax().deleteTax(ev.taxid).success(function(data) {
+			$mdDialog.show(confirm).then(function () {
+				$charge.tax().deleteTax(ev.taxid).success(function (data) {
 
 					notifications.toast("Tax has been deleted.", "success");
-					$scope.fixedRates.splice(index,1);
-				}).error(function(data) {
+					$scope.fixedRates.splice(index, 1);
+				}).error(function (data) {
 					notifications.toast(data.error, "error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
-		$scope.addTaxGroup=function(ev)
-		{
+		$scope.addTaxGroup = function (ev) {
 			$mdDialog.show({
 				controller: 'addTaxGrpCtrl as ctrl',
-				locals:{fixedRates: $scope.fixedRates},
+				locals: { fixedRates: $scope.fixedRates },
 				templateUrl: 'partials/add_taxgroup.html',
 				parent: angular.element(document.body),
 				targetEvent: ev,
-				clickOutsideToClose:true
+				clickOutsideToClose: true
 			})
-				.then(function(taxgroup) {
-					taxgroup.createdate=new Date();
-					taxgroup.createuser="admin";
+				.then(function (taxgroup) {
+					taxgroup.createdate = new Date();
+					taxgroup.createuser = "admin";
 					$scope.taxGroupList.push(taxgroup);
 				})
 		}
@@ -9734,7 +9490,7 @@
 		//
 		//}
 
-		$scope.deleteTaxGrp= function (ev,index) {
+		$scope.deleteTaxGrp = function (ev, index) {
 			var confirm = $mdDialog.confirm()
 				.title('Are you sure you want to delete this tax group?')
 				.textContent('You cannot revert a tax once you delete it!')
@@ -9743,68 +9499,68 @@
 				.ok('Yes')
 				.cancel('No');
 
-			$mdDialog.show(confirm).then(function() {
-				$charge.tax().deleteTaxGrp(ev.taxgroupid).success(function(data) {
+			$mdDialog.show(confirm).then(function () {
+				$charge.tax().deleteTaxGrp(ev.taxgroupid).success(function (data) {
 
 					notifications.toast("Tax Group has been deleted.", "success");
-					$scope.taxGroupList.splice(index,1);
-				}).error(function(data) {
+					$scope.taxGroupList.splice(index, 1);
+				}).error(function (data) {
 					notifications.toast(data.error, "error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 				})
-			}, function() {
+			}, function () {
 
 			});
 		}
 
 		//Site Tour Extraction
-		$scope.initSiteTour = function(ev) {
+		$scope.initSiteTour = function (ev) {
 			$mdDialog.show({
 				controller: 'SiteTourController as vm',
 				templateUrl: 'app/main/settings/dialogs/siteTourDialog.html',
 				targetEvent: ev,
-				clickOutsideToClose:false,
-				locals:{
-					general : $scope.general,
+				clickOutsideToClose: false,
+				locals: {
+					general: $scope.general,
 					deleteGeneral: $scope.deleteGeneral,
-					generalSubmit : $scope.generalSubmit,
-					imgWidth : $scope.imgWidth,
-					imgHeight : $scope.imgHeight,
+					generalSubmit: $scope.generalSubmit,
+					imgWidth: $scope.imgWidth,
+					imgHeight: $scope.imgHeight,
 					//saveGeneral : $scope.saveGeneral,
-					saveCompanyProfile : $scope.saveCompanyProfile,
-					deleteCompanyProfile : $scope.deleteCompanyProfile,
-					insertCompanyIndividual : $scope.insertCompanyIndividual,
-					footerFields : $scope.footerFields,
-					footerFieldValues : $scope.footerFieldValues,
-					saveFooter : $scope.saveFooter,
-					deleteFooter : $scope.deleteFooter,
-					insertFooterIndividual : $scope.insertFooterIndividual,
-					deletePreferred : $scope.deletePreferred,
-					setBaseCurrency : $scope.setBaseCurrency,
-					querySearch : $scope.querySearch,
-					selectedItem : self.selectedItem,
-					searchText : self.searchText,
-					addCurrency : $scope.addCurrency,
-					searchCurrency : self.searchCurrency,
-					queryCurrency : $scope.queryCurrency,
-					userCurrencies : $scope.userCurrencies,
-					currencyFormatDet : $scope.currencyFormatDet,
-					template : $scope.template,
-					isEditable : vm.isEditable,
-					isPreview : $scope.isPreview,
-					settingsCategoryNavigation : settingsCategoryNavigation,
-					reveal:$scope.reveal,
+					saveCompanyProfile: $scope.saveCompanyProfile,
+					deleteCompanyProfile: $scope.deleteCompanyProfile,
+					insertCompanyIndividual: $scope.insertCompanyIndividual,
+					footerFields: $scope.footerFields,
+					footerFieldValues: $scope.footerFieldValues,
+					saveFooter: $scope.saveFooter,
+					deleteFooter: $scope.deleteFooter,
+					insertFooterIndividual: $scope.insertFooterIndividual,
+					deletePreferred: $scope.deletePreferred,
+					setBaseCurrency: $scope.setBaseCurrency,
+					querySearch: $scope.querySearch,
+					selectedItem: self.selectedItem,
+					searchText: self.searchText,
+					addCurrency: $scope.addCurrency,
+					searchCurrency: self.searchCurrency,
+					queryCurrency: $scope.queryCurrency,
+					userCurrencies: $scope.userCurrencies,
+					currencyFormatDet: $scope.currencyFormatDet,
+					template: $scope.template,
+					isEditable: vm.isEditable,
+					isPreview: $scope.isPreview,
+					settingsCategoryNavigation: settingsCategoryNavigation,
+					reveal: $scope.reveal,
 					cropper: $scope.cropper,
 					productImgFileName: $scope.productImgFileName,
 					productImgSrc: $scope.productImgSrc,
 					files: files
 				}
-			}).then(function(answer) {
-			}, function() {
+			}).then(function (answer) {
+			}, function () {
 			});
 		};
 
@@ -9843,11 +9599,11 @@
 		//
 		// $scope.checkPaymentMethodRegistry();
 
-		vm.openRegistrationMenu = function($mdOpenMenu, ev) {
+		vm.openRegistrationMenu = function ($mdOpenMenu, ev) {
 			$mdOpenMenu(ev);
 		};
 
-		$scope.proceedWithStripe = function(CLIENT_ID){
+		$scope.proceedWithStripe = function (CLIENT_ID) {
 
 			var confirm = $mdDialog.confirm()
 				.title('Connect with stripe')
@@ -9858,7 +9614,7 @@
 			$mdDialog.show(confirm).then(function () {
 
 				$scope.isRegButtonsShow = true;
-				$window.location.href = '/azureshell/app/main/settings/paymentMethod/payment-partial.php?CLIENT_ID='+CLIENT_ID;
+				$window.location.href = '/azureshell/app/main/settings/paymentMethod/payment-partial.php?CLIENT_ID=' + CLIENT_ID;
 
 			}, function () {
 				$mdDialog.hide();
@@ -9868,7 +9624,7 @@
 
 		}
 
-		$scope.disconnectWithStripe = function(){
+		$scope.disconnectWithStripe = function () {
 
 			$scope.isRegButtonsShow = true;
 
@@ -9887,24 +9643,23 @@
 
 					//console.log(dataa);
 
-					if(dataa.status)
-					{
+					if (dataa.status) {
 						notifications.toast("You have successfully disconnected with stripe", "Success");
 						$scope.isRegisteredWithStripe = false;
 						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
-					}else{
+					} else {
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 					var error = "There is a problem, Please try again";
-					if(angular.isDefined(data["error"])){
-						error = data["error"]+". Please try again";
+					if (angular.isDefined(data["error"])) {
+						error = data["error"] + ". Please try again";
 					}
 					notifications.toast(error, "Error");
 
@@ -9917,7 +9672,7 @@
 		}
 
 
-		$scope.disconnectWithbraintree = function(key){
+		$scope.disconnectWithbraintree = function (key) {
 
 			$scope.isRegButtonsShow = true;
 
@@ -9937,30 +9692,29 @@
 
 					//console.log(dataa);
 
-					if(dataa.status)
-					{
+					if (dataa.status) {
 						notifications.toast("You have successfully disconnected with braintree", "Success");
 						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
-					}else{
+					} else {
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 					var error = "There is a problem, Please try again";
-					if(angular.isDefined(data["error"])){
-						error = data["error"]+". Please try again";
+					if (angular.isDefined(data["error"])) {
+						error = data["error"] + ". Please try again";
 					}
 					notifications.toast(error, "Error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 
 				});
 
@@ -9970,7 +9724,7 @@
 
 		}
 
-		$scope.disconnectWithWorldPay = function(key){
+		$scope.disconnectWithWorldPay = function (key) {
 
 			$scope.isRegButtonsShow = true;
 
@@ -9990,30 +9744,29 @@
 
 					//console.log(dataa);
 
-					if(dataa.status)
-					{
+					if (dataa.status) {
 						notifications.toast("You have successfully disconnected with worldpay", "Success");
 						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
-					}else{
+					} else {
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 					var error = "There is a problem, Please try again";
-					if(angular.isDefined(data["error"])){
-						error = data["error"]+". Please try again";
+					if (angular.isDefined(data["error"])) {
+						error = data["error"] + ". Please try again";
 					}
 					notifications.toast(error, "Error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 
 				});
 
@@ -10023,7 +9776,7 @@
 
 		}
 
-		$scope.disconnectWithAuthorize = function(key){
+		$scope.disconnectWithAuthorize = function (key) {
 
 			$scope.isRegButtonsShow = true;
 
@@ -10041,30 +9794,29 @@
 
 					//console.log(dataa);
 
-					if(dataa.status)
-					{
+					if (dataa.status) {
 						notifications.toast("You have successfully disconnected with AuthorizedNet", "Success");
 						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
-					}else{
+					} else {
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 					var error = "There is a problem, Please try again";
-					if(angular.isDefined(data["error"])){
-						error = data["error"]+". Please try again";
+					if (angular.isDefined(data["error"])) {
+						error = data["error"] + ". Please try again";
 					}
 					notifications.toast(error, "Error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 
 				});
 
@@ -10074,7 +9826,7 @@
 
 		}
 
-		$scope.disconnectWithWebxpay = function(key){
+		$scope.disconnectWithWebxpay = function (key) {
 
 			$scope.isRegButtonsShow = true;
 
@@ -10092,30 +9844,29 @@
 
 					//console.log(dataa);
 
-					if(dataa.status)
-					{
+					if (dataa.status) {
 						notifications.toast("You have successfully disconnected with Webxpay", "Success");
 						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
-					}else{
+					} else {
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 					var error = "There is a problem, Please try again";
-					if(angular.isDefined(data["error"])){
-						error = data["error"]+". Please try again";
+					if (angular.isDefined(data["error"])) {
+						error = data["error"] + ". Please try again";
 					}
 					notifications.toast(error, "Error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 
 				});
 
@@ -10125,7 +9876,7 @@
 
 		}
 
-		$scope.disconnectWithPaypal = function(key){
+		$scope.disconnectWithPaypal = function (key) {
 
 			$scope.isRegButtonsShow = true;
 
@@ -10145,30 +9896,29 @@
 
 					//console.log(dataa);
 
-					if(dataa.status)
-					{
+					if (dataa.status) {
 						notifications.toast("You have successfully disconnected with paypal", "Success");
 						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
-					}else{
+					} else {
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 					var error = "There is a problem, Please try again";
-					if(angular.isDefined(data["error"])){
-						error = data["error"]+". Please try again";
+					if (angular.isDefined(data["error"])) {
+						error = data["error"] + ". Please try again";
 					}
 					notifications.toast(error, "Error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 
 				});
 
@@ -10178,7 +9928,7 @@
 
 		}
 
-		$scope.disconnectWithAdyen = function(key){
+		$scope.disconnectWithAdyen = function (key) {
 
 			$scope.isRegButtonsShow = true;
 
@@ -10196,30 +9946,29 @@
 
 					//console.log(dataa);
 
-					if(dataa.status)
-					{
+					if (dataa.status) {
 						notifications.toast("You have successfully disconnected with Adyen", "Success");
 						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
-					}else{
+					} else {
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 					var error = "There is a problem, Please try again";
-					if(angular.isDefined(data["error"])){
-						error = data["error"]+". Please try again";
+					if (angular.isDefined(data["error"])) {
+						error = data["error"] + ". Please try again";
 					}
 					notifications.toast(error, "Error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 
 				});
 
@@ -10229,7 +9978,7 @@
 
 		}
 
-		$scope.disconnectWithSquare = function(key){
+		$scope.disconnectWithSquare = function (key) {
 
 			$scope.isRegButtonsShow = true;
 
@@ -10247,30 +9996,29 @@
 
 					//console.log(dataa);
 
-					if(dataa.status)
-					{
+					if (dataa.status) {
 						notifications.toast("You have successfully disconnected with Square", "Success");
 						$scope.makeDefault('testGateway');
 						$scope.loadOnlinePaymentRegistration();
-					}else{
+					} else {
 						notifications.toast("There is a problem, Please try again", "Error");
 					}
 
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.isRegButtonsShow= false;
+					$scope.isRegButtonsShow = false;
 					var error = "There is a problem, Please try again";
-					if(angular.isDefined(data["error"])){
-						error = data["error"]+". Please try again";
+					if (angular.isDefined(data["error"])) {
+						error = data["error"] + ". Please try again";
 					}
 					notifications.toast(error, "Error");
 
-					$scope.infoJson= {};
-					$scope.infoJson.message =JSON.stringify(data);
-					$scope.infoJson.app ='settings';
-					logHelper.error( $scope.infoJson);
+					$scope.infoJson = {};
+					$scope.infoJson.message = JSON.stringify(data);
+					$scope.infoJson.app = 'settings';
+					logHelper.error($scope.infoJson);
 
 				});
 
@@ -10290,9 +10038,9 @@
 		// 	$scope.accCategory = gst('category');
 		// }
 
-		$scope.loadOnlinePaymentRegistration = function(){
-			$charge.paymentgateway().availableGateways($scope.general.baseCurrency,$scope.accCategory).success(function (data) {
-				if(data.status) {
+		$scope.loadOnlinePaymentRegistration = function () {
+			$charge.paymentgateway().availableGateways($scope.general.baseCurrency, $scope.accCategory).success(function (data) {
+				if (data.status) {
 
 					$scope.currentGateways = data.data.availableGateway;
 
@@ -10304,16 +10052,15 @@
 							$scope.currentGateways[i].isConnected = true;
 							$scope.currentGateways[i].key = data.data.connectedGatways[$scope.currentGateways[i].paymentGateway];
 
-							if($scope.currentGateways[i].key['0'].enableBitcoin){
+							if ($scope.currentGateways[i].key['0'].enableBitcoin) {
 								$scope.currentGateways[i].key['0'].enableBitcoin = $scope.currentGateways[i].key['0'].enableBitcoin === 1 ? true : false;
 							}
 
-							if($scope.currentGateways[i].key['0'].enableAch){
+							if ($scope.currentGateways[i].key['0'].enableAch) {
 								$scope.currentGateways[i].key['0'].enableAch = $scope.currentGateways[i].key['0'].enableAch === 1 ? true : false;
 							}
 						}
-						else
-						{
+						else {
 							$scope.currentGateways[i].isConnected = false;
 						}
 
@@ -10322,255 +10069,255 @@
 				}
 
 				$scope.gen1Loading = true;
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log( data);
 
 				$scope.currentGateways = [];
 
 				$scope.gen1Loading = true;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			});
 
 
 		}
 
 		$scope.issavePyamnetExtraDetailsClicked = false;
-		$scope.savePyamnetExtraDetails = function(extraDetails){
+		$scope.savePyamnetExtraDetails = function (extraDetails) {
 			$scope.issavePyamnetExtraDetailsClicked = true;
 			$charge.paymentgateway().stripeachregister(extraDetails).success(function (data) {
 
-				if(data.status) {
+				if (data.status) {
 					notifications.toast("Stripe ACH/Bitcoin information saved", "Success");
 
-				}else{
+				} else {
 					notifications.toast("There is a problem, Please try again", "Error");
 				}
 
 				$scope.issavePyamnetExtraDetailsClicked = false;
 
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log( data);
 				notifications.toast("There is a problem, Please try again", "Error");
 				$scope.issavePyamnetExtraDetailsClicked = false;
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			});
 
 		}
 
-		$scope.viewTestGateway = function(ev) {
+		$scope.viewTestGateway = function (ev) {
 
 			$mdDialog.show({
 				controller: 'GuidedPaymenttestGatewayController',
 				templateUrl: 'app/main/settings/dialogs/guided-payment-testGateway.html',
 				parent: angular.element(document.body),
 				targetEvent: ev,
-				clickOutsideToClose:false,
-				locals:{
-					idToken : $scope.idToken
+				clickOutsideToClose: false,
+				locals: {
+					idToken: $scope.idToken
 				}
 			})
-				.then(function(answer) {
+				.then(function (answer) {
 					// add method after
-				}, function() {
+				}, function () {
 
 				});
 
 		}
 
-		$scope.makeDefault= function(gateway){
+		$scope.makeDefault = function (gateway) {
 
 			$charge.paymentgateway().makeDefaultGateway(gateway).success(function (data) {
 
-				if(data.status) {
+				if (data.status) {
 					$scope.defaultGateway = gateway;
 
 					notifications.toast("Default gateway changed", "Success");
 
-				}else{
+				} else {
 					notifications.toast("There is a problem, Please try again", "Error");
 				}
 
-			}).error(function(data) {
+			}).error(function (data) {
 				//console.log( data);
 				notifications.toast("There is a problem, Please try again", "Error");
 
-				$scope.infoJson= {};
-				$scope.infoJson.message =JSON.stringify(data);
-				$scope.infoJson.app ='settings';
-				logHelper.error( $scope.infoJson);
+				$scope.infoJson = {};
+				$scope.infoJson.message = JSON.stringify(data);
+				$scope.infoJson.app = 'settings';
+				logHelper.error($scope.infoJson);
 			});
 		}
 
-		$scope.proceedWithGateway= function (gateway,ev) {
-			if(gateway.paymentGateway === 'stripe'){
+		$scope.proceedWithGateway = function (gateway, ev) {
+			if (gateway.paymentGateway === 'stripe') {
 				$scope.proceedWithStripe(gateway.clientId);
 			}
-			else if(gateway.paymentGateway === 'worldpay'){
+			else if (gateway.paymentGateway === 'worldpay') {
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentworldpayController',
 					templateUrl: 'app/main/settings/dialogs/guided-payment-worldpay.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
-					clickOutsideToClose:false,
-					locals:{
-						idToken : $scope.idToken
+					clickOutsideToClose: false,
+					locals: {
+						idToken: $scope.idToken
 					}
 				})
-					.then(function(answer) {
+					.then(function (answer) {
 						$scope.loadOnlinePaymentRegistration();
 
-					}, function() {
+					}, function () {
 
 					});
-			}else if(gateway.paymentGateway === 'paypal'){
+			} else if (gateway.paymentGateway === 'paypal') {
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentPaypalController',
 					templateUrl: 'app/main/settings/dialogs/guided-payment-paypal.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
-					clickOutsideToClose:false,
-					locals:{
-						idToken : $scope.idToken
+					clickOutsideToClose: false,
+					locals: {
+						idToken: $scope.idToken
 					}
 				})
-					.then(function(answer) {
+					.then(function (answer) {
 						$scope.loadOnlinePaymentRegistration();
 
-					}, function() {
+					}, function () {
 
 					});
-			}else if(gateway.paymentGateway === 'braintree'){
+			} else if (gateway.paymentGateway === 'braintree') {
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentbraintreeController',
 					templateUrl: 'app/main/settings/dialogs/guided-payment-braintree.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
-					clickOutsideToClose:false,
-					locals:{
-						idToken : $scope.idToken
+					clickOutsideToClose: false,
+					locals: {
+						idToken: $scope.idToken
 					}
 				})
-					.then(function(answer) {
+					.then(function (answer) {
 						$scope.loadOnlinePaymentRegistration();
 
-					}, function() {
+					}, function () {
 
 					});
 			}
-			else if(gateway.paymentGateway === 'authorizednet'){
+			else if (gateway.paymentGateway === 'authorizednet') {
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentauthorizeController',
 					templateUrl: 'app/main/settings/dialogs/guided-payment-authorize.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
-					clickOutsideToClose:false,
-					locals:{
-						idToken : $scope.idToken
+					clickOutsideToClose: false,
+					locals: {
+						idToken: $scope.idToken
 					}
 				})
-					.then(function(answer) {
+					.then(function (answer) {
 						$scope.loadOnlinePaymentRegistration();
 
-					}, function() {
+					}, function () {
 
 					});
 			}
-			else if(gateway.paymentGateway === 'webxpay'){
+			else if (gateway.paymentGateway === 'webxpay') {
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentWebxpayController',
 					templateUrl: 'app/main/settings/dialogs/guided-payment-webxpay.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
-					clickOutsideToClose:false,
-					locals:{
-						idToken : $scope.idToken
+					clickOutsideToClose: false,
+					locals: {
+						idToken: $scope.idToken
 					}
 				})
-					.then(function(answer) {
+					.then(function (answer) {
 						$scope.loadOnlinePaymentRegistration();
 
-					}, function() {
+					}, function () {
 
 					});
-			}else if(gateway.paymentGateway === 'adyen'){
+			} else if (gateway.paymentGateway === 'adyen') {
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentAdyenController',
 					templateUrl: 'app/main/settings/dialogs/guided-payment-adyen.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
-					clickOutsideToClose:false,
-					locals:{
-						idToken : $scope.idToken
+					clickOutsideToClose: false,
+					locals: {
+						idToken: $scope.idToken
 					}
 				})
-					.then(function(answer) {
+					.then(function (answer) {
 						$scope.loadOnlinePaymentRegistration();
 
-					}, function() {
+					}, function () {
 
 					});
-			}else if(gateway.paymentGateway === 'square'){
+			} else if (gateway.paymentGateway === 'square') {
 
 				$mdDialog.show({
 					controller: 'GuidedPaymentSquareController',
 					templateUrl: 'app/main/settings/dialogs/guided-payment-square.html',
 					parent: angular.element(document.body),
 					targetEvent: ev,
-					clickOutsideToClose:false,
-					locals:{
-						idToken : $scope.idToken
+					clickOutsideToClose: false,
+					locals: {
+						idToken: $scope.idToken
 					}
 				})
-					.then(function(answer) {
+					.then(function (answer) {
 						$scope.loadOnlinePaymentRegistration();
 
-					}, function() {
+					}, function () {
 
 					});
 			}
 		}
 
-		$scope.disconnectWithGateway= function (gateway,key) {
+		$scope.disconnectWithGateway = function (gateway, key) {
 			// $scope.defaultGateway == gateway ? $scope.defaultGateway = 'testGateway' : null;
 
-			if(gateway === 'stripe'){
+			if (gateway === 'stripe') {
 				$scope.disconnectWithStripe();
 			}
-			else if(gateway === 'worldpay'){
+			else if (gateway === 'worldpay') {
 				$scope.disconnectWithWorldPay(key)
-			}else if(gateway === 'braintree'){
+			} else if (gateway === 'braintree') {
 				$scope.disconnectWithbraintree(key)
-			}else if(gateway === 'authorizednet'){
+			} else if (gateway === 'authorizednet') {
 				$scope.disconnectWithAuthorize(key);
-			}else if(gateway === 'webxpay'){
+			} else if (gateway === 'webxpay') {
 				$scope.disconnectWithWebxpay(key);
-			}else if(gateway === 'paypal'){
+			} else if (gateway === 'paypal') {
 				$scope.disconnectWithPaypal(key);
-			}else if(gateway === 'adyen'){
+			} else if (gateway === 'adyen') {
 				$scope.disconnectWithAdyen(key);
-			}else if(gateway === 'square'){
+			} else if (gateway === 'square') {
 				$scope.disconnectWithSquare(key);
 			}
 		}
 
 		// Kasun_Wijeratne_2017_NOV_17
-		$scope.showMoreUserInfo=false;
+		$scope.showMoreUserInfo = false;
 		$scope.contentExpandHandler = function () {
-			$scope.showMoreUserInfo =! $scope.showMoreUserInfo;
+			$scope.showMoreUserInfo = !$scope.showMoreUserInfo;
 		};
 		// Kasun_Wijeratne_2017_NOV_17 - END
 
@@ -10658,33 +10405,31 @@
 					return vm;
 				},
 				controllerAs: 'vm',
-				templateUrl: 'app/main/settings/dialogs/Additional integrations/integration-dialog-'+tool+'.html',
+				templateUrl: 'app/main/settings/dialogs/Additional integrations/integration-dialog-' + tool + '.html',
 				parent: angular.element(document.body),
 				targetEvent: ev,
-				clickOutsideToClose:false
+				clickOutsideToClose: false
 			}).then(
-				function(confirmation) {
-				}, function() {
+				function (confirmation) {
+				}, function () {
 					$mdDialog.hide();
 				});
 
-			if(tool == 'quickbooks'){
+			if (tool == 'quickbooks') {
 				$charge.quickbooks().checkQuickbooksConnected(getCurrentDomain()).success(function (data) {
-					if(data.connected)
-					{
-						$scope.quickBookConnected=true;
+					if (data.connected) {
+						$scope.quickBookConnected = true;
 						$scope.quickBookConfig = data.data;
 						angular.element("#quickbookId").empty();
 					}
-					else
-					{
-						$scope.quickBookConnected=false;
+					else {
+						$scope.quickBookConnected = false;
 
 						$charge.quickbooks().getQuickbooksConfig().success(function (data) {
 							angular.element("#quickbookId").empty();
 							angular.element("#quickbookId").append(data);
 
-							$("#quickbookId a").attr('href','#settings');
+							$("#quickbookId a").attr('href', '#settings');
 
 						}).error(function (data) {
 							//console.log(data);
@@ -10695,64 +10440,58 @@
 
 				}).error(function (data) {
 					//console.log(data);
-					$scope.quickBookConnected=false;
+					$scope.quickBookConnected = false;
 				})
 			}
-			else if(tool == 'migration'){
-				if(app == 'quickbooks')
-				{
+			else if (tool == 'migration') {
+				if (app == 'quickbooks') {
 					vm.migrateTool = "Quickbooks";
 					vm.migrateToolDescription = '"QuickBooks Online lets you see how your business is doing instantly."';
 					vm.migrateToolUrl = "https://quickbooks.intuit.com/global/";
 				}
-				else if(app == 'salesforce')
-				{
+				else if (app == 'salesforce') {
 					vm.migrateTool = "SalesForce";
 					vm.migrateToolDescription = '"Salesforce is much more than just a CRM solution. It brings together all your customer information in a single, integrated platform that enables you to build a customer-centred business from marketing right through to sales, customer service and business analysis. This gives you more complete understanding of your customers to drive your business’s success."';
 					vm.migrateToolUrl = "https://www.salesforce.com/eu/";
 				}
-				else if(app == 'zendesk')
-				{
+				else if (app == 'zendesk') {
 					vm.migrateTool = "Zendesk";
 					vm.migrateToolDescription = '"Customer service software and support ticketing system. Cloud-based help desk solution used by more than 200000 organizations worldwide."';
 					vm.migrateToolUrl = "https://www.zendesk.com/";
 				}
-				else if(app == 'zoho')
-				{
+				else if (app == 'zoho') {
 					vm.migrateTool = "Zoho";
 					vm.migrateToolDescription = '"Run your entire business with Zohos suite of online productivity tools and SaaS applications. Over 25 million users trust us worldwide."';
 					vm.migrateToolUrl = "https://www.zoho.com/";
 				}
-				else if(app == 'xero')
-				{
+				else if (app == 'xero') {
 					vm.migrateTool = "Xero";
 					vm.migrateToolDescription = '"Accounting software with all the time-saving tools you need to grow your business: unlimited users and 24/7 support … not to mention the security and reliability you’d expect from Xero."';
 					vm.migrateToolUrl = "https://www.xero.com/";
 				}
 			}
-			else if(tool == 'mailchimp'){
+			else if (tool == 'mailchimp') {
 				vm.toggleMailChimpConfigViews(0);
 				vm.mailchimpConfigContent = {};
 			}
-			else if(tool == 'xero'){
+			else if (tool == 'xero') {
 				vm.toggleXeroConfigViews(0);
 				vm.xeroConfig = {};
 				vm.getXeroAdvanceConfig();
-				if(vm.xeroConfigContent.defaultTaxType != null)
-				{
+				if (vm.xeroConfigContent.defaultTaxType != null) {
 					vm.xeroConfig.defaultTaxType = vm.xeroConfigContent.defaultTaxType;
 				}
 			}
 		}
 
 		$scope.integratedToolConfigHelper = {
-			twilio:{ moreConfig : false },
-			xero:{ moreConfig : false },
-			quickbooks:{ moreConfig : false },
-			salesforce:{ moreConfig : false },
-			zendesk:{ moreConfig : false },
-			zoho:{ moreConfig : false },
-			mailchimp:{ moreConfig : false }
+			twilio: { moreConfig: false },
+			xero: { moreConfig: false },
+			quickbooks: { moreConfig: false },
+			salesforce: { moreConfig: false },
+			zendesk: { moreConfig: false },
+			zoho: { moreConfig: false },
+			mailchimp: { moreConfig: false }
 		};
 		$scope.configExpandHandler = function (integration) {
 			$scope.integratedToolConfigHelper[integration].moreConfig = !$scope.integratedToolConfigHelper[integration].moreConfig;
