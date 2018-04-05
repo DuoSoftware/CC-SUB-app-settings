@@ -8900,32 +8900,74 @@
 		}
 
 		vm.toggleMailChimpConfigViews = function (view) {
-			vm.activeMailChimpConfig = view;
-		}
+				vm.activeMailChimpConfig = view;
+			}
 
-		vm.mailchimpConfigList = [];
+			vm.mailchimpConfigList = [];
 		vm.submitMailChimpApiKey = function () {
 
-			if (vm.mailchimpForm.$valid == true) {
-				vm.submittedMailChimpConfig = true;
-				var mailchimpkeyconfigs = {
-					"token": vm.mailchimpConfigContent.key
-				};
+		  if (vm.mailchimpForm.$valid == true) {
+			vm.submittedMailChimpConfig = true;
+			var mailchimpkeyconfigs = {
+			  "token": vm.mailchimpConfigContent.key
+			};
 
-				$charge.mailchimp().getAllList(mailchimpkeyconfigs).success(function (data) {
-					vm.submittedMailChimpConfig = false;
-					vm.mailchimpConfigList = data.lists;
+			$charge.mailchimp().getAllList(mailchimpkeyconfigs).success(function (data) {
+			  if(data.status)
+			  {
+				vm.submittedMailChimpConfig = false;
+				vm.mailchimpConfigList = data.lists;
 
-					vm.toggleMailChimpConfigViews(1);
+				vm.toggleMailChimpConfigViews(1);
+			  }
+			  else
+			  {
+				vm.submittedMailChimpConfig = false;
+				vm.mailchimpConfigList = [];
+				notifications.toast("MailChimp doesn't recognized the provided key!","error");
 
-				}).error(function (data) {
-					//console.log(data);
-					vm.submittedMailChimpConfig = false;
-					vm.mailchimpConfigList = [];
-					notifications.toast("MailChimp doesn't recognized the provided key!", "error");
+				var mailchimpkey={};
+				$charge.mailchimp().deleteMailChimpConfig(mailchimpkey).success(function(data) {
+				  //
+				  if(data.status)
+				  {
+					$scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =false;
+				  }
+				}).error(function(data) {
+				  //console.log(data);
+
+				  $scope.infoJson= {};
+				  $scope.infoJson.message =JSON.stringify(data);
+				  $scope.infoJson.app ='settings';
+				  // logHelper.error( $scope.infoJson);
 				});
+			  }
 
-			}
+			}).error(function (data) {
+			  //console.log(data);status
+			  vm.submittedMailChimpConfig = false;
+			  vm.mailchimpConfigList = [];
+			  notifications.toast("MailChimp doesn't recognized the provided key!","error");
+
+			  var mailchimpkey={};
+			  $charge.mailchimp().deleteMailChimpConfig(mailchimpkey).success(function(data) {
+				//
+				if(data.status)
+				{
+				  $scope.mailChimpMigrateConfigAdded = vm.mailChimpMigrateConfigAdded =false;
+				}
+			  }).error(function(data) {
+				//console.log(data);
+
+				$scope.infoJson= {};
+				$scope.infoJson.message =JSON.stringify(data);
+				$scope.infoJson.app ='settings';
+				// logHelper.error( $scope.infoJson);
+			  });
+
+			});
+
+		  }
 		}
 
 		vm.submitMailChimpConfig = function () {
