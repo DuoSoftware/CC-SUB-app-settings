@@ -1215,12 +1215,12 @@
 			$scope.template.companyAddress = "";
 
 			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "";
-			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "";
-			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "";
-			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "";
-			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "";
-			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? ", "+ $scope.template.line2.trim() : "";
+			$scope.template.companyAddress += $scope.template.line3 ? ", "+$scope.template.line3.trim() : "";
+			$scope.template.companyAddress += $scope.template.city ? ", "+$scope.template.city.trim() : "";
+			$scope.template.companyAddress += $scope.template.region ? ", "+$scope.template.region.trim() : "";
+			$scope.template.companyAddress += $scope.template.country ? ", "+$scope.template.country.trim() : "";
+			$scope.template.companyAddress += $scope.template.postalCode ? ""+$scope.template.postalCode.trim() : "";
 
 			var updateData=[{
 				"RowID": $scope.baseCurrencyDet.RowID,
@@ -1930,12 +1930,12 @@
 			$scope.template.companyAddress = "";
 
 			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "";
-			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "";
-			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "";
-			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "";
-			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "";
-			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? ", "+ $scope.template.line2.trim() : "";
+			$scope.template.companyAddress += $scope.template.line3 ? ", "+$scope.template.line3.trim() : "";
+			$scope.template.companyAddress += $scope.template.city ? ", "+$scope.template.city.trim() : "";
+			$scope.template.companyAddress += $scope.template.region ? ", "+$scope.template.region.trim() : "";
+			$scope.template.companyAddress += $scope.template.country ? ", "+$scope.template.country.trim() : "";
+			$scope.template.companyAddress += $scope.template.postalCode ? ""+$scope.template.postalCode.trim() : "";
 
 
 			$scope.companyFieldValues.push({
@@ -2068,12 +2068,12 @@
 			$scope.template.companyAddress = "";
 
 			$scope.template.companyAddress = $scope.template.line1 ?  $scope.template.line1.trim() : "";
-			$scope.template.companyAddress += $scope.template.line2 ? "|"+ $scope.template.line2.trim() : "";
-			$scope.template.companyAddress += $scope.template.line3 ? "|"+$scope.template.line3.trim() : "";
-			$scope.template.companyAddress += $scope.template.city ? "|"+$scope.template.city.trim() : "";
-			$scope.template.companyAddress += $scope.template.region ? "|"+$scope.template.region.trim() : "";
-			$scope.template.companyAddress += $scope.template.country ? "|"+$scope.template.country.trim() : "";
-			$scope.template.companyAddress += $scope.template.postalCode ? "|"+$scope.template.postalCode.trim() : "";
+			$scope.template.companyAddress += $scope.template.line2 ? ", "+ $scope.template.line2.trim() : "";
+			$scope.template.companyAddress += $scope.template.line3 ? ", "+$scope.template.line3.trim() : "";
+			$scope.template.companyAddress += $scope.template.city ? ", "+$scope.template.city.trim() : "";
+			$scope.template.companyAddress += $scope.template.region ? ", "+$scope.template.region.trim() : "";
+			$scope.template.companyAddress += $scope.template.country ? ", "+$scope.template.country.trim() : "";
+			$scope.template.companyAddress += $scope.template.postalCode ? ""+$scope.template.postalCode.trim() : "";
 
 
 
