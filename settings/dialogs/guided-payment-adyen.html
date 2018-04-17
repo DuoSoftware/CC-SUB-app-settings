@@ -48,7 +48,7 @@
 
                             <md-input-container fill-width class="mb-0">
                                 <label>Merchant account</label>
-                                <input type="text" name="merchant_account" required ng-model="authorize.merchant_account"/>
+                                <input type="text" name="merchant_account" required ng-model="authorize.merchantAccount"/>
                                 <div ng-messages="adyenForm.apiLoginid.$error">
                                     <div ng-message="required"></div>
                                 </div>
@@ -56,7 +56,7 @@
 
                             <md-input-container fill-width class="mb-0">
                                 <label>Customer endpoint</label>
-                                <input type="text" name="custom_endpoint" required ng-model="authorize.custom_endpoint"/>
+                                <input type="text" name="custom_endpoint" required ng-model="authorize.custom_url"/>
                                 <div ng-messages="adyenForm.apiLoginid.$error">
                                     <div ng-message="required"></div>
                                 </div>
