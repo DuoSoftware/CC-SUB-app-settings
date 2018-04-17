@@ -13,8 +13,8 @@
 		$scope.authorize = {
 			username : "",
 			password: "",
-			merchant_account: "",
-			custom_endpoint: ""
+			merchantAccount: "",
+			custom_url: ""
 		};
 
 		$scope.submitAdyenRegistration = function () {
