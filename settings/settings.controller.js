@@ -2306,7 +2306,6 @@
 				}
 				$scope.loadingProductCategories = false;
 			}).error(function (data) {
-				console.log(data);
 				$rootScope.isCategoryLoaded = false;
 				$scope.loadingProductCategories = false;
 			})
@@ -6971,7 +6970,6 @@
 					vm.usingAvalaraTax = true;
 					vm.avaTax = data;
 					vm.avalaraIntegrateUILoading = false;
-
 				}
 				else {
 					vm.usingAvalaraTax = false;
@@ -7050,6 +7048,8 @@
 					vm.twilioIntegrateUILoading = false;
 					$scope.loadSmsEvents();
 					$scope.loadTwilioSMSHistory();
+				}else{
+					vm.twilioIntegrateUILoading = false;
 				}
 			}).error(function (data) {
 				//console.log(data);
@@ -7780,6 +7780,7 @@
 								vm.quickbooksConfig.selectedMigrateInvoiceValue = data[3].RecordFieldData;
 
 								vm.quickbooksIntegrateUILoading = false;
+
 							}).error(function (data) {
 								//console.log(data);
 								$scope.quickBookMigrateConfigAdded = vm.quickBookMigrateConfigAdded = false;
@@ -7791,6 +7792,7 @@
 								vm.quickbooksConfig.selectedMigrateInvoiceValue = "";
 
 								vm.quickbooksIntegrateUILoading = false;
+
 							})
 							notifications.toast("Successfully registered with Quickbooks", "success");
 							clearInterval(qbTimer);

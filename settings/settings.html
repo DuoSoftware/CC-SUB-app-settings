@@ -59,7 +59,7 @@
 
         <!-- CONTENT CARD -->
         <div class="content-card" layout="column" flex md-whiteframe="5dp">
-            <div class="preloader mt-80" ng-if="vm.quickbooksIntegrateUILoading || vm.twilioIntegrateUILoading || vm.salesforceIntegrateUILoading || vm.xeroIntegrateUILoading || vm.zendeskIntegrateUILoading || vm.mailchimpIntegrateUILoading || vm.zohoIntegrateUILoading || vm.avalaraIntegrateUILoading">
+            <div class="preloader" ng-if="mainNavSelected == 8" ng-show="vm.quickbooksIntegrateUILoading || vm.twilioIntegrateUILoading || vm.salesforceIntegrateUILoading || vm.xeroIntegrateUILoading || vm.zendeskIntegrateUILoading || vm.mailchimpIntegrateUILoading || vm.zohoIntegrateUILoading || vm.avalaraIntegrateUILoading" style="height: calc(100% - 86px);top:auto;bottom: 0">
                 <md-progress-circular></md-progress-circular>
             </div>
             <md-tabs class="main-nav-tabs" id="settingsTabs" flex md-selected="mainNavSelected" md-border-bottom>
