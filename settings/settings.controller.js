@@ -6994,7 +6994,7 @@
 			if (vm.avalaraTaxForm.$valid) {
 				vm.submittedAvaTax = true;
 				var serviceurl = "";
-				if($scope.avaTax.mode=="Development"){
+				if(vm.avaTax.mode=="Development"){
 					serviceurl = "https://development.avalara.net";
 				}
 				else{
