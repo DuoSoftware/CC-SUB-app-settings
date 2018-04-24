@@ -59,7 +59,7 @@
 
         <!-- CONTENT CARD -->
         <div class="content-card" layout="column" flex md-whiteframe="5dp">
-            <div class="preloader mt-80" ng-if="vm.quickbooksIntegrateUILoading || vm.twilioIntegrateUILoading || vm.salesforceIntegrateUILoading || vm.xeroIntegrateUILoading || vm.zendeskIntegrateUILoading || vm.mailchimpIntegrateUILoading || vm.zohoIntegrateUILoading">
+            <div class="preloader mt-80" ng-if="vm.quickbooksIntegrateUILoading || vm.twilioIntegrateUILoading || vm.salesforceIntegrateUILoading || vm.xeroIntegrateUILoading || vm.zendeskIntegrateUILoading || vm.mailchimpIntegrateUILoading || vm.zohoIntegrateUILoading || vm.avalaraIntegrateUILoading">
                 <md-progress-circular></md-progress-circular>
             </div>
             <md-tabs class="main-nav-tabs" id="settingsTabs" flex md-selected="mainNavSelected" md-border-bottom>
@@ -3070,9 +3070,9 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button ng-disabled="vm.usingAvalaraTax" ng-click="registerIntegrationDialog('avalara', '', $event)">
+                                                        <md-button ng-click="registerIntegrationDialog('avalara', '', $event)">
                                                             <md-icon md-font-icon="icon-login" md-menu-align-target></md-icon>
-                                                            Register
+                                                            {{vm.usingAvalaraTax == true ? 'Update' : 'Register'}}
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
