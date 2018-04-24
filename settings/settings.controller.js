@@ -6993,12 +6993,19 @@
 		vm.submitAvalaraTax = function () {
 			if (vm.avalaraTaxForm.$valid) {
 				vm.submittedAvaTax = true;
+				var serviceurl = "";
+				if($scope.avaTax.mode=="Development"){
+					serviceurl = "https://development.avalara.net";
+				}
+				else{
+					serviceurl = "https://avatax.avalara.net";
+				}
 				var avalaraTaxObj = {
 					"accountNo": vm.avaTax.accountNo,
 					"licenseKey": vm.avaTax.licenseKey,
 					"companyCode": vm.avaTax.companyCode,
 					"mode": vm.avaTax.mode,
-					"serviceUrl": "https://development.avalara.net"
+					"serviceUrl": serviceurl
 				}
 				$charge.ccapi().saveAvalaraTax(avalaraTaxObj).success(function (data) {
 					//
