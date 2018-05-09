@@ -37,7 +37,6 @@
                 <div class="title" layout="column" layout-align="center start">
                     <div class="logo" layout="row" layout-align="start center">
                         <span class="logo-icon">
-                            <img src="app/core/app_icons/settings_app_icon.png" alt=""/>
                         </span>
                         <span class="logo-text">Settings</span>
                     </div>
@@ -1359,7 +1358,6 @@
                         <div class="mt-20 mb-20 text-center">Select a template as your default invoice</div>
                         <div class="content-block-wrapper">
                             <div layout="row">
-
                                 <form name="vm.emailTemplateView" id="emailTemplateViewForm" ng-submit="submitEmailTemplate()" flex>
                                     <div id="unit_measuers12" class="content-block p-10">
                                         <div class="email-template" ng-repeat="emailTemplate in vm.emailTemplateList" ng-click="selectChangeTemplate(emailTemplate.url)" style="zoom: 0.4;margin:20px" ng-class="{'md-whiteframe-10dp':emailTemplate.isSelected}">
@@ -1544,7 +1542,7 @@
                         <div layout="column" layout-align="center center" class="m-20" ng-if="!vm.usingAvalaraTax">
                             <div layout="row" layout-align="center center">
                                 <p>You can create taxes with</p>
-                                <md-button class="md-raised h-40" ng-click="enableAvalaraTax()"><span class="integration_avalara avalar-scaled-down"></span></md-button>
+                                <md-button class="md-raised h-40" ng-click="enableAvalaraTax()"><span class="integration-logo integration_avalara avalar-scaled-down"></span></md-button>
                             </div>
                             <i>
                                 <b>or..</b>
@@ -2129,7 +2127,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" ng-class="{'not-uspported':!gateway.support && gateway.paymentGateway != 'testGateway'}" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="online_{{gateway.paymentGateway | lowercase}}" ng-class="{'online_disabled': !gateway.isConnected}"></div>
+                                            <div class="integration-logo online_{{gateway.paymentGateway | lowercase}}" ng-class="{'online_disabled': !gateway.isConnected}"></div>
                                             <!--<div>{{gateway.paymentGateway}}</div>-->
                                         </md-input-container>
 
@@ -2212,7 +2210,7 @@
                                             <div style="padding: 5px 20%">
                                                 <md-input-container layout="row" layout-align="start center" flex>
                                                     <md-checkbox id="achCheckBox" ng-model="gateway.key['0'].enableAch" class="m-0"></md-checkbox>
-                                                    <div class="online_stripe_ach"></div>
+                                                    <div class="integration-logo online_stripe_ach"></div>
                                                     <span class="fs-20 ml-10">ACH</span>
                                                     <!--<div>{{gateway.paymentGateway}}</div>-->
                                                 </md-input-container>
@@ -2255,7 +2253,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="integration_twilio" ng-class="{'online_disabled': !twilioConnected}"></div>
+                                            <div class="integration-logo integration_twilio" ng-class="{'online_disabled': !twilioConnected}"></div>
                                         </md-input-container>
 
                                         <div flex>
@@ -2396,7 +2394,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="integration_quickbooks" ng-class="{'online_disabled': !quickBookConnected}"></div>
+                                            <div class="integration-logo integration_quickbooks" ng-class="{'online_disabled': !quickBookConnected}"></div>
                                             <!--<div>{{gateway.paymentGateway}}</div>-->
                                         </md-input-container>
 
@@ -2534,7 +2532,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="integration_salesforce" ng-class="{'online_disabled': !salesforceConnected}"></div>
+                                            <div class="integration-logo integration_salesforce" ng-class="{'online_disabled': !salesforceConnected}"></div>
                                             <!--<div>{{gateway.paymentGateway}}</div>-->
                                         </md-input-container>
 
@@ -2621,7 +2619,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="integration_zendesk" ng-class="{'online_disabled': !zendeskConnected}"></div>
+                                            <div class="integration-logo integration_zendesk" ng-class="{'online_disabled': !zendeskConnected}"></div>
                                         </md-input-container>
 
                                         <div flex>
@@ -2707,7 +2705,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="integration_zoho" ng-class="{'online_disabled': !zohoConnected}"></div>
+                                            <div class="integration-logo integration_zoho" ng-class="{'online_disabled': !zohoConnected}"></div>
                                         </md-input-container>
 
                                         <div flex>
@@ -2793,7 +2791,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="integration_xero" ng-class="{'online_disabled': !xeroConnected}"></div>
+                                            <div class="integration-logo integration_xero" ng-class="{'online_disabled': !xeroConnected}"></div>
                                         </md-input-container>
 
                                         <div flex>
@@ -3009,7 +3007,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="integration_mailchimp" ng-class="{'online_disabled': !mailchimpConnected}"></div>
+                                            <div class="integration-logo integration_mailchimp" ng-class="{'online_disabled': !mailchimpConnected}"></div>
                                         </md-input-container>
 
                                         <div flex>
@@ -3052,7 +3050,7 @@
                                 <div>
                                     <div layout="row" layout-align="start center" flex>
                                         <md-input-container style="margin: 0;" flex>
-                                            <div class="integration_avalara" ng-class="{'online_disabled': !vm.usingAvalaraTax}"></div>
+                                            <div class="integration-logo integration_avalara" ng-class="{'online_disabled': !vm.usingAvalaraTax}"></div>
                                         </md-input-container>
 
                                         <div flex>
