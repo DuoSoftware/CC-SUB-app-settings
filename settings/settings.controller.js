@@ -2783,7 +2783,7 @@
 			$timeout(function () {
 				vm.webhook = {};
 				vm.webhook.type = false;
-				vm.webhook.mode = "Live";
+				vm.webhook.mode = "live";
 			});
 			// vm.webhookTypeChange("custom");
 			//
@@ -2798,7 +2798,7 @@
 		$scope.resetWebhook = function () {
 			vm.webhook = {};
 			vm.webhook.type = "custom";
-			vm.webhook.mode = "Live";
+			vm.webhook.mode = "live";
 			vm.webhookTypeChange(true);
 
 			vm.webhookList = [];
@@ -2818,6 +2818,7 @@
 					var tempEventsSelected = false;
 					webhookObj.endPoint = vm.webhook.endPoint;
 					webhookObj.type = "website";
+					webhookObj.mode = vm.webhook.mode;
 					webhookObj.createdDate = new Date();
 					webhookObj.isEnabled = true;
 					webhookObj.eventCodes = [];
@@ -2837,7 +2838,7 @@
 								notifications.toast("Webhook Created Successfully", "success");
 								vm.webhook = {};
 								vm.webhook.type = "custom";
-								vm.webhook.mode = "Live";
+								//vm.webhook.mode = "live";
 								vm.webhookTypeChange("custom");
 
 								$scope.infoJson = {};
