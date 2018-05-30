@@ -2889,6 +2889,7 @@
 					webhookObj.guWebhookId = vm.webhook.guWebhookId;
 					webhookObj.endPoint = vm.webhook.endPoint;
 					webhookObj.type = "website";
+          webhookObj.mode = vm.webhook.mode;
 					webhookObj.createdDate = new Date();
 					webhookObj.isEnabled = true;
 					webhookObj.eventCodes = [];
@@ -2991,6 +2992,10 @@
 			vm.webhook.guWebhookId = webhook.guWebhookId;
 			vm.webhook.endPoint = webhook.endPoint;
 			vm.webhook.type = webhook.type;
+			vm.webhook.mode = webhook.mode;
+      if(vm.webhook.mode==""){
+        vm.webhook.mode="live";
+      }
 			for (var a = 0; a < vm.webhookEventList.length; a++) {
 				vm.webhookEventList[a].isAlreadyUsed = false;
 				vm.webhookEventList[a].isSelected = false;
@@ -3145,6 +3150,7 @@
 						$charge.settingsapp().insertDuoBaseValuesAddition(req).success(function (data) {
 							//console.log(data);
 							notifications.toast("Brand has been added.", "success");
+              $scope.addBrandView = false;
 							$charge.settingsapp().getDuobaseFieldDetailsByTableNameAndFieldName("CTS_CommonAttributes", "Brand").success(function (data) {
 								$scope.brands = [];
 								for (var i = 0; i < data.length; i++) {
@@ -6659,6 +6665,7 @@
 
 
 			$scope.PaymentRetryUpdating = false;
+      $scope.OriginalretryProcessObj = {};
 
 			$charge.notification().getProcessByCode("Payment").success(function (data) {
 				//console.log(data);
@@ -6690,6 +6697,7 @@
 					}
 				}
 
+        $scope.OriginalretryProcessObj = angular.copy($scope.retryProcess);
 				$scope.PaymentRetryUpdating = true;
 
 			}).error(function (data) {
@@ -6728,6 +6736,10 @@
 				isPaymentLoaded = false;
 			}
 
+      if($scope.PaymentRetryUpdating){
+        $scope.retryProcess = angular.copy($scope.OriginalretryProcessObj);
+      }
+
 		}
 
 		$scope.deletePaymentSettings = function (ev) {
@@ -6747,97 +6759,103 @@
 		$scope.retryProcess = {};
 		$scope.paymentRetrySubmitted = false;
 		$scope.submitPaymentRetryProcess = function () {
-			$scope.paymentRetrySubmitted = true;
 
-			$scope.retryProcess.processCode = "Payment";
-			$scope.retryProcess.actions = [];
+      if (vm.paymentRetryProcessForm.$valid == true) {
+        $scope.paymentRetrySubmitted = true;
 
-			var actionObj1 = {};
-			var actionObj2 = {};
-			var actionObj3 = {};
-			var actionObj4 = {};
-			actionObj1.actionIndex = 0;
-			actionObj1.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt1st;
-			actionObj1.processAction = "Retry";
-			actionObj1.emailNotification = $scope.retryProcess.emailNotification1st;
-			$scope.retryProcess.actions.push(actionObj1);
+        $scope.retryProcess.processCode = "Payment";
+        $scope.retryProcess.actions = [];
 
-			actionObj2.actionIndex = 1;
-			actionObj2.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt2nd;
-			actionObj2.processAction = "Retry";
-			actionObj2.emailNotification = $scope.retryProcess.emailNotification2nd;
-			$scope.retryProcess.actions.push(actionObj2);
+        var actionObj1 = {};
+        var actionObj2 = {};
+        var actionObj3 = {};
+        var actionObj4 = {};
+        actionObj1.actionIndex = 0;
+        actionObj1.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt1st;
+        actionObj1.processAction = "Retry";
+        actionObj1.emailNotification = $scope.retryProcess.emailNotification1st;
+        $scope.retryProcess.actions.push(actionObj1);
 
-			actionObj3.actionIndex = 2;
-			actionObj3.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt3rd;
-			actionObj3.processAction = "Retry";
-			actionObj3.emailNotification = $scope.retryProcess.emailNotification3rd;
-			$scope.retryProcess.actions.push(actionObj3);
+        actionObj2.actionIndex = 1;
+        actionObj2.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt2nd;
+        actionObj2.processAction = "Retry";
+        actionObj2.emailNotification = $scope.retryProcess.emailNotification2nd;
+        $scope.retryProcess.actions.push(actionObj2);
 
-			actionObj4.actionIndex = 3;
-			actionObj4.daysAfterAttempt = 0;
-			actionObj4.processAction = $scope.retryProcess.daysAfterAttemptFinally;
-			if (actionObj4.processAction == "Webhook") {
-				actionObj4.Webhook = {
-					"endpoint": $scope.retryProcess.endpoint,
-					"method": $scope.retryProcess.method
-				}
-			}
-			actionObj4.emailNotification = $scope.retryProcess.emailNotificationFinally;
-			$scope.retryProcess.actions.push(actionObj4);
+        actionObj3.actionIndex = 2;
+        actionObj3.daysAfterAttempt = $scope.retryProcess.daysAfterAttempt3rd;
+        actionObj3.processAction = "Retry";
+        actionObj3.emailNotification = $scope.retryProcess.emailNotification3rd;
+        $scope.retryProcess.actions.push(actionObj3);
 
-			if (!$scope.PaymentRetryUpdating) {
-				$charge.notification().createRetryProcess($scope.retryProcess).success(function (data) {
-					//console.log(data);delmonispi@deyom.com kerkudatru@deyom.com
-					if (data.response == "succeeded") {
-						notifications.toast("Successfully Payment Retry Configuration Saved", "success");
-						$scope.paymentRetrySubmitted = false;
+        actionObj4.actionIndex = 3;
+        actionObj4.daysAfterAttempt = 0;
+        actionObj4.processAction = $scope.retryProcess.daysAfterAttemptFinally;
+        if (actionObj4.processAction == "Webhook") {
+          actionObj4.Webhook = {
+            "endpoint": $scope.retryProcess.endpoint,
+            "method": $scope.retryProcess.method
+          }
+        }
+        actionObj4.emailNotification = $scope.retryProcess.emailNotificationFinally;
+        $scope.retryProcess.actions.push(actionObj4);
 
-						$scope.PaymentRetryUpdating = true;
+        if (!$scope.PaymentRetryUpdating) {
+          $charge.notification().createRetryProcess($scope.retryProcess).success(function (data) {
+            //console.log(data);delmonispi@deyom.com kerkudatru@deyom.com
+            if (data.response == "succeeded") {
+              notifications.toast("Successfully Payment Retry Configuration Saved", "success");
+              $scope.paymentRetrySubmitted = false;
 
-					}
-					else {
-						notifications.toast("Payment Retry Configuration Saving Failed", "error");
-						$scope.paymentRetrySubmitted = false;
-					}
+              $scope.PaymentRetryUpdating = true;
 
-				}).error(function (data) {
-					//console.log(data);
-					notifications.toast("Payment Retry Configuration Saving Failed", "error");
-					$scope.paymentRetrySubmitted = false;
+            }
+            else {
+              notifications.toast("Payment Retry Configuration Saving Failed", "error");
+              $scope.paymentRetrySubmitted = false;
+            }
 
-					$scope.infoJson = {};
-					$scope.infoJson.message = JSON.stringify(data);
-					$scope.infoJson.app = 'settings';
-					logHelper.error($scope.infoJson);
-				})
-			}
-			else {
-				$charge.notification().updateRetryProcess($scope.retryProcess).success(function (data) {
-					//console.log(data);
-					if (data.response == "succeeded") {
-						notifications.toast("Successfully Payment Retry Configuration Updated", "success");
-						$scope.paymentRetrySubmitted = false;
+          }).error(function (data) {
+            //console.log(data);
+            notifications.toast("Payment Retry Configuration Saving Failed", "error");
+            $scope.paymentRetrySubmitted = false;
 
-						$scope.PaymentRetryUpdating = true;
+            $scope.infoJson = {};
+            $scope.infoJson.message = JSON.stringify(data);
+            $scope.infoJson.app = 'settings';
+            logHelper.error($scope.infoJson);
+          })
+        }
+        else {
+          $charge.notification().updateRetryProcess($scope.retryProcess).success(function (data) {
+            //console.log(data);
+            if (data.response == "succeeded") {
+              notifications.toast("Successfully Payment Retry Configuration Updated", "success");
+              $scope.paymentRetrySubmitted = false;
 
-					}
-					else {
-						notifications.toast("Payment Retry Configuration Updating Failed", "error");
-						$scope.paymentRetrySubmitted = false;
-					}
+              $scope.PaymentRetryUpdating = true;
 
-				}).error(function (data) {
-					//console.log(data);
-					notifications.toast("Payment Retry Configuration Updating Failed", "error");
-					$scope.paymentRetrySubmitted = false;
+            }
+            else {
+              notifications.toast("Payment Retry Configuration Updating Failed", "error");
+              $scope.paymentRetrySubmitted = false;
+            }
 
-					$scope.infoJson = {};
-					$scope.infoJson.message = JSON.stringify(data);
-					$scope.infoJson.app = 'settings';
-					logHelper.error($scope.infoJson);
-				})
-			}
+          }).error(function (data) {
+            //console.log(data);
+            notifications.toast("Payment Retry Configuration Updating Failed", "error");
+            $scope.paymentRetrySubmitted = false;
+
+            $scope.infoJson = {};
+            $scope.infoJson.message = JSON.stringify(data);
+            $scope.infoJson.app = 'settings';
+            logHelper.error($scope.infoJson);
+          })
+        }
+      }
+      else{
+        angular.element('#paymentRetryProcessForm').find('.ng-invalid:visible:first').focus();
+      }
 
 		}
 		/*
@@ -7708,7 +7726,7 @@
 				vm.mailchimpConfigContent = {};
 				vm.mailchimpIntegrateUILoading = false;
 			})
-			vm.avalaraIntegrateUILoading = true;		
+			vm.avalaraIntegrateUILoading = true;
 			$scope.loadAvalaraTaxes();
 		}
 
