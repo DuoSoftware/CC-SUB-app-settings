@@ -6899,6 +6899,9 @@
 
 		$scope.isIndTaxLoaded = true;
 		$scope.loadIndividualTaxes = function () {
+      skip = 0;
+      take = 100;
+      $scope.fixedRates = [];
 			$scope.isIndTaxLoaded = false;
 			$charge.tax().all(skip, take, "asc").success(function (data) {
 				//
@@ -6940,6 +6943,9 @@
 
 		$scope.isGrpTaxLoaded = false;
 		$scope.loadTaxGrps = function () {
+      skipGrp = 0;
+      takeGrp = 100;
+      $scope.taxGroupList = [];
 			$charge.tax().allgroups(skipGrp, takeGrp, "asc").success(function (data) {
 				//
 				skipGrp += takeGrp;
