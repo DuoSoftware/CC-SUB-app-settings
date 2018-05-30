@@ -27,8 +27,8 @@
                     <md-input-container class="md-block" flex="30">
                         <label>Mode</label>
                         <md-select ng-required="true" flex ng-model="vm.webhook.mode">
-                            <md-option value="Live" selected>Live</md-option>
-                            <md-option value="Test">Test</md-option>
+                            <md-option value="live">Live</md-option>
+                            <md-option value="test">Test</md-option>
                         </md-select>
                     </md-input-container>
                 </div>
@@ -60,9 +60,9 @@
                 <md-progress-circular class="gen-save-indicator" ng-if="vm.webhookSubmitted"></md-progress-circular>
                 <md-button ng-disabled="vm.webhookSubmitted" type="submit" class="md-raised md-accent" form="webhooksForm">Save</md-button>
             </div>
-            <div layout="row" class="layout-row" ng-if="vm.enabledEditWH">
+            <div layout="row" class="layout-row">
                 <md-progress-circular class="gen-save-indicator" ng-if="vm.webhookSubmitted"></md-progress-circular>
-                <md-button ng-click="resetWebhook();">Reset</md-button>
+                <md-button ng-click="vm.resetWebhookInputs();">Reset</md-button>
                 <md-button ng-disabled="vm.webhookSubmitted" type="submit" class="md-raised md-accent" form="webhooksForm">Update</md-button>
             </div>
         </md-dialog-actions>
