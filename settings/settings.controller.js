@@ -2809,6 +2809,11 @@
 			vm.enabledEditWH = false;
 		};
 
+    vm.resetWebhookInputs = function () {
+      vm.webhook = {};
+      vm.webhookTypeChange(false);
+    };
+
 		vm.submitWebhook = function (editing) {
 			if (!editing) {
 				if (vm.webHooks.$valid == true) {
